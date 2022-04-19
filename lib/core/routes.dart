@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../features/core/views/home_view.dart';
+
 class Routes {
   static const login = '/login';
   static const register = '/register';
+  static const homeView = '/home';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -12,7 +15,9 @@ class Routes {
       //   return MaterialPageRoute(builder: (_) => LoginView());
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
-      //   return MaterialPageRoute(
+      case homeView:
+        return MaterialPageRoute(builder: (_) => HomeView());
+      // return MaterialPageRoute(
       //       builder: (_) => OTPView(fromRegister: fromRegister));
 
       default:

@@ -29,9 +29,8 @@ class AppTheme {
 
   static final ColorScheme _lightColorScheme =
       const ColorScheme.light().copyWith(
-    primary: AppColors.darkPurple,
-    secondary: AppColors.darkPurple,
-    secondaryVariant: AppColors.lightPurple,
+    primary: AppColors.primaryColor,
+    secondary: AppColors.primaryColor,
     onBackground: AppColors.dark,
     onSurface: AppColors.grey,
   );

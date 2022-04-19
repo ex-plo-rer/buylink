@@ -3,8 +3,8 @@ import 'package:flutter/painting.dart';
 class AppColors {
   AppColors._();
 
-  static const darkPurple = Color(0xFF5603A8);
-  static Color lightPurple = const Color(0xFFD0A1FF).withOpacity(0.16);
+  static const primaryColor = Color(0xFF4167B2);
+  static const secondaryColor = Color(0xFF707070);
 
   static const light = Color(0xFFFFFFFF);
   static const dark = Color(0xFF000000);
