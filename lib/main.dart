@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'core/constants/strings.dart';
 import 'core/routes.dart';
 import 'core/theme.dart';
+import 'features/authentication/views/login_view.dart';
 import 'features/startup/views/startup_view.dart';
 
 void main() {
@@ -23,7 +24,8 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: const StartupView(),
+      // home: const StartupView(),
+      home: const LoginView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,
       scaffoldMessengerKey: ref.read(snackbarService).scaffoldMessengerKey,

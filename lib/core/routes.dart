@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../features/core/views/home_view.dart';
+import '../features/authentication/views/login_view.dart';
 
 class Routes {
   static const login = '/login';
@@ -11,12 +12,13 @@ class Routes {
     switch (settings.name) {
       // case register:
       //   return MaterialPageRoute(builder: (_) => RegisterView());
-      // case login:
-      //   return MaterialPageRoute(builder: (_) => LoginView());
-      // case otpVerification:
-      //   var fromRegister = settings.arguments as bool;
+      case login:
+        return MaterialPageRoute(builder: (_) => LoginView());
       case homeView:
         return MaterialPageRoute(builder: (_) => HomeView());
+
+      // case otpVerification:
+      //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(
       //       builder: (_) => OTPView(fromRegister: fromRegister));
 

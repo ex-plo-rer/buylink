@@ -10,7 +10,7 @@ class AppStrings {
   static const welcome = 'Welcome to Sumiffy';
 
   // Authentication
-  static const login = 'Login';
+  static const login = 'Log In';
   static const register = 'Register';
   static const emailAddress = 'Email Address';
   static const password = 'Password';
