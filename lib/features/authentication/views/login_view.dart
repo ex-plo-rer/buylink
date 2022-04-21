@@ -29,7 +29,8 @@ class LoginView extends ConsumerWidget {
         ),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        child:Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +99,7 @@ class LoginView extends ConsumerWidget {
             ),
           ],
         ),
-      ),
+      ),)
     );
   }
 }
