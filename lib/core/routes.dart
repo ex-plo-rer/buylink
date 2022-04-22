@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
 import '../features/authentication/views/login_view.dart';
 
 class Routes {
   static const login = '/login';
-  static const register = '/register';
+  static const signup = '/signup';
   static const homeView = '/home';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      // case register:
-      //   return MaterialPageRoute(builder: (_) => RegisterView());
+      case signup:
+        return MaterialPageRoute(builder: (_) => SignupView());
       case login:
         return MaterialPageRoute(builder: (_) => LoginView());
       case homeView:

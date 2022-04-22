@@ -14,6 +14,7 @@ class AppTextField extends StatelessWidget {
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final void Function(String)? onFieldSubmitted;
+  final bool hasBorder;
 
   const AppTextField({
     Key? key,
@@ -28,6 +29,7 @@ class AppTextField extends StatelessWidget {
     this.controller,
     this.focusNode,
     this.onFieldSubmitted,
+    this.hasBorder = true,
   }) : super(key: key);
 
   @override
@@ -37,11 +39,14 @@ class AppTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title!,
-            style: TextStyle(
-              color: AppColors.getColorFromHex('3A4150'),
-              fontSize: 12,
+          Visibility(
+            visible: hasBorder,
+            child: Text(
+              title!,
+              style: TextStyle(
+                color: AppColors.getColorFromHex('3A4150'),
+                fontSize: 12,
+              ),
             ),
           ),
           const Spacing.tinyHeight(),
@@ -54,17 +59,24 @@ class AppTextField extends StatelessWidget {
             onFieldSubmitted: onFieldSubmitted,
             decoration: InputDecoration(
               isDense: true,
-              contentPadding: const EdgeInsets.all(16),
+              contentPadding: EdgeInsets.all(hasBorder ? 16 : 0),
               hintText: hintText,
-              suffixIcon: suffixIcon,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
-                borderSide: const BorderSide(),
+              suffixIcon: UnconstrainedBox(
+                child: suffixIcon,
+                alignment: hasBorder ? Alignment.center : Alignment.topRight,
               ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
-                borderSide: const BorderSide(color: AppColors.red),
-              ),
+              border: hasBorder
+                  ? OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      borderSide: const BorderSide(),
+                    )
+                  : InputBorder.none,
+              errorBorder: hasBorder
+                  ? OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      borderSide: const BorderSide(color: AppColors.red),
+                    )
+                  : InputBorder.none,
             ),
             onChanged: onChanged,
           ),
