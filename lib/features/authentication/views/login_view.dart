@@ -20,7 +20,7 @@ class LoginView extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: AppColors.light,
+        backgroundColor: AppColors.transparent,
         title: const Text(
           AppStrings.login,
           style: TextStyle(
