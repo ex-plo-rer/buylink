@@ -21,7 +21,7 @@ class StartupNotifier extends BaseChangeNotifier {
     print('decide navigation called');
     await Future.delayed(const Duration(seconds: 2));
     _reader(navigationServiceProvider)
-        .navigateOffAllNamed(Routes.homeView, (route) => false);
+        .navigateOffAllNamed(Routes.signup, (route) => false);
   }
 }
 

@@ -20,7 +20,15 @@ class SignupNotifier extends BaseChangeNotifier {
   bool _passwordVisible = false;
   bool get passwordVisible => _passwordVisible;
 
-  void moveToNext() async {
+  void moveBackward() {
+    if (_currentPage > 1) {
+      _currentPage -= 1;
+      print('_currentPage: $_currentPage');
+    }
+    notifyListeners();
+  }
+
+  void moveForward() async {
     if (_currentPage < _totalPage) {
       _currentPage += 1;
       print('_currentPage: $_currentPage');

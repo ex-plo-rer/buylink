@@ -1,5 +1,6 @@
 import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/features/authentication/notifiers/signup_notifier.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_check_box.dart';
 import 'package:buy_link/widgets/app_linear_progress.dart';
@@ -22,8 +23,26 @@ class SignupView extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        leading: signupNotifier.currentPage == 1
+            ? null
+            : IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppColors.dark,
+                ),
+                onPressed: () {
+                  signupNotifier.moveBackward();
+                  print(signupNotifier.currentPage);
+                  _pageController.animateToPage(
+                    // array starts at 0 (lol)
+                    signupNotifier.currentPage - 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+              ),
         elevation: 0,
-        backgroundColor: AppColors.light,
+        backgroundColor: AppColors.transparent,
         title: const Text(
           AppStrings.signup,
           style: TextStyle(
@@ -217,8 +236,8 @@ class SignupView extends ConsumerWidget {
                               ? AppStrings.signup
                               : AppStrings.next,
                       backgroundColor: AppColors.primaryColor,
-                      onPressed: () async {
-                        signupNotifier.moveToNext();
+                      onPressed: () {
+                        signupNotifier.moveForward();
                         print(signupNotifier.currentPage);
                         _pageController.animateToPage(
                           // array starts at 0 (lol)

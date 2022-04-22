@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/constants/colors.dart';
 import '../notifiers/startup_notifier.dart';
 
 class StartupView extends ConsumerWidget {
@@ -9,15 +10,17 @@ class StartupView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     ref.watch(startUpNotifierProvider);
-    return Scaffold(
-      body:Container(
-
-          child: Image.asset('assets/images/splashscreen.png', fit: BoxFit.cover,)
-      )
-
-          //child: Image.asset('assets/images/splashscreen.png', fit: BoxFit.cover,)),
-
-      //Center(child: CircularProgressIndicator()),
+    return const Scaffold(
+      body: Center(
+        child: Text(
+          'Buylink',
+          style: TextStyle(
+            color: AppColors.primaryColor,
+            fontSize: 50,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
     );
   }
 }
