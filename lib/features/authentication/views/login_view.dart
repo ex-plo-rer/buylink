@@ -1,4 +1,6 @@
 import 'package:buy_link/core/constants/strings.dart';
+import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/spacing.dart';
@@ -87,7 +89,7 @@ class LoginView extends ConsumerWidget {
               backgroundColor: AppColors.primaryColor,
             ),
             const Spacing.mediumHeight(),
-            const Align(
+            Align(
               alignment: Alignment.center,
               child: TextWithRich(
                 firstText: 'Don’t have an account ?',
@@ -95,6 +97,9 @@ class LoginView extends ConsumerWidget {
                 secondColor: AppColors.primaryColor,
                 fontSize: 14,
                 mainAxisAlignment: MainAxisAlignment.center,
+                onTapText: () => ref
+                    .read(navigationServiceProvider)
+                    .navigateToNamed(Routes.signup),
               ),
             ),
           ],

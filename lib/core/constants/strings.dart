@@ -11,6 +11,8 @@ class AppStrings {
 
   // Authentication
   static const login = 'Log In';
+  static const signup = 'Sign Up';
+  static const next = 'Next  >>';
   static const register = 'Register';
   static const emailAddress = 'Email Address';
   static const password = 'Password';
