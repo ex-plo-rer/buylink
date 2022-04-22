@@ -9,8 +9,15 @@ class StartupView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     ref.watch(startUpNotifierProvider);
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+    return Scaffold(
+      body:Container(
+
+          child: Image.asset('assets/images/splashscreen.png', fit: BoxFit.cover,)
+      )
+
+          //child: Image.asset('assets/images/splashscreen.png', fit: BoxFit.cover,)),
+
+      //Center(child: CircularProgressIndicator()),
     );
   }
 }

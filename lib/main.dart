@@ -26,7 +26,7 @@ class MyApp extends ConsumerWidget {
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
       // home: const StartupView(),
-      home: const SplashView(),
+      home: const LoginView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,
       scaffoldMessengerKey: ref.read(snackbarService).scaffoldMessengerKey,
