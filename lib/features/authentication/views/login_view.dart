@@ -72,15 +72,43 @@ class LoginView extends ConsumerWidget {
               ),
             ),
             const Spacing.largeHeight(),
-            const Align(
+            // const Align(
+            //   alignment: Alignment.centerRight,
+            //       child: TextWithRich(
+            //   firstText: 'Don’t have an account ?',
+            //   secondText: 'Sign Up',
+            //   secondColor: AppColors.primaryColor,
+            //   fontSize: 14,
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   onTapText: () => ref
+            //       .read(navigationServiceProvider)
+            //       .navigateToNamed(Routes.forgotpassword),
+            // ),
+            //
+
+              // child: Text(
+              //   'Forgotten your password?',
+              //   style: TextStyle(
+              //     color: AppColors.grey2,
+              //     fontWeight: FontWeight.w500,
+              //     fontSize: 14,
+              //   ),
+              // ),
+           // ),
+
+
+            Align(
               alignment: Alignment.centerRight,
-              child: Text(
-                'Forgotten your password?',
-                style: TextStyle(
-                  color: AppColors.grey2,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
+              child: TextWithRich(
+                firstText: 'Forgotten your password?',
+                secondText: "",
+                secondColor: AppColors.grey2,
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
+                mainAxisAlignment: MainAxisAlignment.center,
+                onTapText: () => ref
+                    .read(navigationServiceProvider)
+                    .navigateToNamed(Routes.forgotpassword),
               ),
             ),
             const Spacing.height(52),
@@ -94,8 +122,9 @@ class LoginView extends ConsumerWidget {
               child: TextWithRich(
                 firstText: 'Don’t have an account ?',
                 secondText: 'Sign Up',
-                secondColor: AppColors.primaryColor,
                 fontSize: 14,
+                firstColor: AppColors.grey2,
+                //     fontWeight: FontWeight.w500,
                 mainAxisAlignment: MainAxisAlignment.center,
                 onTapText: () => ref
                     .read(navigationServiceProvider)
