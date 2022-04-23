@@ -58,14 +58,6 @@ class AppButton extends StatelessWidget {
             ),
           ),
           icon: hasIcon ? icon! : Container(),
-          // child: Text(
-          //   isLoading ? AppStrings.loading : text,
-          //   style: TextStyle(
-          //     color: textColor,
-          //     fontWeight: FontWeight.w700,
-          //     fontSize: fontSize,
-          //   ),
-          // ),
         ),
       ),
     );
