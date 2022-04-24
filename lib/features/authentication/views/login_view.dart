@@ -99,14 +99,9 @@ class LoginView extends ConsumerWidget {
 
             Align(
               alignment: Alignment.centerRight,
-              child: TextWithRich(
-                firstText: 'Forgotten your password?',
-                secondText: "",
-                secondColor: AppColors.grey2,
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-                mainAxisAlignment: MainAxisAlignment.center,
-                onTapText: () => ref
+              child: TextButton(
+                child: Text("Forgotten your password?"),
+                  onPressed: () => ref
                     .read(navigationServiceProvider)
                     .navigateToNamed(Routes.forgotpassword),
               ),

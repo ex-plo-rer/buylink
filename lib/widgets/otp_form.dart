@@ -47,7 +47,7 @@ class _OtpFormState extends ConsumerState<OtpForm> {
         children: [
           SizedBox(height: 20),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 width: 50,
@@ -64,6 +64,7 @@ class _OtpFormState extends ConsumerState<OtpForm> {
                   },
                 ),
               ),
+              SizedBox(width: 10,),
               SizedBox(
                 width: 50,
                 height: 70,
@@ -77,6 +78,7 @@ class _OtpFormState extends ConsumerState<OtpForm> {
                   onChanged: (value) => nextField(value, pin3FocusNode),
                 ),
               ),
+              SizedBox(width: 10,),
               SizedBox(
                 width: 50,
                 height: 70,
@@ -90,6 +92,7 @@ class _OtpFormState extends ConsumerState<OtpForm> {
                   onChanged: (value) => nextField(value, pin4FocusNode),
                 ),
               ),
+              SizedBox(width: 10,),
               SizedBox(
                 width: 50,
                 height: 70,

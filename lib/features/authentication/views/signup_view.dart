@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../widgets/otp_form.dart';
 import '../notifiers/login_notifier.dart';
 
 class SignupView extends ConsumerWidget {
@@ -147,23 +148,7 @@ class SignupView extends ConsumerWidget {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          AppTextField(
-                            title: '',
-                            hintText: '1234',
-                            suffixIcon: GestureDetector(
-                              onTap: () {},
-                              child: const CircleAvatar(
-                                backgroundColor: AppColors.grey7,
-                                radius: 10,
-                                child: Icon(
-                                  Icons.clear_rounded,
-                                  color: AppColors.light,
-                                  size: 15,
-                                ),
-                              ),
-                            ),
-                            hasBorder: false,
-                          ),
+                          OtpForm(),
                         ],
                       ),
                       Column(

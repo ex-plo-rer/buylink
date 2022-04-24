@@ -1,3 +1,4 @@
+import 'package:buy_link/core/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,6 @@ final otpInputDecoration = InputDecoration(
 OutlineInputBorder outlineInputBorder() {
   return OutlineInputBorder(
     // borderRadius: BorderRadius.circular(20),
-    borderSide: BorderSide(color: Colors.black),
+    borderSide: BorderSide(color: AppColors.grey6),
   );
 }
