@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'otp_constant.dart';
+import '../core/constants/otp_constant.dart';
 
 class OtpForm extends ConsumerStatefulWidget {
   const OtpForm({
