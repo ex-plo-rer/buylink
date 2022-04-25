@@ -1,26 +1,25 @@
-import 'package:buy_link/core/constants/strings.dart';
-import 'package:buy_link/features/authentication/notifiers/signup_notifier.dart';
-import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/app_button.dart';
-import 'package:buy_link/widgets/app_check_box.dart';
-import 'package:buy_link/widgets/app_linear_progress.dart';
-import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:buy_link/widgets/spacing.dart';
-import 'package:buy_link/widgets/text_with_rich.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/strings.dart';
+import '../../../widgets/app_button.dart';
+import '../../../widgets/app_check_box.dart';
+import '../../../widgets/app_linear_progress.dart';
+import '../../../widgets/app_text_field.dart';
 import '../../../widgets/otp_form.dart';
-import '../notifiers/login_notifier.dart';
+import '../../../widgets/spacing.dart';
+import '../../../widgets/text_with_rich.dart';
+import '../notifiers/forgot_password_notifier.dart';
 
-class SignupView extends ConsumerWidget {
-  SignupView({Key? key}) : super(key: key);
+class ForgotPasswordView extends ConsumerWidget {
+  ForgotPasswordView({Key? key}) : super(key: key);
   final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context, ref) {
-    final signupNotifier = ref.watch(signupNotifierProvider);
+    final signupNotifier = ref.watch(forgotPasswordNotifierProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -76,88 +75,82 @@ class SignupView extends ConsumerWidget {
                       Column(
                         children: [
                           const TextWithRich(
-                            firstText: 'What\'s your',
-                            secondText: 'name?',
-                            fontSize: 24,
-                            secondColor: AppColors.primaryColor,
-                          ),
-                          const Spacing.height(12),
-                          AppTextField(
-                            title: '',
-                            hintText: 'Steve Jobs',
-                            suffixIcon: GestureDetector(
-                              onTap: () {},
-                              child: const CircleAvatar(
-                                backgroundColor: AppColors.grey7,
-                                radius: 10,
-                                child: Icon(
-                                  Icons.clear_rounded,
-                                  color: AppColors.light,
-                                  size: 15,
-                                ),
-                              ),
-                            ),
-                            hasBorder: false,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          const TextWithRich(
-                            firstText: 'What\'s your',
-                            secondText: 'email?',
-                            fontSize: 24,
-                            secondColor: AppColors.primaryColor,
-                          ),
-                          const Spacing.height(12),
-                          AppTextField(
-                            title: '',
-                            hintText: 'Example@gmail.com',
-                            keyboardType: TextInputType.emailAddress,
-                            suffixIcon: GestureDetector(
-                              onTap: () {},
-                              child: const CircleAvatar(
-                                backgroundColor: AppColors.grey7,
-                                radius: 10,
-                                child: Icon(
-                                  Icons.clear_rounded,
-                                  color: AppColors.light,
-                                  size: 15,
-                                ),
-                              ),
-                            ),
-                            hasBorder: false,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const TextWithRich(
-                            firstText: 'Check',
-                            secondText: 'your email',
+                            firstText: 'Forgotten',
+                            secondText: 'your password?',
                             fontSize: 24,
                             firstColor: AppColors.primaryColor,
                           ),
                           const Spacing.height(12),
-                          const Text(
-                            'Please fill in the 4 digit code we sent to your email to verify your account',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppColors.grey2,
-                              fontWeight: FontWeight.w500,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Enter the email you registered your buylink account with',
+                              style: TextStyle(
+                                  color: AppColors.grey5, fontSize: 12),
                             ),
                           ),
-                          OtpForm(),
+                          AppTextField(
+                            title: '',
+                            hintText: 'Example@email.com',
+                            suffixIcon: GestureDetector(
+                              onTap: () {},
+                              child: const CircleAvatar(
+                                backgroundColor: AppColors.grey7,
+                                radius: 10,
+                                child: Icon(
+                                  Icons.clear_rounded,
+                                  color: AppColors.light,
+                                  size: 15,
+                                ),
+                              ),
+                            ),
+                            hasBorder: false,
+                          ),
                         ],
                       ),
                       Column(
                         children: [
                           const TextWithRich(
-                            firstText: 'Create your',
-                            secondText: 'password',
+                            firstText: 'Check',
+                            secondText: 'your email?',
                             fontSize: 24,
-                            secondColor: AppColors.primaryColor,
+                            firstColor: AppColors.primaryColor,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Please fill in the 4 digit code we sent to your email to reset your password',
+                              style: TextStyle(
+                                  color: AppColors.grey5, fontSize: 12),
+                            ),
+                          ),
+                          const Spacing.height(40),
+                          OtpForm(),
+                          const Spacing.height(40),
+                          TweenAnimationBuilder(
+                            tween: Tween(begin: 30.0, end: 0.0),
+                            duration: Duration(seconds: 30),
+                            builder: (_, dynamic value, child) => Text(
+                              "00:${value.toInt()}",
+                              style: TextStyle(color: AppColors.grey1),
+                            ),
+                          ),
+                          TextButton(
+                            child: Text(
+                              "Resend Code",
+                              style: TextStyle(color: AppColors.primaryColor),
+                            ),
+                            onPressed: (null),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          const TextWithRich(
+                            firstText: 'Create',
+                            secondText: 'your password',
+                            fontSize: 24,
+                            firstColor: AppColors.primaryColor,
                           ),
                           const Spacing.height(12),
                           AppTextField(
@@ -178,18 +171,6 @@ class SignupView extends ConsumerWidget {
                                   ),
                                 ),
                                 const Spacing.smallWidth(),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: const CircleAvatar(
-                                    backgroundColor: AppColors.grey7,
-                                    radius: 10,
-                                    child: Icon(
-                                      Icons.clear_rounded,
-                                      color: AppColors.light,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                             hasBorder: false,
@@ -218,7 +199,7 @@ class SignupView extends ConsumerWidget {
                     AppButton(
                       text:
                           signupNotifier.currentPage == signupNotifier.totalPage
-                              ? AppStrings.signup
+                              ? AppStrings.createNewPassword
                               : AppStrings.next,
                       backgroundColor: AppColors.primaryColor,
                       onPressed: () {

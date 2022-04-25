@@ -32,6 +32,7 @@ class HomeView extends ConsumerWidget {
                 hasBorder: false,
                 isSearch: true,
                 fillColor: AppColors.grey8,
+                hasPrefixIcon: true,
               ),
               const Spacing.height(12),
               AppButton(
@@ -54,25 +55,32 @@ class HomeView extends ConsumerWidget {
               const Spacing.smallHeight(),
               Expanded(
                 child: MasonryGridView.count(
-                  itemCount: 20,
+                  itemCount: 20 + 1,
                   crossAxisCount: 2,
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 15,
                   itemBuilder: (context, index) {
-                    return ProductContainer(
-                      url:
-                          'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                      storeName: 'Atinuke Store',
-                      productName: 'Oraimo Power Bank',
-                      productPrice: '12000',
-                      distance: '3.5',
-                      onProductTapped: () {},
-                      onDistanceTapped: () {},
-                      onFlipTapped: () {},
-                      onFavoriteTapped: () {
-                        homeNotifier.toggleFavorite();
-                      },
-                    );
+                    if (index == 3) {
+                      return Container(
+                        height: 176,
+                        color: AppColors.red,
+                      );
+                    } else {
+                      return ProductContainer(
+                        url:
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                        storeName: 'Atinuke Store',
+                        productName: 'Oraimo Power Bank',
+                        productPrice: '12000',
+                        distance: '3.5',
+                        onProductTapped: () {},
+                        onDistanceTapped: () {},
+                        onFlipTapped: () {},
+                        onFavoriteTapped: () {
+                          homeNotifier.toggleFavorite();
+                        },
+                      );
+                    }
                   },
                 ),
                 // child: ListView.separated(
