@@ -105,35 +105,6 @@ class HomeView extends ConsumerWidget {
                     }
                   },
                 ),
-                // child: ListView.separated(
-                //   shrinkWrap: true,
-                //   itemCount: 30,
-                //   itemBuilder: (context, index) {
-                //     return StaggeredGrid.count(
-                //       crossAxisCount: 2,
-                //       mainAxisSpacing: 4,
-                //       crossAxisSpacing: 4,
-                //       children: [
-                //         ProductContainer(
-                //           url:
-                //               'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                //           storeName: 'Atinuke Store',
-                //           productName: 'Oraimo Power Bank',
-                //           productPrice: '12000',
-                //           distance: '3.5',
-                //           onProductTapped: () {},
-                //           onDistanceTapped: () {},
-                //           onFlipTapped: () {},
-                //           onFavoriteTapped: () {
-                //             homeNotifier.toggleFavorite();
-                //           },
-                //         ),
-                //       ],
-                //     );
-                //   },
-                //   separatorBuilder: (context, index) =>
-                //       const Spacing.mediumHeight(),
-                // ),
               ),
             ],
           ),

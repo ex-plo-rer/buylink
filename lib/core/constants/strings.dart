@@ -15,6 +15,8 @@ class AppStrings {
   static const next = 'Next  >>';
   static const register = 'Register';
   static const emailAddress = 'Email Address';
+  static const categories = 'Categories';
+  static const compare = 'Compare';
   static const password = 'Password';
   static const fullName = 'Full Name';
   static const forgotPassword = 'Forgot Password?';

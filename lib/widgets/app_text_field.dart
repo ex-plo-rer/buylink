@@ -77,6 +77,7 @@ class AppTextField extends StatelessWidget {
                         : 0,
               ),
               hintText: hintText,
+              hintStyle: const TextStyle(fontSize: 14),
               suffixIcon: UnconstrainedBox(
                 child: suffixIcon,
                 alignment: hasBorder ? Alignment.center : Alignment.topRight,

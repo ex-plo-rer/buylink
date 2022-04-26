@@ -10,8 +10,8 @@ class AppButton extends StatelessWidget {
   final String text;
   final Color? textColor;
   final double borderRadius;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   final double? fontSize;
   final bool isLoading;
   final bool hasIcon;

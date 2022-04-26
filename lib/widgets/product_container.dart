@@ -19,6 +19,7 @@ class ProductContainer extends ConsumerWidget {
   final void Function()? onDistanceTapped;
   final void Function()? onFlipTapped;
   final void Function()? onFavoriteTapped;
+  final bool isBig;
 
   const ProductContainer({
     Key? key,
@@ -31,12 +32,14 @@ class ProductContainer extends ConsumerWidget {
     this.onDistanceTapped,
     this.onFlipTapped,
     this.onFavoriteTapped,
+    this.isBig = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
     return SizedBox(
       height: 226,
+      width: isBig ? 500 : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

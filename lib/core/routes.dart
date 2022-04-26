@@ -1,3 +1,6 @@
+import 'package:buy_link/features/core/views/categories_view.dart';
+import 'package:buy_link/features/core/views/compare_view.dart';
+import 'package:buy_link/features/core/views/wishlist_view.dart';
 import 'package:flutter/material.dart';
 
 import '../features/authentication/views/forgot_password_view.dart';
@@ -10,6 +13,9 @@ class Routes {
   static const signup = '/signup';
   static const homeView = '/home';
   static const forgotPassword = '/forgot-password';
+  static const wishlist = '/wishlist';
+  static const categories = '/categories';
+  static const compare = '/compare';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -21,6 +27,12 @@ class Routes {
         return MaterialPageRoute(builder: (_) => HomeView());
       case forgotPassword:
         return MaterialPageRoute(builder: (_) => ForgotPasswordView());
+      case wishlist:
+        return MaterialPageRoute(builder: (_) => WishlistView());
+      case categories:
+        return MaterialPageRoute(builder: (_) => CategoriesView());
+      case compare:
+        return MaterialPageRoute(builder: (_) => CompareView());
 
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
