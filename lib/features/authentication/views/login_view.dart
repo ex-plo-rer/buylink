@@ -123,7 +123,7 @@ class LoginView extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 onTapText: () => ref
                     .read(navigationServiceProvider)
-                    .navigateToNamed(Routes.signup),
+                    .navigateToNamed(Routes.onboarding),
               ),
             ),
           ],
