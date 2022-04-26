@@ -113,9 +113,12 @@ class LoginView extends ConsumerWidget {
                 ),
               ),
               const Spacing.height(52),
-              const AppButton(
+              AppButton(
                 text: AppStrings.login,
                 backgroundColor: AppColors.primaryColor,
+                onPressed: () => ref
+                    .read(navigationServiceProvider)
+                    .navigateToNamed(Routes.homeView),
               ),
               const Spacing.mediumHeight(),
               Align(

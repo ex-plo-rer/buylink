@@ -1,8 +1,10 @@
 import 'package:buy_link/core/constants/colors.dart';
+import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
+import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +65,27 @@ class HomeView extends ConsumerWidget {
                     if (index == 3) {
                       return Container(
                         height: 176,
-                        color: AppColors.red,
+                        color: AppColors.transparent,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CategoryContainer(
+                              categoryName: 'Fashion',
+                              categoryImage: '',
+                              onTap: () {},
+                            ),
+                            CategoryContainer(
+                              categoryName: 'Photography',
+                              categoryImage: '',
+                              onTap: () {},
+                            ),
+                            CategoryContainer(
+                              categoryName: 'Baby & Toddler',
+                              categoryImage: '',
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
                       );
                     } else {
                       return ProductContainer(
