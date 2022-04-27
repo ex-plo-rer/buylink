@@ -32,59 +32,59 @@ class LoginView extends ConsumerWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const TextWithRich(
-                firstText: 'Welcome',
-                secondText: 'Back!',
-                fontSize: 24,
-                firstColor: AppColors.primaryColor,
+        child:Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const TextWithRich(
+              firstText: 'Welcome',
+              secondText: 'Back!',
+              fontSize: 24,
+              firstColor: AppColors.primaryColor,
+            ),
+            const Text(
+              'Log in to access your buylink account',
+              style: TextStyle(
+                color: AppColors.grey2,
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
               ),
-              const Text(
-                'Log in to access your buylink account',
-                style: TextStyle(
-                  color: AppColors.grey2,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
+            ),
+            const Spacing.largeHeight(),
+            const AppTextField(
+              title: 'Email Address',
+              hintText: 'example@email.com',
+            ),
+            const Spacing.largeHeight(),
+            AppTextField(
+              title: 'Password',
+              hintText: 'Enter your password',
+              obscureText: loginNotifier.passwordVisible,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  loginNotifier.passwordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  color: AppColors.dark,
                 ),
+                onPressed: () => loginNotifier.togglePassword(),
               ),
-              const Spacing.largeHeight(),
-              const AppTextField(
-                title: 'Email Address',
-                hintText: 'example@email.com',
-              ),
-              const Spacing.largeHeight(),
-              AppTextField(
-                title: 'Password',
-                hintText: 'Enter your password',
-                obscureText: loginNotifier.passwordVisible,
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    loginNotifier.passwordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                    color: AppColors.dark,
-                  ),
-                  onPressed: () => loginNotifier.togglePassword(),
-                ),
-              ),
-              const Spacing.largeHeight(),
-              // const Align(
-              //   alignment: Alignment.centerRight,
-              //       child: TextWithRich(
-              //   firstText: 'Don’t have an account ?',
-              //   secondText: 'Sign Up',
-              //   secondColor: AppColors.primaryColor,
-              //   fontSize: 14,
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   onTapText: () => ref
-              //       .read(navigationServiceProvider)
-              //       .navigateToNamed(Routes.forgotpassword),
-              // ),
-              //
+            ),
+            const Spacing.largeHeight(),
+            // const Align(
+            //   alignment: Alignment.centerRight,
+            //       child: TextWithRich(
+            //   firstText: 'Don’t have an account ?',
+            //   secondText: 'Sign Up',
+            //   secondColor: AppColors.primaryColor,
+            //   fontSize: 14,
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   onTapText: () => ref
+            //       .read(navigationServiceProvider)
+            //       .navigateToNamed(Routes.forgotpassword),
+            // ),
+            //
 
               // child: Text(
               //   'Forgotten your password?',
@@ -94,19 +94,13 @@ class LoginView extends ConsumerWidget {
               //     fontSize: 14,
               //   ),
               // ),
-              // ),
+           // ),
 
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  child: const Text(
-                    "Forgotten your password?",
-                    style: TextStyle(
-                      color: AppColors.grey2,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
-                  ),
+
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                child: Text("Forgotten your password?"),
                   onPressed: () => ref
                       .read(navigationServiceProvider)
                       .navigateToNamed(Routes.forgotPassword),
@@ -139,7 +133,7 @@ class LoginView extends ConsumerWidget {
             ],
           ),
         ),
-      ),
+      ),)
     );
   }
 }

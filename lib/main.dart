@@ -16,6 +16,7 @@ import 'core/theme.dart';
 import 'features/authentication/views/login_view.dart';
 import 'features/authentication/views/notification_view.dart';
 import 'features/authentication/views/setting_view.dart';
+
 import 'features/startup/views/startup_view.dart';
 
 void main() {
