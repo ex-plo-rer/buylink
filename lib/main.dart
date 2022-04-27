@@ -1,5 +1,8 @@
 import 'package:buy_link/features/authentication/views/signup_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
+import 'package:buy_link/features/core/views/product_details_more_view.dart';
+import 'package:buy_link/features/core/views/product_details_view.dart';
+import 'package:buy_link/features/core/views/shop_details_view.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/services/snackbar_service.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +31,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: CompareView(),
+      home: ShopDetailsView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,
       scaffoldMessengerKey: ref.read(snackbarService).scaffoldMessengerKey,

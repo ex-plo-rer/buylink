@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/widgets/distance_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,28 +68,9 @@ class ProductContainer extends ConsumerWidget {
                     Positioned(
                       top: 0,
                       left: 0,
-                      child: GestureDetector(
-                        onTap: onDistanceTapped,
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: AppColors.light,
-                          ),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(AppSvgs.distance),
-                              Text(
-                                ' $distance km',
-                                style: const TextStyle(
-                                  color: AppColors.grey1,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                      child: DistanceContainer(
+                        distance: distance,
+                        onDistanceTapped: onDistanceTapped,
                       ),
                     ),
                     Positioned(

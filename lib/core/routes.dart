@@ -1,5 +1,7 @@
 import 'package:buy_link/features/core/views/categories_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
+import 'package:buy_link/features/core/views/product_details_view.dart';
+import 'package:buy_link/features/core/views/shop_details_view.dart';
 import 'package:buy_link/features/core/views/wishlist_view.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +18,8 @@ class Routes {
   static const wishlist = '/wishlist';
   static const categories = '/categories';
   static const compare = '/compare';
+  static const productDetails = '/product-details';
+  static const shopDetails = '/shop-details';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -33,6 +37,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => CategoriesView());
       case compare:
         return MaterialPageRoute(builder: (_) => CompareView());
+      case productDetails:
+        return MaterialPageRoute(builder: (_) => ProductDetailsView());
+      case shopDetails:
+        return MaterialPageRoute(builder: (_) => ShopDetailsView());
 
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;

@@ -7,11 +7,19 @@ import '../core/constants/strings.dart';
 class CompareTexts extends StatelessWidget {
   final String title;
   final String subTitle;
+  final Color? titleColor;
+  final double? titleSize;
+  final Color? subTitleColor;
+  final double? subTitleSize;
 
   const CompareTexts({
     Key? key,
     required this.title,
     required this.subTitle,
+    this.titleColor = AppColors.primaryColor,
+    this.titleSize = 12,
+    this.subTitleColor = AppColors.grey1,
+    this.subTitleSize = 12,
   }) : super(key: key);
 
   @override
@@ -21,18 +29,18 @@ class CompareTexts extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: AppColors.primaryColor,
-            fontSize: 12,
+          style: TextStyle(
+            color: titleColor,
+            fontSize: titleSize,
             fontWeight: FontWeight.w600,
           ),
         ),
         const Spacing.tinyHeight(),
         Text(
           subTitle,
-          style: const TextStyle(
-            color: AppColors.grey1,
-            fontSize: 12,
+          style: TextStyle(
+            color: subTitleColor,
+            fontSize: subTitleSize,
             fontWeight: FontWeight.w500,
           ),
         ),
