@@ -12,12 +12,16 @@ class IconNTextContainer extends StatelessWidget {
     this.containerColor = AppColors.light,
     this.textColor = AppColors.grey1,
     required this.icon,
+    this.radius = 50,
+    this.fontSize = 10,
   }) : super(key: key);
   final void Function()? onDistanceTapped;
   final String text;
   final Color? containerColor;
   final Color? textColor;
   final Widget icon;
+  final double radius;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,7 @@ class IconNTextContainer extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(radius),
           color: containerColor,
         ),
         child: Row(
@@ -38,10 +42,10 @@ class IconNTextContainer extends StatelessWidget {
             //   color: icon,
             // ),
             Text(
-              ' $text km',
+              ' $text',
               style: TextStyle(
                 color: textColor,
-                fontSize: 10,
+                fontSize: fontSize,
                 fontWeight: FontWeight.w600,
               ),
             )

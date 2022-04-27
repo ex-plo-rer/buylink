@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/categories_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
@@ -9,6 +10,7 @@ import '../features/authentication/views/forgot_password_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
 import '../features/authentication/views/login_view.dart';
+import '../features/core/views/store_reviews_view.dart';
 
 class Routes {
   static const login = '/login';
@@ -20,6 +22,8 @@ class Routes {
   static const compare = '/compare';
   static const productDetails = '/product-details';
   static const shopDetails = '/shop-details';
+  static const storeReviews = '/store-reviews';
+  static const addReview = '/add-review';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -41,7 +45,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => ProductDetailsView());
       case shopDetails:
         return MaterialPageRoute(builder: (_) => ShopDetailsView());
-
+      case storeReviews:
+        return MaterialPageRoute(builder: (_) => StoreReviewsView());
+      case addReview:
+        return MaterialPageRoute(builder: (_) => AddReviewView());
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(

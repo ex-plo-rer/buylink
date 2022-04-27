@@ -110,7 +110,7 @@ class _WishlistState extends ConsumerState<ShopDetailsView>
                           ),
                         ),
                         IconNTextContainer(
-                          text: '4.6',
+                          text: '4.6 km',
                           icon: Icon(
                             Icons.star_outline,
                             size: 12,

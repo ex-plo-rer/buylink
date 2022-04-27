@@ -20,7 +20,7 @@ class AppButton extends StatelessWidget {
   const AppButton({
     Key? key,
     this.onPressed,
-    this.backgroundColor,
+    this.backgroundColor = AppColors.primaryColor,
     required this.text,
     this.textColor = AppColors.light,
     this.borderRadius = 8,
