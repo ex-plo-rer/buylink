@@ -20,15 +20,6 @@ class OnboardingView extends ConsumerWidget {
     var onboardnotifier = ref.watch(onboardProv);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      //   appBar: AppBar(
-      //     backgroundColor: Colors.white,
-      //   leading: onboardnotifier.currentPage == 1
-      //   ? null
-      //       : IconButton(
-      // icon: const Icon(
-      // Icons.arrow_back_ios_outlined,
-      //   color: AppColors.dark,
-      // ), onPressed: () {  },)),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
