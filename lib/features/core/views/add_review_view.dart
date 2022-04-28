@@ -111,6 +111,7 @@ class AddReviewView extends ConsumerWidget {
               const Spacing.height(40),
               const AppButton(
                 text: 'Post Review',
+                backgroundColor: AppColors.primaryColor,
               ),
             ],
           ),

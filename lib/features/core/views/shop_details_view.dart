@@ -163,6 +163,7 @@ class _WishlistState extends ConsumerState<ShopDetailsView>
                         width: null,
                         height: 22,
                         borderColor: AppColors.shade5,
+                        backgroundColor: AppColors.primaryColor,
                       ),
                     ),
                     const Spacing.bigHeight(),

@@ -1,6 +1,8 @@
+import 'package:buy_link/features/authentication/views/onboarding_view.dart';
 import 'package:buy_link/features/authentication/views/signup_view.dart';
 import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
+import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
 import 'package:buy_link/features/core/views/shop_details_view.dart';
@@ -34,7 +36,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: AddReviewView(),
+      home: DashboardView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,
       scaffoldMessengerKey: ref.read(snackbarService).scaffoldMessengerKey,
