@@ -14,13 +14,17 @@ class NoProductView extends ConsumerWidget {
     final noProductNotifier = ref.watch(noProductNotifierProvider);
     return Scaffold(
         resizeToAvoidBottomInset: false,
-
-    body: Column(
-      children: <Widget>[
-        Spacing.largeHeight(),
-        Image.asset("assets/images/no_product.png"),
-
-        Text("Oops we couldn’t find any match"),
-        Text ("Try searching with another keyword ")
-      ],
-    ));}}
+        body: Center (child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Spacing.largeHeight(),
+            Image.asset("assets/images/no_product.png"),
+            const Spacing.largeHeight(),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(90, 0, 90, 0),
+                child: Text("Oops we couldn’t find any match", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  textAlign: TextAlign.center,)),
+            const Text ("Try searching with another keyword ", style: TextStyle(fontSize: 12),)
+          ],
+        )));}}

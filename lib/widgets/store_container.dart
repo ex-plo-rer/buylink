@@ -1,4 +1,5 @@
 import 'package:buy_link/widgets/spacing.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,14 +10,13 @@ class StoreContainer extends ConsumerWidget {
   final String storeImage;
   final String storeName;
   final int starRate;
-  final void Function()? onStoreTapped;
 
   const StoreContainer({
     Key? key,
     required this.storeImage,
     required this.storeName,
     required this.starRate,
-    this.onStoreTapped,
+
   }) : super(key: key);
 
   @override
@@ -26,44 +26,53 @@ class StoreContainer extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-              onTap: onStoreTapped,
-              child: Container(
-                height: 176,
-                // width: 156,
-                decoration: BoxDecoration(
-                  image: DecorationImage( image:NetworkImage(storeImage) ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              )),
           const Spacing.tinyHeight(),
-          Stack(
-            children: [
-              Positioned(
-                top: 0,
-                left: 0,
-                child: Text( storeName,
-                    style: TextStyle(
-                        color: AppColors.light, fontSize: 16, fontWeight: FontWeight.bold)
+            Container(
+              //margin: EdgeInsets.all(10),
+              height: 190,
+              width: 164,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                    storeImage,
+                  ),
+                  fit: BoxFit.fill,
                 ),
+                borderRadius: BorderRadius.circular(20),
               ),
-              Positioned(
-                bottom: 40,
-                right: 0,
-                child: Row(
-                    children: <Widget>[
-                      Icon(Icons.star_rate_rounded, color: AppColors.star,),
-                      Text (starRate.toString())
+              child:  Stack(
+                children: [
+                  Positioned(
+                    top: 88,
+                    left: 36,
+                    right: 0,
+                    child: Text( storeName,
+                        style: TextStyle(
+                            color: AppColors.light, fontSize: 18, fontWeight: FontWeight.bold)
+                    ),
+                  ),
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: Row(
+                        children: <Widget>[
+                          Icon(Icons.star_rate_rounded, color: AppColors.star,),
+                          Text (starRate.toString(), style: TextStyle(color: AppColors.light, fontSize: 16),)
 
-                    ]
+                        ]
 
-                ),
+                    ),
+                  ),
+
+                ],
               ),
+            ),
 
-            ],
-          ),
-        ],
-      ),
+
+                ],
+              )
+
+
     );
   }
 }

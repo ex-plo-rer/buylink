@@ -15,21 +15,51 @@ class EmptyStateView extends ConsumerWidget {
     final addstoreNotifier = ref.watch(emptyStateNotifierProvider);
     return Scaffold(
         resizeToAvoidBottomInset: false,
-    body: Column(
+    body:
+    Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        children: <Widget>[
+      Spacing.largeHeight(),
+
+        Padding (
+          padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+          child:
+        Text ("My Stores", textAlign: TextAlign.start, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),),
+
+
+          Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-
-        Text ("My Stores"),
-
+        Spacing.largeHeight(),
+        Spacing.largeHeight(),
+        Spacing.largeHeight(),
+        Spacing.largeHeight(),
         Spacing.largeHeight(),
 
-        Image.asset("assets/images/store_empty_stste.png"),
 
-        Text ("No Store Added Yet"),
+        Image.asset("assets/images/store_empty_state.png"),
+        Spacing.largeHeight(),
 
-        Text("Tap the button below to create your first store"),
+        const Padding(
+            padding: EdgeInsets.fromLTRB(90, 0, 90, 0),
+            child: Text("No Store Added Yet", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              textAlign: TextAlign.center,)),
+
+        //Text ("No Store Added Yet"),
+
+        Spacing.smallHeight(),
+
+        const Padding(
+            padding: EdgeInsets.fromLTRB(60, 0, 60, 0),
+            child: Text("Tap the button below to create your first store", style: TextStyle( fontSize: 16),
+              textAlign: TextAlign.center,)),
+
+        //Text("Tap the button below to create your first store"),
 
         AppButton(text: "Create My First Store")
 
       ]
     )
-    );}}
+    )]));}}

@@ -42,7 +42,7 @@ class AddStoreView extends ConsumerWidget {
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
-          AppStrings.signup,
+          "Add a new store",
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,
@@ -73,12 +73,15 @@ class AddStoreView extends ConsumerWidget {
                       Column(
                         children: [
                           const TextWithRich(
-                            firstText: 'What\'s the name your?',
+                            firstText: 'What\'s the name your',
                             secondText: 'store?',
                             fontSize: 24,
                             secondColor: AppColors.primaryColor,
                           ),
-                          Text("This helps your customer identify your store"),
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child:
+                          Text("This helps your customer identify your store", textAlign: TextAlign.start,)),
                           const Spacing.height(12),
                           AppTextField(
                             title: '',
@@ -105,20 +108,20 @@ class AddStoreView extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const TextWithRich(
-                            firstText: 'Check',
-                            secondText: 'your email',
+                            firstText: 'Where is your store?',
+                            secondText: "",
                             fontSize: 24,
-                            firstColor: AppColors.primaryColor,
+                            firstColor: AppColors.grey1,
                           ),
                           const Spacing.height(12),
-                          const Text(
-                            'Please fill in the 4 digit code we sent to your email to verify your account',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppColors.grey2,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          Spacing.largeHeight(),
+                          Center (child:
+                          Image.asset("assets/images/add_store.png", )),
+                          Spacing.smallHeight(),
+                          Padding (
+                             padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+                              child:
+                          Text("Tap the button below to locate your store", textAlign: TextAlign.center,))
 
                         ],
                       ),
@@ -126,7 +129,7 @@ class AddStoreView extends ConsumerWidget {
                         children: [
                         Container(
                         height: 200,
-                        color: Color(0xffeeeeee),
+                        color: AppColors.light,
                         padding: EdgeInsets.all(10.0),
                         child: new ConstrainedBox(
                           constraints: BoxConstraints(
@@ -166,6 +169,7 @@ class AddStoreView extends ConsumerWidget {
                     ],
                   ),
                 ),
+                Spacing.largeHeight(),
                 Column(
                   children: [
                     AppButton(
@@ -186,25 +190,7 @@ class AddStoreView extends ConsumerWidget {
                       },
                     ),
                     const Spacing.mediumHeight(),
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'By clicking “sign up” you are agreeing to the',
-                        style: TextStyle(color: AppColors.grey5),
-                      ),
-                    ),
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Terms of Use and Privacy Policy',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          decoration: TextDecoration.underline,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
               ],
