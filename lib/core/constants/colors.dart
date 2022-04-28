@@ -31,6 +31,8 @@ class AppColors {
   static const shade8 = Color(0xFF152767);
   static const shade9 = Color(0xFF0C1A55);
   static const transparent = Color(0xff0000ffff);
+  static const star = Color(0xFFFFB100);
+
 
   static const defaultShadow = BoxShadow(
     color: Color(0xFFEEEEEE),

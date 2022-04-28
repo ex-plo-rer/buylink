@@ -11,6 +11,10 @@ import '../features/authentication/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
 import '../features/authentication/views/login_view.dart';
+import '../features/core/views/no_product_search_view.dart';
+import '../features/core/views/store_views/add_store.dart';
+import '../features/core/views/store_views/empty_state.dart';
+import '../features/core/views/store_views/store_view.dart';
 import '../features/core/views/store_reviews_view.dart';
 
 class Routes {
@@ -26,6 +30,10 @@ class Routes {
   static const storeReviews = '/store-reviews';
   static const addReview = '/add-review';
   static const onboarding = '/onboarding';
+  static const storeView ='/store';
+  static const noproductView = '/noproduct';
+  static const addstoreView = '/addstore';
+  static const emptystoreView = '/emptystore';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -53,6 +61,16 @@ class Routes {
         return MaterialPageRoute(builder: (_) => StoreReviewsView());
       case addReview:
         return MaterialPageRoute(builder: (_) => AddReviewView());
+      case storeView:
+        return MaterialPageRoute(builder: (_) => StoreView());
+      case noproductView:
+        return MaterialPageRoute(builder: (_) => NoProductView());
+      case addstoreView:
+        return MaterialPageRoute(builder: (_) => AddStoreView());
+      case emptystoreView:
+        return MaterialPageRoute(builder: (_) => EmptyStateView());
+
+
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(
