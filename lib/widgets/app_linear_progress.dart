@@ -1,3 +1,4 @@
+import 'package:buy_link/widgets/app_progress_bar.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
@@ -23,14 +24,9 @@ class AppLinearProgress extends StatelessWidget {
       children: [
         Text('$current of $total'),
         const Spacing.height(4),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: LinearProgressIndicator(
-            backgroundColor: AppColors.grey8,
-            color: AppColors.primaryColor,
-            minHeight: minHeight,
-            value: value,
-          ),
+        AppProgressBar(
+          minHeight: minHeight,
+          value: value,
         ),
       ],
     );

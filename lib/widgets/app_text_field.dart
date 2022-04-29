@@ -18,6 +18,7 @@ class AppTextField extends StatelessWidget {
   final bool hasBorder;
   final bool isSearch;
   final Color? fillColor;
+  final bool hasPrefixIcon;
 
   const AppTextField({
     Key? key,
@@ -35,7 +36,8 @@ class AppTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.hasBorder = true,
     this.isSearch = false,
-    this.fillColor,
+    this.fillColor = AppColors.transparent,
+    this.hasPrefixIcon = false,
   }) : super(key: key);
 
   @override
@@ -64,7 +66,7 @@ class AppTextField extends StatelessWidget {
             obscureText: obscureText,
             onFieldSubmitted: onFieldSubmitted,
             decoration: InputDecoration(
-              isDense: hasBorder,
+              isDense: true,
               fillColor: fillColor,
               filled: true,
               contentPadding: EdgeInsets.all(
@@ -75,18 +77,21 @@ class AppTextField extends StatelessWidget {
                         : 0,
               ),
               hintText: hintText,
+              hintStyle: const TextStyle(fontSize: 14),
               suffixIcon: UnconstrainedBox(
                 child: suffixIcon,
                 alignment: hasBorder ? Alignment.center : Alignment.topRight,
               ),
-              prefixIcon: UnconstrainedBox(
-                child: prefixIcon,
-                alignment: hasBorder
-                    ? Alignment.center
-                    : isSearch
-                        ? Alignment.center
-                        : Alignment.topCenter,
-              ),
+              prefixIcon: hasPrefixIcon
+                  ? UnconstrainedBox(
+                      child: prefixIcon,
+                      alignment: hasBorder
+                          ? Alignment.center
+                          : isSearch
+                              ? Alignment.center
+                              : Alignment.topCenter,
+                    )
+                  : null,
               border: hasBorder
                   ? OutlineInputBorder(
                       borderRadius: BorderRadius.circular(borderRadius),

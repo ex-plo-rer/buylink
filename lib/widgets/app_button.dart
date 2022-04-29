@@ -10,8 +10,8 @@ class AppButton extends StatelessWidget {
   final String text;
   final Color? textColor;
   final double borderRadius;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   final double? fontSize;
   final bool isLoading;
   final bool hasIcon;
@@ -20,7 +20,7 @@ class AppButton extends StatelessWidget {
   const AppButton({
     Key? key,
     this.onPressed,
-    this.backgroundColor,
+    this.backgroundColor = AppColors.transparent,
     required this.text,
     this.textColor = AppColors.light,
     this.borderRadius = 8,

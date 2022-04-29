@@ -1,8 +1,10 @@
 import 'package:buy_link/core/constants/colors.dart';
+import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
+import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +34,7 @@ class HomeView extends ConsumerWidget {
                 hasBorder: false,
                 isSearch: true,
                 fillColor: AppColors.grey8,
+                hasPrefixIcon: true,
               ),
               const Spacing.height(12),
               AppButton(
@@ -54,56 +57,54 @@ class HomeView extends ConsumerWidget {
               const Spacing.smallHeight(),
               Expanded(
                 child: MasonryGridView.count(
-                  itemCount: 20,
+                  itemCount: 20 + 1,
                   crossAxisCount: 2,
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 15,
                   itemBuilder: (context, index) {
-                    return ProductContainer(
-                      url:
-                          'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                      storeName: 'Atinuke Store',
-                      productName: 'Oraimo Power Bank',
-                      productPrice: '12000',
-                      distance: '3.5',
-                      onProductTapped: () {},
-                      onDistanceTapped: () {},
-                      onFlipTapped: () {},
-                      onFavoriteTapped: () {
-                        homeNotifier.toggleFavorite();
-                      },
-                    );
+                    if (index == 3) {
+                      return Container(
+                        height: 176,
+                        color: AppColors.transparent,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CategoryContainer(
+                              categoryName: 'Fashion',
+                              categoryImage: '',
+                              onTap: () {},
+                            ),
+                            CategoryContainer(
+                              categoryName: 'Photography',
+                              categoryImage: '',
+                              onTap: () {},
+                            ),
+                            CategoryContainer(
+                              categoryName: 'Baby & Toddler',
+                              categoryImage: '',
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return ProductContainer(
+                        url:
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                        storeName: 'Atinuke Store',
+                        productName: 'Oraimo Power Bank',
+                        productPrice: '12000',
+                        distance: '3.5',
+                        onProductTapped: () {},
+                        onDistanceTapped: () {},
+                        onFlipTapped: () {},
+                        onFavoriteTapped: () {
+                          homeNotifier.toggleFavorite();
+                        },
+                      );
+                    }
                   },
                 ),
-                // child: ListView.separated(
-                //   shrinkWrap: true,
-                //   itemCount: 30,
-                //   itemBuilder: (context, index) {
-                //     return StaggeredGrid.count(
-                //       crossAxisCount: 2,
-                //       mainAxisSpacing: 4,
-                //       crossAxisSpacing: 4,
-                //       children: [
-                //         ProductContainer(
-                //           url:
-                //               'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                //           storeName: 'Atinuke Store',
-                //           productName: 'Oraimo Power Bank',
-                //           productPrice: '12000',
-                //           distance: '3.5',
-                //           onProductTapped: () {},
-                //           onDistanceTapped: () {},
-                //           onFlipTapped: () {},
-                //           onFavoriteTapped: () {
-                //             homeNotifier.toggleFavorite();
-                //           },
-                //         ),
-                //       ],
-                //     );
-                //   },
-                //   separatorBuilder: (context, index) =>
-                //       const Spacing.mediumHeight(),
-                // ),
               ),
             ],
           ),

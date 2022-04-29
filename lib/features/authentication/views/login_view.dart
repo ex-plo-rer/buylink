@@ -32,59 +32,59 @@ class LoginView extends ConsumerWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child:Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const TextWithRich(
-              firstText: 'Welcome',
-              secondText: 'Back!',
-              fontSize: 24,
-              firstColor: AppColors.primaryColor,
-            ),
-            const Text(
-              'Log in to access your buylink account',
-              style: TextStyle(
-                color: AppColors.grey2,
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TextWithRich(
+                firstText: 'Welcome',
+                secondText: 'Back!',
+                fontSize: 24,
+                firstColor: AppColors.primaryColor,
               ),
-            ),
-            const Spacing.largeHeight(),
-            const AppTextField(
-              title: 'Email Address',
-              hintText: 'example@email.com',
-            ),
-            const Spacing.largeHeight(),
-            AppTextField(
-              title: 'Password',
-              hintText: 'Enter your password',
-              obscureText: loginNotifier.passwordVisible,
-              suffixIcon: IconButton(
-                icon: Icon(
-                  loginNotifier.passwordVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: AppColors.dark,
+              const Text(
+                'Log in to access your buylink account',
+                style: TextStyle(
+                  color: AppColors.grey2,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
                 ),
-                onPressed: () => loginNotifier.togglePassword(),
               ),
-            ),
-            const Spacing.largeHeight(),
-            // const Align(
-            //   alignment: Alignment.centerRight,
-            //       child: TextWithRich(
-            //   firstText: 'Don’t have an account ?',
-            //   secondText: 'Sign Up',
-            //   secondColor: AppColors.primaryColor,
-            //   fontSize: 14,
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   onTapText: () => ref
-            //       .read(navigationServiceProvider)
-            //       .navigateToNamed(Routes.forgotpassword),
-            // ),
-            //
+              const Spacing.largeHeight(),
+              const AppTextField(
+                title: 'Email Address',
+                hintText: 'example@email.com',
+              ),
+              const Spacing.largeHeight(),
+              AppTextField(
+                title: 'Password',
+                hintText: 'Enter your password',
+                obscureText: loginNotifier.passwordVisible,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    loginNotifier.passwordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: AppColors.dark,
+                  ),
+                  onPressed: () => loginNotifier.togglePassword(),
+                ),
+              ),
+              const Spacing.largeHeight(),
+              // const Align(
+              //   alignment: Alignment.centerRight,
+              //       child: TextWithRich(
+              //   firstText: 'Don’t have an account ?',
+              //   secondText: 'Sign Up',
+              //   secondColor: AppColors.primaryColor,
+              //   fontSize: 14,
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   onTapText: () => ref
+              //       .read(navigationServiceProvider)
+              //       .navigateToNamed(Routes.forgotpassword),
+              // ),
+              //
 
               // child: Text(
               //   'Forgotten your password?',
@@ -94,41 +94,45 @@ class LoginView extends ConsumerWidget {
               //     fontSize: 14,
               //   ),
               // ),
-           // ),
+              // ),
 
-
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                child: Text("Forgotten your password?"),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  child: Text("Forgotten your password?"),
                   onPressed: () => ref
-                    .read(navigationServiceProvider)
-                    .navigateToNamed(Routes.forgotpassword),
+                      .read(navigationServiceProvider)
+                      .navigateToNamed(Routes.forgotPassword),
+                ),
               ),
-            ),
-            const Spacing.height(52),
-            const AppButton(
-              text: AppStrings.login,
-              backgroundColor: AppColors.primaryColor,
-            ),
-            const Spacing.mediumHeight(),
-            Align(
-              alignment: Alignment.center,
-              child: TextWithRich(
-                firstText: 'Don’t have an account ?',
-                secondText: 'Sign Up',
-                fontSize: 14,
-                firstColor: AppColors.grey2,
-                //     fontWeight: FontWeight.w500,
-                mainAxisAlignment: MainAxisAlignment.center,
-                onTapText: () => ref
+              const Spacing.height(52),
+              AppButton(
+                text: AppStrings.login,
+                backgroundColor: AppColors.primaryColor,
+                onPressed: () => ref
                     .read(navigationServiceProvider)
-                    .navigateToNamed(Routes.onboarding),
+                    .navigateToNamed(Routes.homeView),
               ),
-            ),
-          ],
+              const Spacing.mediumHeight(),
+              Align(
+                alignment: Alignment.center,
+                child: TextWithRich(
+                  firstText: 'Don’t have an account ?',
+                  secondText: 'Sign Up',
+                  fontSize: 14,
+                  firstColor: AppColors.grey2,
+                  secondColor: AppColors.primaryColor,
+                  //     fontWeight: FontWeight.w500,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  onTapText: () => ref
+                      .read(navigationServiceProvider)
+                      .navigateToNamed(Routes.signup),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),)
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/widgets/distance_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +20,7 @@ class ProductContainer extends ConsumerWidget {
   final void Function()? onDistanceTapped;
   final void Function()? onFlipTapped;
   final void Function()? onFavoriteTapped;
+  final bool isBig;
 
   const ProductContainer({
     Key? key,
@@ -31,12 +33,14 @@ class ProductContainer extends ConsumerWidget {
     this.onDistanceTapped,
     this.onFlipTapped,
     this.onFavoriteTapped,
+    this.isBig = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
     return SizedBox(
       height: 226,
+      width: isBig ? 500 : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -64,28 +68,9 @@ class ProductContainer extends ConsumerWidget {
                     Positioned(
                       top: 0,
                       left: 0,
-                      child: GestureDetector(
-                        onTap: onDistanceTapped,
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: AppColors.light,
-                          ),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(AppSvgs.distance),
-                              Text(
-                                ' $distance km',
-                                style: const TextStyle(
-                                  color: AppColors.grey1,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                      child: DistanceContainer(
+                        distance: distance,
+                        onDistanceTapped: onDistanceTapped,
                       ),
                     ),
                     Positioned(

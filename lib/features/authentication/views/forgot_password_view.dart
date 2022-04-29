@@ -26,21 +26,21 @@ class ForgotPasswordView extends ConsumerWidget {
         leading: signupNotifier.currentPage == 1
             ? null
             : IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            color: AppColors.dark,
-          ),
-          onPressed: () {
-            signupNotifier.moveBackward();
-            print(signupNotifier.currentPage);
-            _pageController.animateToPage(
-              // array starts at 0 (lol)
-              signupNotifier.currentPage - 1,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-            );
-          },
-        ),
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppColors.dark,
+                ),
+                onPressed: () {
+                  signupNotifier.moveBackward();
+                  print(signupNotifier.currentPage);
+                  _pageController.animateToPage(
+                    // array starts at 0 (lol)
+                    signupNotifier.currentPage - 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+              ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
@@ -81,13 +81,14 @@ class ForgotPasswordView extends ConsumerWidget {
                             firstColor: AppColors.primaryColor,
                           ),
                           const Spacing.height(12),
-                          Align (
+                          Align(
                             alignment: Alignment.centerLeft,
-                            child:
-                          Text(
-                            'Enter the email you registered your buylink account with',
-                            style: TextStyle(color: AppColors.grey5, fontSize: 12),
-                          ),),
+                            child: Text(
+                              'Enter the email you registered your buylink account with',
+                              style: TextStyle(
+                                  color: AppColors.grey5, fontSize: 12),
+                            ),
+                          ),
                           AppTextField(
                             title: '',
                             hintText: 'Example@email.com',
@@ -115,19 +116,17 @@ class ForgotPasswordView extends ConsumerWidget {
                             fontSize: 24,
                             firstColor: AppColors.primaryColor,
                           ),
-
-                          Align (
+                          Align(
                             alignment: Alignment.centerLeft,
-                            child:
-                            Text(
+                            child: Text(
                               'Please fill in the 4 digit code we sent to your email to reset your password',
-                              style: TextStyle(color: AppColors.grey5, fontSize: 12),
-                            ),),
+                              style: TextStyle(
+                                  color: AppColors.grey5, fontSize: 12),
+                            ),
+                          ),
                           const Spacing.height(40),
                           OtpForm(),
-
                           const Spacing.height(40),
-
                           TweenAnimationBuilder(
                             tween: Tween(begin: 30.0, end: 0.0),
                             duration: Duration(seconds: 30),
@@ -136,15 +135,15 @@ class ForgotPasswordView extends ConsumerWidget {
                               style: TextStyle(color: AppColors.grey1),
                             ),
                           ),
-
                           TextButton(
-                            child: Text("Resend Code", style: TextStyle(color: AppColors.primaryColor),),
+                            child: Text(
+                              "Resend Code",
+                              style: TextStyle(color: AppColors.primaryColor),
+                            ),
                             onPressed: (null),
                           )
-
                         ],
                       ),
-
                       Column(
                         children: [
                           const TextWithRich(
@@ -172,7 +171,6 @@ class ForgotPasswordView extends ConsumerWidget {
                                   ),
                                 ),
                                 const Spacing.smallWidth(),
-
                               ],
                             ),
                             hasBorder: false,
@@ -200,9 +198,9 @@ class ForgotPasswordView extends ConsumerWidget {
                   children: [
                     AppButton(
                       text:
-                      signupNotifier.currentPage == signupNotifier.totalPage
-                          ? AppStrings.createNewPassword
-                          : AppStrings.next,
+                          signupNotifier.currentPage == signupNotifier.totalPage
+                              ? AppStrings.createNewPassword
+                              : AppStrings.next,
                       backgroundColor: AppColors.primaryColor,
                       onPressed: () {
                         signupNotifier.moveForward();
