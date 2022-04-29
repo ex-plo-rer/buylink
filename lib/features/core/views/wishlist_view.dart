@@ -58,9 +58,10 @@ class _WishlistState extends ConsumerState<WishlistView>
                 child: AppButton(
                   text: 'See all categories',
                   textColor: AppColors.shade5,
-                  onPressed: () => ref
-                      .read(navigationServiceProvider)
-                      .navigateToNamed(Routes.categories),
+                  onPressed: () {},
+                  //=> ref
+                      //.read(navigationServiceProvider)
+                      //.navigateToNamed(Routes.categories),
                   fontSize: 12,
                   width: null,
                   height: 22,
