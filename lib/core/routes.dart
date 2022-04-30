@@ -30,7 +30,7 @@ class Routes {
   static const storeReviews = '/store-reviews';
   static const addReview = '/add-review';
   static const onboarding = '/onboarding';
-  static const storeView ='/store';
+  static const storeView = '/store';
   static const noproductView = '/noproduct';
   static const addstoreView = '/addstore';
   static const emptystoreView = '/emptystore';
@@ -69,7 +69,6 @@ class Routes {
         return MaterialPageRoute(builder: (_) => AddStoreView());
       case emptystoreView:
         return MaterialPageRoute(builder: (_) => EmptyStateView());
-
 
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;

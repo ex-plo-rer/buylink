@@ -100,5 +100,7 @@ class AppStrings {
   static const tokenKey = 'toKenKey';
   static const otpEmailKey = 'otpEmailKey';
 
-  static const API_BASE_URL = 'https://sumiffy.herokuapp.com/api/v1';
+  static const API_BASE_URL = '';
+  static const ronaldo =
+      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg';
 }
