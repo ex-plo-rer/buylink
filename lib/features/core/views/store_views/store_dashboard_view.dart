@@ -28,6 +28,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../widgets/favorite_container.dart';
 
+// TODO: Make the product image scrollable and work on the see all reviews widget and also the app bar actions.
 class StoreDashboardView extends ConsumerStatefulWidget {
   const StoreDashboardView({Key? key}) : super(key: key);
 
@@ -173,7 +174,6 @@ class _StoreDashboardViewState extends ConsumerState {
               const Spacing.smallHeight(),
               Container(
                 height: 243,
-                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: AppColors.light,
@@ -202,39 +202,42 @@ class _StoreDashboardViewState extends ConsumerState {
                         ),
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              'Product Searched',
-                              style: TextStyle(
-                                color: AppColors.grey4,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text(
+                                'Product Searched',
+                                style: TextStyle(
+                                  color: AppColors.grey4,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'This Week',
-                              style: TextStyle(
-                                color: AppColors.primaryColor,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
+                              Text(
+                                'This Week',
+                                style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const Text(
-                          '9,400',
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
+                            ],
                           ),
-                        ),
-                      ],
+                          const Text(
+                            '9,400',
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -348,7 +351,6 @@ class _StoreDashboardViewState extends ConsumerState {
               const Spacing.height(20),
               Container(
                 height: 243,
-                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: AppColors.light,
@@ -375,39 +377,42 @@ class _StoreDashboardViewState extends ConsumerState {
                         ),
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              'Store Visits',
-                              style: TextStyle(
-                                color: AppColors.grey4,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text(
+                                'Store Visits',
+                                style: TextStyle(
+                                  color: AppColors.grey4,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'This Week',
-                              style: TextStyle(
-                                color: AppColors.primaryColor,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
+                              Text(
+                                'This Week',
+                                style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const Text(
-                          '9,400',
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
+                            ],
                           ),
-                        ),
-                      ],
+                          const Text(
+                            '9,400',
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
