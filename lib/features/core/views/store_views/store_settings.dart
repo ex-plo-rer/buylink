@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/views/store_views/delete_store_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -5,6 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../widgets/spacing.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
+import 'edit_store_description.dart';
+import 'edit_store_name.dart';
 
 class StoreSetting extends ConsumerWidget {
   StoreSetting({Key? key}) : super(key: key);
@@ -39,28 +42,39 @@ class StoreSetting extends ConsumerWidget {
             child:Column(
               children: [
                 Spacing.mediumHeight(),
-                const ListTile(title: Text("Store Name", style: TextStyle(color: AppColors.grey3,)),
+                 ListTile(title: Text("Store Name", style: TextStyle(color: AppColors.grey3,)),
                     leading: CircleAvatar(child:Icon(Icons.storefront_outlined, size: 18, color: AppColors.grey2), backgroundColor: AppColors.grey8,),
-                    trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.grey5,)),
+
+                   trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.grey5,),
+    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> EditStoreName()));},
+                ),
                 Container (
                   margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child:
                   Divider(color: AppColors.grey7,),),
                 ListTile(title: Text("Store Description", style: TextStyle(color: AppColors.grey3,),),
                     leading: CircleAvatar(child:Icon(Icons.vpn_key_rounded, size: 18, color: AppColors.grey2), backgroundColor: AppColors.grey8,),
-                    trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.grey5,)),
+                    trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.grey5,),
+                    onTap:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=> EditStoreDesc()));}
+                ),
                 Container (
                   margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Divider(color:  AppColors.grey7,),),
                 ListTile(title: Text("Store Location", style: TextStyle(color: AppColors.grey3,)),
                     leading: CircleAvatar(child:Icon(Icons.location_city, size: 18, color: AppColors.grey2), backgroundColor: AppColors.grey8,),
-                    trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.grey5,)),
+                    trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.grey5,),
+                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> EditStoreName()));},
+                ),
                 Container (
                   margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child:    Divider(color: AppColors.grey7),),
                 ListTile(title: const Text("Delete Account", style: TextStyle(color: AppColors.grey3,)),
                     leading: CircleAvatar(child:Icon(Icons.delete, size: 18, color: AppColors.grey2), backgroundColor: AppColors.grey8,),
-                    trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.grey5))
+                    trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.grey5),
+                    onTap:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=> DeleteStore()));}
+                ),
+
+
               ],
             )
 
