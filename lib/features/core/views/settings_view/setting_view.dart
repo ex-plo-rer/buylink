@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../widgets/spacing.dart';
 import '../../notifiers/settings_notifier/setting_notifier.dart';
+import 'about_buylink.dart';
 import 'change_email.dart';
 import 'change_password.dart';
 
@@ -181,7 +182,9 @@ class SettingView extends ConsumerWidget {
                             child:    Divider(color: AppColors.shade4 ),),
                           ListTile(title: Text("About Buylink", style: TextStyle(color: AppColors.shade6,)),
                               leading: Icon(Icons.info_outline_rounded, color: AppColors.shade5),
-                              trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.shade5))
+                              trailing: Icon(Icons.keyboard_arrow_right, color: AppColors.shade5),
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>  About()));})
                         ],
                       )),
 
