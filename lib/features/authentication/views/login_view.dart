@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
+import 'package:buy_link/widgets/app_dialog.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:buy_link/widgets/text_with_rich.dart';
@@ -99,7 +100,7 @@ class LoginView extends ConsumerWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  child: Text("Forgotten your password?"),
+                  child: const Text("Forgotten your password?"),
                   onPressed: () => ref
                       .read(navigationServiceProvider)
                       .navigateToNamed(Routes.forgotPassword),
@@ -109,9 +110,21 @@ class LoginView extends ConsumerWidget {
               AppButton(
                 text: AppStrings.login,
                 backgroundColor: AppColors.primaryColor,
-                onPressed: () => ref
-                    .read(navigationServiceProvider)
-                    .navigateToNamed(Routes.homeView),
+                // onPressed: () => ref
+                //     .read(navigationServiceProvider)
+                //     .navigateToNamed(Routes.homeView),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AppDialog(
+                      title: 'Are you sure you want to delete your\naccount?',
+                      text1: 'No',
+                      onText1Pressed: () => Navigator.pop(context),
+                      text2: 'Yes',
+                      onText2Pressed: () => Navigator.pop(context),
+                    ),
+                  );
+                },
               ),
               const Spacing.mediumHeight(),
               Align(
