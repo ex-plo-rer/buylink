@@ -5,6 +5,7 @@ import '../features/authentication/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
 import '../features/authentication/views/login_view.dart';
+import '../features/core/views/message_view/message_view.dart';
 import '../features/core/views/no_product_search_view.dart';
 import '../features/core/views/store_views/add_store.dart';
 import '../features/core/views/store_views/empty_state.dart';
@@ -22,6 +23,7 @@ class Routes {
   static const addstoreView = '/addstore';
   static const emptystoreView = '/emptystore';
   static const storesettingView = '/storesetting';
+  static const messageView = '/message';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -45,6 +47,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => EmptyStateView());
       case storesettingView:
         return MaterialPageRoute(builder: (_) => StoreSetting());
+      case messageView:
+        return MaterialPageRoute(builder: (_) => MessageView());
 
 
 

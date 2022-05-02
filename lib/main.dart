@@ -11,6 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'core/constants/strings.dart';
 import 'core/routes.dart';
 import 'core/theme.dart';
+import 'features/core/views/message_view/message_view.dart';
 import 'features/core/views/settings_view/setting_view.dart';
 
 void main() {
@@ -28,7 +29,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: SettingView(),
+      home: MessageView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,
       scaffoldMessengerKey: ref.read(snackbarService).scaffoldMessengerKey,
