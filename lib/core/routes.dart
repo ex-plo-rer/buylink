@@ -2,7 +2,7 @@ import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/categories_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
-import 'package:buy_link/features/core/views/shop_details_view.dart';
+import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_direction_view.dart';
@@ -64,7 +64,7 @@ class Routes {
       case productDetails:
         return MaterialPageRoute(builder: (_) => const ProductDetailsView());
       case shopDetails:
-        return MaterialPageRoute(builder: (_) => const ShopDetailsView());
+        return MaterialPageRoute(builder: (_) => const StoreDetailsView());
       case storeReviews:
         return MaterialPageRoute(builder: (_) => StoreReviewsView());
       case addReview:

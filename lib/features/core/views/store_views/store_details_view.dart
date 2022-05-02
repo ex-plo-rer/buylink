@@ -17,16 +17,16 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../core/constants/strings.dart';
-import '../../../widgets/iconNtext_container.dart';
+import '../../../../core/constants/strings.dart';
+import '../../../../widgets/iconNtext_container.dart';
 
-class ShopDetailsView extends ConsumerStatefulWidget {
-  const ShopDetailsView({Key? key}) : super(key: key);
+class StoreDetailsView extends ConsumerStatefulWidget {
+  const StoreDetailsView({Key? key}) : super(key: key);
   @override
-  ConsumerState<ShopDetailsView> createState() => _WishlistState();
+  ConsumerState<StoreDetailsView> createState() => _WishlistState();
 }
 
-class _WishlistState extends ConsumerState<ShopDetailsView>
+class _WishlistState extends ConsumerState<StoreDetailsView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -44,11 +44,71 @@ class _WishlistState extends ConsumerState<ShopDetailsView>
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                height: 243,
-                decoration: const BoxDecoration(
-                  color: AppColors.grey1,
-                ),
+              Stack(
+                children: [
+                  Container(
+                    height: 243,
+                    decoration: const BoxDecoration(
+                      color: AppColors.grey1,
+                    ),
+                  ),
+                  Container(
+                    height: 284,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const CircleAvatar(
+                              radius: 34,
+                            ),
+                            Row(
+                              children: const [
+                                FavoriteContainer(
+                                  height: 32,
+                                  width: 32,
+                                  favIcon: Icon(
+                                    Icons.mail_outline_outlined,
+                                    size: 14,
+                                  ),
+                                  containerColor: AppColors.grey10,
+                                  radius: 50,
+                                  padding: 1,
+                                  hasBorder: true,
+                                ),
+                                Spacing.smallWidth(),
+                                FavoriteContainer(
+                                  height: 32,
+                                  width: 32,
+                                  favIcon: Icon(
+                                    Icons.mail_outline_outlined,
+                                    size: 14,
+                                  ),
+                                  containerColor: AppColors.grey10,
+                                  radius: 50,
+                                  padding: 1,
+                                  hasBorder: true,
+                                ),
+                                Spacing.smallWidth(),
+                                AppButton(
+                                  text: 'See Review',
+                                  textColor: AppColors.shade5,
+                                  fontSize: 12,
+                                  width: null,
+                                  height: 32,
+                                  borderColor: AppColors.shade5,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const Spacing.smallHeight(),
               Container(
@@ -58,45 +118,6 @@ class _WishlistState extends ConsumerState<ShopDetailsView>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        FavoriteContainer(
-                          height: 32,
-                          width: 32,
-                          favIcon: Icon(
-                            Icons.mail_outline_outlined,
-                            size: 14,
-                          ),
-                          containerColor: AppColors.grey10,
-                          radius: 50,
-                          padding: 1,
-                          hasBorder: true,
-                        ),
-                        Spacing.smallWidth(),
-                        FavoriteContainer(
-                          height: 32,
-                          width: 32,
-                          favIcon: Icon(
-                            Icons.mail_outline_outlined,
-                            size: 14,
-                          ),
-                          containerColor: AppColors.grey10,
-                          radius: 50,
-                          padding: 1,
-                          hasBorder: true,
-                        ),
-                        Spacing.smallWidth(),
-                        AppButton(
-                          text: 'See Review',
-                          textColor: AppColors.shade5,
-                          fontSize: 12,
-                          width: null,
-                          height: 32,
-                          borderColor: AppColors.shade5,
-                        ),
-                      ],
-                    ),
                     const Spacing.smallHeight(),
                     Row(
                       mainAxisSize: MainAxisSize.min,
@@ -163,7 +184,6 @@ class _WishlistState extends ConsumerState<ShopDetailsView>
                         width: null,
                         height: 22,
                         borderColor: AppColors.shade5,
-                        backgroundColor: AppColors.primaryColor,
                       ),
                     ),
                     const Spacing.bigHeight(),

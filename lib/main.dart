@@ -1,6 +1,7 @@
 import 'package:buy_link/features/authentication/views/onboarding_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
+import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_visits_view.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/services/snackbar_service.dart';
@@ -10,12 +11,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'core/constants/strings.dart';
 import 'core/routes.dart';
 import 'core/theme.dart';
-import 'features/authentication/views/login_view.dart';
-import 'features/authentication/views/notification_view.dart';
-import 'features/authentication/views/setting_view.dart';
-import 'features/core/views/store_views/product_saved_view.dart';
-import 'features/core/views/store_views/store_direction_view.dart';
-import 'features/startup/views/startup_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +27,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: LoginView(),
+      home: StoreDetailsView(),
       // home: SplineArea(key),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,
