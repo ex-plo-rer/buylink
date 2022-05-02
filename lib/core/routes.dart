@@ -5,6 +5,7 @@ import 'package:buy_link/features/core/views/product_details_view.dart';
 import 'package:buy_link/features/core/views/shop_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
+import 'package:buy_link/features/core/views/store_views/store_direction_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_visits_view.dart';
 import 'package:buy_link/features/core/views/wishlist_view.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class Routes {
   static const storeVisits = '/store-visits';
   static const productSearched = '/product-searched';
   static const storeDashboard = '/store-dashboard';
+  static const storeDirection = '/store-direction';
   static const noproductView = '/noproduct';
   static const addstoreView = '/addstore';
   static const emptystoreView = '/emptystore';
@@ -75,6 +77,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const StoreDashboardView());
       case storeVisits:
         return MaterialPageRoute(builder: (_) => const StoreVisitsView());
+      case storeDirection:
+        return MaterialPageRoute(builder: (_) => const StoreDirectionView());
       case noproductView:
         return MaterialPageRoute(builder: (_) => NoProductView());
       case addstoreView:

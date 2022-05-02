@@ -14,6 +14,7 @@ import 'features/authentication/views/login_view.dart';
 import 'features/authentication/views/notification_view.dart';
 import 'features/authentication/views/setting_view.dart';
 import 'features/core/views/store_views/product_saved_view.dart';
+import 'features/core/views/store_views/store_direction_view.dart';
 import 'features/startup/views/startup_view.dart';
 
 void main() {
@@ -31,7 +32,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: StoreDashboardView(),
+      home: StoreDirectionView(),
       // home: SplineArea(key),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,
