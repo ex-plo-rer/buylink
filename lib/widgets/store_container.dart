@@ -20,55 +20,47 @@ class StoreContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return SizedBox(
-        height: 226,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Spacing.tinyHeight(),
-            Container(
-              //margin: EdgeInsets.all(10),
-              height: 190,
-              width: 164,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    storeImage,
-                  ),
-                  fit: BoxFit.fill,
-                ),
-                borderRadius: BorderRadius.circular(20),
+    return Container(
+      //margin: EdgeInsets.all(10),
+      height: 160,
+      // width: 164,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(
+            storeImage,
+          ),
+          fit: BoxFit.fill,
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 88,
+            left: 36,
+            right: 0,
+            child: Text(storeName,
+                style: TextStyle(
+                    color: AppColors.light,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)),
+          ),
+          Positioned(
+            top: 12,
+            right: 12,
+            child: Row(children: <Widget>[
+              Icon(
+                Icons.star_rate_rounded,
+                color: AppColors.yellow,
               ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 88,
-                    left: 36,
-                    right: 0,
-                    child: Text(storeName,
-                        style: TextStyle(
-                            color: AppColors.light,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                  Positioned(
-                    top: 12,
-                    right: 12,
-                    child: Row(children: <Widget>[
-                      Icon(
-                        Icons.star_rate_rounded,
-                        color: AppColors.yellow,
-                      ),
-                      Text(
-                        starRate.toString(),
-                        style: TextStyle(color: AppColors.light, fontSize: 16),
-                      )
-                    ]),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ));
+              Text(
+                starRate.toString(),
+                style: TextStyle(color: AppColors.light, fontSize: 16),
+              )
+            ]),
+          ),
+        ],
+      ),
+    );
   }
 }

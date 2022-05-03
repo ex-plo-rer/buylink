@@ -20,7 +20,7 @@ class StoreView extends ConsumerWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,22 +37,28 @@ class StoreView extends ConsumerWidget {
               const Spacing.smallHeight(),
               const Spacing.smallHeight(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const <Widget>[
-                  StoreContainer(
-                    storeName: 'Atinuke Store',
-                    starRate: 5,
-                    storeImage:
-                        'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                  Expanded(
+                    child: StoreContainer(
+                      storeName: 'Atinuke Store',
+                      starRate: 5,
+                      storeImage:
+                          'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                    ),
                   ),
-                  StoreContainer(
-                    storeName: 'Atinuke Store',
-                    starRate: 5,
-                    storeImage:
-                        'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                  Spacing.mediumWidth(),
+                  Expanded(
+                    child: StoreContainer(
+                      storeName: 'Atinuke Store',
+                      starRate: 5,
+                      storeImage:
+                          'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                    ),
                   ),
                 ],
               ),
+              Spacing.mediumHeight(),
               AddStoreContainer(
                 onTapped: () => ref
                     .read(navigationServiceProvider)
