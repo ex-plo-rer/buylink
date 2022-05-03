@@ -42,7 +42,8 @@ class AddStoreContainer extends ConsumerWidget {
                     Text("Add a new store",
                         style: TextStyle(
                             color: AppColors.primaryColor, fontSize: 16))
-                  ])))),
+                  ])))
+      ),
     );
   }
 }

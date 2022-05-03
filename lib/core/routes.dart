@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/views/add_product_view.dart';
 import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/categories_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
@@ -50,6 +51,7 @@ class Routes {
   static const emptystoreView = '/emptystore';
   static const storesettingView = '/storesetting';
   static const messageView = '/message';
+  static const addProduct = '/addproduct';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -101,6 +103,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => StoreSetting());
       case messageView:
         return MaterialPageRoute(builder: (_) => MessageView());
+
+      case addProduct:
+        return MaterialPageRoute(builder: (_) => AddProductView());
 
       // case otpVerification:
       // case otpVerification:
