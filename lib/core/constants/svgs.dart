@@ -18,4 +18,5 @@ class AppSvgs {
   static const home = 'assets/svgs/home.svg';
   static const homeFilled = 'assets/svgs/home_filled.svg';
   static const addProduct = 'assets/svgs/add_product.svg';
+  static const locate = 'assets/svgs/locate.svg';
 }

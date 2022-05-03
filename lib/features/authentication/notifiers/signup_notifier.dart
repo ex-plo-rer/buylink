@@ -29,7 +29,7 @@ class SignupNotifier extends BaseChangeNotifier {
   }
 
   void moveForward() async {
-    if (_currentPage < _totalPage) {
+    if (_currentPage < _totalPage + 1) {
       _currentPage += 1;
       print('_currentPage: $_currentPage');
     }

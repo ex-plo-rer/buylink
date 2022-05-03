@@ -1,4 +1,6 @@
+import 'package:buy_link/core/constants/svgs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../widgets/app_progress_bar.dart';
@@ -28,9 +30,10 @@ class SingleRating extends StatelessWidget {
             color: AppColors.grey2,
           ),
         ),
-        const Icon(
-          Icons.star_outline,
-          size: 10,
+        SvgPicture.asset(
+          AppSvgs.starFilled,
+          width: 10,
+          height: 10,
         ),
         Text(
           ' ($noOfRatings) ',
@@ -42,7 +45,7 @@ class SingleRating extends StatelessWidget {
         ),
         Expanded(
           child: AppProgressBar(
-            fillColor: AppColors.dark,
+            fillColor: AppColors.yellow,
             value: ratingValue,
             minHeight: 4,
           ),

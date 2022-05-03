@@ -5,6 +5,7 @@ import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_progress_bar.dart';
+import 'package:buy_link/widgets/app_rating_bar.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/compare_texts.dart';
@@ -80,21 +81,9 @@ class AddReviewView extends ConsumerWidget {
                 ),
               ),
               const Spacing.smallHeight(),
-              RatingBar.builder(
+              AppRatingBar(
+                initialRating: 1,
                 itemSize: 30,
-                initialRating: 3,
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-                itemBuilder: (context, _) => SvgPicture.asset(
-                  AppSvgs.star,
-                  color: Colors.amber,
-                ),
-                onRatingUpdate: (rating) {
-                  print(rating);
-                },
               ),
               const Divider(thickness: 2),
               const Spacing.bigHeight(),

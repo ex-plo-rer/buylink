@@ -1,7 +1,9 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
@@ -66,7 +68,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               radius: 34,
                             ),
                             Row(
-                              children: const [
+                              children: [
                                 FavoriteContainer(
                                   height: 32,
                                   width: 32,
@@ -100,6 +102,9 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                   width: null,
                                   height: 32,
                                   borderColor: AppColors.shade5,
+                                  onPressed: () => ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(Routes.storeReviews),
                                 ),
                               ],
                             ),

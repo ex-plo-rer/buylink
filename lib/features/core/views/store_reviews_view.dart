@@ -1,8 +1,10 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_progress_bar.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
@@ -160,22 +162,27 @@ class StoreReviewsView extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.chat,
-                          size: 16,
-                        ),
-                        const Text(
-                          ' Add Review',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.grey1,
+                    GestureDetector(
+                      onTap: () => ref
+                          .read(navigationServiceProvider)
+                          .navigateToNamed(Routes.addReview),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.chat,
+                            size: 16,
                           ),
-                        ),
-                      ],
+                          const Text(
+                            ' Add Review',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.grey1,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const Icon(
                       Icons.arrow_forward_ios_outlined,

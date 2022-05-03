@@ -14,20 +14,26 @@ class BackArrow extends StatelessWidget {
     return GestureDetector(
       // onTap: onFavoriteTapped,
       child: Container(
-        height: 36,
-        width: 36,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: Colors.black.withOpacity(0.41),
+        padding: const EdgeInsets.only(
+          left: 20,
+          top: 20,
         ),
-        child: const SizedBox(
-          width: 20,
-          height: 18,
-          child: Icon(
-            Icons.arrow_back_ios_outlined,
-            size: 12,
-            color: AppColors.light,
+        child: Container(
+          height: 36,
+          width: 36,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: Colors.black.withOpacity(0.41),
+          ),
+          child: const SizedBox(
+            width: 20,
+            height: 18,
+            child: Icon(
+              Icons.arrow_back_ios_outlined,
+              size: 12,
+              color: AppColors.light,
+            ),
           ),
         ),
       ),

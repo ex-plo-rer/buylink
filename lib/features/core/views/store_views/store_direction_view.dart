@@ -339,16 +339,7 @@ class _StoreDirectionViewState extends ConsumerState {
               ),
             ],
           ),
-          const Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 16,
-                left: 16,
-              ),
-              child: BackArrow(),
-            ),
-          ),
+          const BackArrow(),
         ],
       ),
     );

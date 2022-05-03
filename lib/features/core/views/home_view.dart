@@ -1,7 +1,9 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
@@ -95,7 +97,11 @@ class HomeView extends ConsumerWidget {
                         productName: 'Oraimo Power Bank',
                         productPrice: '12000',
                         distance: '3.5',
-                        onProductTapped: () {},
+                        onProductTapped: () {
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateToNamed(Routes.productDetails);
+                        },
                         onDistanceTapped: () {},
                         onFlipTapped: () {},
                         onFavoriteTapped: () {

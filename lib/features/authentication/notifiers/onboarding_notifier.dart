@@ -4,13 +4,11 @@ import '../../../core/routes.dart';
 import '../../../core/utilities/base_change_notifier.dart';
 import '../../../services/navigation_service.dart';
 
-
 class OnBoardContent {
   final String imgString;
   final String description;
 
-
-  OnBoardContent(  this.imgString, this.description);
+  OnBoardContent(this.imgString, this.description);
 }
 
 class OnboardingNotifier extends BaseChangeNotifier {
@@ -26,20 +24,29 @@ class OnboardingNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  // void exitOnboard() {
-  //   _reader(localStorageService)
-  //       .writeSecureData("O", 'true');
-  //   _reader(navigationServiceProvider)
-  //       .navigateOffAllNamed(Routes.login, (p0) => false);
-  // }
+  void nextPage() {
+    if (_currentPage < 4) {
+      _currentPage++;
+      notifyListeners();
+    }
+  }
+
+  void exitOnboard() {
+    // _reader(localStorageService)
+    //     .writeSecureData("O", 'true');
+    _reader(navigationServiceProvider)
+        .navigateOffAllNamed(Routes.signup, (p0) => false);
+  }
 
   List<OnBoardContent> onBoardingProvContents = [
-    OnBoardContent( "assets/images/walkthrough1.png","Search for anything you want to buy"),
-    OnBoardContent( "assets/images/walkthrough2.png", "Locate stores around you that have what you want"),
-    OnBoardContent(
-         "assets/images/walkthrough3.png", "Make your products & services instanly visible to everybody"),
+    OnBoardContent("assets/images/walkthrough1.png",
+        "Search for anything you want to buy"),
+    OnBoardContent("assets/images/walkthrough2.png",
+        "Locate stores around you that have what you want"),
+    OnBoardContent("assets/images/walkthrough3.png",
+        "Make your products & services instanly visible to everybody"),
   ];
 }
 
 final onboardProv =
-ChangeNotifierProvider((ref) => OnboardingNotifier(ref.read));
+    ChangeNotifierProvider((ref) => OnboardingNotifier(ref.read));

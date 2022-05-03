@@ -5,16 +5,17 @@ import '../core/constants/colors.dart';
 import '../core/constants/svgs.dart';
 
 class IconNTextContainer extends StatelessWidget {
-  const IconNTextContainer({
-    Key? key,
-    this.onDistanceTapped,
-    required this.text,
-    this.containerColor = AppColors.light,
-    this.textColor = AppColors.grey1,
-    required this.icon,
-    this.radius = 50,
-    this.fontSize = 10,
-  }) : super(key: key);
+  const IconNTextContainer(
+      {Key? key,
+      this.onDistanceTapped,
+      required this.text,
+      this.containerColor = AppColors.light,
+      this.textColor = AppColors.grey1,
+      required this.icon,
+      this.radius = 50,
+      this.fontSize = 10,
+      this.padding = 8})
+      : super(key: key);
   final void Function()? onDistanceTapped;
   final String text;
   final Color? containerColor;
@@ -22,13 +23,14 @@ class IconNTextContainer extends StatelessWidget {
   final Widget icon;
   final double radius;
   final double? fontSize;
+  final double padding;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onDistanceTapped,
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(padding),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
           color: containerColor,

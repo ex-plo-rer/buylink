@@ -14,35 +14,35 @@ class AddStoreContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return Padding (
-        padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
-        child:
-        DottedBorder(
-            borderType: BorderType.RRect,
-            radius: Radius.circular(20),
-            dashPattern: [18, 10],
-            color: AppColors.primaryColor,
-            strokeWidth: 2,
-            child: Container (
-                height: 190,
-                width: 156,
-                child:  Column (
-                    children:const <Widget>[
-                      Spacing.largeHeight(),
-                      Spacing.largeHeight(),
-                      CircleAvatar(
-                        backgroundColor: AppColors.primaryColor,
-                        radius: 16,
-                        child: Icon(
-                          Icons.add,
-                          color: AppColors.light,
-                          size: 20,
-                        ),
+    return GestureDetector(
+      onTap: onTapped,
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
+          child: DottedBorder(
+              borderType: BorderType.RRect,
+              radius: const Radius.circular(20),
+              dashPattern: [18, 10],
+              color: AppColors.primaryColor,
+              strokeWidth: 2,
+              child: SizedBox(
+                  height: 190,
+                  width: 156,
+                  child: Column(children: const <Widget>[
+                    Spacing.largeHeight(),
+                    Spacing.largeHeight(),
+                    CircleAvatar(
+                      backgroundColor: AppColors.primaryColor,
+                      radius: 16,
+                      child: Icon(
+                        Icons.add,
+                        color: AppColors.light,
+                        size: 20,
                       ),
-                      Text("Add a new store", style: TextStyle(color: AppColors.primaryColor, fontSize: 16))
-                    ]
-                ))
-        )
+                    ),
+                    Text("Add a new store",
+                        style: TextStyle(
+                            color: AppColors.primaryColor, fontSize: 16))
+                  ])))),
     );
-
-  }}
+  }
+}

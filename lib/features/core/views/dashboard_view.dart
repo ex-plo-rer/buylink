@@ -1,4 +1,7 @@
+import 'package:buy_link/features/authentication/views/notification_view.dart';
 import 'package:buy_link/features/core/views/home_view.dart';
+import 'package:buy_link/features/core/views/settings_view/setting_view.dart';
+import 'package:buy_link/features/core/views/store_views/store_view.dart';
 import 'package:buy_link/features/core/views/wishlist_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -23,9 +26,9 @@ class DashboardView extends ConsumerWidget {
       body: [
         const HomeView(),
         const WishlistView(),
-        const WishlistView(),
-        const WishlistView(),
-        const WishlistView(),
+        const StoreView(),
+        const NotificationView(),
+        const SettingView(),
       ][dashboardNotifier.selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: dashboardNotifier.selectedIndex,

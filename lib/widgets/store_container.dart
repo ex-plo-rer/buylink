@@ -16,17 +16,16 @@ class StoreContainer extends ConsumerWidget {
     required this.storeImage,
     required this.storeName,
     required this.starRate,
-
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
     return SizedBox(
-      height: 226,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Spacing.tinyHeight(),
+        height: 226,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Spacing.tinyHeight(),
             Container(
               //margin: EdgeInsets.all(10),
               height: 190,
@@ -40,39 +39,36 @@ class StoreContainer extends ConsumerWidget {
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child:  Stack(
+              child: Stack(
                 children: [
                   Positioned(
                     top: 88,
                     left: 36,
                     right: 0,
-                    child: Text( storeName,
+                    child: Text(storeName,
                         style: TextStyle(
-                            color: AppColors.light, fontSize: 18, fontWeight: FontWeight.bold)
-                    ),
+                            color: AppColors.light,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold)),
                   ),
                   Positioned(
                     top: 12,
                     right: 12,
-                    child: Row(
-                        children: <Widget>[
-                          Icon(Icons.star_rate_rounded, color: AppColors.star,),
-                          Text (starRate.toString(), style: TextStyle(color: AppColors.light, fontSize: 16),)
-
-                        ]
-
-                    ),
+                    child: Row(children: <Widget>[
+                      Icon(
+                        Icons.star_rate_rounded,
+                        color: AppColors.yellow,
+                      ),
+                      Text(
+                        starRate.toString(),
+                        style: TextStyle(color: AppColors.light, fontSize: 16),
+                      )
+                    ]),
                   ),
-
                 ],
               ),
             ),
-
-
-                ],
-              )
-
-
-    );
+          ],
+        ));
   }
 }

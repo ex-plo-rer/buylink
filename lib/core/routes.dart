@@ -1,6 +1,8 @@
 import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/categories_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
+import 'package:buy_link/features/core/views/dashboard_view.dart';
+import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
@@ -27,7 +29,16 @@ class Routes {
   static const login = '/login';
   static const signup = '/signup';
   static const homeView = '/home';
-  static const forgotpassword = '/forgotpassword';
+  static const dashboard = '/dashboard';
+  static const forgotPassword = '/forgot-password';
+  static const wishlist = '/wishlist';
+  static const categories = '/categories';
+  static const compare = '/compare';
+  static const productDetails = '/product-details';
+  static const productDetailsMore = '/product-details-more';
+  static const storeDetails = '/shop-details';
+  static const storeReviews = '/store-reviews';
+  static const addReview = '/add-review';
   static const onboarding = '/onboarding';
   static const storeView = '/store';
   static const storeVisits = '/store-visits';
@@ -48,12 +59,12 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const LoginView());
       case homeView:
         return MaterialPageRoute(builder: (_) => HomeView());
-      case forgotpassword:
-        return MaterialPageRoute(builder: (_) => const HomeView());
       case forgotPassword:
         return MaterialPageRoute(builder: (_) => ForgotPasswordView());
       case onboarding:
         return MaterialPageRoute(builder: (_) => OnboardingView());
+      case dashboard:
+        return MaterialPageRoute(builder: (_) => DashboardView());
       case wishlist:
         return MaterialPageRoute(builder: (_) => const WishlistView());
       case categories:
@@ -62,7 +73,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => CompareView());
       case productDetails:
         return MaterialPageRoute(builder: (_) => const ProductDetailsView());
-      case shopDetails:
+      case productDetailsMore:
+        return MaterialPageRoute(builder: (_) => ProductDetailsMoreView());
+      case storeDetails:
         return MaterialPageRoute(builder: (_) => const StoreDetailsView());
       case storeReviews:
         return MaterialPageRoute(builder: (_) => StoreReviewsView());
@@ -89,9 +102,7 @@ class Routes {
       case messageView:
         return MaterialPageRoute(builder: (_) => MessageView());
 
-
-
-    // case otpVerification:
+      // case otpVerification:
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(

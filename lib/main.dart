@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: MessageView(),
+      home: OnboardingView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,
       scaffoldMessengerKey: ref.read(snackbarService).scaffoldMessengerKey,

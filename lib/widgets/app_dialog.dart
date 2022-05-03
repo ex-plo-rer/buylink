@@ -32,7 +32,12 @@ class AppDialog extends StatelessWidget {
       actionsAlignment: MainAxisAlignment.spaceAround,
       actions: <Widget>[
         TextButton(
-          child: Text(text1),
+          child: Text(
+            text1,
+            style: const TextStyle(
+              color: AppColors.primaryColor,
+            ),
+          ),
           onPressed: onText1Pressed,
         ),
         Container(
@@ -41,7 +46,12 @@ class AppDialog extends StatelessWidget {
           color: AppColors.shade2,
         ),
         TextButton(
-          child: Text(text2),
+          child: Text(
+            text2,
+            style: TextStyle(
+              color: AppColors.primaryColor,
+            ),
+          ),
           onPressed: onText2Pressed,
         ),
       ],

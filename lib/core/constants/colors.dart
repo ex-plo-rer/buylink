@@ -10,7 +10,7 @@ class AppColors {
   static const dark = Color(0xFF000000);
   static const grey = Color(0xFF333333);
   static const red = Color(0xFFD71D1D);
-  static const redshade1 = Color (0xFFF8EEEE);
+  static const redshade1 = Color(0xFFF8EEEE);
   static const grey1 = Color(0xFF232834);
   static const grey2 = Color(0xFF3A4150);
   static const grey3 = Color(0xFF4B5263);
@@ -31,8 +31,7 @@ class AppColors {
   static const shade8 = Color(0xFF152767);
   static const shade9 = Color(0xFF0C1A55);
   static const transparent = Color(0xff0000ffff);
-  static const star = Color(0xFFFFB100);
-
+  static const yellow = Color(0xFFFFB100);
 
   static const defaultShadow = BoxShadow(
     color: Color(0xFFEEEEEE),

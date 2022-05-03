@@ -1,7 +1,9 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/distance_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -77,7 +79,12 @@ class ProductContainer extends ConsumerWidget {
                       bottom: 40,
                       right: 0,
                       child: GestureDetector(
-                        onTap: onFlipTapped,
+                        onTap: () {
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateToNamed(Routes.compare);
+                        },
+                        // onTap: onFlipTapped,
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(

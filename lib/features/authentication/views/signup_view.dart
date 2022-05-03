@@ -1,4 +1,5 @@
 import 'package:buy_link/core/constants/strings.dart';
+import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/authentication/notifiers/signup_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
@@ -224,12 +225,16 @@ class SignupView extends ConsumerWidget {
                       onPressed: () {
                         signupNotifier.moveForward();
                         print(signupNotifier.currentPage);
-                        _pageController.animateToPage(
-                          // array starts at 0 (lol)
-                          signupNotifier.currentPage - 1,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn,
-                        );
+                        signupNotifier.currentPage > signupNotifier.totalPage
+                            ? ref
+                                .read(navigationServiceProvider)
+                                .navigateToNamed(Routes.dashboard)
+                            : _pageController.animateToPage(
+                                // array starts at 0 (lol)
+                                signupNotifier.currentPage - 1,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeIn,
+                              );
                       },
                     ),
                     const Spacing.mediumHeight(),
