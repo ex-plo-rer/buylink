@@ -41,7 +41,7 @@ class ProductContainer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     return SizedBox(
-      height: 226,
+      height: 242,
       width: isBig ? 500 : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

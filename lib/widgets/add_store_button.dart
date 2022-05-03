@@ -25,8 +25,8 @@ class AddStoreContainer extends ConsumerWidget {
               color: AppColors.primaryColor,
               strokeWidth: 2,
               child: SizedBox(
-                  height: 190,
-                  width: 156,
+                  height: 160,
+                  width: (MediaQuery.of(context).size.width - 74) / 2,
                   child: Column(children: const <Widget>[
                     Spacing.largeHeight(),
                     Spacing.largeHeight(),

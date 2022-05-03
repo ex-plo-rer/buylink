@@ -38,8 +38,11 @@ class _StoreDirectionViewState extends ConsumerState {
       builder: (context) => SingleChildScrollView(
         controller: ModalScrollController.of(context),
         child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
             color: AppColors.light,
           ),
           // height: 200,
@@ -322,7 +325,7 @@ class _StoreDirectionViewState extends ConsumerState {
                     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 subdomains: ['a', 'b', 'c'],
                 attributionBuilder: (_) {
-                  return const Text("© OpenStreetMap contributors");
+                  return const Text("Got more work to do...");
                 },
               ),
               MarkerLayerOptions(

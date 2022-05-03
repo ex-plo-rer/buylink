@@ -66,7 +66,7 @@ class HomeView extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     if (index == 3) {
                       return Container(
-                        height: 176,
+                        height: 182,
                         color: AppColors.transparent,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

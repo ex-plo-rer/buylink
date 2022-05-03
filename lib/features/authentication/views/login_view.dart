@@ -110,21 +110,9 @@ class LoginView extends ConsumerWidget {
               AppButton(
                 text: AppStrings.login,
                 backgroundColor: AppColors.primaryColor,
-                // onPressed: () => ref
-                //     .read(navigationServiceProvider)
-                //     .navigateToNamed(Routes.homeView),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AppDialog(
-                      title: 'Are you sure you want to delete your\naccount?',
-                      text1: 'No',
-                      onText1Pressed: () => Navigator.pop(context),
-                      text2: 'Yes',
-                      onText2Pressed: () => Navigator.pop(context),
-                    ),
-                  );
-                },
+                onPressed: () => ref
+                    .read(navigationServiceProvider)
+                    .navigateToNamed(Routes.dashboard),
               ),
               const Spacing.mediumHeight(),
               Align(

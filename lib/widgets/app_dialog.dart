@@ -48,7 +48,7 @@ class AppDialog extends StatelessWidget {
         TextButton(
           child: Text(
             text2,
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.primaryColor,
             ),
           ),
