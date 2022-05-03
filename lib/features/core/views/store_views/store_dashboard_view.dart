@@ -5,6 +5,11 @@ import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/views/add_product_view.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
+import 'package:buy_link/features/core/views/store_views/product_saved_view.dart';
+import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
+import 'package:buy_link/features/core/views/store_views/store_messages.dart';
+import 'package:buy_link/features/core/views/store_views/store_settings.dart';
+import 'package:buy_link/features/core/views/store_views/store_visits_view.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_progress_bar.dart';
 import 'package:buy_link/widgets/app_rating_bar.dart';
@@ -85,6 +90,39 @@ class _StoreDashboardViewState extends ConsumerState {
           ),
         ),
         centerTitle: true,
+        actions: [Row
+          (
+            children: <Widget>[
+
+              FavoriteContainer(
+                height: 32,
+                width: 32,
+                favIcon: IconButton(icon: Icon(
+                  Icons.mail_outline_outlined,
+                  size: 14,
+                ), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context)=> StoreMessagesView())); },),
+                containerColor: AppColors.grey10,
+                radius: 50,
+                padding: 1,
+                hasBorder: true,
+              ),
+              Spacing.smallWidth(),
+              FavoriteContainer(
+                height: 32,
+                width: 32,
+                favIcon: IconButton(icon: Icon(
+                  Icons.settings,
+                  size: 14,
+                ), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context)=> StoreSetting())); },),
+                containerColor: AppColors.grey10,
+                radius: 50,
+                padding: 1,
+                hasBorder: true,
+              ),
+          Spacing.smallWidth(),
+
+              Spacing.mediumWidth(),
+        ])]
         // actions: [
         //   FavoriteContainer(
         //     hasBorder: true,
@@ -210,13 +248,20 @@ class _StoreDashboardViewState extends ConsumerState {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
+                            children:  [
+                              TextButton( onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductSearchedView()));  },
+                              child: Text(
                                 'Product Searched',
                                 style: TextStyle(
                                   color: AppColors.grey4,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                                style: TextButton.styleFrom(
+                                  minimumSize: Size.zero,
+                                  padding: EdgeInsets.zero,
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 ),
                               ),
                               Text(
@@ -255,6 +300,7 @@ class _StoreDashboardViewState extends ConsumerState {
                         color: AppColors.light,
                       ),
                       child: Column(
+                        //mainAxisAlignment: Main,
                         children: [
                           FavoriteContainer(
                             favIcon: SvgPicture.asset(AppSvgs.star),
@@ -300,13 +346,22 @@ class _StoreDashboardViewState extends ConsumerState {
                             favIcon: SvgPicture.asset(AppSvgs.favorite),
                             containerColor: AppColors.shade1,
                           ),
-                          const Text(
+                          TextButton(
+                            onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductSavedView())); },
+                          child: Text (
                             'Saved Products',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: AppColors.grey4,
+                            ),),
+
+                            style: TextButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: EdgeInsets.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
+
                           ),
                           const SizedBox(
                             width: 132,
@@ -385,13 +440,20 @@ class _StoreDashboardViewState extends ConsumerState {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
+                            children: [
+                              TextButton ( onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context)=> StoreVisitsView())); },
+                              child: Text (
                                 'Store Visits',
                                 style: TextStyle(
                                   color: AppColors.grey4,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                                style: TextButton.styleFrom(
+                                  minimumSize: Size.zero,
+                                  padding: EdgeInsets.zero,
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 ),
                               ),
                               Text(

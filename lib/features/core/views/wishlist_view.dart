@@ -52,7 +52,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const Spacing.largeHeight(),
+              const Spacing.mediumHeight(),
               Align(
                 alignment: Alignment.centerRight,
                 child: AppButton(
@@ -72,7 +72,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                   borderColor: AppColors.shade5,
                 ),
               ),
-              const Spacing.largeHeight(),
+              const Spacing.mediumHeight(),
               TabBar(
                 labelColor: AppColors.shade5,
                 unselectedLabelColor: AppColors.grey5,

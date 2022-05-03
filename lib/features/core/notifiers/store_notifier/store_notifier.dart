@@ -7,8 +7,6 @@ class StoreNotifier extends BaseChangeNotifier {
 
   StoreNotifier(this._reader) {
   }
-
-
 }
 
 final storeNotifierProvider =

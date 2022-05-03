@@ -40,6 +40,9 @@ class OnboardingView extends ConsumerWidget {
                     onboardnotifier.onBoardingProvContents[index].imgString,
                   ),
                   const Spacing.empty(),
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child:
                   Text(
                     onboardnotifier.onBoardingProvContents[index].description,
                     style: const TextStyle(
@@ -48,7 +51,7 @@ class OnboardingView extends ConsumerWidget {
                       fontSize: 20,
                     ),
                     textAlign: TextAlign.center,
-                  ),
+                  )),
                 ],
               ),
               onPageChanged: onboardnotifier.changePage,
