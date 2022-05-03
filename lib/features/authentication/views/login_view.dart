@@ -103,7 +103,7 @@ class LoginView extends ConsumerWidget {
                   child: const Text("Forgotten your password?"),
                   onPressed: () => ref
                       .read(navigationServiceProvider)
-                      .navigateToNamed(Routes.forgotPassword),
+                      .navigateToNamed(Routes.forgotpassword),
                 ),
               ),
               const Spacing.height(52),

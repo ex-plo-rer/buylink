@@ -15,9 +15,11 @@ import '../features/authentication/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
 import '../features/authentication/views/login_view.dart';
+import '../features/core/views/message_view/message_view.dart';
 import '../features/core/views/no_product_search_view.dart';
 import '../features/core/views/store_views/add_store.dart';
 import '../features/core/views/store_views/empty_state.dart';
+import '../features/core/views/store_views/store_settings.dart';
 import '../features/core/views/store_views/store_view.dart';
 import '../features/core/views/store_reviews_view.dart';
 
@@ -25,14 +27,7 @@ class Routes {
   static const login = '/login';
   static const signup = '/signup';
   static const homeView = '/home';
-  static const forgotPassword = '/forgot-password';
-  static const wishlist = '/wishlist';
-  static const categories = '/categories';
-  static const compare = '/compare';
-  static const productDetails = '/product-details';
-  static const shopDetails = '/shop-details';
-  static const storeReviews = '/store-reviews';
-  static const addReview = '/add-review';
+  static const forgotpassword = '/forgotpassword';
   static const onboarding = '/onboarding';
   static const storeView = '/store';
   static const storeVisits = '/store-visits';
@@ -42,6 +37,8 @@ class Routes {
   static const noproductView = '/noproduct';
   static const addstoreView = '/addstore';
   static const emptystoreView = '/emptystore';
+  static const storesettingView = '/storesetting';
+  static const messageView = '/message';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -50,6 +47,8 @@ class Routes {
       case login:
         return MaterialPageRoute(builder: (_) => const LoginView());
       case homeView:
+        return MaterialPageRoute(builder: (_) => HomeView());
+      case forgotpassword:
         return MaterialPageRoute(builder: (_) => const HomeView());
       case forgotPassword:
         return MaterialPageRoute(builder: (_) => ForgotPasswordView());
@@ -85,7 +84,14 @@ class Routes {
         return MaterialPageRoute(builder: (_) => AddStoreView());
       case emptystoreView:
         return MaterialPageRoute(builder: (_) => EmptyStateView());
+      case storesettingView:
+        return MaterialPageRoute(builder: (_) => StoreSetting());
+      case messageView:
+        return MaterialPageRoute(builder: (_) => MessageView());
 
+
+
+    // case otpVerification:
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(
