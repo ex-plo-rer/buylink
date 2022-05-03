@@ -175,7 +175,7 @@ class AddStoreView extends ConsumerWidget {
                     AppButton(
                       text:
                       addstoreNotifier.currentPage == addstoreNotifier.totalPage
-                          ? AppStrings.signup
+                          ? AppStrings.next
                           : AppStrings.next,
                       backgroundColor: AppColors.primaryColor,
                       onPressed: () {

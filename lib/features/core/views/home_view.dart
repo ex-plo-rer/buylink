@@ -14,6 +14,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../authentication/views/login_view.dart';
+
 class HomeView extends ConsumerWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -46,6 +48,15 @@ class HomeView extends ConsumerWidget {
                 backgroundColor: AppColors.shade1,
                 hasIcon: true,
                 icon: SvgPicture.asset(AppSvgs.login),
+                onPressed: (){
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginView(),
+                    ),
+                  );
+                },
               ),
               const Spacing.height(12),
               const Text(

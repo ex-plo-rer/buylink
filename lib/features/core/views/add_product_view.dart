@@ -138,7 +138,7 @@ class AddProductView extends ConsumerWidget {
                                     ),)))),
 
                       AppButton(
-                        text: "Save Productq",
+                        text: "Save Product",
                         backgroundColor: AppColors.primaryColor,
                         // onPressed: () => ref
                         //     .read(navigationServiceProvider)

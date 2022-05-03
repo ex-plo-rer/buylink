@@ -1,4 +1,5 @@
 import 'package:buy_link/core/constants/colors.dart';
+import 'package:buy_link/features/core/views/message_view/message_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -108,7 +109,13 @@ class MessageScreen extends StatelessWidget {
                           radius: 10,
                         ),
                         Text("10 am", style: TextStyle(fontSize: 12)),
-                      ])))
+                      ]),
+                    onTap: (){
+
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> MessageView()));
+        },
+
+                  ))
             ])));
   }
 }

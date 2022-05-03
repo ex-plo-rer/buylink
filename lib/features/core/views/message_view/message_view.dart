@@ -24,6 +24,7 @@ class MessageView extends ConsumerWidget {
                 leading: CircleAvatar(child:Image.asset("assets/images/user_avatar.png")),
                 //leading: (Image.asset('assets/images/round_image.png')),
                 subtitle: Text ("Online 3hr ago", style: TextStyle(color: Colors.white, fontSize: 12)),
+
               )),
           actions: <Widget>[
             //IconButton

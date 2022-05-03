@@ -3,6 +3,7 @@ import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/features/core/views/add_product_view.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_progress_bar.dart';
@@ -492,6 +493,14 @@ class _StoreDashboardViewState extends ConsumerState {
         hasIcon: true,
         icon: SvgPicture.asset(AppSvgs.addProduct),
         width: null,
+
+        onPressed: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+              builder: (context) => AddProductView(),
+          ),);
+        },
       ),
     );
   }

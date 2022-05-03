@@ -45,7 +45,7 @@ class OnboardingView extends ConsumerWidget {
                     style: const TextStyle(
                       color: AppColors.grey1,
                       fontWeight: FontWeight.w600,
-                      fontSize: 24,
+                      fontSize: 20,
                     ),
                     textAlign: TextAlign.center,
                   ),

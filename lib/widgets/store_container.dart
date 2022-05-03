@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,14 +37,22 @@ class StoreContainer extends ConsumerWidget {
       child: Stack(
         children: [
           Positioned(
-            top: 88,
-            left: 36,
-            right: 0,
-            child: Text(storeName,
+            top: 70,
+            left: 10,
+            right: 10,
+            child: TextButton(onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StoreDashboardView(),
+                ),
+              );
+            },
+            child: Text( storeName,
                 style: TextStyle(
                     color: AppColors.light,
                     fontSize: 18,
-                    fontWeight: FontWeight.bold)),
+                    fontWeight: FontWeight.bold))),
           ),
           Positioned(
             top: 12,
