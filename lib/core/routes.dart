@@ -58,7 +58,7 @@ class Routes {
       case signup:
         return MaterialPageRoute(builder: (_) => SignupView());
       case login:
-        return MaterialPageRoute(builder: (_) => const LoginView());
+        return MaterialPageRoute(builder: (_) => LoginView());
       case homeView:
         return MaterialPageRoute(builder: (_) => HomeView());
       case forgotPassword:

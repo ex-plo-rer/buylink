@@ -100,7 +100,7 @@ class AppStrings {
   static const tokenKey = 'toKenKey';
   static const otpEmailKey = 'otpEmailKey';
 
-  static const API_BASE_URL = '';
+  static const API_BASE_URL = 'https://api.buylink.app';
   static const ronaldo =
       'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg';
 }
