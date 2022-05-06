@@ -44,7 +44,7 @@ class ForgotPasswordView extends ConsumerWidget {
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
-          AppStrings.signup,
+          'Forgot Password',
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,

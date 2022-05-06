@@ -1,5 +1,8 @@
+import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants/strings.dart';
+import '../features/core/models/user_model.dart';
 import '../services/local_storage_service.dart';
 import '../services/network/network_service.dart';
 
@@ -19,43 +22,65 @@ class AuthenticationRepository {
     "Content-Type": "application/json",
   };
 
-  Future<String?> register({
+  Future<String?> signUp({
     required String name,
     required String email,
-    required String mobileNum,
     required String password,
-    required String passwordConfirmation,
-    String? referredBy,
+    // required String passwordConfirmation,
   }) async {
     final body = {
       'name': name,
       'email': email,
-      'mobile_number': mobileNum,
       'password': password,
-      'password_confirmation': passwordConfirmation,
-      'referred_by': referredBy,
+      // 'password_confirmation': passwordConfirmation,
     };
     print('Register params sent to server $body');
 
     var response = await networkService.post(
-      'user/register',
+      'users/signup',
       body: body,
       headers: headers,
     );
 
+    print('Register response $response');
     // storageService.writeSecureData(
     //     AppStrings.tokenKey, response['data']['auth_token']);
-    storageService.writeSecureData(
-      AppStrings.otpEmailKey,
-      response['data']['user']['email'],
+    // storageService.writeSecureData(
+    //   AppStrings.otpEmailKey,
+    //   response,
+    // );
+    _reader(navigationServiceProvider).navigateOffAllNamed(
+      Routes.dashboard,
+      (p0) => false,
     );
 
     print('Register response $response');
-    return response['message'];
+    return 'message';
+  }
+
+  Future<String?> checkEmail({
+    required String email,
+    required String reason,
+    // required String passwordConfirmation,
+  }) async {
+    final body = {
+      'email': email,
+      'reason': reason,
+    };
+    print('Check email params sent to server $body');
+
+    var response = await networkService.post(
+      'users/check-email',
+      body: body,
+      headers: headers,
+    );
+
+    print('Check email response $response');
+    return response['code'];
   }
 
   // Future<UserModel> login({
-  Future<bool> login({
+  Future<UserModel> login({
     required String email,
     required String password,
   }) async {
@@ -74,9 +99,9 @@ class AuthenticationRepository {
 
     // await storageService.writeSecureData(
     //     AppStrings.tokenKey, response['data']['token']);
-    // await storageService.saveUser(response['data']['user']);
-    return response['success'];
-    // return UserModel.fromJson(response['data']['user']);
+    await storageService.saveUser(response);
+    // return response['success'];
+    return UserModel.fromJson(response);
   }
 
   // Future<String?> verifyOTP({
