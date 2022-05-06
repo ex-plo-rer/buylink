@@ -36,6 +36,7 @@ class _OtpFormState extends ConsumerState<OtpForm> {
 
   void nextField(String value, FocusNode? focusNode) {
     if (value.length == 1) {
+      print('Value $value');
       focusNode!.requestFocus();
     }
   }
@@ -64,7 +65,9 @@ class _OtpFormState extends ConsumerState<OtpForm> {
                   },
                 ),
               ),
-              SizedBox(width: 10,),
+              SizedBox(
+                width: 10,
+              ),
               SizedBox(
                 width: 50,
                 height: 70,
@@ -78,7 +81,9 @@ class _OtpFormState extends ConsumerState<OtpForm> {
                   onChanged: (value) => nextField(value, pin3FocusNode),
                 ),
               ),
-              SizedBox(width: 10,),
+              SizedBox(
+                width: 10,
+              ),
               SizedBox(
                 width: 50,
                 height: 70,
@@ -92,7 +97,9 @@ class _OtpFormState extends ConsumerState<OtpForm> {
                   onChanged: (value) => nextField(value, pin4FocusNode),
                 ),
               ),
-              SizedBox(width: 10,),
+              SizedBox(
+                width: 10,
+              ),
               SizedBox(
                 width: 50,
                 height: 70,
@@ -113,7 +120,6 @@ class _OtpFormState extends ConsumerState<OtpForm> {
               ),
             ],
           ),
-
         ],
       ),
     );

@@ -58,7 +58,7 @@ class AuthenticationRepository {
     return 'message';
   }
 
-  Future<String?> checkEmail({
+  Future<int?> checkEmail({
     required String email,
     required String reason,
     // required String passwordConfirmation,
@@ -70,10 +70,14 @@ class AuthenticationRepository {
     print('Check email params sent to server $body');
 
     var response = await networkService.post(
-      'users/check-email',
+      'users/get-code',
       body: body,
       headers: headers,
     );
+
+    print('Check email response $response');
+    await storageService.writeSecureData(
+        AppStrings.otpEmailKey, response['code'].toString());
 
     print('Check email response $response');
     return response['code'];

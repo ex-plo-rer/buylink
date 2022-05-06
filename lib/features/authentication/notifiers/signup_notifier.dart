@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
 import '../../../core/routes.dart';
+import '../../../core/utilities/alertify.dart';
 import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../repositories/authentication_repository.dart';
@@ -52,6 +54,14 @@ class SignupNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
+  void onEmailChanged(String text) {
+    notifyListeners();
+  }
+
+  void onPasswordChanged(String text) {
+    notifyListeners();
+  }
+
   Future<void> signUp({
     required String name,
     required String email,
@@ -68,6 +78,14 @@ class SignupNotifier extends BaseChangeNotifier {
       _reader(snackbarService).showSuccessSnackBar('Success');
       _reader(navigationServiceProvider)
           .navigateOffAllNamed(Routes.dashboard, (p0) => false);
+
+      // I should not have anything material in my notifier(viewmodel)
+      Alertify(
+        title: 'Success',
+        // message: 'Mode selection failed. Kindly restart the app',
+        // icon: Icons.check,
+      ).success();
+
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
@@ -75,6 +93,12 @@ class SignupNotifier extends BaseChangeNotifier {
     } finally {
       setState(state: ViewState.idle);
     }
+  }
+
+  Future<void> delay({required int sec}) async {
+    setState(state: ViewState.loading);
+    await Future.delayed(Duration(seconds: sec));
+    setState(state: ViewState.idle);
   }
 
   Future<void> checkEmail({
