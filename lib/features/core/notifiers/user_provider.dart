@@ -9,13 +9,13 @@ class UserProvider extends BaseChangeNotifier {
 
   UserProvider(this._reader) {
     setUser();
-    setToken();
+    // setToken();
   }
 
   UserModel? _currentUser;
   UserModel? get currentUser => _currentUser;
-  String? _token;
-  String? get token => _token;
+  // String? _token;
+  // String? get token => _token;
 
   Future<void> setUser() async {
     print('Get user called');
@@ -26,15 +26,15 @@ class UserProvider extends BaseChangeNotifier {
     // return _currentUser;
   }
 
-  Future<void> setToken() async {
-    String? tok =
-        await _reader(localStorageService).readSecureData(AppStrings.tokenKey);
-
-    _token = 'Bearer $tok';
-    print('getToken(), current _token : ${_token}');
-    notifyListeners();
-    // return _token;
-  }
+  // Future<void> setToken() async {
+  //   String? tok =
+  //       await _reader(localStorageService).readSecureData(AppStrings.tokenKey);
+  //
+  //   _token = 'Bearer $tok';
+  //   print('getToken(), current _token : ${_token}');
+  //   notifyListeners();
+  //   // return _token;
+  // }
 }
 
 final userProvider = Provider<UserProvider>((ref) => UserProvider(ref.read));

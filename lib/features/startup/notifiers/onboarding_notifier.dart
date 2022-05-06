@@ -1,7 +1,9 @@
+import 'package:buy_link/core/constants/strings.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/routes.dart';
 import '../../../core/utilities/base_change_notifier.dart';
+import '../../../services/local_storage_service.dart';
 import '../../../services/navigation_service.dart';
 
 class OnBoardContent {
@@ -32,8 +34,8 @@ class OnboardingNotifier extends BaseChangeNotifier {
   }
 
   void exitOnboard() {
-    // _reader(localStorageService)
-    //     .writeSecureData("O", 'true');
+    _reader(localStorageService)
+        .writeSecureData(AppStrings.onboardedKey, 'true');
     _reader(navigationServiceProvider)
         .navigateOffAllNamed(Routes.signup, (p0) => false);
   }

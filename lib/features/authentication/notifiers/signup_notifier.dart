@@ -8,6 +8,7 @@ import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../repositories/authentication_repository.dart';
 import '../../../services/base/network_exception.dart';
+import '../../../services/local_storage_service.dart';
 import '../../../services/navigation_service.dart';
 import '../../../services/snackbar_service.dart';
 
@@ -75,21 +76,17 @@ class SignupNotifier extends BaseChangeNotifier {
         password: password,
       );
 
-      _reader(snackbarService).showSuccessSnackBar('Success');
+      Alertify(
+        title: 'Signup Successful',
+      ).success();
+      _reader(localStorageService).deleteSecureData(AppStrings.otpEmailKey);
       _reader(navigationServiceProvider)
           .navigateOffAllNamed(Routes.dashboard, (p0) => false);
-
-      // I should not have anything material in my notifier(viewmodel)
-      Alertify(
-        title: 'Success',
-        // message: 'Mode selection failed. Kindly restart the app',
-        // icon: Icons.check,
-      ).success();
 
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      _reader(snackbarService).showErrorSnackBar(e.error!);
+      Alertify(title: e.error!).error();
     } finally {
       setState(state: ViewState.idle);
     }
@@ -119,7 +116,7 @@ class SignupNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      _reader(snackbarService).showErrorSnackBar(e.error!);
+      Alertify(title: e.error!).error();
     } finally {
       setState(state: ViewState.idle);
     }

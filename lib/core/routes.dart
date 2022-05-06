@@ -14,7 +14,7 @@ import 'package:buy_link/features/core/views/wishlist_view.dart';
 import 'package:flutter/material.dart';
 
 import '../features/authentication/views/forgot_password_view.dart';
-import '../features/authentication/views/onboarding_view.dart';
+import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
 import '../features/authentication/views/login_view.dart';

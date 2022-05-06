@@ -19,6 +19,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../core/constants/colors.dart';
 import '../../../services/snackbar_service.dart';
 import '../../../widgets/otp_form.dart';
+import '../../../widgets/otp_input.dart';
 import '../notifiers/login_notifier.dart';
 
 class SignupView extends ConsumerWidget {
@@ -178,36 +179,10 @@ class SignupView extends ConsumerWidget {
                               ),
                             ),
                             const Spacing.height(52),
-                            Center(
-                              child: SizedBox(
-                                width: 200,
-                                child: PinCodeTextField(
-                                  enableActiveFill: true,
-                                  keyboardType: TextInputType.number,
-                                  appContext: context,
-                                  length: 4,
-                                  cursorColor: AppColors.primaryColor,
-                                  obscureText: false,
-                                  pinTheme: PinTheme(
-                                    shape: PinCodeFieldShape.box,
-                                    activeColor: AppColors.primaryColor,
-                                    inactiveColor: AppColors.grey6,
-                                    disabledColor: AppColors.grey6,
-                                    selectedColor: AppColors.primaryColor,
-                                    inactiveFillColor: AppColors.transparent,
-                                    activeFillColor: AppColors.transparent,
-                                    selectedFillColor: AppColors.transparent,
-                                    fieldHeight: 52,
-                                    fieldWidth: 40,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  animationDuration:
-                                      const Duration(milliseconds: 300),
-                                  onChanged: (String val) {
-                                    _otp = val;
-                                  },
-                                ),
-                              ),
+                            OTPInput(
+                              onChanged: (val) {
+                                _otp = val;
+                              },
                             ),
                           ],
                         ),
@@ -335,7 +310,7 @@ class SignupView extends ConsumerWidget {
                                             return;
                                           } else if (otp == _otp) {
                                             Alertify(title: 'OTP verified');
-                                            signupNotifier.delay(sec: 4);
+                                            await signupNotifier.delay(sec: 2);
                                             signupNotifier.moveForward();
                                             _pageController.animateToPage(
                                               // array starts at 0 (lol)

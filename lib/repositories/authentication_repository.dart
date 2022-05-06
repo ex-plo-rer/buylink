@@ -45,10 +45,7 @@ class AuthenticationRepository {
     print('Register response $response');
     // storageService.writeSecureData(
     //     AppStrings.tokenKey, response['data']['auth_token']);
-    // storageService.writeSecureData(
-    //   AppStrings.otpEmailKey,
-    //   response,
-    // );
+    await storageService.saveUser(response);
     _reader(navigationServiceProvider).navigateOffAllNamed(
       Routes.dashboard,
       (p0) => false,
@@ -81,6 +78,27 @@ class AuthenticationRepository {
 
     print('Check email response $response');
     return response['code'];
+  }
+
+  Future<bool> changePassword({
+    required String email,
+    required String password,
+    // required String passwordConfirmation,
+  }) async {
+    final body = {
+      'email': email,
+      'password': password,
+    };
+    print('Change password params sent to server $body');
+
+    var response = await networkService.post(
+      'users/change-password',
+      body: body,
+      headers: headers,
+    );
+
+    print('Change password response $response');
+    return response['success'];
   }
 
   // Future<UserModel> login({
