@@ -52,15 +52,22 @@ class StoreContainer extends ConsumerWidget {
                 style: TextStyle(
                     color: AppColors.light,
                     fontSize: 18,
-                    fontWeight: FontWeight.bold))),
+                    fontWeight: FontWeight.bold)),
+              style: TextButton.styleFrom(
+                minimumSize: Size.zero,
+                padding: EdgeInsets.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+
+            ),
           ),
           Positioned(
             top: 12,
             right: 12,
             child: Row(children: <Widget>[
               Icon(
-                Icons.star_rate_rounded,
-                color: AppColors.yellow,
+                Icons.star,
+                color: Colors.amber,
               ),
               Text(
                 starRate.toString(),

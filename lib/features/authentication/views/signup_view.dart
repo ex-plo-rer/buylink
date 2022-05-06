@@ -1,6 +1,8 @@
 import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/authentication/notifiers/signup_notifier.dart';
+import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
+import 'package:buy_link/features/core/views/settings_view/term_of_use.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_check_box.dart';
@@ -8,6 +10,7 @@ import 'package:buy_link/widgets/app_linear_progress.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:buy_link/widgets/text_with_rich.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -28,21 +31,21 @@ class SignupView extends ConsumerWidget {
         leading: signupNotifier.currentPage == 1
             ? null
             : IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: AppColors.dark,
-                ),
-                onPressed: () {
-                  signupNotifier.moveBackward();
-                  print(signupNotifier.currentPage);
-                  _pageController.animateToPage(
-                    // array starts at 0 (lol)
-                    signupNotifier.currentPage - 1,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn,
-                  );
-                },
-              ),
+          icon: const Icon(
+            Icons.arrow_back_ios_outlined,
+            color: AppColors.dark,
+          ),
+          onPressed: () {
+            signupNotifier.moveBackward();
+            print(signupNotifier.currentPage);
+            _pageController.animateToPage(
+              // array starts at 0 (lol)
+              signupNotifier.currentPage - 1,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
+          },
+        ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
@@ -218,23 +221,23 @@ class SignupView extends ConsumerWidget {
                   children: [
                     AppButton(
                       text:
-                          signupNotifier.currentPage == signupNotifier.totalPage
-                              ? AppStrings.signup
-                              : AppStrings.next,
+                      signupNotifier.currentPage == signupNotifier.totalPage
+                          ? AppStrings.signup
+                          : AppStrings.next,
                       backgroundColor: AppColors.primaryColor,
                       onPressed: () {
                         signupNotifier.moveForward();
                         print(signupNotifier.currentPage);
                         signupNotifier.currentPage > signupNotifier.totalPage
                             ? ref
-                                .read(navigationServiceProvider)
-                                .navigateToNamed(Routes.dashboard)
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.dashboard)
                             : _pageController.animateToPage(
-                                // array starts at 0 (lol)
-                                signupNotifier.currentPage - 1,
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeIn,
-                              );
+                          // array starts at 0 (lol)
+                          signupNotifier.currentPage - 1,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        );
                       },
                     ),
                     const Spacing.mediumHeight(),
@@ -245,18 +248,71 @@ class SignupView extends ConsumerWidget {
                         style: TextStyle(color: AppColors.grey5),
                       ),
                     ),
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Terms of Use and Privacy Policy',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          decoration: TextDecoration.underline,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+
+                    Row (
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:  <Widget>[
+                          TextButton(
+                              onPressed: () { Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TermOfUse(),
+                                ),
+                              ); },
+                              child: Text(
+                                'Terms of Use',
+                                style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            style: TextButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: EdgeInsets.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          ),
+                          SizedBox (width: 3,),
+
+                          Text(
+                            'and',
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              //decoration: TextDecoration.underline,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox (width: 3,),
+
+                          TextButton(
+                            onPressed: () { Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PrivacyPolicy(),
+                              ),
+                            ); },
+                            child: Text ('Privacy Policy',
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                decoration: TextDecoration.underline,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: TextButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: EdgeInsets.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          ),
+
+                        ]
+                    )
+
+
                   ],
                 ),
               ],

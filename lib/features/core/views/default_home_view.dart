@@ -1,27 +1,27 @@
-import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/constants/images.dart';
-import 'package:buy_link/core/constants/svgs.dart';
-import 'package:buy_link/core/routes.dart';
-import 'package:buy_link/features/core/notifiers/home_notifier.dart';
-import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/app_button.dart';
-import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:buy_link/widgets/category_container.dart';
-import 'package:buy_link/widgets/product_container.dart';
-import 'package:buy_link/widgets/spacing.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/constants/colors.dart';
+import '../../../core/constants/svgs.dart';
+import '../../../core/routes.dart';
+import '../../../services/navigation_service.dart';
+import '../../../widgets/app_button.dart';
+import '../../../widgets/app_text_field.dart';
+import '../../../widgets/category_container.dart';
+import '../../../widgets/product_container.dart';
+import '../../../widgets/spacing.dart';
 import '../../authentication/views/login_view.dart';
+import '../notifiers/default_home_view_notifier.dart';
 
-class HomeView extends ConsumerWidget {
-  const HomeView({Key? key}) : super(key: key);
+class DefaultHomeView extends ConsumerWidget {
+  const DefaultHomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
-    final homeNotifier = ref.watch(homeNotifierProvider);
+    final defaultHomeNotifier = ref.watch(defaultHomeNotifierProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -41,7 +41,24 @@ class HomeView extends ConsumerWidget {
                 hasPrefixIcon: true,
               ),
               const Spacing.height(12),
-              //const Spacing.height(12),
+              AppButton(
+                text: 'Log in to personalize your Buylink experience',
+                textColor: AppColors.primaryColor,
+                fontSize: 14,
+                backgroundColor: AppColors.shade1,
+                hasIcon: true,
+                icon: SvgPicture.asset(AppSvgs.login),
+                onPressed: (){
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginView(),
+                    ),
+                  );
+                },
+              ),
+              const Spacing.height(12),
               const Text(
                 'Based on your interest',
                 style: TextStyle(
@@ -60,7 +77,7 @@ class HomeView extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     if (index == 3) {
                       return Container(
-                        height: 185,
+                        height: 182,
                         color: AppColors.transparent,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +103,7 @@ class HomeView extends ConsumerWidget {
                     } else {
                       return ProductContainer(
                         url:
-                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                        'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                         storeName: 'Atinuke Store',
                         productName: 'Oraimo Power Bank',
                         productPrice: '12000',
@@ -99,7 +116,7 @@ class HomeView extends ConsumerWidget {
                         onDistanceTapped: () {},
                         onFlipTapped: () {},
                         onFavoriteTapped: () {
-                          homeNotifier.toggleFavorite();
+                          //defaultHomeNotifieNotifier.toggleFavorite();
                         },
                       );
                     }

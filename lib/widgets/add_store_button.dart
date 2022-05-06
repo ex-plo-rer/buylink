@@ -23,13 +23,13 @@ class AddStoreContainer extends ConsumerWidget {
               radius: const Radius.circular(20),
               dashPattern: [18, 10],
               color: AppColors.primaryColor,
-              strokeWidth: 2,
+              strokeWidth: 1,
               child: SizedBox(
                   height: 160,
                   width: (MediaQuery.of(context).size.width - 74) / 2,
-                  child: Column(children: const <Widget>[
-                    Spacing.largeHeight(),
-                    Spacing.largeHeight(),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const <Widget>[
                     CircleAvatar(
                       backgroundColor: AppColors.primaryColor,
                       radius: 16,

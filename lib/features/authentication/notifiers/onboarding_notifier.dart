@@ -18,6 +18,27 @@ class OnboardingNotifier extends BaseChangeNotifier {
 
   int _currentPage = 0;
   int get currentPage => _currentPage;
+  int _totalPage = 3;
+  int get totalPage => _totalPage;
+
+
+  void moveForward() async {
+    if (_currentPage < _totalPage + 1) {
+      _currentPage += 1;
+      print('_currentPage: $_currentPage');
+    }
+    notifyListeners();
+  }
+
+  void moveBackward() {
+    if (_currentPage > 1) {
+      _currentPage -= 1;
+      print('_currentPage: $_currentPage');
+    }
+    notifyListeners();
+  }
+
+
 
   void changePage(int page) {
     _currentPage = page;

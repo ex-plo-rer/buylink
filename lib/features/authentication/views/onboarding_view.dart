@@ -24,11 +24,35 @@ class OnboardingView extends ConsumerWidget {
     final onboardnotifier = ref.watch(onboardProv);
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        leading: onboardnotifier.currentPage == 0
+            ? null
+            : IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_outlined,
+            color: AppColors.dark,
+            size: 20,
+          ),
+          onPressed: () {
+            onboardnotifier.moveBackward();
+            print(onboardnotifier.currentPage);
+            _pageController.animateToPage(
+              // array starts at 0 (lol)
+              onboardnotifier.currentPage - 1,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
+          },
+        ),
+        elevation: 0,
+        backgroundColor: AppColors.transparent,
+
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Spacing.largeHeight(),
+         // const Spacing.smallHeight(),
           Expanded(
             child: PageView.builder(
               controller: _pageController,
@@ -39,9 +63,9 @@ class OnboardingView extends ConsumerWidget {
                   Image.asset(
                     onboardnotifier.onBoardingProvContents[index].imgString,
                   ),
-                  const Spacing.empty(),
+                  //const Spacing.empty(),
                   Padding(
-                    padding: EdgeInsets.all(12),
+                    padding: EdgeInsets.all(14),
                     child:
                   Text(
                     onboardnotifier.onBoardingProvContents[index].description,

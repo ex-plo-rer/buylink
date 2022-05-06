@@ -27,7 +27,7 @@ class _WishlistState extends ConsumerState<WishlistView>
   @override
   void initState() {
     // TODO: implement initState
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -39,7 +39,7 @@ class _WishlistState extends ConsumerState<WishlistView>
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 16,
-            horizontal: 24,
+            horizontal: 14,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,19 +72,27 @@ class _WishlistState extends ConsumerState<WishlistView>
                   borderColor: AppColors.shade5,
                 ),
               ),
-              const Spacing.mediumHeight(),
+              const Spacing.smallHeight(),
               TabBar(
                 labelColor: AppColors.shade5,
                 unselectedLabelColor: AppColors.grey5,
-                padding: const EdgeInsets.only(bottom: 24),
+                padding: const EdgeInsets.only(bottom: 10),
                 controller: _tabController,
                 isScrollable: true,
                 tabs: const [
-                  Tab(text: 'All'),
-                  Tab(text: 'Fashion'),
-                  Tab(text: 'Photography'),
-                  Tab(text: 'Baby & Toddler'),
-                  Tab(text: '5555555'),
+                  Tab(
+                      child: Flexible ( child: Text("All")
+                  )),
+                  Tab(
+                    child: Text("Fashion")),
+                  Tab(
+                      child : Text("Photography")),
+                  Tab(
+                      child: Flexible(child: Text ("Baby & Toddler")))
+                  // Tab(text: 'All'),
+                  // Tab(text: 'Fashion'),
+                  // Tab(text: 'Photography'),
+                  // Tab(text: 'Baby & Toddler'),
                 ],
               ),
               Expanded(
@@ -100,7 +108,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         if (index == 3) {
                           return ProductContainer(
                             url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                             storeName: 'Atinuke Store',
                             productName: 'Oraimo Power Bank',
                             productPrice: '12000',
@@ -116,7 +124,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         } else {
                           return ProductContainer(
                             url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                             storeName: 'Atinuke Store',
                             productName: 'Oraimo Power Bank',
                             productPrice: '12000',
@@ -140,7 +148,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         if (index == 3) {
                           return ProductContainer(
                             url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                             storeName: 'Atinuke Store',
                             productName: 'Oraimo Power Bank',
                             productPrice: '12000',
@@ -156,7 +164,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         } else {
                           return ProductContainer(
                             url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                             storeName: 'Atinuke Store',
                             productName: 'Oraimo Power Bank',
                             productPrice: '12000',
@@ -180,7 +188,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         if (index == 3) {
                           return ProductContainer(
                             url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                             storeName: 'Atinuke Store',
                             productName: 'Oraimo Power Bank',
                             productPrice: '12000',
@@ -196,7 +204,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         } else {
                           return ProductContainer(
                             url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                             storeName: 'Atinuke Store',
                             productName: 'Oraimo Power Bank',
                             productPrice: '12000',
@@ -220,7 +228,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         if (index == 3) {
                           return ProductContainer(
                             url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                             storeName: 'Atinuke Store',
                             productName: 'Oraimo Power Bank',
                             productPrice: '12000',
@@ -236,7 +244,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         } else {
                           return ProductContainer(
                             url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                             storeName: 'Atinuke Store',
                             productName: 'Oraimo Power Bank',
                             productPrice: '12000',
@@ -251,46 +259,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         }
                       },
                     ),
-                    MasonryGridView.count(
-                      itemCount: 20 + 1,
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 15,
-                      itemBuilder: (context, index) {
-                        if (index == 3) {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: '12000',
-                            distance: '3.5',
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
-                            },
-                            isBig: true,
-                          );
-                        } else {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: '12000',
-                            distance: '3.5',
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
-                            },
-                          );
-                        }
-                      },
-                    ),
+
                   ],
                 ),
               ),
