@@ -23,6 +23,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -30,7 +31,7 @@ import '../../../widgets/dot_build.dart';
 import '../notifiers/product_details_notifier.dart';
 
 class ProductDetailsView extends ConsumerWidget {
-  ProductDetailsView({
+  const ProductDetailsView({
     Key? key,
     required this.product,
   }) : super(key: key);
@@ -42,6 +43,9 @@ class ProductDetailsView extends ConsumerWidget {
     final productDetailsNotifier =
         ref.watch(productDetailsNotifierProvider(product.id));
     final homeNotifier = ref.watch(homeNotifierProvider(''));
+    double distanceInMeters = Geolocator.distanceBetween(
+        52.2165157, 6.9437819, product.lat, product.lon);
+    print('distanceInMeters: $distanceInMeters');
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -118,8 +122,8 @@ class ProductDetailsView extends ConsumerWidget {
                       ),
                       containerColor: AppColors.transparent,
                     ),
-                    trailing: const DistanceContainer(
-                      distance: '2.3',
+                    trailing: DistanceContainer(
+                      distance: (distanceInMeters ~/ 1000).toString(),
                       // distance: product.store.distance,
                       containerColor: AppColors.grey2,
                       textColor: AppColors.light,
@@ -197,7 +201,11 @@ class ProductDetailsView extends ConsumerWidget {
                           child: FavoriteContainer(
                             height: 56,
                             width: 56,
-                            favIcon: SvgPicture.asset(AppSvgs.favorite),
+                            favIcon: SvgPicture.asset(
+                              product.isFav
+                                  ? AppSvgs.favoriteFilled
+                                  : AppSvgs.favorite,
+                            ),
                             containerColor: AppColors.grey10,
                             radius: 10,
                             padding: 18,
@@ -282,10 +290,9 @@ class ProductDetailsView extends ConsumerWidget {
                                           .similarProducts[index].name,
                                       productPrice: productDetailsNotifier
                                           .similarProducts[index].price,
-                                      distance: productDetailsNotifier
-                                          .similarProducts[index]
-                                          .store
-                                          .location,
+                                      distance: distanceInMeters.toString(),
+                                      isFavorite: productDetailsNotifier
+                                          .similarProducts[index].isFav,
                                       onProductTapped: () {},
                                       onDistanceTapped: () {},
                                       onFlipTapped: () {},

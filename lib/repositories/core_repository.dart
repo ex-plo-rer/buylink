@@ -109,6 +109,34 @@ class CoreRepository {
 
     return _products;
   }
+
+  Future<String> addToWishList({
+    required int productId,
+  }) async {
+    // await _reader(userProvider).setUser();
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'product_id': productId,
+    };
+    print('Add to wishlist params sent to server $body');
+
+    var response = await networkService.post(
+      'users/add-wish',
+      body: body,
+      headers: headers,
+    );
+
+    print('Add to wishlist response $response');
+    // List<ProductModel> _products = [];
+    // for (var product in response) {
+    //   _products.add(ProductModel.fromJson(product));
+    // }
+
+    return '';
+  }
 }
 
 final coreRepository = Provider(

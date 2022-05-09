@@ -23,6 +23,7 @@ class ProductContainer extends ConsumerWidget {
   final void Function()? onFlipTapped;
   final void Function()? onFavoriteTapped;
   final bool isBig;
+  final bool isFavorite;
 
   const ProductContainer({
     Key? key,
@@ -31,6 +32,7 @@ class ProductContainer extends ConsumerWidget {
     required this.productName,
     required this.productPrice,
     required this.distance,
+    required this.isFavorite,
     this.onProductTapped,
     this.onDistanceTapped,
     this.onFlipTapped,
@@ -111,7 +113,7 @@ class ProductContainer extends ConsumerWidget {
                             color: AppColors.light,
                           ),
                           child: SvgPicture.asset(
-                            ref.watch(homeNotifierProvider('')).isFavorite
+                            isFavorite
                                 ? AppSvgs.favoriteFilled
                                 : AppSvgs.favorite,
                           ),

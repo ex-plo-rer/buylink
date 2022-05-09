@@ -2,6 +2,7 @@
 //
 //     final productModel = productModelFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 ProductModel productModelFromJson(String str) =>
@@ -18,8 +19,9 @@ class ProductModel {
     required this.lat,
     required this.price,
     required this.oldPrice,
-    // required this.descr,
+    required this.isFav,
     required this.store,
+    // required this.category,
   });
 
   int id;
@@ -29,8 +31,9 @@ class ProductModel {
   double lat;
   int price;
   int oldPrice;
-  // String descr;
+  bool isFav;
   Store store;
+  // String category;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         id: json["id"],
@@ -40,8 +43,9 @@ class ProductModel {
         lat: json["lat"].toDouble(),
         price: json["price"],
         oldPrice: json["old_price"],
-        // descr: json["descr"],
+        isFav: json["is_fav"],
         store: Store.fromJson(json["store"]),
+        // category: json["category"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,8 +56,9 @@ class ProductModel {
         "lat": lat,
         "price": price,
         "old_price": oldPrice,
-        // "descr": descr,
+        "is_fav": isFav,
         "store": store.toJson(),
+        // "category": category,
       };
 }
 
@@ -61,38 +66,38 @@ class Store {
   Store({
     required this.id,
     required this.name,
-    // required this.image,
     required this.location,
-    // required this.star,
-    // required this.lon,
-    // required this.lat,
+    required this.lon,
+    required this.lat,
+    required this.star,
+    required this.logo,
   });
 
   int id;
   String name;
-  // String image;
   String location;
-  // int star;
-  // double lon;
-  // double lat;
+  double lon;
+  double lat;
+  int star;
+  String logo;
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
         id: json["id"],
         name: json["name"],
-        // image: json["image"],
         location: json["location"],
-        // star: json["star"],
-        // lon: json["lon"].toDouble(),
-        // lat: json["lat"].toDouble(),
+        lon: json["lon"].toDouble(),
+        lat: json["lat"].toDouble(),
+        star: json["star"],
+        logo: json["logo"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        // "image": image,
         "location": location,
-        // "star": star,
-        // "lon": lon,
-        // "lat": lat,
+        "lon": lon,
+        "lat": lat,
+        "star": star,
+        "logo": logo,
       };
 }

@@ -5,6 +5,7 @@ import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
+import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_progress_bar.dart';
@@ -15,6 +16,7 @@ import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/utilities/alertify.dart';
@@ -27,6 +29,7 @@ class HomeView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final homeNotifier = ref.watch(homeNotifierProvider(''));
+    final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -115,8 +118,15 @@ class HomeView extends ConsumerWidget {
                                   homeNotifier.products[index].store.name,
                               productName: homeNotifier.products[index].name,
                               productPrice: homeNotifier.products[index].price,
-                              distance:
-                                  homeNotifier.products[index].store.location,
+                              distance: (Geolocator.distanceBetween(
+                                        52.2165157,
+                                        6.9437819,
+                                        homeNotifier.products[index].lat,
+                                        homeNotifier.products[index].lon,
+                                      ) ~/
+                                      1000)
+                                  .toString(),
+                              isFavorite: homeNotifier.products[index].isFav,
                               onProductTapped: () {
                                 ref
                                     .read(navigationServiceProvider)
@@ -127,8 +137,12 @@ class HomeView extends ConsumerWidget {
                               },
                               onDistanceTapped: () {},
                               onFlipTapped: () {},
-                              onFavoriteTapped: () {
-                                homeNotifier.toggleFavorite();
+                              onFavoriteTapped: () async {
+                                await wishlistNotifier.addToWishlist(
+                                  productId: homeNotifier.products[index].id,
+                                );
+                                ref.refresh(homeNotifierProvider(''));
+                                // homeNotifier.toggleFavorite();
                               },
                             );
                           }
