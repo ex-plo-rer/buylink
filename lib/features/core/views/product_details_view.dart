@@ -2,35 +2,52 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/core/utilities/view_state.dart';
+import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/features/startup/notifiers/onboarding_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/back_arrow.dart';
 import 'package:buy_link/widgets/category_container.dart';
+import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/distance_container.dart';
 import 'package:buy_link/widgets/favorite_container.dart';
 import 'package:buy_link/widgets/iconNtext_container.dart';
 import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../../widgets/dot_build.dart';
+import '../notifiers/product_details_notifier.dart';
 
 class ProductDetailsView extends ConsumerWidget {
-  const ProductDetailsView({Key? key}) : super(key: key);
+  ProductDetailsView({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context, ref) {
-    final homeNotifier = ref.watch(homeNotifierProvider);
+    final productDetailsNotifier =
+        ref.watch(productDetailsNotifierProvider(product.id));
+    final homeNotifier = ref.watch(homeNotifierProvider(''));
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Column(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
                 children: [
                   Container(
                     height: 427,
@@ -40,13 +57,40 @@ class ProductDetailsView extends ConsumerWidget {
                       ),
                       color: AppColors.grey1,
                     ),
-                  ),
-                  const SizedBox(
-                    child: Divider(
-                      thickness: 2,
-                      color: AppColors.grey1,
+                    child: CarouselSlider.builder(
+                      itemCount: product.image.length,
+                      options: CarouselOptions(
+                        height: 447,
+                        autoPlay: true,
+                        disableCenter: true,
+                        viewportFraction: 1,
+                        aspectRatio: 0,
+                        onPageChanged: productDetailsNotifier.nextPage,
+                      ),
+                      itemBuilder: (context, index, realIndex) {
+                        final urlImage = product.image[index];
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.vertical(
+                              bottom: Radius.circular(20),
+                            ),
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(urlImage),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    width: 50,
+                  ),
+                  const Spacing.smallHeight(),
+                  AnimatedSmoothIndicator(
+                    count: product.image.length,
+                    activeIndex: productDetailsNotifier.activeIndex,
+                    effect: const WormEffect(
+                      dotHeight: 4,
+                      dotWidth: 4,
+                    ),
                   ),
                   ListTile(
                     onTap: () => ref
@@ -55,9 +99,9 @@ class ProductDetailsView extends ConsumerWidget {
                     leading: const CircleAvatar(
                       backgroundColor: AppColors.grey1,
                     ),
-                    title: const Text(
-                      'Atinuke Stores',
-                      style: TextStyle(
+                    title: Text(
+                      product.store.name,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                         color: AppColors.grey2,
@@ -65,6 +109,7 @@ class ProductDetailsView extends ConsumerWidget {
                     ),
                     subtitle: IconNTextContainer(
                       text: '4.6',
+                      // text: product.store.rating,
                       padding: 0,
                       icon: SvgPicture.asset(
                         AppSvgs.favoriteFilled,
@@ -75,14 +120,15 @@ class ProductDetailsView extends ConsumerWidget {
                     ),
                     trailing: const DistanceContainer(
                       distance: '2.3',
+                      // distance: product.store.distance,
                       containerColor: AppColors.grey2,
                       textColor: AppColors.light,
                       iconColor: AppColors.light,
                     ),
                   ),
-                  const Text(
-                    'Levi Jean Trouser',
-                    style: TextStyle(
+                  Text(
+                    product.name,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppColors.grey1,
@@ -90,22 +136,25 @@ class ProductDetailsView extends ConsumerWidget {
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
-                        '#3,000 ',
-                        style: TextStyle(
+                        '#${product.price} ',
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: AppColors.grey1,
                         ),
                       ),
-                      Text(
-                        '#5,000',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.grey4,
-                          decoration: TextDecoration.lineThrough,
+                      Visibility(
+                        visible: product.oldPrice > 0,
+                        child: Text(
+                          '${product.oldPrice}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.grey4,
+                            decoration: TextDecoration.lineThrough,
+                          ),
                         ),
                       ),
                     ],
@@ -115,6 +164,7 @@ class ProductDetailsView extends ConsumerWidget {
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
                       'A super-comfortable denim legging,built to contour curves, lengthen legs and celebrate your form. Made with an innovative tummy-sliming',
+                      //product.description,
                       // textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 14,
@@ -159,9 +209,12 @@ class ProductDetailsView extends ConsumerWidget {
                   const Spacing.bigHeight(),
                   const Divider(thickness: 2),
                   GestureDetector(
-                    onTap: () => ref
-                        .read(navigationServiceProvider)
-                        .navigateToNamed(Routes.productDetailsMore),
+                    onTap: () {
+                      homeNotifier.fetchProductAttr(productId: product.id);
+                      ref
+                          .read(navigationServiceProvider)
+                          .navigateToNamed(Routes.productDetailsMore);
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20.0,
@@ -207,35 +260,48 @@ class ProductDetailsView extends ConsumerWidget {
                     height: 400,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: MasonryGridView.count(
-                        itemCount: 20,
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 20,
-                        crossAxisSpacing: 15,
-                        itemBuilder: (context, index) {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: '12000',
-                            distance: '3.5',
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              homeNotifier.toggleFavorite();
-                            },
-                          );
-                        },
-                      ),
+                      child: productDetailsNotifier.state.isLoading
+                          ? const CircularProgress()
+                          : productDetailsNotifier.similarProducts.isEmpty
+                              ? const Center(
+                                  child: Text('No similar product'),
+                                )
+                              : MasonryGridView.count(
+                                  itemCount: productDetailsNotifier
+                                      .similarProducts.length,
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 20,
+                                  crossAxisSpacing: 15,
+                                  itemBuilder: (context, index) {
+                                    return ProductContainer(
+                                      url: productDetailsNotifier
+                                          .similarProducts[index].image[0],
+                                      storeName: productDetailsNotifier
+                                          .similarProducts[index].store.name,
+                                      productName: productDetailsNotifier
+                                          .similarProducts[index].name,
+                                      productPrice: productDetailsNotifier
+                                          .similarProducts[index].price,
+                                      distance: productDetailsNotifier
+                                          .similarProducts[index]
+                                          .store
+                                          .location,
+                                      onProductTapped: () {},
+                                      onDistanceTapped: () {},
+                                      onFlipTapped: () {},
+                                      onFavoriteTapped: () {
+                                        homeNotifier.toggleFavorite();
+                                      },
+                                    );
+                                  },
+                                ),
                     ),
                   ),
                 ],
               ),
-              const BackArrow(),
-            ],
-          ),
+            ),
+            const BackArrow(),
+          ],
         ),
       ),
     );

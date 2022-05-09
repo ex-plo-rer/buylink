@@ -1,18 +1,20 @@
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/constants/colors.dart';
 import '../core/constants/svgs.dart';
 
-class BackArrow extends StatelessWidget {
+class BackArrow extends ConsumerWidget {
   const BackArrow({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return GestureDetector(
-      // onTap: onFavoriteTapped,
+      onTap: () => ref.read(navigationServiceProvider).navigateBack(),
       child: Container(
         padding: const EdgeInsets.only(
           left: 20,

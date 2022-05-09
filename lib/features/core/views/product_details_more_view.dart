@@ -1,10 +1,12 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
+import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/compare_texts.dart';
 import 'package:buy_link/widgets/compare_texts_2.dart';
 import 'package:buy_link/widgets/product_container.dart';
@@ -23,6 +25,7 @@ class ProductDetailsMoreView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final homeNotifier = ref.watch(homeNotifierProvider(''));
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -53,55 +56,55 @@ class ProductDetailsMoreView extends ConsumerWidget {
               // vertical: 16,
               horizontal: 20,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                CompareTexts(
-                  title: 'Brand:',
-                  subTitle: 'Levi',
-                  titleColor: AppColors.grey1,
-                  titleSize: 14,
-                ),
-                Spacing.height(12),
-                CompareTexts(
-                  title: 'Model:',
-                  subTitle: 'Melinda',
-                  titleColor: AppColors.grey1,
-                  titleSize: 14,
-                ),
-                Spacing.height(12),
-                CompareTexts(
-                  title: 'Color:',
-                  subTitle: 'Blue',
-                  titleColor: AppColors.grey1,
-                  titleSize: 14,
-                ),
-                Spacing.height(12),
-                CompareTexts(
-                  title: 'Styling:',
-                  subTitle: 'High stretch,5-pocket styling',
-                  titleColor: AppColors.grey1,
-                  titleSize: 14,
-                ),
-                Spacing.height(12),
-                CompareTexts(
-                  title: 'Material:',
-                  subTitle:
-                      '61% cotton, 19% polyester, 19% TENCEL™ lyocell, 1% elastane,denim',
-                  titleColor: AppColors.grey1,
-                  titleSize: 14,
-                ),
-                Spacing.height(12),
-                CompareTexts(
-                  title: 'Care:',
-                  subTitle:
-                      'Wash your jeans once every 10 wears at most; this increases their lifespan and saves natural resources.When you eventually launder your jeans, wash and dry them inside out with like colors; liquid detergent is recommended',
-                  titleColor: AppColors.grey1,
-                  titleSize: 14,
-                ),
-                Spacing.height(12),
-              ],
-            ),
+            child: homeNotifier.state.isLoading
+                ? const CircularProgress()
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CompareTexts(
+                        title: 'Brand:',
+                        subTitle: homeNotifier.productAttr.brand,
+                        titleColor: AppColors.grey1,
+                        titleSize: 14,
+                      ),
+                      const Spacing.height(12),
+                      CompareTexts(
+                        title: 'Model:',
+                        subTitle: homeNotifier.productAttr.model,
+                        titleColor: AppColors.grey1,
+                        titleSize: 14,
+                      ),
+                      const Spacing.height(12),
+                      CompareTexts(
+                        title: 'Color:',
+                        subTitle: homeNotifier.productAttr.color,
+                        titleColor: AppColors.grey1,
+                        titleSize: 14,
+                      ),
+                      const Spacing.height(12),
+                      const CompareTexts(
+                        title: 'Styling:',
+                        subTitle: 'High stretch,5-pocket styling',
+                        titleColor: AppColors.grey1,
+                        titleSize: 14,
+                      ),
+                      const Spacing.height(12),
+                      CompareTexts(
+                        title: 'Material:',
+                        subTitle: homeNotifier.productAttr.material,
+                        titleColor: AppColors.grey1,
+                        titleSize: 14,
+                      ),
+                      const Spacing.height(12),
+                      CompareTexts(
+                        title: 'Care:',
+                        subTitle: homeNotifier.productAttr.care,
+                        titleColor: AppColors.grey1,
+                        titleSize: 14,
+                      ),
+                      const Spacing.height(12),
+                    ],
+                  ),
           ),
         ),
       ),

@@ -16,7 +16,7 @@ class ProductContainer extends ConsumerWidget {
   final String url;
   final String storeName;
   final String productName;
-  final String productPrice;
+  final int productPrice;
   final String distance;
   final void Function()? onProductTapped;
   final void Function()? onDistanceTapped;
@@ -111,7 +111,7 @@ class ProductContainer extends ConsumerWidget {
                             color: AppColors.light,
                           ),
                           child: SvgPicture.asset(
-                            ref.watch(homeNotifierProvider).isFavorite
+                            ref.watch(homeNotifierProvider('')).isFavorite
                                 ? AppSvgs.favoriteFilled
                                 : AppSvgs.favorite,
                           ),

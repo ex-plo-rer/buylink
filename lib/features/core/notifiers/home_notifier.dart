@@ -1,17 +1,70 @@
+import 'package:buy_link/features/core/models/product_attribute_model.dart';
+import 'package:buy_link/repositories/core_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
 import '../../../core/routes.dart';
+import '../../../core/utilities/alertify.dart';
 import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../services/base/network_exception.dart';
 import '../../../services/navigation_service.dart';
+import '../models/product_model.dart';
 
 class HomeNotifier extends BaseChangeNotifier {
   final Reader _reader;
+  final String category;
 
-  HomeNotifier(this._reader) {
-    // decideNavigation();
+  HomeNotifier(
+    this._reader, {
+    required this.category,
+  }) {
+    fetchProducts(
+      category: category,
+    );
+  }
+
+  List<ProductModel> _products = [];
+  List<ProductModel> get products => _products;
+
+  ProductAttrModel? _productAttr;
+  ProductAttrModel get productAttr => _productAttr!;
+
+  Future<void> fetchProducts({
+    required String category,
+  }) async {
+    try {
+      setState(state: ViewState.loading);
+      _products = await _reader(coreRepository).fetchProducts(
+        lat: 3.4,
+        lon: 3.7,
+      );
+      // Alertify(title: 'User logged in').success();
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify(title: e.error!).error();
+    } finally {
+      setState(state: ViewState.idle);
+    }
+  }
+
+  Future<void> fetchProductAttr({
+    required int productId,
+  }) async {
+    try {
+      setState(state: ViewState.loading);
+      _productAttr = await _reader(coreRepository).fetchProductAttr(
+        productId: productId,
+      );
+      // Alertify(title: 'User logged in').success();
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify(title: e.error!).error();
+    } finally {
+      setState(state: ViewState.idle);
+    }
   }
 
   bool _isFavorite = false;
@@ -24,4 +77,9 @@ class HomeNotifier extends BaseChangeNotifier {
 }
 
 final homeNotifierProvider =
-    ChangeNotifierProvider<HomeNotifier>((ref) => HomeNotifier(ref.read));
+    ChangeNotifierProvider.family<HomeNotifier, String>(
+  (ref, category) => HomeNotifier(
+    ref.read,
+    category: category,
+  ),
+);
