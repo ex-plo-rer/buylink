@@ -4,9 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/colors.dart';
-import '../features/authentication/notifiers/onboarding_notifier.dart';
-
-
+import '../features/startup/notifiers/onboarding_notifier.dart';
 
 // Container buildDot(ref, BuildContext context){
 //   var onboardnotifier = ref.watch(onboardProv);
@@ -21,7 +19,6 @@ import '../features/authentication/notifiers/onboarding_notifier.dart';
 //     ),
 //   );
 // }
-
 
 class DotsIndicator extends AnimatedWidget {
   const DotsIndicator({
@@ -55,7 +52,6 @@ class DotsIndicator extends AnimatedWidget {
   static const double _kDotSpacing = 25.0;
 
   Widget _buildDot(int index) {
-
     return Container(
       height: 10,
       width: controller.page == index ? 25 : 10,

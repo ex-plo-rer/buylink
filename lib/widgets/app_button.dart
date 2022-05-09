@@ -37,6 +37,7 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ButtonTheme(
       // Wrap with SizedBox whenever you want a specific width or height.
+      disabledColor: AppColors.grey6,
       child: SizedBox(
         width: width,
         height: height,

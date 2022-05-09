@@ -14,6 +14,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/utilities/alertify.dart';
 import '../../authentication/views/login_view.dart';
 
 class HomeView extends ConsumerWidget {
@@ -41,7 +42,21 @@ class HomeView extends ConsumerWidget {
                 hasPrefixIcon: true,
               ),
               const Spacing.height(12),
-              //const Spacing.height(12),
+              AppButton(
+                text: 'Log in to personalize your Buylink experience',
+                textColor: AppColors.primaryColor,
+                fontSize: 14,
+                backgroundColor: AppColors.shade1,
+                hasIcon: true,
+                icon: SvgPicture.asset(AppSvgs.login),
+                onPressed: () {
+                  ref.read(navigationServiceProvider).navigateOffAllNamed(
+                        Routes.login,
+                        (p0) => false,
+                      );
+                },
+              ),
+              const Spacing.height(12),
               const Text(
                 'Based on your interest',
                 style: TextStyle(
@@ -60,7 +75,7 @@ class HomeView extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     if (index == 3) {
                       return Container(
-                        height: 185,
+                        height: 182,
                         color: AppColors.transparent,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
