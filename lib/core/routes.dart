@@ -73,7 +73,11 @@ class Routes {
       case categories:
         return MaterialPageRoute(builder: (_) => const CategoriesView());
       case compare:
-        return MaterialPageRoute(builder: (_) => CompareView());
+        var product = settings.arguments as ProductModel;
+        return MaterialPageRoute(
+            builder: (_) => CompareView(
+                  product: product,
+                ));
       case productDetails:
         var product = settings.arguments as ProductModel;
         return MaterialPageRoute(

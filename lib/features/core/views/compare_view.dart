@@ -1,6 +1,7 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
@@ -20,8 +21,12 @@ import '../../../core/constants/strings.dart';
 
 class CompareView extends ConsumerWidget {
   bool haveProductToCompare = true;
+  final ProductModel product;
 
-  CompareView({Key? key}) : super(key: key);
+  CompareView({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
@@ -74,11 +79,11 @@ class CompareView extends ConsumerWidget {
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          const Expanded(
-                            child: const Padding(
+                          Expanded(
+                            child: Padding(
                               padding: const EdgeInsets.only(right: 6.0),
                               child: ProductImageContainer(
-                                productImage: 'productImage',
+                                product: product,
                               ),
                             ),
                           ),
@@ -87,8 +92,8 @@ class CompareView extends ConsumerWidget {
                               padding: const EdgeInsets.only(left: 6.0),
                               // TODO: Check if there is a product to compare with.
                               child: haveProductToCompare
-                                  ? const ProductImageContainer(
-                                      productImage: 'productImage',
+                                  ? ProductImageContainer(
+                                      product: product,
                                     )
                                   : const SizedBox(
                                       height: 160,
@@ -106,13 +111,13 @@ class CompareView extends ConsumerWidget {
                       const Spacing.bigHeight(),
                       CompareTexts2(
                         title: 'Name',
-                        subTitle1: 'Levi Jean Trousers',
+                        subTitle1: product.name,
                         subTitle2: 'Adidas Jean Trousers',
                         haveProductToCompare: haveProductToCompare,
                       ),
                       CompareTexts2(
                         title: 'Price',
-                        subTitle1: '#3000',
+                        subTitle1: product.price.toString(),
                         subTitle2: '#1500',
                         haveProductToCompare: haveProductToCompare,
                       ),
@@ -124,92 +129,20 @@ class CompareView extends ConsumerWidget {
                       ),
                       CompareTexts2(
                         title: 'Color',
-                        subTitle1: 'Blue',
+                        subTitle1: product.color,
                         subTitle2: 'Blue',
                         haveProductToCompare: haveProductToCompare,
                       ),
                       CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
+                        title: 'Material',
+                        subTitle1: product.material,
+                        subTitle2: 'Blue',
                         haveProductToCompare: haveProductToCompare,
                       ),
                       CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Style',
-                        subTitle1: 'High stretch,5-pocket styling',
-                        subTitle2: 'High Waist, Baggy',
+                        title: 'Care',
+                        subTitle1: product.care,
+                        subTitle2: 'Blue',
                         haveProductToCompare: haveProductToCompare,
                       ),
                     ],

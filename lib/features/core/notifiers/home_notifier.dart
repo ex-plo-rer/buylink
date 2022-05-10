@@ -1,5 +1,7 @@
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/repositories/core_repository.dart';
+import 'package:buy_link/services/location_service.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
@@ -30,14 +32,20 @@ class HomeNotifier extends BaseChangeNotifier {
   ProductAttrModel? _productAttr;
   ProductAttrModel get productAttr => _productAttr!;
 
+  Position? position;
+
   Future<void> fetchProducts({
     required String category,
   }) async {
     try {
       setState(state: ViewState.loading);
+      position = await _reader(locationService).getCurrentLocation();
       _products = await _reader(coreRepository).fetchProducts(
         lat: 3.4,
         lon: 3.7,
+        //TODO: the below
+        // lat: position!.latitude,
+        // lon: position.longitude,
       );
       // Alertify(title: 'User logged in').success();
       setState(state: ViewState.idle);

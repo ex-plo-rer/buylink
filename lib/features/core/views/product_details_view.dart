@@ -27,6 +27,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../services/location_service.dart';
 import '../../../widgets/dot_build.dart';
 import '../notifiers/product_details_notifier.dart';
 
@@ -43,9 +44,6 @@ class ProductDetailsView extends ConsumerWidget {
     final productDetailsNotifier =
         ref.watch(productDetailsNotifierProvider(product.id));
     final homeNotifier = ref.watch(homeNotifierProvider(''));
-    double distanceInMeters = Geolocator.distanceBetween(
-        52.2165157, 6.9437819, product.lat, product.lon);
-    print('distanceInMeters: $distanceInMeters');
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -100,8 +98,10 @@ class ProductDetailsView extends ConsumerWidget {
                     onTap: () => ref
                         .read(navigationServiceProvider)
                         .navigateToNamed(Routes.storeDetails),
-                    leading: const CircleAvatar(
+                    leading: CircleAvatar(
                       backgroundColor: AppColors.grey1,
+                      backgroundImage:
+                          CachedNetworkImageProvider(product.store.logo),
                     ),
                     title: Text(
                       product.store.name,
@@ -123,7 +123,10 @@ class ProductDetailsView extends ConsumerWidget {
                       containerColor: AppColors.transparent,
                     ),
                     trailing: DistanceContainer(
-                      distance: (distanceInMeters ~/ 1000).toString(),
+                      distance: ref.watch(locationService).getDistance(
+                            storeLat: product.lat,
+                            storeLon: product.lon,
+                          ),
                       // distance: product.store.distance,
                       containerColor: AppColors.grey2,
                       textColor: AppColors.light,
@@ -290,7 +293,14 @@ class ProductDetailsView extends ConsumerWidget {
                                           .similarProducts[index].name,
                                       productPrice: productDetailsNotifier
                                           .similarProducts[index].price,
-                                      distance: distanceInMeters.toString(),
+                                      distance: ref
+                                          .watch(locationService)
+                                          .getDistance(
+                                            storeLat: productDetailsNotifier
+                                                .similarProducts[index].lat,
+                                            storeLon: productDetailsNotifier
+                                                .similarProducts[index].lon,
+                                          ),
                                       isFavorite: productDetailsNotifier
                                           .similarProducts[index].isFav,
                                       onProductTapped: () {},

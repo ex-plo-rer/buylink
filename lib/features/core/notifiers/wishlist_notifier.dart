@@ -16,12 +16,6 @@ class WishlistNotifier extends BaseChangeNotifier {
 
   WishlistNotifier(this._reader);
 
-  List<ProductModel> _products = [];
-  List<ProductModel> get products => _products;
-
-  ProductAttrModel? _productAttr;
-  ProductAttrModel get productAttr => _productAttr!;
-
   Future<void> addToWishlist({
     required int productId,
   }) async {
@@ -40,15 +34,15 @@ class WishlistNotifier extends BaseChangeNotifier {
     }
   }
 
-  Future<void> fetchProductAttr({
+  Future<void> removeFromWishlist({
     required int productId,
   }) async {
     try {
       setState(state: ViewState.loading);
-      _productAttr = await _reader(coreRepository).fetchProductAttr(
+      await _reader(coreRepository).removeFromWishList(
         productId: productId,
       );
-      // Alertify(title: 'User logged in').success();
+      Alertify(title: 'Product removed from wishlist').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
@@ -56,14 +50,6 @@ class WishlistNotifier extends BaseChangeNotifier {
     } finally {
       setState(state: ViewState.idle);
     }
-  }
-
-  bool _isFavorite = false;
-  bool get isFavorite => _isFavorite;
-
-  void toggleFavorite() {
-    _isFavorite = !_isFavorite;
-    notifyListeners();
   }
 }
 

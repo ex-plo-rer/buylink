@@ -81,12 +81,12 @@ class ProductContainer extends ConsumerWidget {
                       bottom: 40,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () {
-                          ref
-                              .read(navigationServiceProvider)
-                              .navigateToNamed(Routes.compare);
-                        },
-                        // onTap: onFlipTapped,
+                        // onTap: () {
+                        //   ref
+                        //       .read(navigationServiceProvider)
+                        //       .navigateToNamed(Routes.compare);
+                        // },
+                        onTap: onFlipTapped,
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
