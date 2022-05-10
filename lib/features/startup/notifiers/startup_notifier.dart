@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/services/local_storage_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -19,6 +20,7 @@ class StartupNotifier extends BaseChangeNotifier {
   Future<void> decideNavigation() async {
     print('decide navigation called');
     await Future.delayed(const Duration(seconds: 2));
+    _reader(userProvider).setUser();
     if (await _reader(localStorageService)
             .readSecureData(AppStrings.onboardedKey) !=
         'true') {

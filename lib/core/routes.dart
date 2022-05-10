@@ -14,6 +14,7 @@ import 'package:buy_link/features/core/views/wishlist_view.dart';
 import 'package:flutter/material.dart';
 
 import '../features/authentication/views/forgot_password_view.dart';
+import '../features/core/models/product_model.dart';
 import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
@@ -74,7 +75,12 @@ class Routes {
       case compare:
         return MaterialPageRoute(builder: (_) => CompareView());
       case productDetails:
-        return MaterialPageRoute(builder: (_) => const ProductDetailsView());
+        var product = settings.arguments as ProductModel;
+        return MaterialPageRoute(
+          builder: (_) => ProductDetailsView(
+            product: product,
+          ),
+        );
       case productDetailsMore:
         return MaterialPageRoute(builder: (_) => ProductDetailsMoreView());
       case storeDetails:

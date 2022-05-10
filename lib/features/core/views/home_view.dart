@@ -2,9 +2,13 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/features/core/notifiers/user_provider.dart';
+import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
+import 'package:buy_link/widgets/app_progress_bar.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/product_container.dart';
@@ -12,9 +16,11 @@ import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/utilities/alertify.dart';
+import '../../../widgets/circular_progress.dart';
 import '../../authentication/views/login_view.dart';
 
 class HomeView extends ConsumerWidget {
@@ -22,7 +28,8 @@ class HomeView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final homeNotifier = ref.watch(homeNotifierProvider);
+    final homeNotifier = ref.watch(homeNotifierProvider(''));
+    final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -42,19 +49,22 @@ class HomeView extends ConsumerWidget {
                 hasPrefixIcon: true,
               ),
               const Spacing.height(12),
-              AppButton(
-                text: 'Log in to personalize your Buylink experience',
-                textColor: AppColors.primaryColor,
-                fontSize: 14,
-                backgroundColor: AppColors.shade1,
-                hasIcon: true,
-                icon: SvgPicture.asset(AppSvgs.login),
-                onPressed: () {
-                  ref.read(navigationServiceProvider).navigateOffAllNamed(
-                        Routes.login,
-                        (p0) => false,
-                      );
-                },
+              Visibility(
+                visible: ref.watch(userProvider).currentUser == null,
+                child: AppButton(
+                  text: 'Log in to personalize your Buylink experience',
+                  textColor: AppColors.primaryColor,
+                  fontSize: 14,
+                  backgroundColor: AppColors.shade1,
+                  hasIcon: true,
+                  icon: SvgPicture.asset(AppSvgs.login),
+                  onPressed: () {
+                    ref.read(navigationServiceProvider).navigateOffAllNamed(
+                          Routes.login,
+                          (p0) => false,
+                        );
+                  },
+                ),
               ),
               const Spacing.height(12),
               const Text(
@@ -67,59 +77,77 @@ class HomeView extends ConsumerWidget {
               ),
               const Spacing.smallHeight(),
               Expanded(
-                child: MasonryGridView.count(
-                  itemCount: 20 + 1,
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 15,
-                  itemBuilder: (context, index) {
-                    if (index == 3) {
-                      return Container(
-                        height: 182,
-                        color: AppColors.transparent,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CategoryContainer(
-                              categoryName: 'Fashion',
-                              categoryImage: '',
-                              onTap: () {},
-                            ),
-                            CategoryContainer(
-                              categoryName: 'Photography',
-                              categoryImage: '',
-                              onTap: () {},
-                            ),
-                            CategoryContainer(
-                              categoryName: 'Baby & Toddler',
-                              categoryImage: '',
-                              onTap: () {},
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      return ProductContainer(
-                        url:
-                            'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                        storeName: 'Atinuke Store',
-                        productName: 'Oraimo Power Bank',
-                        productPrice: '12000',
-                        distance: '3.5',
-                        onProductTapped: () {
-                          ref
-                              .read(navigationServiceProvider)
-                              .navigateToNamed(Routes.productDetails);
+                child: homeNotifier.state.isLoading
+                    ? const CircularProgress()
+                    : MasonryGridView.count(
+                        itemCount: homeNotifier.products.length,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 15,
+                        itemBuilder: (context, index) {
+                          if (index == 3) {
+                            return Container(
+                              height: 182,
+                              color: AppColors.transparent,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CategoryContainer(
+                                    categoryName: 'Fashion',
+                                    categoryImage: '',
+                                    onTap: () {},
+                                  ),
+                                  CategoryContainer(
+                                    categoryName: 'Photography',
+                                    categoryImage: '',
+                                    onTap: () {},
+                                  ),
+                                  CategoryContainer(
+                                    categoryName: 'Baby & Toddler',
+                                    categoryImage: '',
+                                    onTap: () {},
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return ProductContainer(
+                              url: homeNotifier.products[index].image[0],
+                              storeName:
+                                  homeNotifier.products[index].store.name,
+                              productName: homeNotifier.products[index].name,
+                              productPrice: homeNotifier.products[index].price,
+                              distance: (Geolocator.distanceBetween(
+                                        52.2165157,
+                                        6.9437819,
+                                        homeNotifier.products[index].lat,
+                                        homeNotifier.products[index].lon,
+                                      ) ~/
+                                      1000)
+                                  .toString(),
+                              isFavorite: homeNotifier.products[index].isFav,
+                              onProductTapped: () {
+                                ref
+                                    .read(navigationServiceProvider)
+                                    .navigateToNamed(
+                                      Routes.productDetails,
+                                      arguments: homeNotifier.products[index],
+                                    );
+                              },
+                              onDistanceTapped: () {},
+                              onFlipTapped: () {},
+                              onFavoriteTapped: () async {
+                                await wishlistNotifier.addToWishlist(
+                                  productId: homeNotifier.products[index].id,
+                                );
+                                ref.refresh(homeNotifierProvider(''));
+                                // homeNotifier.toggleFavorite();
+                              },
+                            );
+                          }
                         },
-                        onDistanceTapped: () {},
-                        onFlipTapped: () {},
-                        onFavoriteTapped: () {
-                          homeNotifier.toggleFavorite();
-                        },
-                      );
-                    }
-                  },
-                ),
+                      ),
               ),
             ],
           ),

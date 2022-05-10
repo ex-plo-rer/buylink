@@ -11,18 +11,10 @@ import '../../../services/base/network_exception.dart';
 import '../../../services/navigation_service.dart';
 import '../models/product_model.dart';
 
-class HomeNotifier extends BaseChangeNotifier {
+class WishlistNotifier extends BaseChangeNotifier {
   final Reader _reader;
-  final String category;
 
-  HomeNotifier(
-    this._reader, {
-    required this.category,
-  }) {
-    fetchProducts(
-      category: category,
-    );
-  }
+  WishlistNotifier(this._reader);
 
   List<ProductModel> _products = [];
   List<ProductModel> get products => _products;
@@ -30,16 +22,15 @@ class HomeNotifier extends BaseChangeNotifier {
   ProductAttrModel? _productAttr;
   ProductAttrModel get productAttr => _productAttr!;
 
-  Future<void> fetchProducts({
-    required String category,
+  Future<void> addToWishlist({
+    required int productId,
   }) async {
     try {
       setState(state: ViewState.loading);
-      _products = await _reader(coreRepository).fetchProducts(
-        lat: 3.4,
-        lon: 3.7,
+      await _reader(coreRepository).addToWishList(
+        productId: productId,
       );
-      // Alertify(title: 'User logged in').success();
+      Alertify(title: 'Product Added to wishlist').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
@@ -76,10 +67,6 @@ class HomeNotifier extends BaseChangeNotifier {
   }
 }
 
-final homeNotifierProvider =
-    ChangeNotifierProvider.family<HomeNotifier, String>(
-  (ref, category) => HomeNotifier(
-    ref.read,
-    category: category,
-  ),
+final wishlistNotifierProvider = ChangeNotifierProvider<WishlistNotifier>(
+  (ref) => WishlistNotifier(ref.read),
 );
