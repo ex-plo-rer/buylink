@@ -77,7 +77,7 @@ class SignupNotifier extends BaseChangeNotifier {
       );
 
       Alertify(
-        title: 'Signup Successful',
+        title: 'Wellcome to Buylink',
       ).success();
       _reader(localStorageService).deleteSecureData(AppStrings.otpEmailKey);
       _reader(navigationServiceProvider)

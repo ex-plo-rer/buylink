@@ -106,7 +106,7 @@ class DefaultHomeView extends ConsumerWidget {
                         'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                         storeName: 'Atinuke Store',
                         productName: 'Oraimo Power Bank',
-                        productPrice: '12000',
+                        productPrice: 12000,
                         distance: '3.5',
                         onProductTapped: () {
                           ref
@@ -117,7 +117,7 @@ class DefaultHomeView extends ConsumerWidget {
                         onFlipTapped: () {},
                         onFavoriteTapped: () {
                           //defaultHomeNotifieNotifier.toggleFavorite();
-                        },
+                        }, isFavorite: false,
                       );
                     }
                   },
