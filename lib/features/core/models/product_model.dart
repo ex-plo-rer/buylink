@@ -20,6 +20,14 @@ class ProductModel {
     required this.price,
     required this.oldPrice,
     required this.isFav,
+    required this.desc,
+    required this.color,
+    required this.age,
+    required this.weight,
+    required this.size,
+    required this.model,
+    required this.material,
+    required this.care,
     required this.store,
     // required this.category,
   });
@@ -32,6 +40,14 @@ class ProductModel {
   int price;
   int oldPrice;
   bool isFav;
+  String desc;
+  String color;
+  String age;
+  String weight;
+  String size;
+  String model;
+  String material;
+  String care;
   Store store;
   // String category;
 
@@ -44,6 +60,14 @@ class ProductModel {
         price: json["price"],
         oldPrice: json["old_price"],
         isFav: json["is_fav"],
+        desc: json["desc"],
+        color: json["color"],
+        age: json["age"],
+        weight: json["weight"],
+        size: json["size"],
+        model: json["model"],
+        material: json["material"],
+        care: json["care"],
         store: Store.fromJson(json["store"]),
         // category: json["category"],
       );
@@ -57,6 +81,14 @@ class ProductModel {
         "price": price,
         "old_price": oldPrice,
         "is_fav": isFav,
+        "desc": desc,
+        "color": color,
+        "age": age,
+        "weight": weight,
+        "size": size,
+        "model": model,
+        "material": material,
+        "care": care,
         "store": store.toJson(),
         // "category": category,
       };

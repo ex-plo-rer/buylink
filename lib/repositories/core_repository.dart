@@ -137,6 +137,34 @@ class CoreRepository {
 
     return '';
   }
+
+  Future<String> removeFromWishList({
+    required int productId,
+  }) async {
+    // await _reader(userProvider).setUser();
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'product_id': productId,
+    };
+    print('Remove from wishlist params sent to server $body');
+
+    var response = await networkService.post(
+      'users/remove-wish',
+      body: body,
+      headers: headers,
+    );
+
+    print('Remove from wishlist response $response');
+    // List<ProductModel> _products = [];
+    // for (var product in response) {
+    //   _products.add(ProductModel.fromJson(product));
+    // }
+
+    return '';
+  }
 }
 
 final coreRepository = Provider(
