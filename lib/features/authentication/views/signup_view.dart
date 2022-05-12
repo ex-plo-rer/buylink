@@ -263,9 +263,11 @@ class SignupView extends ConsumerWidget {
                                 signupNotifier.totalPage
                             ? AppStrings.signup
                             : AppStrings.next,
-                        backgroundColor: _nameController.text.isEmpty||_emailAddressController.text.isEmpty || _passwordController.text.isEmpty
-                            ? AppColors.grey3:
-                        AppColors.primaryColor,
+                        backgroundColor: _nameController.text.isEmpty
+                            //||_emailAddressController.text.isEmpty || _passwordController.text.isEmpty
+                            ? AppColors.grey6
+                           // _emailAddressController.text.isEmpty?AppColors.grey6
+                        :AppColors.primaryColor,
                         // onPressed: signupNotifier.currentPage == 1 ?_nameController.text.isEmpty: signupNotifier.currentPage == 2? _emailAddressController.text.isEmpty: signupNotifier.currentPage == 4? _passwordController.text.isEmpty
                         onPressed: signupNotifier.currentPage == 1 &&
                                 _nameController.text.isEmpty
