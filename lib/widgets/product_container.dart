@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../core/constants/naira_currency.dart';
+
 class ProductContainer extends ConsumerWidget {
   final String url;
   final String storeName;
@@ -24,6 +26,7 @@ class ProductContainer extends ConsumerWidget {
   final void Function()? onFavoriteTapped;
   final bool isBig;
   final bool isFavorite;
+
 
   const ProductContainer({
     Key? key,
@@ -146,7 +149,8 @@ class ProductContainer extends ConsumerWidget {
                 ),
               ),
               Text(
-                '#$productPrice',
+               // '${currency(context).currencySymbol}productPrice',
+                '#$productName',
                 style: const TextStyle(
                   color: AppColors.grey1,
                   fontSize: 14,
