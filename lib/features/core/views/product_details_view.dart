@@ -30,20 +30,38 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../services/location_service.dart';
 import '../../../widgets/dot_build.dart';
 import '../notifiers/product_details_notifier.dart';
+import '../notifiers/wishlist_notifier.dart';
+import 'package:intl/intl.dart';
+import 'dart:io';
 
 class ProductDetailsView extends ConsumerWidget {
-  const ProductDetailsView({
+  ProductDetailsView({
     Key? key,
     required this.product,
   }) : super(key: key);
 
   final ProductModel product;
 
+  late String symb;
+
+  void symbol(context) {
+    Locale locale = Localizations.localeOf(context);
+    var format =
+        NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
+    symb = format.currencySymbol;
+    print("CURRENCY SYMBOL ${symb}"); // $
+    print("CURRENCY NAME ${format.currencyName}"); // USD
+    // var format = NumberFormat.simpleCurrency(locale: Platform.localeName);
+    symb = format.currencySymbol;
+  }
+
   @override
   Widget build(BuildContext context, ref) {
+    symbol(context);
     final productDetailsNotifier =
         ref.watch(productDetailsNotifierProvider(product.id));
     final homeNotifier = ref.watch(homeNotifierProvider(''));
+    final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -212,6 +230,14 @@ class ProductDetailsView extends ConsumerWidget {
                             containerColor: AppColors.grey10,
                             radius: 10,
                             padding: 18,
+                            onFavoriteTapped: () async {
+                              product.isFav
+                                  ? await wishlistNotifier.removeFromWishlist(
+                                      productId: product.id)
+                                  : await wishlistNotifier.addToWishlist(
+                                      productId: product.id);
+                              ref.refresh(homeNotifierProvider(''));
+                            },
                           ),
                         ),
                       ],
@@ -303,11 +329,46 @@ class ProductDetailsView extends ConsumerWidget {
                                           ),
                                       isFavorite: productDetailsNotifier
                                           .similarProducts[index].isFav,
-                                      onProductTapped: () {},
+                                      isDetails: true,
+                                      onProductTapped: () {
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateToNamed(
+                                              Routes.productDetails,
+                                              arguments: productDetailsNotifier
+                                                  .similarProducts[index],
+                                            );
+                                      },
                                       onDistanceTapped: () {},
-                                      onFlipTapped: () {},
-                                      onFavoriteTapped: () {
-                                        homeNotifier.toggleFavorite();
+                                      onFlipTapped: () {
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateToNamed(
+                                              Routes.compare,
+                                              arguments: productDetailsNotifier
+                                                  .similarProducts[index],
+                                            );
+                                      },
+                                      onFavoriteTapped: () async {
+                                        productDetailsNotifier
+                                                .similarProducts[index].isFav
+                                            ? await wishlistNotifier
+                                                .removeFromWishlist(
+                                                productId:
+                                                    productDetailsNotifier
+                                                        .similarProducts[index]
+                                                        .id,
+                                              )
+                                            : await wishlistNotifier
+                                                .addToWishlist(
+                                                productId:
+                                                    productDetailsNotifier
+                                                        .similarProducts[index]
+                                                        .id,
+                                              );
+                                        ref.refresh(
+                                            productDetailsNotifierProvider(
+                                                product.id));
                                       },
                                     );
                                   },
