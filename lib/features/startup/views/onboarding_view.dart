@@ -41,17 +41,17 @@ class OnboardingView extends ConsumerWidget {
                   ),
                   const Spacing.empty(),
                   Padding(
-                    padding: EdgeInsets.all(12),
-                    child:
-                  Text(
-                    onboardnotifier.onBoardingProvContents[index].description,
-                    style: const TextStyle(
-                      color: AppColors.grey1,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.center,
-                  )),
+                      padding: EdgeInsets.all(12),
+                      child: Text(
+                        onboardnotifier
+                            .onBoardingProvContents[index].description,
+                        style: const TextStyle(
+                          color: AppColors.grey1,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
                 ],
               ),
               onPageChanged: onboardnotifier.changePage,
@@ -80,7 +80,7 @@ class OnboardingView extends ConsumerWidget {
               onPressed: () {
                 onboardnotifier.nextPage();
                 onboardnotifier.currentPage > 2
-                    ? onboardnotifier.exitOnboard()
+                    ? onboardnotifier.exitOnboard(toSignUp: true)
                     : _pageController.animateToPage(
                         onboardnotifier.currentPage,
                         duration: _kDuration,
@@ -96,9 +96,7 @@ class OnboardingView extends ConsumerWidget {
               secondText: 'Log in',
               secondColor: AppColors.primaryColor,
               mainAxisAlignment: MainAxisAlignment.center,
-              onTapText: () => ref
-                  .read(navigationServiceProvider)
-                  .navigateToNamed(Routes.login),
+              onTapText: () => onboardnotifier.exitOnboard(toSignUp: false),
               fontSize: 14,
             ),
           ),

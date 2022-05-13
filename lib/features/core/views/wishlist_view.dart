@@ -2,11 +2,15 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
+import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
+import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +32,14 @@ class _WishlistState extends ConsumerState<WishlistView>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(length: 5, vsync: this);
+    ref.read(wishlistNotifierProvider).fetchWishlist(category: 'all');
     super.initState();
   }
 
   // TODO: Make the third product fill the screen's width
   @override
   Widget build(BuildContext context) {
+    final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -91,48 +97,38 @@ class _WishlistState extends ConsumerState<WishlistView>
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    MasonryGridView.count(
-                      itemCount: 20 + 1,
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 15,
-                      itemBuilder: (context, index) {
-                        if (index == 3) {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
+                    wishlistNotifier.state.isLoading
+                        ? const CircularProgress()
+                        : MasonryGridView.count(
+                            itemCount: wishlistNotifier.products.length,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
+                            itemBuilder: (context, index) {
+                              return ProductContainer(
+                                url: wishlistNotifier.products[index].image[0],
+                                storeName:
+                                    wishlistNotifier.products[index].store.name,
+                                productName:
+                                    wishlistNotifier.products[index].name,
+                                productPrice:
+                                    wishlistNotifier.products[index].price,
+                                distance: ref.read(locationService).getDistance(
+                                      storeLat:
+                                          wishlistNotifier.products[index].lat,
+                                      storeLon:
+                                          wishlistNotifier.products[index].lon,
+                                    ),
+                                isFavorite: true,
+                                onProductTapped: () {},
+                                onDistanceTapped: () {},
+                                onFlipTapped: () {},
+                                onFavoriteTapped: () {
+                                  // homeNotifier.toggleFavorite();
+                                },
+                              );
                             },
-                            isBig: true,
-                          );
-                        } else {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
-                            },
-                          );
-                        }
-                      },
-                    ),
+                          ),
                     MasonryGridView.count(
                       itemCount: 20 + 1,
                       crossAxisCount: 2,

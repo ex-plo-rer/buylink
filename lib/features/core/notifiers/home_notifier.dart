@@ -1,6 +1,7 @@
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/services/location_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -33,12 +34,18 @@ class HomeNotifier extends BaseChangeNotifier {
   ProductAttrModel get productAttr => _productAttr!;
 
   Position? position;
+  //
+  // Future<void> setLocation(context) async {
+  //   position = await _reader(locationService).getCurrentLocation();
+  // }
 
   Future<void> fetchProducts({
     required String category,
   }) async {
     try {
       setState(state: ViewState.loading);
+      // serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      // if (serviceEnabled) {
       position = await _reader(locationService).getCurrentLocation();
       _products = await _reader(coreRepository).fetchProducts(
         lat: 3.4,
@@ -47,6 +54,7 @@ class HomeNotifier extends BaseChangeNotifier {
         // lat: position!.latitude,
         // lon: position.longitude,
       );
+      // }
       // Alertify(title: 'User logged in').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {

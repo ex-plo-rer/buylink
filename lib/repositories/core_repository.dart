@@ -110,6 +110,33 @@ class CoreRepository {
     return _products;
   }
 
+  Future<List<ProductModel>> fetchWishList({
+    required String category,
+  }) async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'category': category,
+    };
+    print('Fetch wishlist params sent to server $body');
+
+    var response = await networkService.post(
+      'users/wishlist/1',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch wishlist response $response');
+    List<ProductModel> _products = [];
+    for (var product in response) {
+      _products.add(ProductModel.fromJson(product));
+    }
+
+    return _products;
+  }
+
   Future<String> addToWishList({
     required int productId,
   }) async {

@@ -16,6 +16,26 @@ class WishlistNotifier extends BaseChangeNotifier {
 
   WishlistNotifier(this._reader);
 
+  List<ProductModel> _products = [];
+  List<ProductModel> get products => _products;
+
+  Future<void> fetchWishlist({
+    required String category,
+  }) async {
+    try {
+      setState(state: ViewState.loading);
+      _products = await _reader(coreRepository).fetchWishList(
+        category: category,
+      );
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify(title: e.error!).error();
+    } finally {
+      setState(state: ViewState.idle);
+    }
+  }
+
   Future<void> addToWishlist({
     required int productId,
   }) async {

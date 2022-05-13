@@ -19,8 +19,10 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/utilities/alertify.dart';
+import '../../../widgets/app_dialog.dart';
 import '../../../widgets/circular_progress.dart';
 import '../../authentication/views/login_view.dart';
 
