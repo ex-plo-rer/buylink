@@ -223,7 +223,7 @@ class ProductDetailsView extends ConsumerWidget {
                             height: 56,
                             width: 56,
                             favIcon: SvgPicture.asset(
-                              product.isFav
+                              product.isFav!
                                   ? AppSvgs.favoriteFilled
                                   : AppSvgs.favorite,
                             ),
@@ -231,7 +231,7 @@ class ProductDetailsView extends ConsumerWidget {
                             radius: 10,
                             padding: 18,
                             onFavoriteTapped: () async {
-                              product.isFav
+                              product.isFav!
                                   ? await wishlistNotifier.removeFromWishlist(
                                       productId: product.id)
                                   : await wishlistNotifier.addToWishlist(
@@ -328,7 +328,7 @@ class ProductDetailsView extends ConsumerWidget {
                                                 .similarProducts[index].lon,
                                           ),
                                       isFavorite: productDetailsNotifier
-                                          .similarProducts[index].isFav,
+                                          .similarProducts[index].isFav!,
                                       isDetails: true,
                                       onProductTapped: () {
                                         ref
@@ -351,7 +351,7 @@ class ProductDetailsView extends ConsumerWidget {
                                       },
                                       onFavoriteTapped: () async {
                                         productDetailsNotifier
-                                                .similarProducts[index].isFav
+                                                .similarProducts[index].isFav!
                                             ? await wishlistNotifier
                                                 .removeFromWishlist(
                                                 productId:

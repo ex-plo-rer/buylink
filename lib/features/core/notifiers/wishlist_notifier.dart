@@ -14,7 +14,9 @@ import '../models/product_model.dart';
 class WishlistNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  WishlistNotifier(this._reader);
+  WishlistNotifier(this._reader) {
+    // fetchWishlist(category: category);
+  }
 
   List<ProductModel> _products = [];
   List<ProductModel> get products => _products;
@@ -76,3 +78,10 @@ class WishlistNotifier extends BaseChangeNotifier {
 final wishlistNotifierProvider = ChangeNotifierProvider<WishlistNotifier>(
   (ref) => WishlistNotifier(ref.read),
 );
+// final wishlistNotifierProvider =
+//     ChangeNotifierProvider.family<WishlistNotifier, String>(
+//   (ref, category) => WishlistNotifier(
+//     ref.read,
+//     category: category,
+//   ),
+// );

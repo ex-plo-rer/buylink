@@ -39,7 +39,7 @@ class ProductModel {
   double lat;
   int price;
   int oldPrice;
-  bool isFav;
+  bool? isFav;
   String desc;
   String color;
   String age;

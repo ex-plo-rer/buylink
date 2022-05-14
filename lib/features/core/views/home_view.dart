@@ -126,7 +126,7 @@ class HomeView extends ConsumerWidget {
                                     storeLat: homeNotifier.products[index].lat,
                                     storeLon: homeNotifier.products[index].lon,
                                   ),
-                              isFavorite: homeNotifier.products[index].isFav,
+                              isFavorite: homeNotifier.products[index].isFav!,
                               onProductTapped: () {
                                 ref
                                     .read(navigationServiceProvider)
@@ -145,7 +145,7 @@ class HomeView extends ConsumerWidget {
                                     );
                               },
                               onFavoriteTapped: () async {
-                                homeNotifier.products[index].isFav
+                                homeNotifier.products[index].isFav!
                                     ? await wishlistNotifier.removeFromWishlist(
                                         productId:
                                             homeNotifier.products[index].id,

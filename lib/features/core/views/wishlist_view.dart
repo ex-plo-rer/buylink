@@ -32,8 +32,32 @@ class _WishlistState extends ConsumerState<WishlistView>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(length: 5, vsync: this);
-    ref.read(wishlistNotifierProvider).fetchWishlist(category: 'all');
+    _tabController.addListener(_handleTabChange);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _handleTabChange() {
+    ref.read(wishlistNotifierProvider).fetchWishlist(
+          category: _tabController.index == 0
+              ? 'all'
+              : _tabController.index == 1
+                  ? 'fashion'
+                  : _tabController.index == 2
+                      ? 'photography'
+                      : _tabController.index == 3
+                          ? 'baby'
+                          : 'others',
+        );
   }
 
   // TODO: Make the third product fill the screen's width
@@ -85,6 +109,19 @@ class _WishlistState extends ConsumerState<WishlistView>
                 padding: const EdgeInsets.only(bottom: 24),
                 controller: _tabController,
                 isScrollable: true,
+                onTap: (index) {
+                  print('index $index');
+                  wishlistNotifier.fetchWishlist(
+                      category: index == 0
+                          ? 'all'
+                          : index == 1
+                              ? 'fashion'
+                              : index == 2
+                                  ? 'photography'
+                                  : index == 3
+                                      ? 'baby'
+                                      : 'others');
+                },
                 tabs: const [
                   Tab(text: 'All'),
                   Tab(text: 'Fashion'),
@@ -120,183 +157,273 @@ class _WishlistState extends ConsumerState<WishlistView>
                                           wishlistNotifier.products[index].lon,
                                     ),
                                 isFavorite: true,
-                                onProductTapped: () {},
+                                onProductTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.productDetails,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
                                 onDistanceTapped: () {},
-                                onFlipTapped: () {},
-                                onFavoriteTapped: () {
-                                  // homeNotifier.toggleFavorite();
+                                onFlipTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.compare,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
+                                onFavoriteTapped: () async {
+                                  wishlistNotifier.products[index].isFav!
+                                      ? await wishlistNotifier
+                                          .removeFromWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        )
+                                      : await wishlistNotifier.addToWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        );
+                                  ref.refresh(wishlistNotifierProvider);
                                 },
                               );
                             },
                           ),
-                    MasonryGridView.count(
-                      itemCount: 20 + 1,
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 15,
-                      itemBuilder: (context, index) {
-                        if (index == 3) {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
+                    wishlistNotifier.state.isLoading
+                        ? const CircularProgress()
+                        : MasonryGridView.count(
+                            itemCount: wishlistNotifier.products.length,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
+                            itemBuilder: (context, index) {
+                              return ProductContainer(
+                                url: wishlistNotifier.products[index].image[0],
+                                storeName:
+                                    wishlistNotifier.products[index].store.name,
+                                productName:
+                                    wishlistNotifier.products[index].name,
+                                productPrice:
+                                    wishlistNotifier.products[index].price,
+                                distance: ref.read(locationService).getDistance(
+                                      storeLat:
+                                          wishlistNotifier.products[index].lat,
+                                      storeLon:
+                                          wishlistNotifier.products[index].lon,
+                                    ),
+                                isFavorite: true,
+                                onProductTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.productDetails,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
+                                onDistanceTapped: () {},
+                                onFlipTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.compare,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
+                                onFavoriteTapped: () async {
+                                  wishlistNotifier.products[index].isFav!
+                                      ? await wishlistNotifier
+                                          .removeFromWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        )
+                                      : await wishlistNotifier.addToWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        );
+                                  ref.refresh(wishlistNotifierProvider);
+                                },
+                              );
                             },
-                            isBig: true,
-                          );
-                        } else {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
+                          ),
+                    wishlistNotifier.state.isLoading
+                        ? const CircularProgress()
+                        : MasonryGridView.count(
+                            itemCount: wishlistNotifier.products.length,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
+                            itemBuilder: (context, index) {
+                              return ProductContainer(
+                                url: wishlistNotifier.products[index].image[0],
+                                storeName:
+                                    wishlistNotifier.products[index].store.name,
+                                productName:
+                                    wishlistNotifier.products[index].name,
+                                productPrice:
+                                    wishlistNotifier.products[index].price,
+                                distance: ref.read(locationService).getDistance(
+                                      storeLat:
+                                          wishlistNotifier.products[index].lat,
+                                      storeLon:
+                                          wishlistNotifier.products[index].lon,
+                                    ),
+                                isFavorite: true,
+                                onProductTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.productDetails,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
+                                onDistanceTapped: () {},
+                                onFlipTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.compare,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
+                                onFavoriteTapped: () async {
+                                  wishlistNotifier.products[index].isFav!
+                                      ? await wishlistNotifier
+                                          .removeFromWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        )
+                                      : await wishlistNotifier.addToWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        );
+                                  ref.refresh(wishlistNotifierProvider);
+                                },
+                              );
                             },
-                          );
-                        }
-                      },
-                    ),
-                    MasonryGridView.count(
-                      itemCount: 20 + 1,
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 15,
-                      itemBuilder: (context, index) {
-                        if (index == 3) {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
+                          ),
+                    wishlistNotifier.state.isLoading
+                        ? const CircularProgress()
+                        : MasonryGridView.count(
+                            itemCount: wishlistNotifier.products.length,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
+                            itemBuilder: (context, index) {
+                              return ProductContainer(
+                                url: wishlistNotifier.products[index].image[0],
+                                storeName:
+                                    wishlistNotifier.products[index].store.name,
+                                productName:
+                                    wishlistNotifier.products[index].name,
+                                productPrice:
+                                    wishlistNotifier.products[index].price,
+                                distance: ref.read(locationService).getDistance(
+                                      storeLat:
+                                          wishlistNotifier.products[index].lat,
+                                      storeLon:
+                                          wishlistNotifier.products[index].lon,
+                                    ),
+                                isFavorite: true,
+                                onProductTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.productDetails,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
+                                onDistanceTapped: () {},
+                                onFlipTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.compare,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
+                                onFavoriteTapped: () async {
+                                  wishlistNotifier.products[index].isFav!
+                                      ? await wishlistNotifier
+                                          .removeFromWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        )
+                                      : await wishlistNotifier.addToWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        );
+                                  ref.refresh(wishlistNotifierProvider);
+                                },
+                              );
                             },
-                            isBig: true,
-                          );
-                        } else {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
+                          ),
+                    wishlistNotifier.state.isLoading
+                        ? const CircularProgress()
+                        : MasonryGridView.count(
+                            itemCount: wishlistNotifier.products.length,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
+                            itemBuilder: (context, index) {
+                              return ProductContainer(
+                                url: wishlistNotifier.products[index].image[0],
+                                storeName:
+                                    wishlistNotifier.products[index].store.name,
+                                productName:
+                                    wishlistNotifier.products[index].name,
+                                productPrice:
+                                    wishlistNotifier.products[index].price,
+                                distance: ref.read(locationService).getDistance(
+                                      storeLat:
+                                          wishlistNotifier.products[index].lat,
+                                      storeLon:
+                                          wishlistNotifier.products[index].lon,
+                                    ),
+                                isFavorite: true,
+                                onProductTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.productDetails,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
+                                onDistanceTapped: () {},
+                                onFlipTapped: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateToNamed(
+                                        Routes.compare,
+                                        arguments:
+                                            wishlistNotifier.products[index],
+                                      );
+                                },
+                                onFavoriteTapped: () async {
+                                  wishlistNotifier.products[index].isFav!
+                                      ? await wishlistNotifier
+                                          .removeFromWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        )
+                                      : await wishlistNotifier.addToWishlist(
+                                          productId: wishlistNotifier
+                                              .products[index].id,
+                                        );
+                                  ref.refresh(wishlistNotifierProvider);
+                                },
+                              );
                             },
-                          );
-                        }
-                      },
-                    ),
-                    MasonryGridView.count(
-                      itemCount: 20 + 1,
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 15,
-                      itemBuilder: (context, index) {
-                        if (index == 3) {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
-                            },
-                            isBig: true,
-                          );
-                        } else {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
-                            },
-                          );
-                        }
-                      },
-                    ),
-                    MasonryGridView.count(
-                      itemCount: 20 + 1,
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 15,
-                      itemBuilder: (context, index) {
-                        if (index == 3) {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
-                            },
-                            isBig: true,
-                          );
-                        } else {
-                          return ProductContainer(
-                            url:
-                                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                            storeName: 'Atinuke Store',
-                            productName: 'Oraimo Power Bank',
-                            productPrice: 12000,
-                            distance: '3.5',
-                            isFavorite: false,
-                            onProductTapped: () {},
-                            onDistanceTapped: () {},
-                            onFlipTapped: () {},
-                            onFavoriteTapped: () {
-                              // homeNotifier.toggleFavorite();
-                            },
-                          );
-                        }
-                      },
-                    ),
+                          ),
                   ],
                 ),
               ),
