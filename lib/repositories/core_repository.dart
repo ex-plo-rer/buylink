@@ -1,4 +1,5 @@
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/features/core/models/category_model.dart';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
@@ -135,6 +136,30 @@ class CoreRepository {
     }
 
     return _products;
+  }
+
+  Future<List<CategoryModel>> fetchCategories() async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+    };
+    print('Fetch categories params sent to server $body');
+
+    var response = await networkService.post(
+      'users/load-categories?no=5',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch categories response $response');
+    List<CategoryModel> _category = [];
+    for (var category in response) {
+      _category.add(CategoryModel.fromJson(category));
+    }
+
+    return _category;
   }
 
   Future<String> addToWishList({

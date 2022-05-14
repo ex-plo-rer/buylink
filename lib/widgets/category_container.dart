@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/colors.dart';
@@ -24,7 +26,7 @@ class CategoryContainer extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-            image: AssetImage(AppImages.flip),
+            image: CachedNetworkImageProvider(categoryImage),
             fit: BoxFit.fill,
           ),
           color: AppColors.red,
@@ -32,6 +34,7 @@ class CategoryContainer extends StatelessWidget {
         child: Center(
           child: Text(
             categoryName,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               color: AppColors.light,
               fontSize: 12,
