@@ -88,7 +88,11 @@ class Routes {
       case productDetailsMore:
         return MaterialPageRoute(builder: (_) => ProductDetailsMoreView());
       case storeDetails:
-        return MaterialPageRoute(builder: (_) => const StoreDetailsView());
+        int storeId = settings.arguments as int;
+        return MaterialPageRoute(
+            builder: (_) => StoreDetailsView(
+                  storeId: storeId,
+                ));
       case storeReviews:
         return MaterialPageRoute(builder: (_) => StoreReviewsView());
       case addReview:

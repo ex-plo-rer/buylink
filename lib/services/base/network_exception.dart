@@ -1,3 +1,4 @@
+// TODO: Review this class...
 class NetworkException {
   final int? statusCode;
   final String? error;
@@ -5,9 +6,9 @@ class NetworkException {
   final String message;
 
   NetworkException(
-      this.message, {
-        this.statusCode,
-        this.error,
-        // this.errors,
-      });
+    this.message, {
+    this.statusCode,
+    this.error,
+    // this.errors,
+  });
 }

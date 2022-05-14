@@ -2,17 +2,21 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/features/core/notifiers/store_notifier/store_details_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
+import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/compare_texts.dart';
 import 'package:buy_link/widgets/compare_texts_2.dart';
 import 'package:buy_link/widgets/favorite_container.dart';
 import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/product_image_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -20,10 +24,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/strings.dart';
+import '../../../../services/location_service.dart';
 import '../../../../widgets/iconNtext_container.dart';
+import '../../notifiers/wishlist_notifier.dart';
 
 class StoreDetailsView extends ConsumerStatefulWidget {
-  const StoreDetailsView({Key? key}) : super(key: key);
+  final int storeId;
+  const StoreDetailsView({
+    Key? key,
+    required this.storeId,
+  }) : super(key: key);
   @override
   ConsumerState<StoreDetailsView> createState() => _WishlistState();
 }
@@ -36,396 +46,658 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(length: 5, vsync: this);
+    _tabController.addListener(_handleTabChange);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      ref
+          .watch(storeDetailsNotifierProvider(widget.storeId))
+          .fetchStoreProducts(
+            storeId: widget.storeId,
+            category: 'all',
+          );
+    });
     super.initState();
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _handleTabChange() {
+    ref.read(storeDetailsNotifierProvider(widget.storeId)).fetchStoreProducts(
+          storeId: widget.storeId,
+          category: _tabController.index == 0
+              ? 'all'
+              : _tabController.index == 1
+                  ? 'fashion'
+                  : _tabController.index == 2
+                      ? 'photography'
+                      : _tabController.index == 3
+                          ? 'baby'
+                          : 'others',
+        );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final storeDetailsNotifier =
+        ref.watch(storeDetailsNotifierProvider(widget.storeId));
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Stack(
-                children: [
-                  Container(
-                    height: 243,
-                    decoration: const BoxDecoration(
-                      color: AppColors.grey1,
-                    ),
-                  ),
-                  Container(
-                    height: 284,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const CircleAvatar(
-                              radius: 34,
+              storeDetailsNotifier.detailsLoading
+                  ? const CircularProgress()
+                  : Stack(
+                      children: [
+                        Container(
+                          height: 243,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                storeDetailsNotifier.storeDetails.logo,
+                              ),
+                              fit: BoxFit.fill,
                             ),
-                            Row(
-                              children: [
-                                FavoriteContainer(
-                                  height: 32,
-                                  width: 32,
-                                  favIcon: Icon(
-                                    Icons.mail_outline_outlined,
-                                    size: 14,
-                                  ),
-                                  containerColor: AppColors.grey10,
-                                  radius: 50,
-                                  padding: 1,
-                                  hasBorder: true,
-                                ),
-                                Spacing.smallWidth(),
-                                FavoriteContainer(
-                                  height: 32,
-                                  width: 32,
-                                  favIcon: Icon(
-                                    Icons.mail_outline_outlined,
-                                    size: 14,
-                                  ),
-                                  containerColor: AppColors.grey10,
-                                  radius: 50,
-                                  padding: 1,
-                                  hasBorder: true,
-                                ),
-                                Spacing.smallWidth(),
-                                AppButton(
-                                  text: 'See Review',
-                                  textColor: AppColors.shade5,
-                                  fontSize: 12,
-                                  width: null,
-                                  height: 32,
-                                  borderColor: AppColors.shade5,
-                                  onPressed: () => ref
-                                      .read(navigationServiceProvider)
-                                      .navigateToNamed(Routes.storeReviews),
-                                ),
-                              ],
-                            ),
-                          ],
+                            color: AppColors.red,
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          height: 284,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 34,
+                                    backgroundImage: CachedNetworkImageProvider(
+                                      storeDetailsNotifier.storeDetails.logo,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      const FavoriteContainer(
+                                        height: 32,
+                                        width: 32,
+                                        favIcon: Icon(
+                                          Icons.mail_outline_outlined,
+                                          size: 16,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                        containerColor: AppColors.grey10,
+                                        radius: 50,
+                                        padding: 1,
+                                        hasBorder: true,
+                                      ),
+                                      const Spacing.smallWidth(),
+                                      FavoriteContainer(
+                                        height: 32,
+                                        width: 32,
+                                        favIcon: SvgPicture.asset(
+                                          AppSvgs.locateOutlined,
+                                          color: AppColors.primaryColor,
+                                          fit: BoxFit.none,
+                                          width: 16,
+                                          height: 16,
+                                        ),
+                                        // Icon(
+                                        //   Icons.mail_outline_outlined,
+                                        //   size: 14,
+                                        // ),
+                                        containerColor: AppColors.grey10,
+                                        radius: 50,
+                                        padding: 1,
+                                        hasBorder: true,
+                                      ),
+                                      const Spacing.smallWidth(),
+                                      AppButton(
+                                        text: 'See Review',
+                                        textColor: AppColors.shade5,
+                                        fontSize: 12,
+                                        width: null,
+                                        height: 32,
+                                        borderColor: AppColors.shade5,
+                                        onPressed: () => ref
+                                            .read(navigationServiceProvider)
+                                            .navigateToNamed(
+                                                Routes.storeReviews),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
               const Spacing.smallHeight(),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Spacing.smallHeight(),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Text(
-                          'Atinuke Stores',
-                          style: TextStyle(
-                            color: AppColors.grey1,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        IconNTextContainer(
-                          text: '4.6 km',
-                          icon: Icon(
-                            Icons.star_outline,
-                            size: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Text(
-                      'We sell all fashion wears, shoes, bags, slides all at affordable rates',
-                      style: TextStyle(
-                        color: AppColors.grey2,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const Spacing.tinyHeight(),
-                    const Text(
-                      'Shop 3, Maxdot, Ikeja, Lagos',
-                      style: TextStyle(
-                        color: AppColors.grey4,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const Spacing.tinyHeight(),
-                    const Text(
-                      '+23478768987673',
-                      style: TextStyle(
-                        color: AppColors.grey4,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const Spacing.tinyHeight(),
-                    const Text(
-                      'Atinuke@gmail.com',
-                      style: TextStyle(
-                        color: AppColors.grey4,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const Spacing.bigHeight(),
-                    const Align(
-                      alignment: Alignment.centerRight,
-                      child: AppButton(
-                        text: 'See all categories',
-                        textColor: AppColors.shade5,
-                        fontSize: 12,
-                        width: null,
-                        height: 22,
-                        borderColor: AppColors.shade5,
-                      ),
-                    ),
-                    const Spacing.bigHeight(),
-                    TabBar(
-                      labelColor: AppColors.shade5,
-                      unselectedLabelColor: AppColors.grey5,
-                      padding: const EdgeInsets.only(bottom: 24),
-                      controller: _tabController,
-                      isScrollable: true,
-                      tabs: const [
-                        Tab(text: 'All'),
-                        Tab(text: 'Fashion'),
-                        Tab(text: 'Photography'),
-                        Tab(text: 'Baby & Toddler'),
-                        Tab(text: '5555555'),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 500,
-                      child: TabBarView(
-                        controller: _tabController,
+                child: storeDetailsNotifier.detailsLoading
+                    ? Container()
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          MasonryGridView.count(
-                            itemCount: 20 + 1,
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
-                            itemBuilder: (context, index) {
-                              if (index == 3) {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                  isBig: true,
-                                );
-                              } else {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                );
-                              }
-                            },
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Spacing.smallHeight(),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    storeDetailsNotifier.storeDetails.name,
+                                    style: const TextStyle(
+                                      color: AppColors.grey1,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  IconNTextContainer(
+                                    // text: '4.6 km',
+                                    text:
+                                        '${ref.read(locationService).getDistance(
+                                              storeLat: storeDetailsNotifier
+                                                  .storeDetails.lat,
+                                              storeLon: storeDetailsNotifier
+                                                  .storeDetails.lon,
+                                            )} km',
+                                    icon: const Icon(
+                                      Icons.star_outline,
+                                      size: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                storeDetailsNotifier.storeDetails.about,
+                                style: const TextStyle(
+                                  color: AppColors.grey2,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const Spacing.tinyHeight(),
+                              Text(
+                                storeDetailsNotifier.storeDetails.address,
+                                style: const TextStyle(
+                                  color: AppColors.grey4,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const Spacing.tinyHeight(),
+                              Text(
+                                storeDetailsNotifier.storeDetails.telephone,
+                                style: const TextStyle(
+                                  color: AppColors.grey4,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const Spacing.tinyHeight(),
+                              Text(
+                                storeDetailsNotifier.storeDetails.email,
+                                style: const TextStyle(
+                                  color: AppColors.grey4,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const Spacing.bigHeight(),
+                            ],
                           ),
-                          MasonryGridView.count(
-                            itemCount: 20 + 1,
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
-                            itemBuilder: (context, index) {
-                              if (index == 3) {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                  isBig: true,
-                                );
-                              } else {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                );
-                              }
-                            },
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: AppButton(
+                              text: 'See all categories',
+                              textColor: AppColors.shade5,
+                              fontSize: 12,
+                              width: null,
+                              height: 22,
+                              borderColor: AppColors.shade5,
+                              onPressed: () => ref
+                                  .read(navigationServiceProvider)
+                                  .navigateToNamed(Routes.categories),
+                            ),
                           ),
-                          MasonryGridView.count(
-                            itemCount: 20 + 1,
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
-                            itemBuilder: (context, index) {
-                              if (index == 3) {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                  isBig: true,
-                                );
-                              } else {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                );
-                              }
+                          const Spacing.bigHeight(),
+                          TabBar(
+                            labelColor: AppColors.shade5,
+                            unselectedLabelColor: AppColors.grey5,
+                            padding: const EdgeInsets.only(bottom: 24),
+                            controller: _tabController,
+                            isScrollable: true,
+                            onTap: (index) {
+                              print('index $index');
+                              storeDetailsNotifier.fetchStoreProducts(
+                                  storeId: widget.storeId,
+                                  category: index == 0
+                                      ? 'all'
+                                      : index == 1
+                                          ? 'fashion'
+                                          : index == 2
+                                              ? 'photography'
+                                              : index == 3
+                                                  ? 'baby'
+                                                  : 'others');
                             },
+                            tabs: const [
+                              Tab(text: 'All'),
+                              Tab(text: 'Fashion'),
+                              Tab(text: 'Photography'),
+                              Tab(text: 'Baby & Toddler'),
+                              Tab(text: '5555555'),
+                            ],
                           ),
-                          MasonryGridView.count(
-                            itemCount: 20 + 1,
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
-                            itemBuilder: (context, index) {
-                              if (index == 3) {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                  isBig: true,
-                                );
-                              } else {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                );
-                              }
-                            },
-                          ),
-                          MasonryGridView.count(
-                            itemCount: 20 + 1,
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
-                            itemBuilder: (context, index) {
-                              if (index == 3) {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                  isBig: true,
-                                );
-                              } else {
-                                return ProductContainer(
-                                  url:
-                                      'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                                  storeName: 'Atinuke Store',
-                                  productName: 'Oraimo Power Bank',
-                                  productPrice: 12000,
-                                  distance: '3.5',
-                                  isFavorite: false,
-                                  onProductTapped: () {},
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {},
-                                  onFavoriteTapped: () {
-                                    // homeNotifier.toggleFavorite();
-                                  },
-                                );
-                              }
-                            },
+                          SizedBox(
+                            height: 500,
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                storeDetailsNotifier.state.isLoading
+                                    ? const CircularProgress()
+                                    : MasonryGridView.count(
+                                        itemCount: storeDetailsNotifier
+                                            .products.length,
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 15,
+                                        itemBuilder: (context, index) {
+                                          return ProductContainer(
+                                            url: storeDetailsNotifier
+                                                .products[index].image[0],
+                                            storeName: storeDetailsNotifier
+                                                .products[index].store.name,
+                                            productName: storeDetailsNotifier
+                                                .products[index].name,
+                                            productPrice: storeDetailsNotifier
+                                                .products[index].price,
+                                            distance: ref
+                                                .read(locationService)
+                                                .getDistance(
+                                                  storeLat: storeDetailsNotifier
+                                                      .products[index].lat,
+                                                  storeLon: storeDetailsNotifier
+                                                      .products[index].lon,
+                                                ),
+                                            isFavorite: true,
+                                            onProductTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.productDetails,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onDistanceTapped: () {},
+                                            onFlipTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.compare,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onFavoriteTapped: () async {
+                                              storeDetailsNotifier
+                                                      .products[index].isFav!
+                                                  ? await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .removeFromWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      )
+                                                  : await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .addToWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      );
+                                              ref.refresh(
+                                                  wishlistNotifierProvider);
+                                            },
+                                          );
+                                        },
+                                      ),
+                                storeDetailsNotifier.state.isLoading
+                                    ? const CircularProgress()
+                                    : MasonryGridView.count(
+                                        itemCount: storeDetailsNotifier
+                                            .products.length,
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 15,
+                                        itemBuilder: (context, index) {
+                                          return ProductContainer(
+                                            url: storeDetailsNotifier
+                                                .products[index].image[0],
+                                            storeName: storeDetailsNotifier
+                                                .products[index].store.name,
+                                            productName: storeDetailsNotifier
+                                                .products[index].name,
+                                            productPrice: storeDetailsNotifier
+                                                .products[index].price,
+                                            distance: ref
+                                                .read(locationService)
+                                                .getDistance(
+                                                  storeLat: storeDetailsNotifier
+                                                      .products[index].lat,
+                                                  storeLon: storeDetailsNotifier
+                                                      .products[index].lon,
+                                                ),
+                                            isFavorite: true,
+                                            onProductTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.productDetails,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onDistanceTapped: () {},
+                                            onFlipTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.compare,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onFavoriteTapped: () async {
+                                              storeDetailsNotifier
+                                                      .products[index].isFav!
+                                                  ? await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .removeFromWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      )
+                                                  : await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .addToWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      );
+                                              ref.refresh(
+                                                  wishlistNotifierProvider);
+                                            },
+                                          );
+                                        },
+                                      ),
+                                storeDetailsNotifier.state.isLoading
+                                    ? const CircularProgress()
+                                    : MasonryGridView.count(
+                                        itemCount: storeDetailsNotifier
+                                            .products.length,
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 15,
+                                        itemBuilder: (context, index) {
+                                          return ProductContainer(
+                                            url: storeDetailsNotifier
+                                                .products[index].image[0],
+                                            storeName: storeDetailsNotifier
+                                                .products[index].store.name,
+                                            productName: storeDetailsNotifier
+                                                .products[index].name,
+                                            productPrice: storeDetailsNotifier
+                                                .products[index].price,
+                                            distance: ref
+                                                .read(locationService)
+                                                .getDistance(
+                                                  storeLat: storeDetailsNotifier
+                                                      .products[index].lat,
+                                                  storeLon: storeDetailsNotifier
+                                                      .products[index].lon,
+                                                ),
+                                            isFavorite: true,
+                                            onProductTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.productDetails,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onDistanceTapped: () {},
+                                            onFlipTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.compare,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onFavoriteTapped: () async {
+                                              storeDetailsNotifier
+                                                      .products[index].isFav!
+                                                  ? await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .removeFromWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      )
+                                                  : await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .addToWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      );
+                                              ref.refresh(
+                                                  wishlistNotifierProvider);
+                                            },
+                                          );
+                                        },
+                                      ),
+                                storeDetailsNotifier.state.isLoading
+                                    ? const CircularProgress()
+                                    : MasonryGridView.count(
+                                        itemCount: storeDetailsNotifier
+                                            .products.length,
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 15,
+                                        itemBuilder: (context, index) {
+                                          return ProductContainer(
+                                            url: storeDetailsNotifier
+                                                .products[index].image[0],
+                                            storeName: storeDetailsNotifier
+                                                .products[index].store.name,
+                                            productName: storeDetailsNotifier
+                                                .products[index].name,
+                                            productPrice: storeDetailsNotifier
+                                                .products[index].price,
+                                            distance: ref
+                                                .read(locationService)
+                                                .getDistance(
+                                                  storeLat: storeDetailsNotifier
+                                                      .products[index].lat,
+                                                  storeLon: storeDetailsNotifier
+                                                      .products[index].lon,
+                                                ),
+                                            isFavorite: true,
+                                            onProductTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.productDetails,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onDistanceTapped: () {},
+                                            onFlipTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.compare,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onFavoriteTapped: () async {
+                                              storeDetailsNotifier
+                                                      .products[index].isFav!
+                                                  ? await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .removeFromWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      )
+                                                  : await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .addToWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      );
+                                              ref.refresh(
+                                                  wishlistNotifierProvider);
+                                            },
+                                          );
+                                        },
+                                      ),
+                                storeDetailsNotifier.state.isLoading
+                                    ? const CircularProgress()
+                                    : MasonryGridView.count(
+                                        itemCount: storeDetailsNotifier
+                                            .products.length,
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 15,
+                                        itemBuilder: (context, index) {
+                                          return ProductContainer(
+                                            url: storeDetailsNotifier
+                                                .products[index].image[0],
+                                            storeName: storeDetailsNotifier
+                                                .products[index].store.name,
+                                            productName: storeDetailsNotifier
+                                                .products[index].name,
+                                            productPrice: storeDetailsNotifier
+                                                .products[index].price,
+                                            distance: ref
+                                                .read(locationService)
+                                                .getDistance(
+                                                  storeLat: storeDetailsNotifier
+                                                      .products[index].lat,
+                                                  storeLon: storeDetailsNotifier
+                                                      .products[index].lon,
+                                                ),
+                                            isFavorite: true,
+                                            onProductTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.productDetails,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onDistanceTapped: () {},
+                                            onFlipTapped: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                    Routes.compare,
+                                                    arguments:
+                                                        storeDetailsNotifier
+                                                            .products[index],
+                                                  );
+                                            },
+                                            onFavoriteTapped: () async {
+                                              storeDetailsNotifier
+                                                      .products[index].isFav!
+                                                  ? await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .removeFromWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      )
+                                                  : await ref
+                                                      .read(
+                                                          wishlistNotifierProvider)
+                                                      .addToWishlist(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id,
+                                                      );
+                                              ref.refresh(
+                                                  wishlistNotifierProvider);
+                                            },
+                                          );
+                                        },
+                                      ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
