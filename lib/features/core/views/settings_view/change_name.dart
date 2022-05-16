@@ -11,6 +11,7 @@ import '../../notifiers/settings_notifier/change_name_notifier.dart';
 
 class EditUserName extends ConsumerWidget {
   EditUserName ({Key? key}) : super(key: key);
+  final _nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context, ref) {
@@ -75,8 +76,11 @@ class EditUserName extends ConsumerWidget {
                       AppButton(
                           text: "Save",
                           backgroundColor: AppColors.primaryColor,
-                          onPressed: () => ref
-
+                          onPressed: () async{
+                          await editUserNameNotifier.changeName(
+                          name: _nameController.text,
+                          );
+                          }
                       ),
 
                     ]
