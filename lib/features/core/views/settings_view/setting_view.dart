@@ -26,10 +26,7 @@ class SettingView extends ConsumerWidget {
           child: Column(
             children: <Widget>[
               const SizedBox(
-                height: 50,
-              ),
-              const SizedBox(
-                height: 10,
+                height: 30,
               ),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -57,12 +54,13 @@ class SettingView extends ConsumerWidget {
                 ),
               ),
               const Spacing.smallHeight(),
-              const Text(
-                "Deji",
+               Text(
+                settingNotifier.userDetails.name,
+                // "Bode",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const Spacing.smallHeight(),
-              const Text("aob@gmail.com"),
+               Text(settingNotifier.userDetails.email),
               const SizedBox(
                 height: 30,
               ),

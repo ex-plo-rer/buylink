@@ -9,13 +9,24 @@ import '../../../../services/base/network_exception.dart';
 class EditUserNameNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
+  String _name = '';
+  String get name => _name;
+
+  void onNameChanged(String text) {
+    _name = text;
+    print(_name);
+    notifyListeners();
+  }
+
   Future<void> changeName({
+    //required int id,
     required String name,
 
   }) async {
     try {
       setState(state: ViewState.loading);
       await _reader(settingRepository).changeName(
+       // id : id,
         name: name,
       );
 
@@ -26,7 +37,6 @@ class EditUserNameNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     }
   }
-
   EditUserNameNotifier(this._reader) {
   }
 }

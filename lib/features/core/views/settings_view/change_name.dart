@@ -12,6 +12,7 @@ import '../../notifiers/settings_notifier/change_name_notifier.dart';
 class EditUserName extends ConsumerWidget {
   EditUserName ({Key? key}) : super(key: key);
   final _nameController = TextEditingController();
+  final _nameFN = FocusNode();
 
   @override
   Widget build(BuildContext context, ref) {
@@ -50,6 +51,10 @@ class EditUserName extends ConsumerWidget {
                       AppTextField(
                         title: '',
                         hintText: 'Deji',
+
+                        focusNode: _nameFN,
+                        controller: _nameController,
+                        onChanged: editUserNameNotifier.onNameChanged,
                         suffixIcon: GestureDetector(
                           onTap: () {},
                           child: const CircleAvatar(
@@ -78,6 +83,7 @@ class EditUserName extends ConsumerWidget {
                           backgroundColor: AppColors.primaryColor,
                           onPressed: () async{
                           await editUserNameNotifier.changeName(
+                           // id : 1,
                           name: _nameController.text,
                           );
                           }
