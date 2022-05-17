@@ -1,4 +1,5 @@
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/features/core/models/category_model.dart';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
@@ -110,6 +111,57 @@ class CoreRepository {
     return _products;
   }
 
+  Future<List<ProductModel>> fetchWishList({
+    required String category,
+  }) async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'category': category,
+    };
+    print('Fetch wishlist params sent to server $body');
+
+    var response = await networkService.post(
+      'users/wishlist/1',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch wishlist response $response');
+    List<ProductModel> _products = [];
+    for (var product in response) {
+      _products.add(ProductModel.fromJson(product));
+    }
+
+    return _products;
+  }
+
+  Future<List<CategoryModel>> fetchCategories() async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+    };
+    print('Fetch categories params sent to server $body');
+
+    var response = await networkService.post(
+      'users/load-categories?no=5',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch categories response $response');
+    List<CategoryModel> _category = [];
+    for (var category in response) {
+      _category.add(CategoryModel.fromJson(category));
+    }
+
+    return _category;
+  }
+
   Future<String> addToWishList({
     required int productId,
   }) async {
@@ -158,12 +210,33 @@ class CoreRepository {
     );
 
     print('Remove from wishlist response $response');
-    // List<ProductModel> _products = [];
-    // for (var product in response) {
-    //   _products.add(ProductModel.fromJson(product));
-    // }
-
     return '';
+  }
+
+  Future<void> addReview({
+    required int storeId,
+    required double star,
+    String? title,
+    String? body,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final routeBody = {
+      // TODO: Uncomment this
+      // 'id': id,
+      // 'store_id': storeId,
+      'id': 1,
+      'store_id': 1,
+      'star': star,
+      'title': title,
+      'body': body,
+    };
+    print('Add review body sent to server $routeBody');
+    var response = await networkService.post(
+      'users/add-review',
+      body: routeBody,
+      headers: headers,
+    );
+    print('Add review response $response');
   }
 }
 

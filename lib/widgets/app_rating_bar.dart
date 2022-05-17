@@ -21,6 +21,7 @@ class AppRatingBar extends ConsumerWidget {
     this.allowHalfRating = true,
     this.itemCount = 5,
     this.itemPadding = 10,
+    required this.onRatingUpdate,
   }) : super(key: key);
 
   final double itemSize;
@@ -30,6 +31,7 @@ class AppRatingBar extends ConsumerWidget {
   final bool allowHalfRating;
   final int itemCount;
   final double itemPadding;
+  final void Function(double) onRatingUpdate;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -46,9 +48,7 @@ class AppRatingBar extends ConsumerWidget {
         AppSvgs.star,
         color: Colors.amber,
       ),
-      onRatingUpdate: (rating) {
-        print(rating);
-      },
+      onRatingUpdate: onRatingUpdate,
     );
   }
 }

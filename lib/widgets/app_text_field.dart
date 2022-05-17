@@ -19,6 +19,8 @@ class AppTextField extends StatelessWidget {
   final bool isSearch;
   final Color? fillColor;
   final bool hasPrefixIcon;
+  final bool hasSuffixIcon;
+  final int? maxLines;
 
   const AppTextField({
     Key? key,
@@ -38,6 +40,8 @@ class AppTextField extends StatelessWidget {
     this.isSearch = false,
     this.fillColor = AppColors.transparent,
     this.hasPrefixIcon = false,
+    this.hasSuffixIcon = true,
+    this.maxLines,
   }) : super(key: key);
 
   @override
@@ -65,6 +69,7 @@ class AppTextField extends StatelessWidget {
             validator: validator,
             obscureText: obscureText,
             onFieldSubmitted: onFieldSubmitted,
+            maxLines: maxLines,
             decoration: InputDecoration(
               isDense: true,
               fillColor: fillColor,
@@ -78,10 +83,13 @@ class AppTextField extends StatelessWidget {
               ),
               hintText: hintText,
               hintStyle: const TextStyle(fontSize: 14),
-              suffixIcon: UnconstrainedBox(
-                child: suffixIcon,
-                alignment: hasBorder ? Alignment.center : Alignment.topRight,
-              ),
+              suffixIcon: hasSuffixIcon
+                  ? UnconstrainedBox(
+                      child: suffixIcon,
+                      alignment:
+                          hasBorder ? Alignment.center : Alignment.topRight,
+                    )
+                  : null,
               prefixIcon: hasPrefixIcon
                   ? UnconstrainedBox(
                       child: prefixIcon,

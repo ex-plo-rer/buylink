@@ -14,7 +14,29 @@ import '../models/product_model.dart';
 class WishlistNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  WishlistNotifier(this._reader);
+  WishlistNotifier(this._reader) {
+    // fetchWishlist(category: category);
+  }
+
+  List<ProductModel> _products = [];
+  List<ProductModel> get products => _products;
+
+  Future<void> fetchWishlist({
+    required String category,
+  }) async {
+    try {
+      setState(state: ViewState.loading);
+      _products = await _reader(coreRepository).fetchWishList(
+        category: category,
+      );
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify(title: e.error!).error();
+    } finally {
+      setState(state: ViewState.idle);
+    }
+  }
 
   Future<void> addToWishlist({
     required int productId,
@@ -56,3 +78,10 @@ class WishlistNotifier extends BaseChangeNotifier {
 final wishlistNotifierProvider = ChangeNotifierProvider<WishlistNotifier>(
   (ref) => WishlistNotifier(ref.read),
 );
+// final wishlistNotifierProvider =
+//     ChangeNotifierProvider.family<WishlistNotifier, String>(
+//   (ref, category) => WishlistNotifier(
+//     ref.read,
+//     category: category,
+//   ),
+// );

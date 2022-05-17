@@ -12,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../core/constants/naira_currency.dart';
-
 class ProductContainer extends ConsumerWidget {
   final String url;
   final String storeName;
@@ -26,7 +24,7 @@ class ProductContainer extends ConsumerWidget {
   final void Function()? onFavoriteTapped;
   final bool isBig;
   final bool isFavorite;
-
+  final bool isDetails;
 
   const ProductContainer({
     Key? key,
@@ -41,6 +39,7 @@ class ProductContainer extends ConsumerWidget {
     this.onFlipTapped,
     this.onFavoriteTapped,
     this.isBig = false,
+    this.isDetails = false,
   }) : super(key: key);
 
   @override
@@ -60,8 +59,6 @@ class ProductContainer extends ConsumerWidget {
                 image: DecorationImage(
                   image: CachedNetworkImageProvider(
                     url,
-                    maxHeight: 176,
-                    maxWidth: 156,
                     // 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg'
                   ),
                   fit: BoxFit.fill,
@@ -134,6 +131,7 @@ class ProductContainer extends ConsumerWidget {
             children: [
               Text(
                 storeName,
+                overflow: isDetails ? null : TextOverflow.ellipsis,
                 style: const TextStyle(
                   color: AppColors.grey3,
                   fontSize: 14,
@@ -142,6 +140,7 @@ class ProductContainer extends ConsumerWidget {
               ),
               Text(
                 productName,
+                overflow: isDetails ? null : TextOverflow.ellipsis,
                 style: const TextStyle(
                   color: AppColors.grey1,
                   fontSize: 14,
@@ -149,8 +148,8 @@ class ProductContainer extends ConsumerWidget {
                 ),
               ),
               Text(
-               // '${currency(context).currencySymbol}productPrice',
-                '#$productName',
+                '#$productPrice',
+                overflow: isDetails ? null : TextOverflow.ellipsis,
                 style: const TextStyle(
                   color: AppColors.grey1,
                   fontSize: 14,

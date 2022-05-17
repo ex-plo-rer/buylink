@@ -19,10 +19,13 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/utilities/alertify.dart';
+import '../../../widgets/app_dialog.dart';
 import '../../../widgets/circular_progress.dart';
 import '../../authentication/views/login_view.dart';
+import '../notifiers/category_notifier.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -31,6 +34,7 @@ class HomeView extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final homeNotifier = ref.watch(homeNotifierProvider(''));
     final wishlistNotifier = ref.watch(wishlistNotifierProvider);
+    final categoryNotifier = ref.watch(categoryNotifierProvider);
     // ref.watch(locationService).getCurrentLocation();
     return Scaffold(
       body: SafeArea(
@@ -91,27 +95,35 @@ class HomeView extends ConsumerWidget {
                             return Container(
                               height: 182,
                               color: AppColors.transparent,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CategoryContainer(
-                                    categoryName: 'Fashion',
-                                    categoryImage: '',
-                                    onTap: () {},
-                                  ),
-                                  CategoryContainer(
-                                    categoryName: 'Photography',
-                                    categoryImage: '',
-                                    onTap: () {},
-                                  ),
-                                  CategoryContainer(
-                                    categoryName: 'Baby & Toddler',
-                                    categoryImage: '',
-                                    onTap: () {},
-                                  ),
-                                ],
-                              ),
+                              child: categoryNotifier.state.isLoading
+                                  ? const CircularProgress()
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CategoryContainer(
+                                          categoryName: categoryNotifier
+                                              .categories[0].name,
+                                          categoryImage: categoryNotifier
+                                              .categories[0].image,
+                                          onTap: () {},
+                                        ),
+                                        CategoryContainer(
+                                          categoryName: categoryNotifier
+                                              .categories[1].name,
+                                          categoryImage: categoryNotifier
+                                              .categories[1].image,
+                                          onTap: () {},
+                                        ),
+                                        CategoryContainer(
+                                          categoryName: categoryNotifier
+                                              .categories[2].name,
+                                          categoryImage: categoryNotifier
+                                              .categories[2].image,
+                                          onTap: () {},
+                                        ),
+                                      ],
+                                    ),
                             );
                           } else {
                             return ProductContainer(
@@ -124,7 +136,7 @@ class HomeView extends ConsumerWidget {
                                     storeLat: homeNotifier.products[index].lat,
                                     storeLon: homeNotifier.products[index].lon,
                                   ),
-                              isFavorite: homeNotifier.products[index].isFav,
+                              isFavorite: homeNotifier.products[index].isFav!,
                               onProductTapped: () {
                                 ref
                                     .read(navigationServiceProvider)
@@ -143,7 +155,7 @@ class HomeView extends ConsumerWidget {
                                     );
                               },
                               onFavoriteTapped: () async {
-                                homeNotifier.products[index].isFav
+                                homeNotifier.products[index].isFav!
                                     ? await wishlistNotifier.removeFromWishlist(
                                         productId:
                                             homeNotifier.products[index].id,

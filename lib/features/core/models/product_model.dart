@@ -39,7 +39,7 @@ class ProductModel {
   double lat;
   int price;
   int oldPrice;
-  bool isFav;
+  bool? isFav;
   String desc;
   String color;
   String age;
@@ -110,7 +110,7 @@ class Store {
   String location;
   double lon;
   double lat;
-  int star;
+  double star;
   String logo;
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
@@ -119,7 +119,7 @@ class Store {
         location: json["location"],
         lon: json["lon"].toDouble(),
         lat: json["lat"].toDouble(),
-        star: json["star"],
+        star: json["star"].toDouble(),
         logo: json["logo"],
       );
 

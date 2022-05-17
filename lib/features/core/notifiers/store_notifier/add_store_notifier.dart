@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/utilities/base_change_notifier.dart';
-
 
 class AddStoreNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -29,9 +30,24 @@ class AddStoreNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
+  String? imageFile;
+  String? logoFile;
 
+  void setImageFile({
+    required String imageFile,
+    required bool isImage,
+  }) {
+    if (isImage) {
+      this.imageFile = imageFile;
+    } else {
+      logoFile = imageFile;
+    }
+    print('this.imageFile: ${this.imageFile}');
+    print('this.logoFile: $logoFile');
+    notifyListeners();
+  }
 }
 
-final addstoreNotifierProvider =
-ChangeNotifierProvider.autoDispose<AddStoreNotifier>(
-        (ref) => AddStoreNotifier(ref.read));
+final addStoreNotifierProvider = ChangeNotifierProvider<AddStoreNotifier>(
+  (ref) => AddStoreNotifier(ref.read),
+);

@@ -22,13 +22,19 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../core/constants/strings.dart';
+import '../models/product_model.dart';
+import '../notifiers/store_notifier/store_review_notifier.dart';
 
 class StoreReviewsView extends ConsumerWidget {
-  StoreReviewsView({Key? key}) : super(key: key);
+  const StoreReviewsView({
+    Key? key,
+    required this.store,
+  }) : super(key: key);
+  final Store store;
 
   @override
   Widget build(BuildContext context, ref) {
+    final storeReviewNotifier = ref.watch(storeReviewNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -43,9 +49,9 @@ class StoreReviewsView extends ConsumerWidget {
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
-        title: const Text(
-          'Atinuke Stores',
-          style: TextStyle(
+        title: Text(
+          store.name,
+          style: const TextStyle(
             color: AppColors.dark,
             fontSize: 14,
             fontWeight: FontWeight.w500,
@@ -163,17 +169,19 @@ class StoreReviewsView extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () => ref
-                          .read(navigationServiceProvider)
-                          .navigateToNamed(Routes.addReview),
+                      onTap: () =>
+                          ref.read(navigationServiceProvider).navigateToNamed(
+                                Routes.addReview,
+                                arguments: store.id,
+                              ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
+                        children: const [
+                          Icon(
                             Icons.chat,
                             size: 16,
                           ),
-                          const Text(
+                          Text(
                             ' Add Review',
                             style: TextStyle(
                               fontSize: 14,
@@ -279,7 +287,7 @@ class StoreReviewsView extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
-                              children: [
+                              children: const [
                                 CircleAvatar(radius: 16),
                                 Spacing.tinyWidth(),
                                 Text(
@@ -294,15 +302,15 @@ class StoreReviewsView extends ConsumerWidget {
                             ),
                             Row(
                               children: [
-                                Text(
+                                const Text(
                                   '22/04/21',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: AppColors.grey5,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                Spacing.tinyWidth(),
+                                const Spacing.tinyWidth(),
                                 RatingBar.builder(
                                   itemSize: 12,
                                   initialRating: 3,
@@ -324,7 +332,7 @@ class StoreReviewsView extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        Expanded(
+                        const Expanded(
                           child: Text(
                             'Love this app. I lost my vision three years ago and was told that this app is very useful. I use it almost daily on the go in at home. Everything works pretty seamless except for the color reader which can be kind of an accurate at times. It would be amazing if you guys can add Love this app. I lost my vision three years ago and was told that this app is very useful. I use it almost daily on the go in at home. Everything works pretty seamless except for the color reader which can be kindLove this app. I lost my vision three years ago and was toldLove this app. I lost my vision three years ago and was told',
                             overflow: TextOverflow.fade,
@@ -338,9 +346,9 @@ class StoreReviewsView extends ConsumerWidget {
                         ),
                         GestureDetector(
                           onTap: () {},
-                          child: Text(
+                          child: const Text(
                             'See more',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: AppColors.grey5,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,

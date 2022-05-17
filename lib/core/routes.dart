@@ -22,7 +22,7 @@ import '../features/authentication/views/login_view.dart';
 import '../features/core/views/message_view/message_view.dart';
 import '../features/core/views/no_product_search_view.dart';
 import '../features/core/views/store_views/add_store.dart';
-import '../features/core/views/store_views/empty_state.dart';
+import '../features/core/views/store_views/store_empty_state.dart';
 import '../features/core/views/store_views/store_settings.dart';
 import '../features/core/views/store_views/store_view.dart';
 import '../features/core/views/store_reviews_view.dart';
@@ -88,11 +88,26 @@ class Routes {
       case productDetailsMore:
         return MaterialPageRoute(builder: (_) => ProductDetailsMoreView());
       case storeDetails:
-        return MaterialPageRoute(builder: (_) => const StoreDetailsView());
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+          builder: (_) => StoreDetailsView(
+            store: store,
+          ),
+        );
       case storeReviews:
-        return MaterialPageRoute(builder: (_) => StoreReviewsView());
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+          builder: (_) => StoreReviewsView(
+            store: store,
+          ),
+        );
       case addReview:
-        return MaterialPageRoute(builder: (_) => AddReviewView());
+        int storeId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => AddReviewView(
+            storeId: storeId,
+          ),
+        );
       case storeView:
         return MaterialPageRoute(builder: (_) => const StoreView());
       case productSearched:
@@ -108,7 +123,7 @@ class Routes {
       case addstoreView:
         return MaterialPageRoute(builder: (_) => AddStoreView());
       case emptystoreView:
-        return MaterialPageRoute(builder: (_) => EmptyStateView());
+        return MaterialPageRoute(builder: (_) => StoreEmptyStateView());
       case storesettingView:
         return MaterialPageRoute(builder: (_) => StoreSetting());
       case messageView:

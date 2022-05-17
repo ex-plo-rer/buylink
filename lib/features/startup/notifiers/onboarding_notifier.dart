@@ -54,11 +54,14 @@ class OnboardingNotifier extends BaseChangeNotifier {
     }
   }
 
-  void exitOnboard() {
+  void exitOnboard({required bool toSignUp}) {
     _reader(localStorageService)
         .writeSecureData(AppStrings.onboardedKey, 'true');
-    _reader(navigationServiceProvider)
-        .navigateOffAllNamed(Routes.signup, (p0) => false);
+    toSignUp
+        ? _reader(navigationServiceProvider)
+            .navigateOffAllNamed(Routes.signup, (p0) => false)
+        : _reader(navigationServiceProvider)
+            .navigateOffAllNamed(Routes.login, (p0) => false);
   }
 
   List<OnBoardContent> onBoardingProvContents = [
