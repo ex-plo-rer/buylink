@@ -63,6 +63,7 @@ class AddReviewNotifier extends BaseChangeNotifier {
   }
 }
 
-final addReviewNotifierProvider = ChangeNotifierProvider<AddReviewNotifier>(
+final addReviewNotifierProvider =
+    ChangeNotifierProvider.autoDispose<AddReviewNotifier>(
   (ref) => AddReviewNotifier(ref.read),
 );

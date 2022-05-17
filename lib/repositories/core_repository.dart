@@ -2,6 +2,8 @@ import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/models/category_model.dart';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
+import 'package:buy_link/features/core/models/review_stats_model.dart';
+import 'package:buy_link/features/core/models/reviews_model.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -237,6 +239,50 @@ class CoreRepository {
       headers: headers,
     );
     print('Add review response $response');
+  }
+
+  Future<ReviewStatsModel> fetchReviewStats({
+    required int storeId,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+    };
+    print('Fetch review stat body sent to server $body');
+    var response = await networkService.post(
+      'users/review-stats',
+      body: body,
+      headers: headers,
+    );
+    print('Fetch review stat response $response');
+    return ReviewStatsModel.fromJson(response);
+  }
+
+  Future<List<ReviewsModel>> fetchReviews({
+    required int storeId,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+    };
+    print('Fetch reviews body sent to server $body');
+    var response = await networkService.post(
+      'users/load-reviews/1',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch reviews response $response');
+
+    List<ReviewsModel> _reviews = [];
+    for (var review in response) {
+      _reviews.add(ReviewsModel.fromJson(review));
+    }
+
+    print('Fetch reviews response $response');
+    return _reviews;
   }
 }
 
