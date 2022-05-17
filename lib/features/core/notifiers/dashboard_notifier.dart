@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/utilities/base_change_notifier.dart';
@@ -10,15 +12,18 @@ class DashboardNotifier extends BaseChangeNotifier {
   int _selectedIndex = 0;
   int get selectedIndex => _selectedIndex;
 
-  // void setSelectedIndex(int? index) {
-  //   if (index != null) {
-  //     _selectedIndex = index;
-  //     notifyListeners();
-  //   }
-  // }
+  final ListQueue<int> _navigationQueue = ListQueue();
+  ListQueue<int> get navigationQueue => _navigationQueue;
 
   Future<void> onBottomNavTapped(int index) async {
+    _navigationQueue.addLast(_selectedIndex);
     _selectedIndex = index;
+    notifyListeners();
+  }
+
+  void willPopM() {
+    _selectedIndex = _navigationQueue.last;
+    _navigationQueue.removeLast();
     notifyListeners();
   }
 }
