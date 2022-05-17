@@ -210,12 +210,33 @@ class CoreRepository {
     );
 
     print('Remove from wishlist response $response');
-    // List<ProductModel> _products = [];
-    // for (var product in response) {
-    //   _products.add(ProductModel.fromJson(product));
-    // }
-
     return '';
+  }
+
+  Future<void> addReview({
+    required int storeId,
+    required double star,
+    String? title,
+    String? body,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final routeBody = {
+      // TODO: Uncomment this
+      // 'id': id,
+      // 'store_id': storeId,
+      'id': 1,
+      'store_id': 1,
+      'star': star,
+      'title': title,
+      'body': body,
+    };
+    print('Add review body sent to server $routeBody');
+    var response = await networkService.post(
+      'users/add-review',
+      body: routeBody,
+      headers: headers,
+    );
+    print('Add review response $response');
   }
 }
 

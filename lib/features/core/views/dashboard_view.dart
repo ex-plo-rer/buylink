@@ -27,7 +27,7 @@ class DashboardView extends ConsumerWidget {
       body: [
         const HomeView(),
         const WishlistView(),
-        StoreEmptyStateView(),
+        const StoreEmptyStateView(),
         const NotificationView(),
         const SettingView(),
       ][dashboardNotifier.selectedIndex],

@@ -163,8 +163,8 @@ class _StoreDashboardViewState extends ConsumerState {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Most searched product',
                           style: TextStyle(
                             fontSize: 14,
@@ -174,6 +174,7 @@ class _StoreDashboardViewState extends ConsumerState {
                         ),
                         AppRatingBar(
                           itemPadding: 4,
+                          onRatingUpdate: (rating){},
                         ),
                       ],
                     ),

@@ -1,16 +1,12 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
-import 'package:buy_link/features/startup/notifiers/onboarding_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
-import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/back_arrow.dart';
-import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/distance_container.dart';
 import 'package:buy_link/widgets/favorite_container.dart';
@@ -19,16 +15,13 @@ import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../services/location_service.dart';
-import '../../../widgets/dot_build.dart';
 import '../notifiers/product_details_notifier.dart';
 import '../notifiers/wishlist_notifier.dart';
 import 'package:intl/intl.dart';
@@ -116,7 +109,7 @@ class ProductDetailsView extends ConsumerWidget {
                     onTap: () =>
                         ref.read(navigationServiceProvider).navigateToNamed(
                               Routes.storeDetails,
-                              arguments: product.store.id,
+                              arguments: product.store,
                             ),
                     leading: CircleAvatar(
                       backgroundColor: AppColors.grey1,

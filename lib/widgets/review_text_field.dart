@@ -15,6 +15,7 @@ class ReviewTextField extends StatelessWidget {
   final Color? fillColor;
   final int? maxLine;
   final int? noOfChar;
+  final int? maxLength;
 
   const ReviewTextField({
     Key? key,
@@ -30,6 +31,7 @@ class ReviewTextField extends StatelessWidget {
     this.fillColor = AppColors.grey8,
     this.maxLine = 3,
     this.noOfChar,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -54,14 +56,16 @@ class ReviewTextField extends StatelessWidget {
             keyboardType: keyboardType,
             validator: validator,
             onFieldSubmitted: onFieldSubmitted,
+            maxLength: maxLength,
             maxLines: maxLine,
             decoration: InputDecoration(
+              counterText: '',
               isDense: true,
               fillColor: fillColor,
               filled: true,
               contentPadding: const EdgeInsets.all(16),
               hintText: hintText,
-              hintStyle: const TextStyle(fontSize: 14),
+              hintStyle: const TextStyle(fontSize: 14, color: AppColors.grey5),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide.none,
