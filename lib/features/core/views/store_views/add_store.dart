@@ -1,3 +1,8 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:buy_link/widgets/select_image_container.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,28 +22,28 @@ class AddStoreView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final addstoreNotifier = ref.watch(addstoreNotifierProvider);
+    final addStoreNotifier = ref.watch(addStoreNotifierProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        leading: addstoreNotifier.currentPage == 1
+        leading: addStoreNotifier.currentPage == 1
             ? null
             : IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            color: AppColors.dark,
-          ),
-          onPressed: () {
-            addstoreNotifier.moveBackward();
-            print(addstoreNotifier.currentPage);
-            _pageController.animateToPage(
-              // array starts at 0 (lol)
-              addstoreNotifier.currentPage - 1,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-            );
-          },
-        ),
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppColors.dark,
+                ),
+                onPressed: () {
+                  addStoreNotifier.moveBackward();
+                  print(addStoreNotifier.currentPage);
+                  _pageController.animateToPage(
+                    // array starts at 0 (lol)
+                    addStoreNotifier.currentPage - 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+              ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
@@ -58,12 +63,14 @@ class AddStoreView extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                const Spacing.mediumHeight(),
                 AppLinearProgress(
-                  current: addstoreNotifier.currentPage,
-                  total: addstoreNotifier.totalPage,
-                  value: addstoreNotifier.currentPage / addstoreNotifier.totalPage,
+                  current: addStoreNotifier.currentPage,
+                  total: addStoreNotifier.totalPage,
+                  value:
+                      addStoreNotifier.currentPage / addStoreNotifier.totalPage,
                 ),
-                const Spacing.height(12),
+                const Spacing.mediumHeight(),
                 SizedBox(
                   height: 400,
                   child: PageView(
@@ -71,18 +78,21 @@ class AddStoreView extends ConsumerWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
                       Column(
-                        children: [
-                          const TextWithRich(
+                        children: const [
+                          TextWithRich(
                             firstText: 'What\'s the name your',
                             secondText: 'store?',
                             fontSize: 24,
                             secondColor: AppColors.primaryColor,
                           ),
                           Align(
-                              alignment: Alignment.topLeft,
-                              child:
-                          Text("This helps your customer identify your store", textAlign: TextAlign.start,)),
-                          const Spacing.height(12),
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "This helps your customer identify your store",
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                          Spacing.height(12),
                           AppTextField(
                             title: '',
                             hintText: 'Store name',
@@ -91,16 +101,20 @@ class AddStoreView extends ConsumerWidget {
                         ],
                       ),
                       Column(
-                        children: [
-                          const TextWithRich(
+                        children: const [
+                          TextWithRich(
                             firstText: 'Describe your Store',
                             secondText: '',
                             fontSize: 24,
                             secondColor: AppColors.primaryColor,
                           ),
-                          const Spacing.height(12),
-                          TextField(
-
+                          Spacing.height(12),
+                          // TextField(),
+                          AppTextField(
+                            hintText: 'Tell us about your store',
+                            maxLines: 5,
+                            hasPrefixIcon: false,
+                            hasSuffixIcon: false,
                           ),
                         ],
                       ),
@@ -114,83 +128,118 @@ class AddStoreView extends ConsumerWidget {
                             firstColor: AppColors.grey1,
                           ),
                           const Spacing.height(12),
-                          Spacing.largeHeight(),
-                          Center (child:
-                          Image.asset("assets/images/add_store.png", )),
-                          Spacing.smallHeight(),
-                          Padding (
-                             padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                              child:
-                          Text("Tap the button below to locate your store", textAlign: TextAlign.center,))
-
+                          const Spacing.largeHeight(),
+                          Center(
+                            child: Image.asset(
+                              "assets/images/add_store.png",
+                            ),
+                          ),
+                          const Spacing.smallHeight(),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+                            child: Text(
+                              "Tap the button below to locate your store",
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ],
                       ),
                       Column(
                         children: [
-                        Container(
-                        height: 200,
-                        color: AppColors.light,
-                        padding: EdgeInsets.all(10.0),
-                        child: new ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: 200.0,
-                          ),
-                          child: new Scrollbar(
-                            child: new SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              reverse: true,
-                              child: SizedBox(
-                                height: 190.0,
-                                child: new TextField(
-                                  maxLines: 100,
-                                  decoration: new InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Add your text here',
-                                  ),
-                                ),
-                              ),)))),
-                          const Spacing.height(12),
-                          const Spacing.largeHeight(),
+                          SelectImageContainer(
+                            text: 'Add a picture of your store',
+                            imageFile: addStoreNotifier.imageFile,
+                            onTapped: () async {
+                              print('Pick file Clicked');
+                              FilePickerResult? result =
+                                  await FilePicker.platform.pickFiles(
+                                type: FileType.image,
+                                withData: true,
+                              );
 
+                              if (result != null) {
+                                File imageFile =
+                                    File((result.files.single.path) as String);
+                                print('File @@@@@@@@@@ : $imageFile');
+                                // setState(() {
+                                //   fileSelected = true;
+                                // });
+                                // Uint8List? fileBytes =
+                                //     result.files.single.bytes;
+                                // String fileName =
+                                //     result.files.first.name;
+
+                                // print(
+                                //     'Filebyte $fileBytes: Filename $fileName');
+                                print('imageFile.path: ${imageFile.path}');
+                                // ref
+                                //     .read(addStoreNotifierProvider)
+                                //     .setImageFile(imageFile: imageFile.path);
+                                addStoreNotifier.setImageFile(
+                                  imageFile: imageFile.path,
+                                  isImage: true,
+                                );
+                                // _staffImage = imageFile.path;
+                                // _fileName =
+                                result.files.first.name;
+                              } else {
+                                // User canceled the picker
+                              }
+                            },
+                          ),
+                          const Spacing.mediumHeight(),
+                          SelectImageContainer(
+                            text: 'Add your store\'s logo',
+                            imageFile: addStoreNotifier.logoFile,
+                            onTapped: () async {
+                              print('Pick file Clicked');
+                              FilePickerResult? result =
+                                  await FilePicker.platform.pickFiles(
+                                type: FileType.image,
+                                withData: true,
+                              );
+
+                              if (result != null) {
+                                File imageFile =
+                                    File((result.files.single.path) as String);
+                                print('File @@@@@@@@@@ : $imageFile');
+                                print('imageFile.path: ${imageFile.path}');
+                                addStoreNotifier.setImageFile(
+                                  imageFile: imageFile.path,
+                                  isImage: false,
+                                );
+                                result.files.first.name;
+                              } else {
+                                // User canceled the picker
+                              }
+                            },
+                          ),
                         ],
                       ),
-
-                      Column (
-                        children:<Widget>[
-                          Text ("Where is your store?"),
-
-                          Image.asset ( "assets/images/urban-earth.png",),
-                          Text ("Tap the button below to locate your store"),
-                          AppButton(text: "Locate Store")
-
-                        ]
-                      )
-
                     ],
                   ),
                 ),
-                Spacing.largeHeight(),
+                const Spacing.largeHeight(),
                 Column(
                   children: [
                     AppButton(
-                      text:
-                      addstoreNotifier.currentPage == addstoreNotifier.totalPage
+                      text: addStoreNotifier.currentPage ==
+                              addStoreNotifier.totalPage
                           ? AppStrings.next
                           : AppStrings.next,
                       backgroundColor: AppColors.primaryColor,
                       onPressed: () {
-                        addstoreNotifier.moveForward();
-                        print(addstoreNotifier.currentPage);
+                        addStoreNotifier.moveForward();
+                        print(addStoreNotifier.currentPage);
                         _pageController.animateToPage(
                           // array starts at 0 (lol)
-                          addstoreNotifier.currentPage - 1,
+                          addStoreNotifier.currentPage - 1,
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeIn,
                         );
                       },
                     ),
                     const Spacing.mediumHeight(),
-
                   ],
                 ),
               ],

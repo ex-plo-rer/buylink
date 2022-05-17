@@ -2,7 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:buy_link/features/startup/views/onboarding_view.dart';
 import 'package:buy_link/features/core/notifiers/no_product_search_notifier.dart';
 import 'package:buy_link/features/core/views/no_product_search_view.dart';
-import 'package:buy_link/features/core/views/store_views/empty_state.dart';
+import 'package:buy_link/features/core/views/store_views/store_empty_state.dart';
 import 'package:buy_link/features/core/views/store_views/store_settings.dart';
 import 'package:buy_link/features/startup/views/startup_view.dart';
 import 'package:buy_link/services/navigation_service.dart';

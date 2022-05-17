@@ -27,47 +27,42 @@ class StoreContainer extends ConsumerWidget {
       // width: 164,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(
-            storeImage,
-          ),
+          image: NetworkImage(storeImage),
           fit: BoxFit.fill,
         ),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Positioned(
-            top: 70,
-            left: 10,
-            right: 10,
-            child: TextButton(onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => StoreDashboardView(),
+          Padding(
+            padding: const EdgeInsets.only(right: 10, top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Icon(
+                  Icons.star_rate_rounded,
+                  color: AppColors.yellow,
                 ),
-              );
-            },
-            child: Text( storeName,
-                style: TextStyle(
-                    color: AppColors.light,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold))),
+                Text(
+                  starRate.toString(),
+                  style: const TextStyle(color: AppColors.light, fontSize: 16),
+                )
+              ],
+            ),
           ),
-          Positioned(
-            top: 12,
-            right: 12,
-            child: Row(children: <Widget>[
-              Icon(
-                Icons.star_rate_rounded,
-                color: AppColors.yellow,
+          Center(
+            child: Text(
+              storeName,
+              style: const TextStyle(
+                color: AppColors.light,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              Text(
-                starRate.toString(),
-                style: TextStyle(color: AppColors.light, fontSize: 16),
-              )
-            ]),
+            ),
           ),
+          const Spacing.largeHeight(),
         ],
       ),
     );
