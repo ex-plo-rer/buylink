@@ -28,7 +28,7 @@ class StoreReviewsView extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: AppColors.dark, //change your color here
+          color: AppColors.dark,
         ),
         leading: IconButton(
           onPressed: () => ref.read(navigationServiceProvider).navigateBack(),
