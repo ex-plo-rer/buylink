@@ -20,8 +20,7 @@ class SettingRepository {
     "Accept": "application/json",
     "Content-Type": "application/json",
   };
-
-
+  //Future <>
   Future<UserModel> fetchUserDetails(
    // required int id,
   ) async {
