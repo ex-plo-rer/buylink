@@ -21,6 +21,7 @@ class AppTextField extends StatelessWidget {
   final bool hasPrefixIcon;
   final bool hasSuffixIcon;
   final int? maxLines;
+  final void Function()? onTap;
 
   const AppTextField({
     Key? key,
@@ -42,6 +43,7 @@ class AppTextField extends StatelessWidget {
     this.hasPrefixIcon = false,
     this.hasSuffixIcon = true,
     this.maxLines,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -69,6 +71,7 @@ class AppTextField extends StatelessWidget {
             validator: validator,
             obscureText: obscureText,
             onFieldSubmitted: onFieldSubmitted,
+            onTap: onTap,
             // maxLines: maxLines,
             decoration: InputDecoration(
               isDense: true,

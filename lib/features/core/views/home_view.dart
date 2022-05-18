@@ -25,11 +25,13 @@ import '../../../core/utilities/alertify.dart';
 import '../../../widgets/app_dialog.dart';
 import '../../../widgets/circular_progress.dart';
 import '../../authentication/views/login_view.dart';
+import '../models/product_search.dart';
 import '../notifiers/category_notifier.dart';
 
 class HomeView extends ConsumerWidget {
-  const HomeView({Key? key}) : super(key: key);
+  HomeView({Key? key}) : super(key: key);
 
+  final searchFN = FocusNode();
   @override
   Widget build(BuildContext context, ref) {
     final homeNotifier = ref.watch(homeNotifierProvider(''));
@@ -46,14 +48,32 @@ class HomeView extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppTextField(
+              AppTextField(
                 hintText: 'What would you like to buy ?',
-                prefixIcon: Icon(Icons.search_outlined),
+                onTap: () async {
+                  searchFN.unfocus();
+                  final searchText = await showSearch(
+                    context: context,
+                    delegate: ProductSearch(
+                      productsSuggestion: homeNotifier.products,
+                      allProducts: homeNotifier.products,
+                      onSearchChanged: homeNotifier.getRecentSearchesLike,
+                      ref: ref,
+                    ),
+                  );
+                  if (searchText != null) {
+                    await homeNotifier.saveToRecentSearches(searchText);
+                  }
+                },
+                prefixIcon: const Icon(Icons.search_outlined),
                 hasBorder: false,
                 isSearch: true,
                 fillColor: AppColors.grey8,
                 hasPrefixIcon: true,
+                focusNode: searchFN,
               ),
+              //   ),
+              // ),
               const Spacing.height(12),
               Visibility(
                 visible: ref.watch(userProvider).currentUser == null,

@@ -33,7 +33,7 @@ class DashboardView extends ConsumerWidget {
       },
       child: Scaffold(
         body: [
-          const HomeView(),
+          HomeView(),
           const WishlistView(),
           const StoreEmptyStateView(),
           const NotificationView(),

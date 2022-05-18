@@ -29,7 +29,7 @@ class StartupNotifier extends BaseChangeNotifier {
     } else {
       // TODO: Probably check if user is logged in
       _reader(navigationServiceProvider)
-          .navigateOffAllNamed(Routes.login, (route) => false);
+          .navigateOffAllNamed(Routes.dashboard, (route) => false);
     }
   }
 }
