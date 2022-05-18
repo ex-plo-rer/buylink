@@ -1,6 +1,9 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
+import '../../../../core/utilities/view_state.dart';
+import '../../../../services/base/network_exception.dart';
 
 class EditUserPasswordNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -9,15 +12,10 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
   }
 
   int _currentPage = 1;
-
   int get currentPage => _currentPage;
-
   int _totalPage = 2;
-
   int get totalPage => _totalPage;
-
   bool _passwordVisible = false;
-
   bool get passwordVisible => _passwordVisible;
 
   void moveBackward() {
@@ -35,6 +33,7 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
     }
     notifyListeners();
   }
+
 }
 
 final editUserPasswordNotifierProvider =

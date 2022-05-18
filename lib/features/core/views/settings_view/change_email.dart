@@ -4,10 +4,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/utilities/alertify.dart';
+import '../../../../services/local_storage_service.dart';
+import '../../../../services/snackbar_service.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_linear_progress.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/otp_form.dart';
+import '../../../../widgets/otp_input.dart';
 import '../../../../widgets/spacing.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/settings_notifier/change_email_notifier.dart';
@@ -15,6 +19,10 @@ import '../../notifiers/settings_notifier/change_email_notifier.dart';
 class ChangeEmail extends ConsumerWidget {
   ChangeEmail({Key? key}) : super(key: key);
   final PageController _pageController = PageController();
+  final _newEmailController = TextEditingController();
+  final _newEmailFN = FocusNode();
+
+  String? _otp;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -91,9 +99,12 @@ class ChangeEmail extends ConsumerWidget {
                                         ))),
                                     AppTextField(
                                       title: '',
+                                      controller: _newEmailController,
+                                      focusNode: _newEmailFN,
+                                      onChanged: changeEmailNotifier.onEmailChanged,
                                       hintText: 'Dejisobowale@gmail.com',
                                       suffixIcon: GestureDetector(
-                                        onTap: () {},
+                                        onTap: () => _newEmailController.clear(),
                                         child: const CircleAvatar(
                                           backgroundColor: AppColors.grey7,
                                           radius: 10,
@@ -125,7 +136,11 @@ class ChangeEmail extends ConsumerWidget {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    OtpForm(),
+                                    OTPInput(
+                                      onChanged: (val) {
+                                        _otp = val;
+                                      },
+                                    ),
 
                                   ],
                                 ),
@@ -135,20 +150,58 @@ class ChangeEmail extends ConsumerWidget {
                       AppButton(
                         text:
                         changeEmailNotifier.currentPage == changeEmailNotifier.totalPage
-                            ? AppStrings.signup
+                            ? AppStrings.changeEmail
                             : AppStrings.next,
                         backgroundColor: AppColors.primaryColor,
-                        onPressed: () {
-                          changeEmailNotifier.moveForward();
-                          print(changeEmailNotifier.currentPage);
-                          _pageController.animateToPage(
-                            // array starts at 0 (lol)
-                            changeEmailNotifier.currentPage - 1,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn,
-                          );
-                        },
-                      ),
+                        onPressed:
+                          changeEmailNotifier.currentPage == 1 &&
+                              _newEmailController.text.isEmpty
+                              ? null
+                              : () async {
+                            if (changeEmailNotifier.currentPage == 1){
+                              await changeEmailNotifier.checkEmail(
+                                reason: 'change email',
+                                email: _newEmailController.text,
+                              );
+
+                            changeEmailNotifier.moveForward();
+                            print(changeEmailNotifier.currentPage);
+                            _pageController.animateToPage(
+                                // array starts at 0 (lol)
+                                changeEmailNotifier.currentPage - 1,
+                                duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeIn);
+                          }
+                          String? otp = await ref
+                              .read(localStorageService)
+                                .readSecureData(
+                                AppStrings.otpEmailKey);
+                            if (_otp == null) {
+                              ref
+                                  .read(snackbarService)
+                                  .showErrorSnackBar(
+                                'Kindly enter otp.',
+                              );
+                              return;
+                            } else if (_otp!.length != 4) {
+                              ref
+                                  .read(snackbarService)
+                                  .showErrorSnackBar(
+                                'Kindly make sure the OTP is complete.',
+                              );
+                              return;
+                            } else if (otp == _otp) {
+                              Alertify(title: 'OTP verified');
+                            }
+
+                            await changeEmailNotifier.changeEmail(
+                              // id : 1,
+                              email: _newEmailController.text,
+                            );
+
+                            Alertify(title: 'New email saved');
+
+                          } ),
 
                     ])
 

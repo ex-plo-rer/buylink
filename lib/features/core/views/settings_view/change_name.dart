@@ -51,12 +51,11 @@ class EditUserName extends ConsumerWidget {
                       AppTextField(
                         title: '',
                         hintText: 'Deji',
-
                         focusNode: _nameFN,
                         controller: _nameController,
                         onChanged: editUserNameNotifier.onNameChanged,
                         suffixIcon: GestureDetector(
-                          onTap: () {},
+                          onTap: () => _nameController.clear(),
                           child: const CircleAvatar(
                             backgroundColor: AppColors.grey7,
                             radius: 10,

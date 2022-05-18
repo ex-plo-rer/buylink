@@ -17,6 +17,11 @@ class ChangePassword extends ConsumerWidget {
   ChangePassword({Key? key}) : super(key: key);
   final PageController _pageController = PageController();
 
+  final _oldPasswordController = TextEditingController();
+  final _oldPasswordFN = FocusNode();
+  final _newPasswordController = TextEditingController();
+  final _newPasswordFN = FocusNode();
+
   @override
   Widget build(BuildContext context, ref) {
     final changePasswordNotifier = ref.watch(editUserPasswordNotifierProvider);
@@ -93,8 +98,12 @@ class ChangePassword extends ConsumerWidget {
                                     AppTextField(
                                       title: '',
                                       hintText: 'Ayodeji123',
+                                      controller: _oldPasswordController ,
+                                      focusNode: _oldPasswordFN,
                                       suffixIcon: GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+
+                                        },
                                         child: const CircleAvatar(
                                           backgroundColor: AppColors.grey7,
                                           radius: 10,
@@ -120,6 +129,8 @@ class ChangePassword extends ConsumerWidget {
                                     const Spacing.height(12),
                                     AppTextField(
                                       title: '',
+                                      controller: _newPasswordController,
+                                      focusNode: _newPasswordFN,
                                       hintText: 'Example123',
                                       obscureText: changePasswordNotifier.passwordVisible,
                                       suffixIcon: Row(
@@ -173,10 +184,12 @@ class ChangePassword extends ConsumerWidget {
                       AppButton(
                         text:
                         changePasswordNotifier.currentPage == changePasswordNotifier.totalPage
-                            ? AppStrings.signup
+                            ? AppStrings.changePassword
                             : AppStrings.next,
                         backgroundColor: AppColors.primaryColor,
                         onPressed: () {
+
+
                           changePasswordNotifier.moveForward();
                           print(changePasswordNotifier.currentPage);
                           _pageController.animateToPage(
