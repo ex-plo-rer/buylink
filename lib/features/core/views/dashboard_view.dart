@@ -23,71 +23,80 @@ class DashboardView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final dashboardNotifier = ref.watch(dashboardChangeNotifier);
-    return Scaffold(
-      body: [
-        const HomeView(),
-        const WishlistView(),
-        const StoreEmptyStateView(),
-        const NotificationView(),
-        const SettingView(),
-      ][dashboardNotifier.selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: dashboardNotifier.selectedIndex,
-        onTap: dashboardNotifier.onBottomNavTapped,
-        selectedItemColor: AppColors.primaryColor,
-        unselectedItemColor: AppColors.grey5,
-        elevation: 7,
-        type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: const TextStyle(
-          color: AppColors.primaryColor,
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
+    return WillPopScope(
+      onWillPop: () async {
+        if (dashboardNotifier.selectedIndex == 0) return true;
+        if (dashboardNotifier.navigationQueue.isEmpty) return true;
+        // dashboardNotifier.selectedIndex = dashboardNotifier.navigationQueue.last;
+        dashboardNotifier.willPopM();
+        return false;
+      },
+      child: Scaffold(
+        body: [
+          const HomeView(),
+          const WishlistView(),
+          const StoreEmptyStateView(),
+          const NotificationView(),
+          const SettingView(),
+        ][dashboardNotifier.selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: dashboardNotifier.selectedIndex,
+          onTap: dashboardNotifier.onBottomNavTapped,
+          selectedItemColor: AppColors.primaryColor,
+          unselectedItemColor: AppColors.grey5,
+          elevation: 7,
+          type: BottomNavigationBarType.fixed,
+          selectedLabelStyle: const TextStyle(
+            color: AppColors.primaryColor,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            color: AppColors.grey5,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+          items: [
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(dashboardNotifier.selectedIndex == 0
+                  ? AppSvgs.homeFilled
+                  : AppSvgs.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                dashboardNotifier.selectedIndex == 1
+                    ? AppSvgs.favBFilled
+                    : AppSvgs.favorite,
+              ),
+              label: 'Wishlist',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                dashboardNotifier.selectedIndex == 2
+                    ? AppSvgs.storeFilled
+                    : AppSvgs.store,
+              ),
+              label: 'My Stores',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                dashboardNotifier.selectedIndex == 3
+                    ? AppSvgs.bellFilled
+                    : AppSvgs.bell,
+              ),
+              label: 'Notifications',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                dashboardNotifier.selectedIndex == 4
+                    ? AppSvgs.settingsFilled
+                    : AppSvgs.settings,
+              ),
+              label: 'Settings',
+            ),
+          ],
         ),
-        unselectedLabelStyle: const TextStyle(
-          color: AppColors.grey5,
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(dashboardNotifier.selectedIndex == 0
-                ? AppSvgs.homeFilled
-                : AppSvgs.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              dashboardNotifier.selectedIndex == 1
-                  ? AppSvgs.favBFilled
-                  : AppSvgs.favorite,
-            ),
-            label: 'Wishlist',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              dashboardNotifier.selectedIndex == 2
-                  ? AppSvgs.storeFilled
-                  : AppSvgs.store,
-            ),
-            label: 'My Stores',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              dashboardNotifier.selectedIndex == 3
-                  ? AppSvgs.bellFilled
-                  : AppSvgs.bell,
-            ),
-            label: 'Notifications',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              dashboardNotifier.selectedIndex == 4
-                  ? AppSvgs.settingsFilled
-                  : AppSvgs.settings,
-            ),
-            label: 'Settings',
-          ),
-        ],
       ),
     );
   }

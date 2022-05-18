@@ -14,7 +14,7 @@ class SingleRating extends StatelessWidget {
   }) : super(key: key);
 
   final String starNumber;
-  final String noOfRatings;
+  final int noOfRatings;
   final double? ratingValue;
 
   @override

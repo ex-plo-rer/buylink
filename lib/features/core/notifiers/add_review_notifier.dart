@@ -37,10 +37,6 @@ class AddReviewNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  void watchChar(bool isTitle) {
-    if (isTitle) {}
-  }
-
   Future<void> addReview({
     required int storeId,
     required double star,
@@ -55,7 +51,7 @@ class AddReviewNotifier extends BaseChangeNotifier {
         title: title,
         body: body,
       );
-      Alertify(title: 'Store Reviewed!!! Thanks').success();
+      Alertify(title: 'Your review has been added').success();
       _reader(navigationServiceProvider).navigateBack();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
@@ -67,6 +63,7 @@ class AddReviewNotifier extends BaseChangeNotifier {
   }
 }
 
-final addReviewNotifierProvider = ChangeNotifierProvider<AddReviewNotifier>(
+final addReviewNotifierProvider =
+    ChangeNotifierProvider.autoDispose<AddReviewNotifier>(
   (ref) => AddReviewNotifier(ref.read),
 );

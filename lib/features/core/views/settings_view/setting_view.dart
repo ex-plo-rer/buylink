@@ -1,13 +1,17 @@
+import 'package:buy_link/core/utilities/extensions/strings.dart';
+import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/features/core/views/settings_view/change_name.dart';
 import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
 import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
 import 'package:buy_link/features/core/views/settings_view/term_of_use.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../core/routes.dart';
 import '../../../../widgets/spacing.dart';
 import '../../notifiers/settings_notifier/setting_notifier.dart';
 import 'about_buylink.dart';
@@ -20,50 +24,51 @@ class SettingView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final settingNotifier = ref.watch(settingNotifierProvider);
+    final userProv = ref.watch(userProvider);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               const SizedBox(
-                height: 30,
+                height: 50,
               ),
+              const SizedBox(height: 10),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: Row(
                   children: const <Widget>[
                     SizedBox(width: 20),
                     Text(
-                      "Settings",
+                      'Settings',
                       style: TextStyle(fontSize: 24),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Center(
+              const SizedBox(height: 10),
+              Center(
                 child: CircleAvatar(
                   backgroundColor: AppColors.shade3,
                   child: Text(
-                    'DE',
-                    style: TextStyle(color: Colors.white),
+                    userProv.currentUser?.name.initials() ?? 'US',
+                    style: const TextStyle(color: Colors.white),
                   ),
                   radius: 40,
                 ),
               ),
               const Spacing.smallHeight(),
-               Text(
-                settingNotifier.userDetails.name,
-                // "Bode",
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                userProv.currentUser?.name ?? 'User',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                  color: AppColors.grey1,
+                ),
               ),
               const Spacing.smallHeight(),
-               Text(settingNotifier.userDetails.email),
-              const SizedBox(
-                height: 30,
-              ),
+              Text(userProv.currentUser?.email ?? 'user@gmail.com'),
+              const SizedBox(height: 30),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                 alignment: Alignment.topLeft,
@@ -367,10 +372,13 @@ class SettingView extends ConsumerWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return const AppDialog(
+                        return AppDialog(
                           title: 'Are you sure you want to log out?',
                           text1: 'No',
                           text2: 'Yes',
+                          onText2Pressed: () => ref
+                              .read(navigationServiceProvider)
+                              .navigateToNamed(Routes.login),
                         );
                       },
                     );

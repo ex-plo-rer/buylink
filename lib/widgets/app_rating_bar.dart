@@ -21,6 +21,7 @@ class AppRatingBar extends ConsumerWidget {
     this.allowHalfRating = true,
     this.itemCount = 5,
     this.itemPadding = 10,
+    this.ignoreGestures = false,
     required this.onRatingUpdate,
   }) : super(key: key);
 
@@ -32,6 +33,7 @@ class AppRatingBar extends ConsumerWidget {
   final int itemCount;
   final double itemPadding;
   final void Function(double) onRatingUpdate;
+  final bool ignoreGestures;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -42,6 +44,7 @@ class AppRatingBar extends ConsumerWidget {
       direction: direction,
       allowHalfRating: allowHalfRating,
       itemCount: itemCount,
+      ignoreGestures: ignoreGestures,
       unratedColor: AppColors.grey7,
       itemPadding: EdgeInsets.symmetric(horizontal: itemPadding),
       itemBuilder: (context, _) => SvgPicture.asset(
