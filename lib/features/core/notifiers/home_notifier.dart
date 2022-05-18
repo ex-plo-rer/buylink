@@ -93,33 +93,35 @@ class HomeNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  final autoCompletee = [
-    '_autoComplete',
-    '_autoComplete2',
-    '_autoComplete3',
-    '_autoComplete4',
-    '_autoComplete5',
-  ];
+  bool _searchLoading = false;
+  bool get searchLoading => _searchLoading;
+
   Future<List<String>> autoComplete({
     required String query,
   }) async {
     print('Query......: $query');
     try {
+      _searchLoading = true;
       setState(state: ViewState.loading);
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(Duration(seconds: 2));
       return [
-        '_autoComplete',
-        '_autoComplete2',
-        '_autoComplete3',
-        '_autoComplete4',
-        '_autoComplete5',
-      ];
+        'Oluwatobiloba Ajayi',
+        'The Lord is good',
+        'I will not fail',
+        'GGMU',
+        'Revrd. Tolu Agboola',
+      ]
+          .where(
+              (element) => element.toLowerCase().contains(query.toLowerCase()))
+          .toList();
       // await _reader(coreRepository).autoComplete(query: query);
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
+      _searchLoading = false;
       setState(state: ViewState.idle);
       return [];
     } finally {
+      _searchLoading = false;
       setState(state: ViewState.idle);
       // return [];
     }
