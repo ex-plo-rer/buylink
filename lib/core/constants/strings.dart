@@ -100,6 +100,7 @@ class AppStrings {
   static const userKey = 'userKey';
   static const tokenKey = 'toKenKey';
   static const otpEmailKey = 'otpEmailKey';
+  static const recentSearchKey = 'recentSearchKey';
 
   static const API_BASE_URL = 'https://api.buylink.app';
   static const ronaldo =

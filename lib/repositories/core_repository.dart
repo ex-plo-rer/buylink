@@ -276,13 +276,45 @@ class CoreRepository {
 
     print('Fetch reviews response $response');
 
-    List<ReviewsModel> _reviews = [];
+    List<ReviewsModel> _autoComplete = [];
     for (var review in response) {
-      _reviews.add(ReviewsModel.fromJson(review));
+      _autoComplete.add(ReviewsModel.fromJson(review));
     }
 
     print('Fetch reviews response $response');
-    return _reviews;
+    return _autoComplete;
+  }
+
+  Future<List<String>> autoComplete({
+    required String query,
+  }) async {
+    final body = {
+      'search_term': query,
+      'domain': 'front',
+    };
+    print('Auto complete body sent to server $body');
+    var response = await networkService.post(
+      'users/auto-complete/4',
+      body: body,
+      headers: headers,
+    );
+
+    print('Auto complete response $response');
+
+    List<String> _autoComplete = [];
+    for (var text in response) {
+      _autoComplete.add(text);
+    }
+
+    print('Auto complete response $response');
+    // return _autoComplete;
+    return [
+      '_autoComplete',
+      '_autoComplete2',
+      '_autoComplete3',
+      '_autoComplete4',
+      '_autoComplete',
+    ];
   }
 }
 

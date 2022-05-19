@@ -16,7 +16,7 @@ class LocalStorageService {
     print('value saved $value');
   }
 
-  Future<String?> readSecureData(String key) async {
+  Future<dynamic> readSecureData(String key) async {
     var readData = await _storage.read(key: key);
     print('readData $readData');
     return readData;
@@ -47,6 +47,15 @@ class LocalStorageService {
         'Getting saved user @ UserModel.fromJson(json.decode(value)) :$value');
     return value == null ? null : UserModel.fromJson(json.decode(value));
   }
+
+  // Future<List<String>> getRecentSearchesLike(String query) async {
+  //   final allSearches = await _storage.read(key :AppStrings.recentSearchKey);
+  //   return allSearches
+  //       ?.where((product) =>
+  //       product.name.toLowerCase().contains(query.toLowerCase()))
+  //       .toList();
+  // }
+
 }
 
 final localStorageService = Provider((ref) => LocalStorageService());
