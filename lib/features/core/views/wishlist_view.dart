@@ -18,6 +18,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../models/compare_arg_model.dart';
+
 class WishlistView extends ConsumerStatefulWidget {
   const WishlistView({Key? key}) : super(key: key);
   @override
@@ -172,8 +174,10 @@ class _WishlistState extends ConsumerState<WishlistView>
                                       .read(navigationServiceProvider)
                                       .navigateToNamed(
                                         Routes.compare,
-                                        arguments:
-                                            wishlistNotifier.products[index],
+                                        arguments: CompareArgModel(
+                                          product:
+                                              wishlistNotifier.products[index],
+                                        ),
                                       );
                                 },
                                 onFavoriteTapped: () async {
@@ -230,8 +234,10 @@ class _WishlistState extends ConsumerState<WishlistView>
                                       .read(navigationServiceProvider)
                                       .navigateToNamed(
                                         Routes.compare,
-                                        arguments:
-                                            wishlistNotifier.products[index],
+                                        arguments: CompareArgModel(
+                                          product:
+                                              wishlistNotifier.products[index],
+                                        ),
                                       );
                                 },
                                 onFavoriteTapped: () async {
@@ -288,8 +294,10 @@ class _WishlistState extends ConsumerState<WishlistView>
                                       .read(navigationServiceProvider)
                                       .navigateToNamed(
                                         Routes.compare,
-                                        arguments:
-                                            wishlistNotifier.products[index],
+                                        arguments: CompareArgModel(
+                                          product:
+                                              wishlistNotifier.products[index],
+                                        ),
                                       );
                                 },
                                 onFavoriteTapped: () async {
@@ -346,8 +354,10 @@ class _WishlistState extends ConsumerState<WishlistView>
                                       .read(navigationServiceProvider)
                                       .navigateToNamed(
                                         Routes.compare,
-                                        arguments:
-                                            wishlistNotifier.products[index],
+                                        arguments: CompareArgModel(
+                                          product:
+                                              wishlistNotifier.products[index],
+                                        ),
                                       );
                                 },
                                 onFavoriteTapped: () async {
@@ -404,8 +414,10 @@ class _WishlistState extends ConsumerState<WishlistView>
                                       .read(navigationServiceProvider)
                                       .navigateToNamed(
                                         Routes.compare,
-                                        arguments:
-                                            wishlistNotifier.products[index],
+                                        arguments: CompareArgModel(
+                                          product:
+                                              wishlistNotifier.products[index],
+                                        ),
                                       );
                                 },
                                 onFavoriteTapped: () async {

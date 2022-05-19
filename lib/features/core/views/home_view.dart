@@ -3,6 +3,7 @@ import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
+import 'package:buy_link/features/core/models/compare_arg_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
@@ -171,7 +172,9 @@ class HomeView extends ConsumerWidget {
                                     .read(navigationServiceProvider)
                                     .navigateToNamed(
                                       Routes.compare,
-                                      arguments: homeNotifier.products[index],
+                                      arguments: CompareArgModel(
+                                          product:
+                                              homeNotifier.products[index]),
                                     );
                               },
                               onFavoriteTapped: () async {

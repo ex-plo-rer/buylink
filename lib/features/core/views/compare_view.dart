@@ -1,35 +1,65 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/constants/images.dart';
-import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/features/core/models/compare_arg_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:buy_link/features/core/notifiers/home_notifier.dart';
-import 'package:buy_link/widgets/app_button.dart';
+import 'package:buy_link/repositories/core_repository.dart';
+import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:buy_link/widgets/category_container.dart';
-import 'package:buy_link/widgets/compare_texts.dart';
 import 'package:buy_link/widgets/compare_texts_2.dart';
-import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/product_image_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
+import '../../../widgets/circular_progress.dart';
+import '../models/compare_search.dart';
+import '../notifiers/compare_notifier.dart';
 
-class CompareView extends ConsumerWidget {
-  bool haveProductToCompare = true;
-  final ProductModel product;
-
+class CompareView extends ConsumerStatefulWidget {
   CompareView({
     Key? key,
-    required this.product,
+    required this.arguments,
   }) : super(key: key);
 
+  bool haveProductToCompare = false;
+  final CompareArgModel arguments;
+
   @override
-  Widget build(BuildContext context, ref) {
+  ConsumerState<CompareView> createState() => _CompareViewState();
+}
+
+class _CompareViewState extends ConsumerState<CompareView> {
+  // final compareNotifier = ref.read(compareNotifierProvider(widget.arguments.product!));
+
+  final searchFN = FocusNode();
+  @override
+  void initState() {
+    // TODO: implement initState
+    print('Compare view init state called');
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      ref
+          .read(compareNotifierProvider)
+          .saveProduct(product: widget.arguments.product!);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchFN.dispose();
+    super.dispose();
+  }
+
+  Future<void> init() async {
+    // compareNotifier = ref.read(compareNotifierProvider(widget.arguments.product!));
+    await Future.delayed(Duration(seconds: 1));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final compareNotifier = ref.watch(compareNotifierProvider);
+    // compareNotifier.saveProduct(product: widget.arguments.product!);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -62,10 +92,24 @@ class CompareView extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppTextField(
+              AppTextField(
                 hintText: 'Search for another product to compare',
-                prefixIcon: Icon(Icons.search_outlined),
+                onTap: () async {
+                  searchFN.unfocus();
+                  await showSearch(
+                    context: context,
+                    delegate: CompareSearch(
+                      ref: ref,
+                    ),
+                  );
+                  searchFN.unfocus();
+                  // if (searchText != null) {
+                  //   await homeNotifier.saveToRecentSearches(searchText);
+                  // }
+                },
+                prefixIcon: const Icon(Icons.search_outlined),
                 hasBorder: false,
+                focusNode: searchFN,
                 isSearch: true,
                 fillColor: AppColors.grey8,
                 hasPrefixIcon: true,
@@ -73,80 +117,97 @@ class CompareView extends ConsumerWidget {
               const Spacing.height(12),
               Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 6.0),
-                              child: ProductImageContainer(
-                                product: product,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              // TODO: Check if there is a product to compare with.
-                              child: haveProductToCompare
-                                  ? ProductImageContainer(
-                                      product: product,
-                                    )
-                                  : const SizedBox(
-                                      height: 160,
-                                      child: Center(
-                                        child: Text(
-                                          'Search to add another product to compare',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
+                  child: compareNotifier.product1 == null
+                      ? const CircularProgress()
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 6.0),
+                                    child: ProductImageContainer(
+                                      product: compareNotifier.product1!,
+                                      activeIndex: compareNotifier.activeIndex,
+                                      onPageChanged: compareNotifier.nextPage,
                                     ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 6.0),
+                                    // TODO: Check if there is a product to compare with.
+                                    child: compareNotifier.product2 != null
+                                        ? ProductImageContainer(
+                                            product: compareNotifier.product2!,
+                                            activeIndex:
+                                                compareNotifier.activeIndex,
+                                            onPageChanged:
+                                                compareNotifier.nextPage,
+                                          )
+                                        : const SizedBox(
+                                            height: 160,
+                                            child: Center(
+                                              child: Text(
+                                                'Search to add another product to compare',
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                      const Spacing.bigHeight(),
-                      CompareTexts2(
-                        title: 'Name',
-                        subTitle1: product.name,
-                        subTitle2: 'Adidas Jean Trousers',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Price',
-                        subTitle1: product.price.toString(),
-                        subTitle2: '#1500',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Distance',
-                        subTitle1: '2.8km',
-                        subTitle2: '3.0km',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Color',
-                        subTitle1: product.color,
-                        subTitle2: 'Blue',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Material',
-                        subTitle1: product.material,
-                        subTitle2: 'Blue',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                      CompareTexts2(
-                        title: 'Care',
-                        subTitle1: product.care,
-                        subTitle2: 'Blue',
-                        haveProductToCompare: haveProductToCompare,
-                      ),
-                    ],
-                  ),
+                            const Spacing.bigHeight(),
+                            CompareTexts2(
+                              title: 'Name',
+                              subTitle1: compareNotifier.product1!.name,
+                              subTitle2: compareNotifier.product2?.name ?? '',
+                              haveProductToCompare:
+                                  compareNotifier.product2 != null,
+                            ),
+                            CompareTexts2(
+                              title: 'Price',
+                              subTitle1:
+                                  compareNotifier.product1!.price.toString(),
+                              subTitle2:
+                                  compareNotifier.product2?.price.toString() ??
+                                      '',
+                              haveProductToCompare:
+                                  compareNotifier.product2 != null,
+                            ),
+                            CompareTexts2(
+                              title: 'Distance',
+                              subTitle1:
+                                  '${ref.read(locationService).getDistance(
+                                        storeLat:
+                                            compareNotifier.product1!.store.lat,
+                                        storeLon:
+                                            compareNotifier.product1!.store.lon,
+                                      )}km',
+                              subTitle2:
+                                  '${ref.read(locationService).getDistance(
+                                        storeLat: compareNotifier
+                                                .product2?.store.lat ??
+                                            0,
+                                        storeLon: compareNotifier
+                                                .product2?.store.lon ??
+                                            0,
+                                      )}km',
+                              haveProductToCompare:
+                                  compareNotifier.product2 != null,
+                            ),
+                            CompareTexts2(
+                              title: 'Care',
+                              subTitle1: compareNotifier.product1!.care,
+                              subTitle2: compareNotifier.product2?.care ?? '',
+                              haveProductToCompare:
+                                  compareNotifier.product2 != null,
+                            ),
+                          ],
+                        ),
                 ),
               ),
             ],

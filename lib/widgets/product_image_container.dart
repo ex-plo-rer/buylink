@@ -13,12 +13,15 @@ class ProductImageContainer extends ConsumerWidget {
   const ProductImageContainer({
     Key? key,
     required this.product,
+    required this.activeIndex,
+    this.onPageChanged,
   }) : super(key: key);
   final ProductModel product;
+  final dynamic Function(int, CarouselPageChangedReason)? onPageChanged;
+  final int activeIndex;
 
   @override
   Widget build(BuildContext context, ref) {
-    final compareNotifier = ref.watch(compareNotifierProvider);
     return Container(
       height: 160,
       width: double.maxFinite,
@@ -35,7 +38,8 @@ class ProductImageContainer extends ConsumerWidget {
               disableCenter: true,
               viewportFraction: 1,
               aspectRatio: 0,
-              onPageChanged: compareNotifier.nextPage,
+              // onPageChanged: compareNotifier.nextPage,
+              onPageChanged: onPageChanged,
             ),
             itemBuilder: (context, index, realIndex) {
               final urlImage = product.image[index];
@@ -56,7 +60,8 @@ class ProductImageContainer extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: AnimatedSmoothIndicator(
                 count: product.image.length,
-                activeIndex: compareNotifier.activeIndex,
+                // activeIndex: compareNotifier.activeIndex,
+                activeIndex: activeIndex,
                 effect: const WormEffect(
                   dotHeight: 4,
                   dotWidth: 4,
