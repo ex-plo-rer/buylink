@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
+import 'package:buy_link/features/core/models/compare_arg_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
@@ -340,8 +341,10 @@ class ProductDetailsView extends ConsumerWidget {
                                             .read(navigationServiceProvider)
                                             .navigateToNamed(
                                               Routes.compare,
-                                              arguments: productDetailsNotifier
-                                                  .similarProducts[index],
+                                              arguments: CompareArgModel(
+                                                product: productDetailsNotifier
+                                                    .similarProducts[index],
+                                              ),
                                             );
                                       },
                                       onFavoriteTapped: () async {

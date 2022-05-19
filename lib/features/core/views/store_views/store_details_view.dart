@@ -26,6 +26,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../services/location_service.dart';
 import '../../../../widgets/iconNtext_container.dart';
+import '../../models/compare_arg_model.dart';
 import '../../models/product_model.dart';
 import '../../notifiers/wishlist_notifier.dart';
 
@@ -353,9 +354,11 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                       navigationServiceProvider)
                                                   .navigateToNamed(
                                                     Routes.compare,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
+                                                    arguments: CompareArgModel(
+                                                      product:
+                                                          storeDetailsNotifier
+                                                              .products[index],
+                                                    ),
                                                   );
                                             },
                                             onFavoriteTapped: () async {
@@ -430,9 +433,11 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                       navigationServiceProvider)
                                                   .navigateToNamed(
                                                     Routes.compare,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
+                                                    arguments: CompareArgModel(
+                                                      product:
+                                                          storeDetailsNotifier
+                                                              .products[index],
+                                                    ),
                                                   );
                                             },
                                             onFavoriteTapped: () async {
@@ -507,9 +512,11 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                       navigationServiceProvider)
                                                   .navigateToNamed(
                                                     Routes.compare,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
+                                                    arguments: CompareArgModel(
+                                                      product:
+                                                          storeDetailsNotifier
+                                                              .products[index],
+                                                    ),
                                                   );
                                             },
                                             onFavoriteTapped: () async {
@@ -584,9 +591,11 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                       navigationServiceProvider)
                                                   .navigateToNamed(
                                                     Routes.compare,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
+                                                    arguments: CompareArgModel(
+                                                      product:
+                                                          storeDetailsNotifier
+                                                              .products[index],
+                                                    ),
                                                   );
                                             },
                                             onFavoriteTapped: () async {
@@ -661,9 +670,11 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                       navigationServiceProvider)
                                                   .navigateToNamed(
                                                     Routes.compare,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
+                                                    arguments: CompareArgModel(
+                                                      product:
+                                                          storeDetailsNotifier
+                                                              .products[index],
+                                                    ),
                                                   );
                                             },
                                             onFavoriteTapped: () async {

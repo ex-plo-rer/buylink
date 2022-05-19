@@ -23,9 +23,11 @@ class CompareTexts2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisSize: MainAxisSize.max,
+      // mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
               width: ((MediaQuery.of(context).size.width - 40) / 2) + 6,
@@ -35,9 +37,12 @@ class CompareTexts2 extends StatelessWidget {
               ),
             ),
             haveProductToCompare
-                ? CompareTexts(
-                    title: '',
-                    subTitle: subTitle2,
+                ? SizedBox(
+                    width: ((MediaQuery.of(context).size.width - 40) / 2) - 6,
+                    child: CompareTexts(
+                      title: '',
+                      subTitle: subTitle2,
+                    ),
                   )
                 : Container(),
           ],

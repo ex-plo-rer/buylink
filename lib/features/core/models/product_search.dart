@@ -70,7 +70,10 @@ class ProductSearch extends SearchDelegate<String> {
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.arrow_back),
+      icon: const Icon(
+        Icons.arrow_back_ios_outlined,
+        size: 15,
+      ),
       onPressed: () => Navigator.pop(context),
     );
   }
