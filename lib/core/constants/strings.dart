@@ -3,6 +3,7 @@ enum Mode { reader, author }
 class AppStrings {
   AppStrings._();
 
+
   // App wide
   static const appName = 'Books App';
 
@@ -103,4 +104,7 @@ class AppStrings {
   static const API_BASE_URL = 'https://api.buylink.app';
   static const ronaldo =
       'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg';
+
+  //Setting
+  static const deleteUserNote = 'can you please let us why you want to terminate your account';
 }

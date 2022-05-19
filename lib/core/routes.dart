@@ -5,6 +5,7 @@ import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
+import 'package:buy_link/features/core/views/settings_view/delete_user.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/material.dart';
 
 import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/product_model.dart';
+import '../features/core/views/settings_view/privacy_policy.dart';
 import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
@@ -53,6 +55,10 @@ class Routes {
   static const storesettingView = '/storesetting';
   static const messageView = '/message';
   static const addProduct = '/addproduct';
+  static const privacyPolicy = '/privacypolicy';
+  static const deleteUser = '/deleteuser';
+
+
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -131,6 +137,12 @@ class Routes {
 
       case addProduct:
         return MaterialPageRoute(builder: (_) => AddProductView());
+
+      case privacyPolicy:
+        return MaterialPageRoute(builder: (_) => PrivacyPolicy());
+
+      case deleteUser:
+        return MaterialPageRoute(builder: (_) => DeleteUser());
 
       // case otpVerification:
       // case otpVerification:

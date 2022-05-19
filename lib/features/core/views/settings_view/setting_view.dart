@@ -177,7 +177,7 @@ class SettingView extends ConsumerWidget {
                       margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: const Divider(color: AppColors.shade4),
                     ),
-                    const ListTile(
+                    ListTile(
                       title: Text(
                         "Delete Account",
                         style: TextStyle(
@@ -187,6 +187,9 @@ class SettingView extends ConsumerWidget {
                       leading: Icon(Icons.delete, color: AppColors.shade5),
                       trailing: Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
+                      onTap: () =>ref
+                          .read(navigationServiceProvider)
+                          .navigateToNamed(Routes.deleteUser),
                     ),
                   ],
                 ),
@@ -290,12 +293,9 @@ class SettingView extends ConsumerWidget {
                         color: AppColors.shade5,
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PrivacyPolicy(),
-                          ),
-                        );
+                        ref
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.privacyPolicy);
                       },
                     ),
                     Container(

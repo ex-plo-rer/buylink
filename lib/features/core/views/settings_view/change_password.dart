@@ -101,9 +101,7 @@ class ChangePassword extends ConsumerWidget {
                                       controller: _oldPasswordController ,
                                       focusNode: _oldPasswordFN,
                                       suffixIcon: GestureDetector(
-                                        onTap: () {
-
-                                        },
+                                        onTap: () => _oldPasswordController.clear(),
                                         child: const CircleAvatar(
                                           backgroundColor: AppColors.grey7,
                                           radius: 10,
@@ -148,7 +146,7 @@ class ChangePassword extends ConsumerWidget {
                                           ),
                                           const Spacing.smallWidth(),
                                           GestureDetector(
-                                            onTap: () {},
+                                            onTap: () => _newPasswordController.clear(),
                                             child: const CircleAvatar(
                                               backgroundColor: AppColors.grey7,
                                               radius: 10,
