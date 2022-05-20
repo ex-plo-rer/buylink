@@ -1,4 +1,8 @@
+import 'package:buy_link/core/constants/images.dart';
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/widgets/add_store_button.dart';
+import 'package:buy_link/widgets/app_empty_states.dart';
+import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -39,63 +43,44 @@ class StoreView extends ConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: MasonryGridView.count(
-                itemCount: 3,
-                crossAxisCount: 2,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 15,
-                itemBuilder: (context, index) {
-                  if (index == 2) {
-                    return AddStoreContainer(
-                      onTapped: () => ref
-                          .read(navigationServiceProvider)
-                          .navigateToNamed(Routes.addstoreView),
-                    );
-                  } else {
-                    return const StoreContainer(
-                      storeName: 'Atinuke Store',
-                      starRate: 5,
-                      storeImage:
-                          'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-                    );
-                  }
-                },
-              ),
-            ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: const <Widget>[
-            //     Expanded(
-            //       child: StoreContainer(
-            //         storeName: 'Atinuke Store',
-            //         starRate: 5,
-            //         storeImage:
-            //             'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-            //       ),
-            //     ),
-            //     Spacing.mediumWidth(),
-            //     Expanded(
-            //       child: StoreContainer(
-            //         storeName: 'Atinuke Store',
-            //         starRate: 5,
-            //         storeImage:
-            //             'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // Spacing.mediumHeight(),
-            // AddStoreContainer(
-            //   onTapped: () => ref
-            //       .read(navigationServiceProvider)
-            //       .navigateToNamed(Routes.addstoreView),
-            // ),
-          ],
-        ),
+        child: storeNotifier.state.isLoading
+            ? const CircularProgress()
+            : storeNotifier.myStores.isEmpty
+                ? AppEmptyStates(
+                    imageString: AppImages.emptyStore,
+                    message1String: 'No Store Added Yet',
+                    message2String:
+                        'Tap the button below to create your first store',
+                    onButtonPressed: () => ref
+                        .read(navigationServiceProvider)
+                        .navigateToNamed(Routes.addstoreView),
+                    hasButton: true,
+                    buttonString: 'Create Store',
+                  )
+                : Expanded(
+                    child: MasonryGridView.count(
+                      itemCount: storeNotifier.myStores.length,
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 15,
+                      itemBuilder: (context, index) {
+                        if (index == 2) {
+                          return AddStoreContainer(
+                            onTapped: () => ref
+                                .read(navigationServiceProvider)
+                                .navigateToNamed(Routes.addstoreView),
+                          );
+                        } else {
+                          return StoreContainer(
+                            storeName: storeNotifier.myStores[index].name,
+                            starRate: 5,
+                            // starRate: storeNotifier.myStores[index].rating,
+                            storeImage: storeNotifier.myStores[index].image,
+                          );
+                        }
+                      },
+                    ),
+                  ),
       ),
     );
   }
