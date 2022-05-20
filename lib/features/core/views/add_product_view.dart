@@ -149,4 +149,16 @@ class AddProductView extends ConsumerWidget {
                         },
                       ),
 
+                      AppButton(
+                        text: "Save Product",
+                        backgroundColor: AppColors.primaryColor,
+                        // onPressed: () => ref
+                        //     .read(navigationServiceProvider)
+                        //     .navigateToNamed(Routes.homeView),
+                        onPressed: () {
+
+
+                        },
+                      ),
+
                     ]))));}}
