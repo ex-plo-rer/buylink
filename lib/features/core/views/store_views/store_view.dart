@@ -59,12 +59,12 @@ class StoreView extends ConsumerWidget {
                   )
                 : Expanded(
                     child: MasonryGridView.count(
-                      itemCount: storeNotifier.myStores.length,
+                      itemCount: storeNotifier.myStores.length + 1,
                       crossAxisCount: 2,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 15,
                       itemBuilder: (context, index) {
-                        if (index == 2) {
+                        if (index == storeNotifier.myStores.length) {
                           return AddStoreContainer(
                             onTapped: () => ref
                                 .read(navigationServiceProvider)
@@ -73,8 +73,7 @@ class StoreView extends ConsumerWidget {
                         } else {
                           return StoreContainer(
                             storeName: storeNotifier.myStores[index].name,
-                            starRate: 5,
-                            // starRate: storeNotifier.myStores[index].rating,
+                            starRate: storeNotifier.myStores[index].star,
                             storeImage: storeNotifier.myStores[index].image,
                           );
                         }

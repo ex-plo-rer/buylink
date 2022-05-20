@@ -301,7 +301,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               Tab(text: 'Fashion'),
                               Tab(text: 'Photography'),
                               Tab(text: 'Baby & Toddler'),
-                              Tab(text: '5555555'),
+                              Tab(text: 'Electronics'),
                             ],
                           ),
                           SizedBox(

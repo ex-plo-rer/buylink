@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:buy_link/core/utilities/view_state.dart';
+import 'package:buy_link/features/core/notifiers/store_notifier/store_notifier.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/select_image_container.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/routes.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_linear_progress.dart';
 import '../../../../widgets/app_text_field.dart';
@@ -19,6 +23,11 @@ import '../../notifiers/store_notifier/add_store_notifier.dart';
 class AddStoreView extends ConsumerWidget {
   AddStoreView({Key? key}) : super(key: key);
   final PageController _pageController = PageController();
+  final _nameFN = FocusNode();
+  final _storeDescriptionFN = FocusNode();
+
+  final _nameController = TextEditingController();
+  final _storeDescriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context, ref) {
@@ -78,7 +87,7 @@ class AddStoreView extends ConsumerWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
                       Column(
-                        children: const [
+                        children: [
                           TextWithRich(
                             firstText: 'What\'s the name your',
                             secondText: 'store?',
@@ -97,11 +106,28 @@ class AddStoreView extends ConsumerWidget {
                             title: '',
                             hintText: 'Store name',
                             hasBorder: false,
+                            focusNode: _nameFN,
+                            controller: _nameController,
+                            onChanged: addStoreNotifier.onNameChanged,
+                            suffixIcon: _nameController.text.isEmpty
+                                ? null
+                                : GestureDetector(
+                                    onTap: () => _nameController.clear(),
+                                    child: const CircleAvatar(
+                                      backgroundColor: AppColors.grey7,
+                                      radius: 10,
+                                      child: Icon(
+                                        Icons.clear_rounded,
+                                        color: AppColors.light,
+                                        size: 15,
+                                      ),
+                                    ),
+                                  ),
                           ),
                         ],
                       ),
                       Column(
-                        children: const [
+                        children: [
                           TextWithRich(
                             firstText: 'Describe your Store',
                             secondText: '',
@@ -115,6 +141,23 @@ class AddStoreView extends ConsumerWidget {
                             maxLines: 5,
                             hasPrefixIcon: false,
                             hasSuffixIcon: false,
+                            focusNode: _storeDescriptionFN,
+                            controller: _storeDescriptionController,
+                            onChanged: addStoreNotifier.onDescriptionChanged,
+                            suffixIcon: _storeDescriptionController.text.isEmpty
+                                ? null
+                                : GestureDetector(
+                                    onTap: () {},
+                                    child: const CircleAvatar(
+                                      backgroundColor: AppColors.grey7,
+                                      radius: 10,
+                                      child: Icon(
+                                        Icons.clear_rounded,
+                                        color: AppColors.light,
+                                        size: 15,
+                                      ),
+                                    ),
+                                  ),
                           ),
                         ],
                       ),
@@ -223,21 +266,83 @@ class AddStoreView extends ConsumerWidget {
                 Column(
                   children: [
                     AppButton(
+                      isLoading: addStoreNotifier.state.isLoading,
                       text: addStoreNotifier.currentPage ==
                               addStoreNotifier.totalPage
-                          ? AppStrings.next
+                          ? 'Create store'
                           : AppStrings.next,
-                      backgroundColor: AppColors.primaryColor,
-                      onPressed: () {
-                        addStoreNotifier.moveForward();
-                        print(addStoreNotifier.currentPage);
-                        _pageController.animateToPage(
-                          // array starts at 0 (lol)
-                          addStoreNotifier.currentPage - 1,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn,
-                        );
-                      },
+                      backgroundColor: addStoreNotifier.currentPage == 1 &&
+                              _nameController.text.isEmpty
+                          ? AppColors.grey6
+                          : addStoreNotifier.currentPage == 2 &&
+                                  _storeDescriptionController.text.isEmpty
+                              ? AppColors.grey6
+                              : addStoreNotifier.currentPage == 4 &&
+                                      (addStoreNotifier.imageFile == null ||
+                                          addStoreNotifier.logoFile == null)
+                                  ? AppColors.grey6
+                                  : AppColors.primaryColor,
+                      onPressed: addStoreNotifier.currentPage == 1 &&
+                              _nameController.text.isEmpty
+                          ? null
+                          : addStoreNotifier.currentPage == 2 &&
+                                  _storeDescriptionController.text.isEmpty
+                              ? null
+                              : addStoreNotifier.currentPage == 4 &&
+                                      (addStoreNotifier.imageFile == null ||
+                                          addStoreNotifier.logoFile == null)
+                                  ? null
+                                  : () async {
+                                      if (addStoreNotifier.currentPage == 4) {
+                                        await addStoreNotifier.createStore(
+                                          storeName: _nameController.text,
+                                          storeDescription:
+                                              _storeDescriptionController.text,
+                                          lon: 4.3,
+                                          lat: 3.1,
+                                          storeLogo: addStoreNotifier.logoFile!,
+                                          storeImage:
+                                              addStoreNotifier.imageFile!,
+                                        );
+                                        await ref
+                                            .refresh(storeNotifierProvider)
+                                            .fetchMyStores();
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateBack();
+                                        addStoreNotifier.moveForward();
+                                        print(addStoreNotifier.currentPage);
+                                        _pageController.animateToPage(
+                                          // array starts at 0 (lol)
+                                          addStoreNotifier.currentPage - 1,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          curve: Curves.easeIn,
+                                        );
+                                      } else {
+                                        addStoreNotifier.moveForward();
+                                        print(addStoreNotifier.currentPage);
+                                        // addStoreNotifier.currentPage >
+                                        //     addStoreNotifier.totalPage
+                                        //     ?
+                                        // ref
+                                        //     .read(navigationServiceProvider)
+                                        //     .navigateBack()
+                                        // ref
+                                        //     .read(
+                                        //     navigationServiceProvider)
+                                        //     .navigateToNamed(
+                                        //     Routes.dashboard)
+                                        //     :
+                                        _pageController.animateToPage(
+                                          // array starts at 0 (lol)
+                                          addStoreNotifier.currentPage - 1,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          curve: Curves.easeIn,
+                                        );
+                                      }
+                                    },
                     ),
                     const Spacing.mediumHeight(),
                   ],

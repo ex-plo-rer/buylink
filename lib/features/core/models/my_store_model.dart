@@ -12,23 +12,27 @@ String productModelToJson(MyStoreModel data) => json.encode(data.toJson());
 
 class MyStoreModel {
   MyStoreModel({
-    required this.id,
+    // required this.id,
+    required this.star,
     required this.name,
     required this.image,
   });
 
-  int id;
+  // int id;
+  int star;
   String name;
   String image;
 
   factory MyStoreModel.fromJson(Map<String, dynamic> json) => MyStoreModel(
-        id: json["id"],
+        // id: json["id"],
+        star: json["star"],
         name: json["name"],
         image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
+        // "id": id,
+        "star": star,
         "name": name,
         "image": image,
       };
