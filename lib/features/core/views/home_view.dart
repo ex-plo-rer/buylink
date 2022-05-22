@@ -1,4 +1,5 @@
 import 'package:buy_link/core/constants/colors.dart';
+import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
@@ -9,6 +10,7 @@ import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
+import 'package:buy_link/widgets/app_empty_states.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/product_container.dart';
@@ -28,7 +30,7 @@ class HomeView extends ConsumerWidget {
   final searchFN = FocusNode();
   @override
   Widget build(BuildContext context, ref) {
-    final homeNotifier = ref.watch(homeNotifierProvider(''));
+    final homeNotifier = ref.watch(homeNotifierProvider(null));
     final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     final categoryNotifier = ref.watch(categoryNotifierProvider);
     // ref.watch(locationService).getCurrentLocation();
@@ -99,93 +101,121 @@ class HomeView extends ConsumerWidget {
               Expanded(
                 child: homeNotifier.state.isLoading
                     ? const CircularProgress()
-                    : MasonryGridView.count(
-                        itemCount: homeNotifier.products.length,
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 20,
-                        crossAxisSpacing: 15,
-                        itemBuilder: (context, index) {
-                          if (index == 3) {
-                            return Container(
-                              height: 182,
-                              color: AppColors.transparent,
-                              child: categoryNotifier.state.isLoading
-                                  ? const CircularProgress()
-                                  : Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CategoryContainer(
-                                          categoryName: categoryNotifier
-                                              .categories[0].name,
-                                          categoryImage: categoryNotifier
-                                              .categories[0].image,
-                                          onTap: () {},
+                    : homeNotifier.products.isEmpty
+                        ? AppEmptyStates(
+                            imageString: AppImages.bag,
+                            message1String:
+                                'No Product... Kindly Reload or check back',
+                            buttonString: 'Reload',
+                            hasButton: true,
+                            hasIcon: false,
+                            onButtonPressed: () =>
+                                homeNotifier.fetchProducts(category: 'all'))
+                        : MasonryGridView.count(
+                            itemCount: homeNotifier.products.length,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
+                            itemBuilder: (context, index) {
+                              if (index == 3) {
+                                return Container(
+                                  height: 182,
+                                  color: AppColors.transparent,
+                                  child: categoryNotifier.state.isLoading
+                                      ? const CircularProgress()
+                                      : Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CategoryContainer(
+                                              categoryName: categoryNotifier
+                                                  .categories[0].name,
+                                              categoryImage: categoryNotifier
+                                                  .categories[0].image,
+                                              onTap: () =>
+                                                  homeNotifier.fetchProducts(
+                                                      category: categoryNotifier
+                                                          .categories[0].name),
+                                            ),
+                                            CategoryContainer(
+                                              categoryName: categoryNotifier
+                                                  .categories[1].name,
+                                              categoryImage: categoryNotifier
+                                                  .categories[1].image,
+                                              onTap: () =>
+                                                  homeNotifier.fetchProducts(
+                                                      category: categoryNotifier
+                                                          .categories[1].name),
+                                            ),
+                                            CategoryContainer(
+                                              categoryName: categoryNotifier
+                                                  .categories[2].name,
+                                              categoryImage: categoryNotifier
+                                                  .categories[2].image,
+                                              onTap: () =>
+                                                  homeNotifier.fetchProducts(
+                                                      category: categoryNotifier
+                                                          .categories[2].name),
+                                            ),
+                                          ],
                                         ),
-                                        CategoryContainer(
-                                          categoryName: categoryNotifier
-                                              .categories[1].name,
-                                          categoryImage: categoryNotifier
-                                              .categories[1].image,
-                                          onTap: () {},
-                                        ),
-                                        CategoryContainer(
-                                          categoryName: categoryNotifier
-                                              .categories[2].name,
-                                          categoryImage: categoryNotifier
-                                              .categories[2].image,
-                                          onTap: () {},
-                                        ),
-                                      ],
-                                    ),
-                            );
-                          } else {
-                            return ProductContainer(
-                              url: homeNotifier.products[index].image[0],
-                              storeName:
-                                  homeNotifier.products[index].store.name,
-                              productName: homeNotifier.products[index].name,
-                              productPrice: homeNotifier.products[index].price,
-                              distance: ref.watch(locationService).getDistance(
-                                    storeLat: homeNotifier.products[index].lat,
-                                    storeLon: homeNotifier.products[index].lon,
-                                  ),
-                              isFavorite: homeNotifier.products[index].isFav!,
-                              onProductTapped: () {
-                                ref
-                                    .read(navigationServiceProvider)
-                                    .navigateToNamed(
-                                      Routes.productDetails,
-                                      arguments: homeNotifier.products[index],
-                                    );
-                              },
-                              onDistanceTapped: () {},
-                              onFlipTapped: () {
-                                ref
-                                    .read(navigationServiceProvider)
-                                    .navigateToNamed(
-                                      Routes.compare,
-                                      arguments: CompareArgModel(
-                                          product:
-                                              homeNotifier.products[index]),
-                                    );
-                              },
-                              onFavoriteTapped: () async {
-                                homeNotifier.products[index].isFav!
-                                    ? await wishlistNotifier.removeFromWishlist(
-                                        productId:
-                                            homeNotifier.products[index].id,
-                                      )
-                                    : await wishlistNotifier.addToWishlist(
-                                        productId:
-                                            homeNotifier.products[index].id,
-                                      );
-                                ref.refresh(homeNotifierProvider(''));
-                              },
-                            );
-                          }
-                        },
-                      ),
+                                );
+                              } else {
+                                return ProductContainer(
+                                  url: homeNotifier.products[index].image[0],
+                                  storeName:
+                                      homeNotifier.products[index].store.name,
+                                  productName:
+                                      homeNotifier.products[index].name,
+                                  productPrice:
+                                      homeNotifier.products[index].price,
+                                  distance: ref
+                                      .watch(locationService)
+                                      .getDistance(
+                                        storeLat:
+                                            homeNotifier.products[index].lat,
+                                        storeLon:
+                                            homeNotifier.products[index].lon,
+                                      ),
+                                  isFavorite:
+                                      homeNotifier.products[index].isFav!,
+                                  onProductTapped: () {
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateToNamed(
+                                          Routes.productDetails,
+                                          arguments:
+                                              homeNotifier.products[index],
+                                        );
+                                  },
+                                  onDistanceTapped: () {},
+                                  onFlipTapped: () {
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateToNamed(
+                                          Routes.compare,
+                                          arguments: CompareArgModel(
+                                              product:
+                                                  homeNotifier.products[index]),
+                                        );
+                                  },
+                                  onFavoriteTapped: () async {
+                                    homeNotifier.products[index].isFav!
+                                        ? await wishlistNotifier
+                                            .removeFromWishlist(
+                                            productId:
+                                                homeNotifier.products[index].id,
+                                          )
+                                        : await wishlistNotifier.addToWishlist(
+                                            productId:
+                                                homeNotifier.products[index].id,
+                                          );
+                                    ref.refresh(homeNotifierProvider(null));
+                                  },
+                                );
+                              }
+                            },
+                          ),
               ),
             ],
           ),

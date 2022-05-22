@@ -13,12 +13,14 @@ class AppEmptyStates extends StatelessWidget {
     required this.buttonString,
     required this.onButtonPressed,
     this.hasButton = false,
+    this.hasIcon = true,
   }) : super(key: key);
   final String imageString;
   final String message1String;
   final String? message2String;
   final String buttonString;
   final bool hasButton;
+  final bool hasIcon;
   final void Function()? onButtonPressed;
 
   @override
@@ -60,11 +62,13 @@ class AppEmptyStates extends StatelessWidget {
               width: MediaQuery.of(context).size.width - 132,
               child: AppButton(
                 onPressed: onButtonPressed,
-                hasIcon: true,
-                icon: const Icon(
-                  Icons.add,
-                  color: AppColors.light,
-                ),
+                hasIcon: hasIcon,
+                icon: !hasIcon
+                    ? null
+                    : const Icon(
+                        Icons.add,
+                        color: AppColors.light,
+                      ),
                 text: buttonString,
                 backgroundColor: AppColors.primaryColor,
               ),
