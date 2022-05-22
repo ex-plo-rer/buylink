@@ -28,6 +28,7 @@ import '../../../../services/location_service.dart';
 import '../../../../widgets/iconNtext_container.dart';
 import '../../models/compare_arg_model.dart';
 import '../../models/product_model.dart';
+import '../../notifiers/category_notifier.dart';
 import '../../notifiers/wishlist_notifier.dart';
 
 class StoreDetailsView extends ConsumerStatefulWidget {
@@ -47,8 +48,6 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
   @override
   void initState() {
     // TODO: implement initState
-    _tabController = TabController(length: 5, vsync: this);
-    _tabController.addListener(_handleTabChange);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       ref
           .watch(storeDetailsNotifierProvider(widget.store.id))
@@ -56,6 +55,10 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
             storeId: widget.store.id,
             category: 'all',
           );
+      _tabController = TabController(
+          length: ref.watch(categoryNotifierProvider).mCategories.length,
+          vsync: this);
+      _tabController.addListener(_handleTabChange);
     });
     super.initState();
   }
@@ -69,23 +72,18 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
 
   void _handleTabChange() {
     ref.read(storeDetailsNotifierProvider(widget.store.id)).fetchStoreProducts(
-          storeId: widget.store.id,
-          category: _tabController.index == 0
-              ? 'all'
-              : _tabController.index == 1
-                  ? 'fashion'
-                  : _tabController.index == 2
-                      ? 'photography'
-                      : _tabController.index == 3
-                          ? 'baby'
-                          : 'others',
-        );
+        storeId: widget.store.id,
+        category: ref
+            .watch(categoryNotifierProvider)
+            .mCategories[_tabController.index]
+            .name);
   }
 
   @override
   Widget build(BuildContext context) {
     final storeDetailsNotifier =
         ref.watch(storeDetailsNotifierProvider(widget.store.id));
+    final categoryNotifier = ref.watch(categoryNotifierProvider);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -261,55 +259,30 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               const Spacing.bigHeight(),
                             ],
                           ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: AppButton(
-                              text: 'See all categories',
-                              textColor: AppColors.shade5,
-                              fontSize: 12,
-                              width: null,
-                              height: 22,
-                              borderColor: AppColors.shade5,
-                              onPressed: () => ref
-                                  .read(navigationServiceProvider)
-                                  .navigateToNamed(Routes.categories),
-                            ),
-                          ),
                           const Spacing.bigHeight(),
                           TabBar(
-                            labelColor: AppColors.shade5,
-                            unselectedLabelColor: AppColors.grey5,
-                            padding: const EdgeInsets.only(bottom: 24),
-                            controller: _tabController,
-                            isScrollable: true,
-                            onTap: (index) {
-                              print('index $index');
-                              storeDetailsNotifier.fetchStoreProducts(
-                                  storeId: widget.store.id,
-                                  category: index == 0
-                                      ? 'all'
-                                      : index == 1
-                                          ? 'fashion'
-                                          : index == 2
-                                              ? 'photography'
-                                              : index == 3
-                                                  ? 'baby'
-                                                  : 'others');
-                            },
-                            tabs: const [
-                              Tab(text: 'All'),
-                              Tab(text: 'Fashion'),
-                              Tab(text: 'Photography'),
-                              Tab(text: 'Baby & Toddler'),
-                              Tab(text: 'Electronics'),
-                            ],
-                          ),
+                              labelColor: AppColors.shade5,
+                              unselectedLabelColor: AppColors.grey5,
+                              padding: const EdgeInsets.only(bottom: 24),
+                              controller: _tabController,
+                              isScrollable: true,
+                              onTap: (index) {
+                                print('index $index');
+                                storeDetailsNotifier.fetchStoreProducts(
+                                    storeId: widget.store.id,
+                                    category: categoryNotifier
+                                        .categories[index].name);
+                              },
+                              tabs: categoryNotifier.mCategories
+                                  .map((category) => Tab(text: category.name))
+                                  .toList()),
                           SizedBox(
                             height: 500,
                             child: TabBarView(
                               controller: _tabController,
-                              children: [
-                                storeDetailsNotifier.state.isLoading
+                              children:
+                                  categoryNotifier.mCategories.map((category) {
+                                return storeDetailsNotifier.state.isLoading
                                     ? const CircularProgress()
                                     : MasonryGridView.count(
                                         itemCount: storeDetailsNotifier
@@ -368,343 +341,29 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                       .read(
                                                           wishlistNotifierProvider)
                                                       .removeFromWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
+                                                        productId: ref
+                                                            .read(
+                                                                wishlistNotifierProvider)
+                                                            .products[index]
+                                                            .id,
                                                       )
                                                   : await ref
                                                       .read(
                                                           wishlistNotifierProvider)
                                                       .addToWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
+                                                        productId: ref
+                                                            .read(
+                                                                wishlistNotifierProvider)
+                                                            .products[index]
+                                                            .id,
                                                       );
                                               ref.refresh(
                                                   wishlistNotifierProvider);
                                             },
                                           );
                                         },
-                                      ),
-                                storeDetailsNotifier.state.isLoading
-                                    ? const CircularProgress()
-                                    : MasonryGridView.count(
-                                        itemCount: storeDetailsNotifier
-                                            .products.length,
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 20,
-                                        crossAxisSpacing: 15,
-                                        itemBuilder: (context, index) {
-                                          return ProductContainer(
-                                            url: storeDetailsNotifier
-                                                .products[index].image[0],
-                                            storeName: storeDetailsNotifier
-                                                .products[index].store.name,
-                                            productName: storeDetailsNotifier
-                                                .products[index].name,
-                                            productPrice: storeDetailsNotifier
-                                                .products[index].price,
-                                            distance: ref
-                                                .read(locationService)
-                                                .getDistance(
-                                                  storeLat: storeDetailsNotifier
-                                                      .products[index].lat,
-                                                  storeLon: storeDetailsNotifier
-                                                      .products[index].lon,
-                                                ),
-                                            isFavorite: true,
-                                            onProductTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.productDetails,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
-                                                  );
-                                            },
-                                            onDistanceTapped: () {},
-                                            onFlipTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.compare,
-                                                    arguments: CompareArgModel(
-                                                      product:
-                                                          storeDetailsNotifier
-                                                              .products[index],
-                                                    ),
-                                                  );
-                                            },
-                                            onFavoriteTapped: () async {
-                                              storeDetailsNotifier
-                                                      .products[index].isFav!
-                                                  ? await ref
-                                                      .read(
-                                                          wishlistNotifierProvider)
-                                                      .removeFromWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
-                                                      )
-                                                  : await ref
-                                                      .read(
-                                                          wishlistNotifierProvider)
-                                                      .addToWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
-                                                      );
-                                              ref.refresh(
-                                                  wishlistNotifierProvider);
-                                            },
-                                          );
-                                        },
-                                      ),
-                                storeDetailsNotifier.state.isLoading
-                                    ? const CircularProgress()
-                                    : MasonryGridView.count(
-                                        itemCount: storeDetailsNotifier
-                                            .products.length,
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 20,
-                                        crossAxisSpacing: 15,
-                                        itemBuilder: (context, index) {
-                                          return ProductContainer(
-                                            url: storeDetailsNotifier
-                                                .products[index].image[0],
-                                            storeName: storeDetailsNotifier
-                                                .products[index].store.name,
-                                            productName: storeDetailsNotifier
-                                                .products[index].name,
-                                            productPrice: storeDetailsNotifier
-                                                .products[index].price,
-                                            distance: ref
-                                                .read(locationService)
-                                                .getDistance(
-                                                  storeLat: storeDetailsNotifier
-                                                      .products[index].lat,
-                                                  storeLon: storeDetailsNotifier
-                                                      .products[index].lon,
-                                                ),
-                                            isFavorite: true,
-                                            onProductTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.productDetails,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
-                                                  );
-                                            },
-                                            onDistanceTapped: () {},
-                                            onFlipTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.compare,
-                                                    arguments: CompareArgModel(
-                                                      product:
-                                                          storeDetailsNotifier
-                                                              .products[index],
-                                                    ),
-                                                  );
-                                            },
-                                            onFavoriteTapped: () async {
-                                              storeDetailsNotifier
-                                                      .products[index].isFav!
-                                                  ? await ref
-                                                      .read(
-                                                          wishlistNotifierProvider)
-                                                      .removeFromWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
-                                                      )
-                                                  : await ref
-                                                      .read(
-                                                          wishlistNotifierProvider)
-                                                      .addToWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
-                                                      );
-                                              ref.refresh(
-                                                  wishlistNotifierProvider);
-                                            },
-                                          );
-                                        },
-                                      ),
-                                storeDetailsNotifier.state.isLoading
-                                    ? const CircularProgress()
-                                    : MasonryGridView.count(
-                                        itemCount: storeDetailsNotifier
-                                            .products.length,
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 20,
-                                        crossAxisSpacing: 15,
-                                        itemBuilder: (context, index) {
-                                          return ProductContainer(
-                                            url: storeDetailsNotifier
-                                                .products[index].image[0],
-                                            storeName: storeDetailsNotifier
-                                                .products[index].store.name,
-                                            productName: storeDetailsNotifier
-                                                .products[index].name,
-                                            productPrice: storeDetailsNotifier
-                                                .products[index].price,
-                                            distance: ref
-                                                .read(locationService)
-                                                .getDistance(
-                                                  storeLat: storeDetailsNotifier
-                                                      .products[index].lat,
-                                                  storeLon: storeDetailsNotifier
-                                                      .products[index].lon,
-                                                ),
-                                            isFavorite: true,
-                                            onProductTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.productDetails,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
-                                                  );
-                                            },
-                                            onDistanceTapped: () {},
-                                            onFlipTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.compare,
-                                                    arguments: CompareArgModel(
-                                                      product:
-                                                          storeDetailsNotifier
-                                                              .products[index],
-                                                    ),
-                                                  );
-                                            },
-                                            onFavoriteTapped: () async {
-                                              storeDetailsNotifier
-                                                      .products[index].isFav!
-                                                  ? await ref
-                                                      .read(
-                                                          wishlistNotifierProvider)
-                                                      .removeFromWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
-                                                      )
-                                                  : await ref
-                                                      .read(
-                                                          wishlistNotifierProvider)
-                                                      .addToWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
-                                                      );
-                                              ref.refresh(
-                                                  wishlistNotifierProvider);
-                                            },
-                                          );
-                                        },
-                                      ),
-                                storeDetailsNotifier.state.isLoading
-                                    ? const CircularProgress()
-                                    : MasonryGridView.count(
-                                        itemCount: storeDetailsNotifier
-                                            .products.length,
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 20,
-                                        crossAxisSpacing: 15,
-                                        itemBuilder: (context, index) {
-                                          return ProductContainer(
-                                            url: storeDetailsNotifier
-                                                .products[index].image[0],
-                                            storeName: storeDetailsNotifier
-                                                .products[index].store.name,
-                                            productName: storeDetailsNotifier
-                                                .products[index].name,
-                                            productPrice: storeDetailsNotifier
-                                                .products[index].price,
-                                            distance: ref
-                                                .read(locationService)
-                                                .getDistance(
-                                                  storeLat: storeDetailsNotifier
-                                                      .products[index].lat,
-                                                  storeLon: storeDetailsNotifier
-                                                      .products[index].lon,
-                                                ),
-                                            isFavorite: true,
-                                            onProductTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.productDetails,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
-                                                  );
-                                            },
-                                            onDistanceTapped: () {},
-                                            onFlipTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.compare,
-                                                    arguments: CompareArgModel(
-                                                      product:
-                                                          storeDetailsNotifier
-                                                              .products[index],
-                                                    ),
-                                                  );
-                                            },
-                                            onFavoriteTapped: () async {
-                                              storeDetailsNotifier
-                                                      .products[index].isFav!
-                                                  ? await ref
-                                                      .read(
-                                                          wishlistNotifierProvider)
-                                                      .removeFromWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
-                                                      )
-                                                  : await ref
-                                                      .read(
-                                                          wishlistNotifierProvider)
-                                                      .addToWishlist(
-                                                        productId:
-                                                            storeDetailsNotifier
-                                                                .products[index]
-                                                                .id,
-                                                      );
-                                              ref.refresh(
-                                                  wishlistNotifierProvider);
-                                            },
-                                          );
-                                        },
-                                      ),
-                              ],
+                                      );
+                              }).toList(),
                             ),
                           ),
                         ],

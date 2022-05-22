@@ -21,11 +21,16 @@ class CategoryNotifier extends BaseChangeNotifier {
 
   List<CategoryModel> _categories = [];
   List<CategoryModel> get categories => _categories;
+  List<CategoryModel> mCategories = [];
 
   Future<void> fetchCategories() async {
     try {
       setState(state: ViewState.loading);
       _categories = await _reader(coreRepository).fetchCategories();
+      mCategories = [
+        CategoryModel(id: 99101, name: 'All', image: ''),
+        ..._categories
+      ];
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
