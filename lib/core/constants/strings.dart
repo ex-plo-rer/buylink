@@ -108,4 +108,8 @@ class AppStrings {
 
   //Setting
   static const deleteUserNote = 'can you please let us why you want to terminate your account';
+  static const deleteUserNote2 = 'Deleting your account means all your data associated with buylink including but not limited to your personal data, store data, preferences, analytics e.t.c will be permanently erased.';
+  static const deleteUserNote3 = 'Enter your password, we just want to make sure its you';
+  static const deleteUserNote4 = 'I want to delete my account';
+  static const deleteaccount = 'Delete account';
 }

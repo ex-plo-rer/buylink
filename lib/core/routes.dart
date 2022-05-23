@@ -5,7 +5,10 @@ import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
+import 'package:buy_link/features/core/views/settings_view/change_name.dart';
+import 'package:buy_link/features/core/views/settings_view/change_password.dart';
 import 'package:buy_link/features/core/views/settings_view/delete_user.dart';
+import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
@@ -17,6 +20,8 @@ import 'package:flutter/material.dart';
 import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/compare_arg_model.dart';
 import '../features/core/models/product_model.dart';
+import '../features/core/views/settings_view/about_buylink.dart';
+import '../features/core/views/settings_view/change_email.dart';
 import '../features/core/views/settings_view/privacy_policy.dart';
 import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
@@ -58,6 +63,11 @@ class Routes {
   static const addProduct = '/addproduct';
   static const privacyPolicy = '/privacypolicy';
   static const deleteUser = '/deleteuser';
+  static const about = '/about';
+  static const settingNotification = '/settingnot';
+  static const changePassword = '/changepassword';
+  static const changeEmail = '/changeemail';
+  static const editUsername = '/editusername';
 
 
 
@@ -145,8 +155,20 @@ class Routes {
 
       case deleteUser:
         return MaterialPageRoute(builder: (_) => DeleteUser());
+      case about:
+        return MaterialPageRoute(builder: (_) => About());
+      case settingNotification:
+        return MaterialPageRoute(builder: (_) => SettingNotification());
+      case changePassword:
+        return MaterialPageRoute(builder: (_) => ChangePassword());
+      case changeEmail:
+        return MaterialPageRoute(builder: (_) => ChangeEmail());
+      case editUsername:
+        return MaterialPageRoute(builder: (_) => EditUserName());
 
-      // case otpVerification:
+
+
+    // case otpVerification:
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(

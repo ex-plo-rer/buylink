@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
+import '../../../../repositories/setting_repository.dart';
 import '../../../../services/base/network_exception.dart';
 
 class EditUserPasswordNotifier extends BaseChangeNotifier {
@@ -17,6 +18,25 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
   int get totalPage => _totalPage;
   bool _passwordVisible = false;
   bool get passwordVisible => _passwordVisible;
+
+  String _newpassword = '';
+  String get newpassword => _newpassword;
+
+  String _oldpassword = '';
+  String get oldpassword => _oldpassword;
+
+  void onPasswordChanged(String newPassword) {
+    _newpassword = newPassword;
+    print(_newpassword);
+    notifyListeners();
+  }
+
+  void onCheckPassword(String oldPassword){
+    _oldpassword = oldPassword;
+    print(_oldpassword);
+    notifyListeners();
+
+  }
 
   void moveBackward() {
     if (_currentPage > 1) {
@@ -33,6 +53,46 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> changePassword({
+    //required int id,
+    required String password,
+
+  }) async {
+    try {
+      setState(state: ViewState.loading);
+      await _reader(settingRepository).changePassword(
+        // id : id,
+        password: password,
+      );
+
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify(title: e.error!).error();
+    } finally {
+      setState(state: ViewState.idle);
+    }
+  }
+
+  Future<void> checkPassword({
+    required String password,
+  }) async {
+    try {
+      setState(state: ViewState.loading);
+
+      await _reader(settingRepository).checkPassword(
+        password: password,
+      );
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify(title: e.error!).error();
+    } finally {
+      setState(state: ViewState.idle);
+    }
+  }
+
+
 
 }
 

@@ -81,6 +81,40 @@ class SettingRepository {
     return 'message';
   }
 
+  Future<String?> changePassword({
+    // required int id,
+    required String password,
+
+  }) async {
+
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id' : id,
+      'password': password,
+
+    };
+    print('change name parameter $body');
+
+    var response = await networkService.post(
+      'users/change-password',
+      body: body,
+      headers: headers,
+    );
+
+    print('Register response $response');
+    print ('${response.statusCode}');
+    // storageService.writeSecureData(
+    //     AppStrings.tokenKey, response['data']['auth_token']);
+    // storageService.saveUser(response);
+    // _reader(navigationServiceProvider).navigateOffAllNamed(
+    //   Routes.dashboard,
+    //       (p0) => false,
+    // );
+
+    //print('Register response $response');
+    return 'message';
+  }
+
   Future<int?> checkEmail({
     required String email,
     required String reason,
@@ -105,25 +139,28 @@ class SettingRepository {
     return response['code'];
   }
 
-  Future<bool> changePassword({
-    required String email,
+
+  Future<int?> checkPassword({
     required String password,
     // required String passwordConfirmation,
   }) async {
+
+    var id = _reader(userProvider).currentUser?.id ?? 0;
     final body = {
-      'email': email,
+      'id' : id,
       'password': password,
+
     };
-    print('Change password params sent to server $body');
+    print('Check password sent to server $body');
 
     var response = await networkService.post(
-      'users/change-password',
+      'users/verify',
       body: body,
       headers: headers,
     );
 
-    print('Change password response $response');
-    return response['success'];
+    print('Check password response $response');
+    
   }
 
   Future<String?> changeEmail({
@@ -135,18 +172,16 @@ class SettingRepository {
     var id = _reader(userProvider).currentUser?.id ?? 0;
     final body = {
       'id' : id,
-      'emil': email,
-
+      'email': email,
     };
-    print('change name parameter $body');
-
+    print('change email parameter $body');
     var response = await networkService.post(
       'users/update-email',
       body: body,
       headers: headers,
     );
 
-    print('Register response $response');
+    print('Change email response $response');
     print ('${response.statusCode}');
     // storageService.writeSecureData(
     //     AppStrings.tokenKey, response['data']['auth_token']);
@@ -164,12 +199,44 @@ class SettingRepository {
 
 
 
+  Future<String?> deleteAccount({
+    // required int id,
+    required String reason,
+    required String detail,
 
+  }) async {
+
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id' : id,
+      'reason': reason,
+      'detail' : detail,
+
+    };
+    print('delete account $body');
+
+    var response = await networkService.post(
+      'users/terminate',
+      body: body,
+      headers: headers,
+    );
+
+    print('Delete account response $response');
+    print ('${response.statusCode}');
+    // storageService.writeSecureData(
+    //     AppStrings.tokenKey, response['data']['auth_token']);
+    // storageService.saveUser(response);
+    // _reader(navigationServiceProvider).navigateOffAllNamed(
+    //   Routes.dashboard,
+    //       (p0) => false,
+    // );
+
+    //print('Register response $response');
+    return 'message';
+  }
 
 
 }
-
-
 
 
 final settingRepository = Provider(

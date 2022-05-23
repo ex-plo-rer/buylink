@@ -23,10 +23,8 @@ class AppCCheckBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      //mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const Spacing.tinyWidth(),
-
         Checkbox(
           shape: CircleBorder(),
           value: checked,
