@@ -5,10 +5,6 @@ import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
-import 'package:buy_link/features/core/views/settings_view/change_name.dart';
-import 'package:buy_link/features/core/views/settings_view/change_password.dart';
-import 'package:buy_link/features/core/views/settings_view/delete_user.dart';
-import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
@@ -20,9 +16,7 @@ import 'package:flutter/material.dart';
 import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/compare_arg_model.dart';
 import '../features/core/models/product_model.dart';
-import '../features/core/views/settings_view/about_buylink.dart';
-import '../features/core/views/settings_view/change_email.dart';
-import '../features/core/views/settings_view/privacy_policy.dart';
+import '../features/core/views/add_product_desc.dart';
 import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
@@ -30,7 +24,6 @@ import '../features/authentication/views/login_view.dart';
 import '../features/core/views/message_view/message_view.dart';
 import '../features/core/views/no_product_search_view.dart';
 import '../features/core/views/store_views/add_store.dart';
-import '../features/core/views/store_views/store_empty_state.dart';
 import '../features/core/views/store_views/store_settings.dart';
 import '../features/core/views/store_views/store_view.dart';
 import '../features/core/views/store_reviews_view.dart';
@@ -61,15 +54,7 @@ class Routes {
   static const storesettingView = '/storesetting';
   static const messageView = '/message';
   static const addProduct = '/addproduct';
-  static const privacyPolicy = '/privacypolicy';
-  static const deleteUser = '/deleteuser';
-  static const about = '/about';
-  static const settingNotification = '/settingnot';
-  static const changePassword = '/changepassword';
-  static const changeEmail = '/changeemail';
-  static const editUsername = '/editusername';
-
-
+  static const addProductDesc = '/add-product-desc';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -140,8 +125,6 @@ class Routes {
         return MaterialPageRoute(builder: (_) => NoProductView());
       case addstoreView:
         return MaterialPageRoute(builder: (_) => AddStoreView());
-      case emptystoreView:
-        return MaterialPageRoute(builder: (_) => StoreEmptyStateView());
       case storesettingView:
         return MaterialPageRoute(builder: (_) => StoreSetting());
       case messageView:
@@ -149,26 +132,10 @@ class Routes {
 
       case addProduct:
         return MaterialPageRoute(builder: (_) => AddProductView());
+      case addProductDesc:
+        return MaterialPageRoute(builder: (_) => AddProductDescView());
 
-      case privacyPolicy:
-        return MaterialPageRoute(builder: (_) => PrivacyPolicy());
-
-      case deleteUser:
-        return MaterialPageRoute(builder: (_) => DeleteUser());
-      case about:
-        return MaterialPageRoute(builder: (_) => About());
-      case settingNotification:
-        return MaterialPageRoute(builder: (_) => SettingNotification());
-      case changePassword:
-        return MaterialPageRoute(builder: (_) => ChangePassword());
-      case changeEmail:
-        return MaterialPageRoute(builder: (_) => ChangeEmail());
-      case editUsername:
-        return MaterialPageRoute(builder: (_) => EditUserName());
-
-
-
-    // case otpVerification:
+      // case otpVerification:
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(

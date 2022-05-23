@@ -26,8 +26,9 @@ class StoreContainer extends ConsumerWidget {
       height: 160,
       // width: 164,
       decoration: BoxDecoration(
+        color: AppColors.grey,
         image: DecorationImage(
-          image: NetworkImage(storeImage),
+          image: CachedNetworkImageProvider(storeImage),
           fit: BoxFit.fill,
         ),
         borderRadius: BorderRadius.circular(20),
@@ -55,6 +56,7 @@ class StoreContainer extends ConsumerWidget {
           Center(
             child: Text(
               storeName,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 color: AppColors.light,
                 fontSize: 18,

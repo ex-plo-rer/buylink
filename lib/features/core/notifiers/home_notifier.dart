@@ -18,7 +18,7 @@ import '../models/product_model.dart';
 
 class HomeNotifier extends BaseChangeNotifier {
   final Reader _reader;
-  final String category;
+  final String? category;
 
   HomeNotifier(
     this._reader, {
@@ -42,7 +42,7 @@ class HomeNotifier extends BaseChangeNotifier {
   // }
 
   Future<void> fetchProducts({
-    required String category,
+    required String? category,
   }) async {
     try {
       setState(state: ViewState.loading);
@@ -55,6 +55,7 @@ class HomeNotifier extends BaseChangeNotifier {
         //TODO: the below
         // lat: position!.latitude,
         // lon: position.longitude,
+        category: category,
       );
       // }
       // Alertify(title: 'User logged in').success();
@@ -148,7 +149,7 @@ class HomeNotifier extends BaseChangeNotifier {
 }
 
 final homeNotifierProvider =
-    ChangeNotifierProvider.family<HomeNotifier, String>(
+    ChangeNotifierProvider.family<HomeNotifier, String?>(
   (ref, category) => HomeNotifier(
     ref.read,
     category: category,

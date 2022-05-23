@@ -42,7 +42,7 @@ class AppTextField extends StatelessWidget {
     this.fillColor = AppColors.transparent,
     this.hasPrefixIcon = false,
     this.hasSuffixIcon = true,
-    this.maxLines,
+    this.maxLines = 1,
     this.onTap,
   }) : super(key: key);
 
@@ -72,7 +72,7 @@ class AppTextField extends StatelessWidget {
             obscureText: obscureText,
             onFieldSubmitted: onFieldSubmitted,
             onTap: onTap,
-            // maxLines: maxLines,
+            maxLines: maxLines,
             decoration: InputDecoration(
               isDense: true,
               fillColor: fillColor,

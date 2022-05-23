@@ -1,7 +1,6 @@
 import 'package:buy_link/features/authentication/views/notification_view.dart';
 import 'package:buy_link/features/core/views/home_view.dart';
 import 'package:buy_link/features/core/views/settings_view/setting_view.dart';
-import 'package:buy_link/features/core/views/store_views/store_empty_state.dart';
 import 'package:buy_link/features/core/views/store_views/store_view.dart';
 import 'package:buy_link/features/core/views/wishlist_view.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +34,7 @@ class DashboardView extends ConsumerWidget {
         body: [
           HomeView(),
           const WishlistView(),
-          const StoreEmptyStateView(),
+          const StoreView(),
           const NotificationView(),
           const SettingView(),
         ][dashboardNotifier.selectedIndex],
