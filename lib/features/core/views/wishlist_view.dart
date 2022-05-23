@@ -36,12 +36,12 @@ class _WishlistState extends ConsumerState<WishlistView>
   @override
   void initState() {
     // TODO: implement initState
+    _tabController = TabController(
+        length: ref.read(categoryNotifierProvider).mCategories.length,
+        vsync: this);
+    _tabController.addListener(_handleTabChange);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
-      _tabController = TabController(
-          length: ref.watch(categoryNotifierProvider).mCategories.length,
-          vsync: this);
-      _tabController.addListener(_handleTabChange);
     });
     super.initState();
   }

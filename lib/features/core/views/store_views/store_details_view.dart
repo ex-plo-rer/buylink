@@ -56,7 +56,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
             category: 'all',
           );
       _tabController = TabController(
-          length: ref.watch(categoryNotifierProvider).mCategories.length,
+          length: ref.read(categoryNotifierProvider).mCategories.length,
           vsync: this);
       _tabController.addListener(_handleTabChange);
     });
