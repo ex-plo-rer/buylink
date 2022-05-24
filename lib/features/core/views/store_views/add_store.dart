@@ -204,26 +204,11 @@ class AddStoreView extends ConsumerWidget {
                                 File imageFile =
                                     File((result.files.single.path) as String);
                                 print('File @@@@@@@@@@ : $imageFile');
-                                // setState(() {
-                                //   fileSelected = true;
-                                // });
-                                // Uint8List? fileBytes =
-                                //     result.files.single.bytes;
-                                // String fileName =
-                                //     result.files.first.name;
-
-                                // print(
-                                //     'Filebyte $fileBytes: Filename $fileName');
                                 print('imageFile.path: ${imageFile.path}');
-                                // ref
-                                //     .read(addStoreNotifierProvider)
-                                //     .setImageFile(imageFile: imageFile.path);
                                 addStoreNotifier.setImageFile(
                                   imageFile: imageFile.path,
                                   isImage: true,
                                 );
-                                // _staffImage = imageFile.path;
-                                // _fileName =
                                 result.files.first.name;
                               } else {
                                 // User canceled the picker

@@ -17,8 +17,8 @@ import '../../../core/routes.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
 
-class AddProductView extends ConsumerWidget {
-  const AddProductView({Key? key}) : super(key: key);
+class AddProductSpecificsView extends ConsumerWidget {
+  const AddProductSpecificsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
@@ -38,7 +38,7 @@ class AddProductView extends ConsumerWidget {
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
-          'Add Product',
+          'Product Specifics',
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,
@@ -57,72 +57,58 @@ class AddProductView extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Product Pictures(${addProductNotifier.imageList.length > 4 ? 4 : addProductNotifier.imageList.length}/4)',
+                'This helps your costumers locate your products faster, all the fields are optional, so fill the field that applies to your product',
                 style: TextStyle(
-                  color: AppColors.getColorFromHex('3A4150'),
-                  fontSize: 12,
-                ),
+                    color: AppColors.getColorFromHex('3A4150'),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700),
               ),
-              const Spacing.tinyHeight(),
-              SelectProductImageContainer(
-                onDottedContainerTapped: () async {
-                  print('Pick file Clicked');
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
-                    type: FileType.image,
-                    withData: true,
-                    allowMultiple: true,
-                  );
-
-                  if (result != null) {
-                    addProductNotifier.setImages(images: result.files);
-                  } else {
-                    // User canceled the picker
-                  }
-                },
-              ),
-              const Spacing.mediumHeight(),
+              const Spacing.height(20),
               const AppTextField(
                 hasBorder: true,
-                title: 'Product Name',
-                hintText: 'Name of the product',
+                title: 'Brand',
+                hintText: 'Brand of the product',
+              ),
+              const AppTextField(
+                hasBorder: true,
+                title: 'Colors',
+                hintText: 'Colors of the product',
               ),
               const Spacing.mediumHeight(),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
                   Expanded(
-                      child: SpecialTextField(
-                          title: 'Price', tit: 'Min Price', sub: '# ')),
+                    child: SpecialTextField(
+                      title: 'Age',
+                      tit: 'Min',
+                      sub: 'Years ',
+                      hintText: '0',
+                    ),
+                  ),
                   Spacing.smallWidth(),
                   Expanded(
-                      child: SpecialTextField(tit: 'Max Price', sub: '# ')),
+                      child: SpecialTextField(
+                    tit: 'Max',
+                    sub: 'Years ',
+                    hintText: '0',
+                  )),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Expanded(
+                      child: SpecialTextField(
+                          title: 'Weight', tit: 'Min', sub: 'Kg ')),
+                  Spacing.smallWidth(),
+                  Expanded(child: SpecialTextField(tit: 'Max', sub: 'Kg ')),
                 ],
               ),
               const Spacing.mediumHeight(),
               AppDropdownField(
-                title: 'Product Category',
-                hintText: 'Select Product Category',
-                items: addProductNotifier.categories
-                    .map(
-                      (category) => DropdownMenuItem(
-                        child: Text(category),
-                        value: category,
-                      ),
-                    )
-                    .toList(),
-                onChanged: addProductNotifier.categories.isEmpty
-                    ? null
-                    : (newCategory) {
-                        // _subCatKey.currentState?.reset();
-                        addProductNotifier.onCategoryChanged(
-                            newCategory: newCategory.toString());
-                      },
-              ),
-              const Spacing.mediumHeight(),
-              AppDropdownField(
-                title: 'Product Sub-Category',
-                hintText: 'Select Product Sub-Category',
+                title: 'Size of the product',
+                hintText: 'Select Size',
                 items: addProductNotifier.categories
                     .map(
                       (category) => DropdownMenuItem(
@@ -142,40 +128,27 @@ class AddProductView extends ConsumerWidget {
               const Spacing.mediumHeight(),
               const AppTextField(
                 hasBorder: true,
-                title: 'Product Category',
-                hintText: 'Select Product Category',
+                title: 'Model',
+                hintText: 'Model',
               ),
               const Spacing.mediumHeight(),
               const AppTextField(
                 hasBorder: true,
-                title: 'Product Sub Category',
-                hintText: 'Select Product Sub Category',
-              ),
-              const Spacing.mediumHeight(),
-              AppTextField(
-                hasBorder: true,
-                title: 'Product Specifics',
-                hintText: 'Brand, Size, Color, Material,Mobile',
-                suffixIcon: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 14,
-                  ),
-                  onPressed: () => ref
-                      .read(navigationServiceProvider)
-                      .navigateToNamed(Routes.addProductDesc),
-                ),
+                title: 'Material',
+                hintText: 'Material of the product',
+                maxLines: 7,
               ),
               const Spacing.mediumHeight(),
               const AppTextField(
                 hasBorder: true,
-                title: 'Product Description',
-                hintText: 'Describe your product',
-                maxLines: 10,
+                title: 'Care',
+                hintText: 'How to take care of the product',
+                maxLines: 7,
               ),
+              const Spacing.mediumHeight(),
               const Spacing.height(40),
               AppButton(
-                text: 'Save Product',
+                text: 'Continue',
                 fontSize: 16,
                 backgroundColor: AppColors.primaryColor,
                 // onPressed: () => ref
@@ -183,7 +156,7 @@ class AddProductView extends ConsumerWidget {
                 //     .navigateToNamed(Routes.homeView),
                 onPressed: () {},
               ),
-              Spacing.height(54),
+              const Spacing.height(54),
             ],
           ),
         ),

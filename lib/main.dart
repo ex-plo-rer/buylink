@@ -8,6 +8,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'core/constants/strings.dart';
 import 'core/routes.dart';
 import 'core/theme.dart';
+import 'features/core/views/add_product_specifics_view.dart';
+import 'features/core/views/add_product_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +28,8 @@ class MyApp extends ConsumerWidget {
       navigatorObservers: [BotToastNavigatorObserver()],
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: StartupView(),
+      // home: StartupView(),
+      home: const AddProductSpecificsView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,
       scaffoldMessengerKey: ref.read(snackbarService).scaffoldMessengerKey,

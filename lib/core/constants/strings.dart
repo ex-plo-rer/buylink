@@ -4,10 +4,9 @@ class AppStrings {
   AppStrings._();
 
   // App wide
-  static const appName = 'Books App';
+  static const appName = 'Buy link';
 
   // Onboarding
-  static const welcome = 'Welcome to Sumiffy';
 
   // Authentication
   static const login = 'Log In';
@@ -21,8 +20,6 @@ class AppStrings {
   static const password = 'Password';
   static const fullName = 'Full Name';
   static const forgotPassword = 'Forgot Password?';
-  static const signinWithGoogle = 'Sign in with Google';
-  static const signUpWithGoogle = 'Sign up with Google';
   static const noAccount = 'No Account? Register';
   static const createAccount = 'Create Account';
   static const createNewPassword = 'Create New Password';

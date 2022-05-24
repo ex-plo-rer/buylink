@@ -17,6 +17,7 @@ import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/compare_arg_model.dart';
 import '../features/core/models/product_model.dart';
 import '../features/core/views/add_product_desc.dart';
+import '../features/core/views/add_product_specifics_view.dart';
 import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
@@ -54,6 +55,7 @@ class Routes {
   static const storesettingView = '/storesetting';
   static const messageView = '/message';
   static const addProduct = '/addproduct';
+  static const addProductSpecifics = '/add-product-specifics';
   static const addProductDesc = '/add-product-desc';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -132,6 +134,8 @@ class Routes {
 
       case addProduct:
         return MaterialPageRoute(builder: (_) => AddProductView());
+      case addProductSpecifics:
+        return MaterialPageRoute(builder: (_) => AddProductSpecificsView());
       case addProductDesc:
         return MaterialPageRoute(builder: (_) => AddProductDescView());
 
