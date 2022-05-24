@@ -2,13 +2,13 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 class Alertify {
-  final String title;
+  final String? title;
   final String message;
   // IconData icon;
   final Alignment alignment;
 
   Alertify({
-    this.title = "Network Error",
+    this.title,
     this.message = "Could not connect to the internet",
     // this.icon,
     this.alignment = const Alignment(0, -0.99),
@@ -46,7 +46,7 @@ class Alertify {
       //   ),
       // ),
       title: (_) => Text(
-        title,
+        title ?? 'An error occurred',
         style: const TextStyle(color: Colors.white),
       ),
       // subtitle: (_) => Text(

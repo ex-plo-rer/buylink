@@ -26,10 +26,10 @@ class StoreNotifier extends BaseChangeNotifier {
       setState(state: ViewState.error);
       Alertify().error();
     } finally {
-      setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 }
 
-final storeNotifierProvider =
-    ChangeNotifierProvider<StoreNotifier>((ref) => StoreNotifier(ref.read));
+final storeNotifierProvider = ChangeNotifierProvider.autoDispose<StoreNotifier>(
+    (ref) => StoreNotifier(ref.read));

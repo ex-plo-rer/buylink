@@ -45,41 +45,46 @@ class StoreView extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: storeNotifier.state.isLoading
             ? const CircularProgress()
-            : storeNotifier.myStores.isEmpty
-                ? AppEmptyStates(
-                    imageString: AppImages.emptyStore,
-                    message1String: 'No Store Added Yet',
-                    message2String:
-                        'Tap the button below to create your first store',
-                    onButtonPressed: () => ref
-                        .read(navigationServiceProvider)
-                        .navigateToNamed(Routes.addstoreView),
-                    hasButton: true,
-                    buttonString: 'Create Store',
+            : storeNotifier.state.isError
+                ? const Center(
+                    child: Text('Errrrrrrrror'),
                   )
-                : Expanded(
-                    child: MasonryGridView.count(
-                      itemCount: storeNotifier.myStores.length + 1,
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 15,
-                      itemBuilder: (context, index) {
-                        if (index == storeNotifier.myStores.length) {
-                          return AddStoreContainer(
-                            onTapped: () => ref
-                                .read(navigationServiceProvider)
-                                .navigateToNamed(Routes.addstoreView),
-                          );
-                        } else {
-                          return StoreContainer(
-                            storeName: storeNotifier.myStores[index].name,
-                            starRate: storeNotifier.myStores[index].star,
-                            storeImage: storeNotifier.myStores[index].image,
-                          );
-                        }
-                      },
-                    ),
-                  ),
+                : storeNotifier.myStores.isEmpty
+                    ? AppEmptyStates(
+                        imageString: AppImages.emptyStore,
+                        message1String: 'No Store Added Yet',
+                        message2String:
+                            'Tap the button below to create your first store',
+                        onButtonPressed: () => ref
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.addstoreView),
+                        hasButton: true,
+                        buttonString: 'Create Store',
+                      )
+                    : Expanded(
+                        child: MasonryGridView.count(
+                          itemCount: storeNotifier.myStores.length + 1,
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 15,
+                          itemBuilder: (context, index) {
+                            if (index == storeNotifier.myStores.length) {
+                              return AddStoreContainer(
+                                onTapped: () => ref
+                                    .read(navigationServiceProvider)
+                                    .navigateToNamed(Routes.addstoreView),
+                              );
+                            } else {
+                              return StoreContainer(
+                                storeName: storeNotifier.myStores[index].name,
+                                starRate: storeNotifier.myStores[index].star,
+                                storeImage: storeNotifier.myStores[index].image,
+                                onTap: () {},
+                              );
+                            }
+                          },
+                        ),
+                      ),
       ),
     );
   }
