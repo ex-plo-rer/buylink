@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/add_product_notifier.dart';
+import 'package:buy_link/features/core/notifiers/category_notifier.dart';
 import 'package:buy_link/features/core/views/add_product_desc.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_dropdown_field.dart';
@@ -18,7 +20,19 @@ import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
 
 class AddProductView extends ConsumerWidget {
-  const AddProductView({Key? key}) : super(key: key);
+  AddProductView({Key? key}) : super(key: key);
+
+  final productNameFN = FocusNode();
+  final minPriceFN = FocusNode();
+  final maxPriceFN = FocusNode();
+  final productSpecificsFN = FocusNode();
+  final productDescFN = FocusNode();
+
+  final productNameCtrl = TextEditingController();
+  final minPriceCtrl = FocusNode();
+  final maxPriceCtrl = FocusNode();
+  final productSpecificsCtrl = FocusNode();
+  final productDescCtrl = FocusNode();
 
   @override
   Widget build(BuildContext context, ref) {
@@ -26,7 +40,7 @@ class AddProductView extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: AppColors.dark, //change your color here
+          color: AppColors.dark,
         ),
         leading: IconButton(
           onPressed: () {},
@@ -82,32 +96,45 @@ class AddProductView extends ConsumerWidget {
                 },
               ),
               const Spacing.mediumHeight(),
-              const AppTextField(
+              AppTextField(
                 hasBorder: true,
                 title: 'Product Name',
                 hintText: 'Name of the product',
+                onChanged: addProductNotifier.onNameChanged,
               ),
               const Spacing.mediumHeight(),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Expanded(
-                      child: SpecialTextField(
-                          title: 'Price', tit: 'Min Price', sub: '# ')),
+                    child: SpecialTextField(
+                      title: 'Price',
+                      tit: 'Min Price',
+                      sub: '# ',
+                      onChanged: addProductNotifier.onMinPriceChanged,
+                    ),
+                  ),
                   Spacing.smallWidth(),
                   Expanded(
-                      child: SpecialTextField(tit: 'Max Price', sub: '# ')),
+                    child: SpecialTextField(
+                      tit: 'Max Price',
+                      sub: '# ',
+                      onChanged: addProductNotifier.onMaxPriceChanged,
+                    ),
+                  ),
                 ],
               ),
               const Spacing.mediumHeight(),
               AppDropdownField(
                 title: 'Product Category',
                 hintText: 'Select Product Category',
-                items: addProductNotifier.categories
+                items: ref
+                    .read(categoryNotifierProvider)
+                    .categories
                     .map(
                       (category) => DropdownMenuItem(
-                        child: Text(category),
-                        value: category,
+                        child: Text(category.name),
+                        value: category.name,
                       ),
                     )
                     .toList(),
@@ -119,71 +146,67 @@ class AddProductView extends ConsumerWidget {
                             newCategory: newCategory.toString());
                       },
               ),
-              const Spacing.mediumHeight(),
-              AppDropdownField(
-                title: 'Product Sub-Category',
-                hintText: 'Select Product Sub-Category',
-                items: addProductNotifier.categories
-                    .map(
-                      (category) => DropdownMenuItem(
-                        child: Text(category),
-                        value: category,
-                      ),
-                    )
-                    .toList(),
-                onChanged: addProductNotifier.categories.isEmpty
-                    ? null
-                    : (newCategory) {
-                        // _subCatKey.currentState?.reset();
-                        addProductNotifier.onCategoryChanged(
-                            newCategory: newCategory.toString());
-                      },
-              ),
-              const Spacing.mediumHeight(),
-              const AppTextField(
-                hasBorder: true,
-                title: 'Product Category',
-                hintText: 'Select Product Category',
-              ),
-              const Spacing.mediumHeight(),
-              const AppTextField(
-                hasBorder: true,
-                title: 'Product Sub Category',
-                hintText: 'Select Product Sub Category',
-              ),
+              // const Spacing.mediumHeight(),
+              // AppDropdownField(
+              //   title: 'Product Sub-Category',
+              //   hintText: 'Select Product Sub-Category',
+              //   items: addProductNotifier.categories
+              //       .map(
+              //         (category) => DropdownMenuItem(
+              //           child: Text(category),
+              //           value: category,
+              //         ),
+              //       )
+              //       .toList(),
+              //   onChanged: addProductNotifier.categories.isEmpty
+              //       ? null
+              //       : (newCategory) {
+              //           // _subCatKey.currentState?.reset();
+              //           addProductNotifier.onCategoryChanged(
+              //               newCategory: newCategory.toString());
+              //         },
+              // ),
               const Spacing.mediumHeight(),
               AppTextField(
                 hasBorder: true,
                 title: 'Product Specifics',
                 hintText: 'Brand, Size, Color, Material,Mobile',
+                enabled: true,
+                focusNode: productSpecificsFN,
+                fillColor: AppColors.grey8,
+                onTap: () {
+                  productSpecificsFN.unfocus();
+                  ref
+                      .read(navigationServiceProvider)
+                      .navigateToNamed(Routes.addProductSpecifics);
+                },
                 suffixIcon: IconButton(
                   icon: const Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 14,
                   ),
-                  onPressed: () => ref
-                      .read(navigationServiceProvider)
-                      .navigateToNamed(Routes.addProductDesc),
+                  onPressed: () {},
                 ),
               ),
               const Spacing.mediumHeight(),
-              const AppTextField(
+              AppTextField(
                 hasBorder: true,
                 title: 'Product Description',
                 hintText: 'Describe your product',
                 maxLines: 10,
+                onChanged: addProductNotifier.onDescChanged,
               ),
               const Spacing.height(40),
               AppButton(
+                isLoading: addProductNotifier.state.isLoading,
                 text: 'Save Product',
                 fontSize: 16,
                 backgroundColor: AppColors.primaryColor,
-                // onPressed: () => ref
-                //     .read(navigationServiceProvider)
-                //     .navigateToNamed(Routes.homeView),
-                onPressed: () {},
+                onPressed: () {
+                  addProductNotifier.addProduct();
+                },
               ),
-              Spacing.height(54),
+              const Spacing.height(54),
             ],
           ),
         ),

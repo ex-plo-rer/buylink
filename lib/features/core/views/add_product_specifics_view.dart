@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/add_product_notifier.dart';
 import 'package:buy_link/features/core/views/add_product_desc.dart';
 import 'package:buy_link/services/navigation_service.dart';
@@ -64,97 +65,115 @@ class AddProductSpecificsView extends ConsumerWidget {
                     fontWeight: FontWeight.w700),
               ),
               const Spacing.height(20),
-              const AppTextField(
+              AppTextField(
                 hasBorder: true,
                 title: 'Brand',
                 hintText: 'Brand of the product',
+                onChanged: addProductNotifier.onBrandChanged,
               ),
-              const AppTextField(
+              AppTextField(
                 hasBorder: true,
                 title: 'Colors',
                 hintText: 'Colors of the product',
+                onChanged: addProductNotifier.onColorChanged,
               ),
               const Spacing.mediumHeight(),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Expanded(
                     child: SpecialTextField(
                       title: 'Age',
                       tit: 'Min',
                       sub: 'Years ',
                       hintText: '0',
+                      onChanged: addProductNotifier.onMinAgeChanged,
                     ),
                   ),
                   Spacing.smallWidth(),
                   Expanded(
-                      child: SpecialTextField(
-                    tit: 'Max',
-                    sub: 'Years ',
-                    hintText: '0',
-                  )),
+                    child: SpecialTextField(
+                      tit: 'Max',
+                      sub: 'Years ',
+                      hintText: '0',
+                      onChanged: addProductNotifier.onMaxAgeChanged,
+                    ),
+                  ),
                 ],
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Expanded(
-                      child: SpecialTextField(
-                          title: 'Weight', tit: 'Min', sub: 'Kg ')),
+                    child: SpecialTextField(
+                      title: 'Weight',
+                      tit: 'Min',
+                      sub: 'Kg ',
+                      onChanged: addProductNotifier.onMinWeightChanged,
+                    ),
+                  ),
                   Spacing.smallWidth(),
-                  Expanded(child: SpecialTextField(tit: 'Max', sub: 'Kg ')),
+                  Expanded(
+                    child: SpecialTextField(
+                      tit: 'Max',
+                      sub: 'Kg ',
+                      onChanged: addProductNotifier.onMaxWeightChanged,
+                    ),
+                  ),
                 ],
               ),
               const Spacing.mediumHeight(),
               AppDropdownField(
                 title: 'Size of the product',
                 hintText: 'Select Size',
-                items: addProductNotifier.categories
+                items: addProductNotifier.sizes
                     .map(
-                      (category) => DropdownMenuItem(
-                        child: Text(category),
-                        value: category,
+                      (size) => DropdownMenuItem(
+                        child: Text(size),
+                        value: size,
                       ),
                     )
                     .toList(),
                 onChanged: addProductNotifier.categories.isEmpty
                     ? null
-                    : (newCategory) {
+                    : (newSize) {
                         // _subCatKey.currentState?.reset();
-                        addProductNotifier.onCategoryChanged(
-                            newCategory: newCategory.toString());
+                        addProductNotifier.onSizeChanged(
+                            newSize: newSize.toString());
                       },
               ),
               const Spacing.mediumHeight(),
-              const AppTextField(
+              AppTextField(
                 hasBorder: true,
                 title: 'Model',
                 hintText: 'Model',
+                onChanged: addProductNotifier.onModelChanged,
               ),
               const Spacing.mediumHeight(),
-              const AppTextField(
+              AppTextField(
                 hasBorder: true,
                 title: 'Material',
                 hintText: 'Material of the product',
                 maxLines: 7,
+                onChanged: addProductNotifier.onMaterialChanged,
               ),
               const Spacing.mediumHeight(),
-              const AppTextField(
+              AppTextField(
                 hasBorder: true,
                 title: 'Care',
                 hintText: 'How to take care of the product',
                 maxLines: 7,
+                onChanged: addProductNotifier.onCareChanged,
               ),
               const Spacing.mediumHeight(),
               const Spacing.height(40),
               AppButton(
+                isLoading: addProductNotifier.state.isLoading,
                 text: 'Continue',
                 fontSize: 16,
                 backgroundColor: AppColors.primaryColor,
-                // onPressed: () => ref
-                //     .read(navigationServiceProvider)
-                //     .navigateToNamed(Routes.homeView),
-                onPressed: () {},
+                onPressed: () =>
+                    ref.read(navigationServiceProvider).navigateBack(),
               ),
               const Spacing.height(54),
             ],

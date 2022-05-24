@@ -285,6 +285,63 @@ class CoreRepository {
     return _autoComplete;
   }
 
+  Future<String> addProduct({
+    required int storeId,
+    required String name,
+    // required List<String?> images,
+    required String? images,
+    required String price,
+    required String oldPrice,
+    required String category,
+    required String description,
+    required String brand,
+    required String colors,
+    required String minAge,
+    required String maxAge,
+    required String minWeight,
+    required String maxWeight,
+    required String size,
+    required String model,
+    required String material,
+    required String care,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'name': name,
+      'store_id': storeId,
+      'price': price,
+      'old_price': oldPrice,
+      'cat': category,
+      'desc': description,
+      'brand': brand,
+      'colors': colors,
+      'age_min': minAge,
+      'age_max': maxAge,
+      'w_min': minWeight,
+      'w_max': maxWeight,
+      'size': size,
+      'model': model,
+      'material': material,
+      'care': care,
+    };
+    final files = {
+      'images': images,
+    };
+    print('Add product params sent to server $body. Files: $files');
+
+    var response = await networkService.postMultipart(
+      'users/add-product',
+      body: body,
+      files: files,
+      headers: headers,
+    );
+
+    print('Add product response $response');
+
+    return '';
+  }
+
   Future<List<String>> autoComplete({
     required String query,
   }) async {
