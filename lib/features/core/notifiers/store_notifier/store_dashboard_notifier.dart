@@ -32,8 +32,11 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
   AnalyticsModel? _searchAnalytics;
   AnalyticsModel? get searchAnalytics => _searchAnalytics;
 
-  List<SplineDataModel> _splineDataModel = [];
-  List<SplineDataModel> get splineDataModel => _splineDataModel;
+  List<SplineDataModel> _searchedData = [];
+  List<SplineDataModel> get searchedData => _searchedData;
+
+  List<SplineDataModel> _visitsData = [];
+  List<SplineDataModel> get visitsData => _visitsData;
 
   AnalyticsModel? _visitAnalytics;
   AnalyticsModel? get visitAnalytics => _visitAnalytics;
@@ -92,28 +95,28 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
   }) async {
     try {
       setState(state: ViewState.loading);
-      _splineDataModel.clear();
+      _searchedData.clear();
       _searchAnalytics = await _reader(coreRepository).getAnalytics(
         type: 'search',
         storeId: storeId,
         week: week,
       );
-      _splineDataModel
-          .add(SplineDataModel('SUN', _searchAnalytics!.sunday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('MON', _searchAnalytics!.monday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('TUE', _searchAnalytics!.tuesday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('WED', _searchAnalytics!.wednesday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('THUR', _searchAnalytics!.thursday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('FRI', _searchAnalytics!.friday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('SAT', _searchAnalytics!.saturday.toDouble()));
+      _searchedData
+          .add(SplineDataModel('Sun', _searchAnalytics!.sunday.toDouble()));
+      _searchedData
+          .add(SplineDataModel('Mon', _searchAnalytics!.monday.toDouble()));
+      _searchedData
+          .add(SplineDataModel('Tue', _searchAnalytics!.tuesday.toDouble()));
+      _searchedData
+          .add(SplineDataModel('Wed', _searchAnalytics!.wednesday.toDouble()));
+      _searchedData
+          .add(SplineDataModel('Thur', _searchAnalytics!.thursday.toDouble()));
+      _searchedData
+          .add(SplineDataModel('Fri', _searchAnalytics!.friday.toDouble()));
+      _searchedData
+          .add(SplineDataModel('Sat', _searchAnalytics!.saturday.toDouble()));
 
-      print('Spline data : $_splineDataModel');
+      print('Searched data : $_searchedData');
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
@@ -128,12 +131,31 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
     required String week,
   }) async {
     try {
+      _visitsData.clear();
       setState(state: ViewState.loading);
       _visitAnalytics = await _reader(coreRepository).getAnalytics(
         type: 'visit',
         storeId: storeId,
         week: week,
       );
+
+      _visitsData
+          .add(SplineDataModel('Sun', _visitAnalytics!.sunday.toDouble()));
+      _visitsData
+          .add(SplineDataModel('Mon', _visitAnalytics!.monday.toDouble()));
+      _visitsData
+          .add(SplineDataModel('Tue', _visitAnalytics!.tuesday.toDouble()));
+      _visitsData
+          .add(SplineDataModel('Wed', _visitAnalytics!.wednesday.toDouble()));
+      _visitsData
+          .add(SplineDataModel('Thur', _visitAnalytics!.thursday.toDouble()));
+      _visitsData
+          .add(SplineDataModel('Fri', _visitAnalytics!.friday.toDouble()));
+      _visitsData
+          .add(SplineDataModel('Sat', _visitAnalytics!.saturday.toDouble()));
+
+      print('Visit data : $_visitsData');
+
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);

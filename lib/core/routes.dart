@@ -18,6 +18,8 @@ import '../features/core/models/compare_arg_model.dart';
 import '../features/core/models/product_model.dart';
 import '../features/core/views/add_product_desc.dart';
 import '../features/core/views/add_product_specifics_view.dart';
+import '../features/core/views/store_views/product_saved_view.dart';
+import '../features/core/views/store_views/store_messages.dart';
 import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
@@ -57,6 +59,9 @@ class Routes {
   static const addProduct = '/addproduct';
   static const addProductSpecifics = '/add-product-specifics';
   static const addProductDesc = '/add-product-desc';
+  static const storeMessages = '/store-messages';
+  static const storeSettings = '/store-settings';
+  static const savedProducts = '/saved-products';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -119,8 +124,14 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const ProductSearchedView());
       case storeDashboard:
         return MaterialPageRoute(builder: (_) => const StoreDashboardView());
+      case storeMessages:
+        return MaterialPageRoute(builder: (_) => const StoreMessagesView());
+      case storeSettings:
+        return MaterialPageRoute(builder: (_) => StoreSetting());
       case storeVisits:
         return MaterialPageRoute(builder: (_) => const StoreVisitsView());
+      case savedProducts:
+        return MaterialPageRoute(builder: (_) => ProductSavedView());
       case storeDirection:
         return MaterialPageRoute(builder: (_) => const StoreDirectionView());
       case noproductView:

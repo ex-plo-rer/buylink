@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/spline_data_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
@@ -12,6 +13,7 @@ import 'package:buy_link/features/core/views/store_views/product_searched_view.d
 import 'package:buy_link/features/core/views/store_views/store_messages.dart';
 import 'package:buy_link/features/core/views/store_views/store_settings.dart';
 import 'package:buy_link/features/core/views/store_views/store_visits_view.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_progress_bar.dart';
 import 'package:buy_link/widgets/app_rating_bar.dart';
@@ -48,19 +50,8 @@ class StoreDashboardView extends ConsumerStatefulWidget {
 }
 
 class _StoreDashboardViewState extends ConsumerState {
-  List<_SplineAreaData>? chartData;
-
   @override
   void initState() {
-    chartData = <_SplineAreaData>[
-      _SplineAreaData('Sun', 10.53, 3.3),
-      _SplineAreaData('Mon', 9.5, 5.4),
-      _SplineAreaData('Tue', 10, 2.65),
-      _SplineAreaData('Wed', 9.4, 2.62),
-      _SplineAreaData('Thu', 5.8, 1.99),
-      _SplineAreaData('Fri', 4.9, 1.44),
-      _SplineAreaData('Sat', 4.5, 2),
-    ];
     super.initState();
     ref.read(storeDashboardNotifierProvider).initFetch(storeId: 3);
   }
@@ -75,6 +66,7 @@ class _StoreDashboardViewState extends ConsumerState {
   Widget build(BuildContext context) {
     final storeDashboardNotifier = ref.watch(storeDashboardNotifierProvider);
     return Scaffold(
+      // backgroundColor: AppColors.grey6,
       appBar: AppBar(
           iconTheme: const IconThemeData(
             color: AppColors.dark, //change your color here
@@ -108,10 +100,9 @@ class _StoreDashboardViewState extends ConsumerState {
                     size: 14,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const StoreMessagesView()));
+                    ref
+                        .read(navigationServiceProvider)
+                        .navigateToNamed(Routes.storeMessages);
                   },
                 ),
                 containerColor: AppColors.grey10,
@@ -129,10 +120,9 @@ class _StoreDashboardViewState extends ConsumerState {
                     size: 14,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StoreSetting()));
+                    ref
+                        .read(navigationServiceProvider)
+                        .navigateToNamed(Routes.storeSettings);
                   },
                 ),
                 containerColor: AppColors.grey10,
@@ -160,9 +150,9 @@ class _StoreDashboardViewState extends ConsumerState {
           //   ),
           // ],
           ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
           child: storeDashboardNotifier.state.isError
               ? const Center(
                   child: Text('An error occurred.'),
@@ -221,25 +211,38 @@ class _StoreDashboardViewState extends ConsumerState {
                                 alignment: Alignment.bottomCenter,
                                 child: SizedBox(
                                   height: 171,
-                                  child: SfCartesianChart(
-                                    // legend: Legend(isVisible: true, opacity: 0.7),
-                                    // title: ChartTitle(text: ''),
-                                    plotAreaBorderWidth: 0,
-                                    primaryXAxis: CategoryAxis(
-                                        interval: 1,
-                                        majorGridLines:
-                                            const MajorGridLines(width: 0),
-                                        edgeLabelPlacement:
-                                            EdgeLabelPlacement.shift),
-                                    primaryYAxis: NumericAxis(
-                                      // labelFormat: '{value}%',
-                                      axisLine: const AxisLine(width: 0),
-                                      majorTickLines:
-                                          const MajorTickLines(size: 0),
+                                  // width: MediaQuery.of(context).size.width - 40,
+                                  child: ClipRect(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 20.0),
+                                      child: OverflowBox(
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width,
+                                        child: SfCartesianChart(
+                                          // legend: Legend(isVisible: true, opacity: 0.7),
+                                          // title: ChartTitle(text: ''),
+                                          plotAreaBorderWidth: 0,
+                                          primaryXAxis: CategoryAxis(
+                                              interval: 1,
+                                              majorGridLines:
+                                                  const MajorGridLines(
+                                                width: 0,
+                                              ),
+                                              edgeLabelPlacement:
+                                                  EdgeLabelPlacement.shift),
+                                          primaryYAxis: NumericAxis(
+                                            // labelFormat: '{value}%',
+                                            axisLine: const AxisLine(width: 0),
+                                            majorTickLines:
+                                                const MajorTickLines(size: 0),
+                                          ),
+                                          series: _getSplieAreaSeries(),
+                                          tooltipBehavior:
+                                              TooltipBehavior(enable: true),
+                                        ),
+                                      ),
                                     ),
-                                    series: _getSplieAreaSeries(),
-                                    tooltipBehavior:
-                                        TooltipBehavior(enable: true),
                                   ),
                                 ),
                               ),
@@ -254,11 +257,10 @@ class _StoreDashboardViewState extends ConsumerState {
                                       children: [
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const ProductSearchedView()));
+                                            ref
+                                                .read(navigationServiceProvider)
+                                                .navigateToNamed(
+                                                    Routes.productSearched);
                                           },
                                           child: const Text(
                                             'Product Searched',
@@ -317,8 +319,11 @@ class _StoreDashboardViewState extends ConsumerState {
                                   //mainAxisAlignment: Main,
                                   children: [
                                     FavoriteContainer(
+                                      height: 28,
+                                      width: 28,
                                       favIcon: SvgPicture.asset(AppSvgs.star),
                                       containerColor: AppColors.shade1,
+                                      padding: 6,
                                     ),
                                     const Text(
                                       'Reviews',
@@ -333,6 +338,49 @@ class _StoreDashboardViewState extends ConsumerState {
                                       child: Divider(thickness: 2),
                                     ),
                                     // const Spacing.mediumHeight(),
+                                    Stack(
+                                      alignment: Alignment.bottomCenter,
+                                      children: [
+                                        Container(
+                                          height: 50,
+                                          width: 70,
+                                          // color: AppColors.dark,
+                                          child: ClipRect(
+                                            clipBehavior: Clip.hardEdge,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 20.0),
+                                              child: OverflowBox(
+                                                maxHeight: 100,
+                                                // maxWidth: 100,
+                                                child: Container(
+                                                  // margin: EdgeInsets.only(top: 20),
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors.light,
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                      width: 10,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        IconNTextContainer(
+                                          text: '3',
+                                          textColor: const Color(0xff5C6475),
+                                          fontSize: 16,
+                                          icon: SvgPicture.asset(
+                                            AppSvgs.starFilled,
+                                            width: 15,
+                                            height: 15,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Spacing.tinyHeight(),
                                     const Text(
                                       'See all reviews',
                                       style: TextStyle(
@@ -357,17 +405,19 @@ class _StoreDashboardViewState extends ConsumerState {
                                 child: Column(
                                   children: [
                                     FavoriteContainer(
+                                      height: 28,
+                                      width: 28,
                                       favIcon:
                                           SvgPicture.asset(AppSvgs.favorite),
                                       containerColor: AppColors.shade1,
+                                      padding: 6,
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProductSavedView()));
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateToNamed(
+                                                Routes.savedProducts);
                                       },
                                       child: const Text(
                                         'Saved Products',
@@ -441,23 +491,35 @@ class _StoreDashboardViewState extends ConsumerState {
                                 alignment: Alignment.bottomCenter,
                                 child: SizedBox(
                                   height: 171,
-                                  child: SfCartesianChart(
-                                    plotAreaBorderWidth: 0,
-                                    title: ChartTitle(text: ''),
-                                    primaryXAxis: CategoryAxis(
-                                      majorGridLines:
-                                          const MajorGridLines(width: 0),
+                                  // width: MediaQuery.of(context).size.width - 40,
+                                  child: ClipRect(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 20.0),
+                                      child: OverflowBox(
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width,
+                                        child: SfCartesianChart(
+                                          plotAreaBorderWidth: 0,
+                                          title: ChartTitle(text: ''),
+                                          primaryXAxis: CategoryAxis(
+                                            majorGridLines:
+                                                const MajorGridLines(width: 0),
+                                          ),
+                                          primaryYAxis: NumericAxis(
+                                            axisLine: const AxisLine(width: 0),
+                                            majorTickLines:
+                                                const MajorTickLines(size: 0),
+                                          ),
+                                          series: _getDefaultColumnSeries(),
+                                          tooltipBehavior: TooltipBehavior(
+                                            enable: true,
+                                            header: '',
+                                            canShowMarker: false,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    primaryYAxis: NumericAxis(
-                                        axisLine: const AxisLine(width: 0),
-                                        labelFormat: '{value}%',
-                                        majorTickLines:
-                                            const MajorTickLines(size: 0)),
-                                    series: _getDefaultColumnSeries(),
-                                    tooltipBehavior: TooltipBehavior(
-                                        enable: true,
-                                        header: '',
-                                        canShowMarker: false),
                                   ),
                                 ),
                               ),
@@ -472,11 +534,10 @@ class _StoreDashboardViewState extends ConsumerState {
                                       children: [
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const StoreVisitsView()));
+                                            ref
+                                                .read(navigationServiceProvider)
+                                                .navigateToNamed(
+                                                    Routes.storeVisits);
                                           },
                                           child: const Text(
                                             'Store Visits',
@@ -615,21 +676,29 @@ class _StoreDashboardViewState extends ConsumerState {
   }
 
   /// Get default column series
-  List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSeries() {
-    return <ColumnSeries<ChartSampleData, String>>[
-      ColumnSeries<ChartSampleData, String>(
-        dataSource: <ChartSampleData>[
-          ChartSampleData(x: 'China', y: 0.541),
-          ChartSampleData(x: 'Brazil', y: 0.818),
-          ChartSampleData(x: 'Bolivia', y: 1.51),
-          ChartSampleData(x: 'Mexico', y: 1.302),
-          ChartSampleData(x: 'Egypt', y: 2.017),
-          ChartSampleData(x: 'Mongolia', y: 1.683),
-        ],
-        xValueMapper: (ChartSampleData sales, _) => sales.x as String,
-        yValueMapper: (ChartSampleData sales, _) => sales.y,
+  List<ColumnSeries<SplineDataModel, String>> _getDefaultColumnSeries() {
+    return <ColumnSeries<SplineDataModel, String>>[
+      ColumnSeries<SplineDataModel, String>(
+        dataSource: ref.read(storeDashboardNotifierProvider).visitsData,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            const Color(0xff4167B2).withOpacity(0.9),
+            const Color(0xff4167B2).withOpacity(0.6),
+            // AppColors.light.withOpacity(0.5),
+          ],
+        ),
+        xValueMapper: (SplineDataModel data, _) => data.day,
+        yValueMapper: (SplineDataModel data, _) => data.value,
         dataLabelSettings: const DataLabelSettings(
-            isVisible: true, textStyle: TextStyle(fontSize: 10)),
+          isVisible: true,
+          textStyle: TextStyle(
+            fontSize: 10,
+            color: Color(0xff4267B2),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       )
     ];
   }
@@ -637,38 +706,32 @@ class _StoreDashboardViewState extends ConsumerState {
   List<ChartSeries<SplineDataModel, String>> _getSplieAreaSeries() {
     return <ChartSeries<SplineDataModel, String>>[
       SplineAreaSeries<SplineDataModel, String>(
-        dataSource: ref.read(storeDashboardNotifierProvider).splineDataModel,
+        dataSource: ref.read(storeDashboardNotifierProvider).searchedData,
         borderColor: AppColors.primaryColor,
-        color: const Color.fromRGBO(192, 108, 132, 0.6),
-        // borderWidth: 1,
+        color: const Color.fromRGBO(65, 103, 178, 0.69),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            const Color(0xff4167B2).withOpacity(0.9),
+            const Color(0xff4167B2).withOpacity(0.6),
+            AppColors.light.withOpacity(0.5),
+          ],
+        ),
+        borderWidth: 3,
         // splineType: SplineType.cardinal,
         // name: 'China',
         xValueMapper: (SplineDataModel data, _) => data.day,
         yValueMapper: (SplineDataModel data, _) => data.value,
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          textStyle: TextStyle(
+            fontSize: 10,
+            color: Color(0xff4267B2),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       )
     ];
   }
-}
-
-// class ChartData {
-//   ChartData(this.x, this.y);
-//   final int x;
-//   final double? y;
-// }
-
-/// Private class for storing the spline area chart datapoints.
-class _SplineAreaData {
-  _SplineAreaData(this.year, this.y1, this.y2);
-  final String year;
-  final double y1;
-  final double y2;
-}
-
-class ChartSampleData {
-  ChartSampleData({
-    required this.x,
-    required this.y,
-  });
-  final String x;
-  final double y;
 }
