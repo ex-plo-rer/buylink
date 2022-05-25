@@ -11,6 +11,7 @@ class AppCCheckBox extends StatelessWidget {
   final Color activeColor;
   final Color checkColor;
 
+
   const AppCCheckBox({
     Key? key,
     required this.text,

@@ -111,8 +111,7 @@ class SettingView extends ConsumerWidget {
                       onTap: () {
                         ref
                             .read(navigationServiceProvider)
-                            .navigateToNamed(Routes.editUsername);
-                      },
+                            .navigateToNamed(Routes.editUser);},
                     ),
                     Container(
                       margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),

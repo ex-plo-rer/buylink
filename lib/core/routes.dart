@@ -5,6 +5,12 @@ import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
+import 'package:buy_link/features/core/views/settings_view/change_email.dart';
+import 'package:buy_link/features/core/views/settings_view/change_name.dart';
+import 'package:buy_link/features/core/views/settings_view/change_password.dart';
+import 'package:buy_link/features/core/views/settings_view/delete_user.dart';
+import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
+import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
@@ -17,6 +23,7 @@ import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/compare_arg_model.dart';
 import '../features/core/models/product_model.dart';
 import '../features/core/views/add_product_desc.dart';
+import '../features/core/views/settings_view/about_buylink.dart';
 import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
 import '../features/core/views/home_view.dart';
@@ -55,6 +62,13 @@ class Routes {
   static const messageView = '/message';
   static const addProduct = '/addproduct';
   static const addProductDesc = '/add-product-desc';
+  static const deleteUser = '/delete-user';
+  static const editUser = '/edit-username';
+  static const changeEmail = '/change-email';
+  static const changePassword = '/change-password';
+  static const settingNotification = '/setting-notification';
+  static const privacyPolicy = '/privacy-policy';
+  static const about = '/about';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -134,8 +148,25 @@ class Routes {
         return MaterialPageRoute(builder: (_) => AddProductView());
       case addProductDesc:
         return MaterialPageRoute(builder: (_) => AddProductDescView());
+      case deleteUser:
+        return MaterialPageRoute(builder: (_) => DeleteUser());
+      case editUser:
+        return MaterialPageRoute(builder: (_) => EditUserName());
+      case changeEmail:
+        return MaterialPageRoute(builder: (_) => ChangeEmail());
 
-      // case otpVerification:
+      case changePassword:
+        return MaterialPageRoute(builder: (_) => ChangePassword());
+      case settingNotification:
+        return MaterialPageRoute(builder: (_) => SettingNotification());
+      case privacyPolicy:
+        return MaterialPageRoute(builder: (_) => PrivacyPolicy());
+      case about:
+        return MaterialPageRoute(builder: (_) => About());
+
+
+
+    // case otpVerification:
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(
