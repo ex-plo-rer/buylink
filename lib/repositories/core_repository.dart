@@ -1,4 +1,5 @@
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/features/core/models/analytics_model.dart';
 import 'package:buy_link/features/core/models/category_model.dart';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
@@ -8,6 +9,7 @@ import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants/strings.dart';
+import '../features/core/models/most_searched_model.dart';
 import '../features/core/models/user_model.dart';
 import '../services/local_storage_service.dart';
 import '../services/network/network_service.dart';
@@ -276,13 +278,148 @@ class CoreRepository {
 
     print('Fetch reviews response $response');
 
-    List<ReviewsModel> _autoComplete = [];
+    List<ReviewsModel> _reviews = [];
     for (var review in response) {
-      _autoComplete.add(ReviewsModel.fromJson(review));
+      _reviews.add(ReviewsModel.fromJson(review));
     }
 
     print('Fetch reviews response $response');
-    return _autoComplete;
+    return _reviews;
+  }
+
+  Future<String> addProduct({
+    required int storeId,
+    required String name,
+    // required List<String?> images,
+    required String? images,
+    required String price,
+    required String oldPrice,
+    required String category,
+    required String description,
+    required String brand,
+    required String colors,
+    required String minAge,
+    required String maxAge,
+    required String minWeight,
+    required String maxWeight,
+    required String size,
+    required String model,
+    required String material,
+    required String care,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'name': name,
+      'store_id': storeId,
+      'price': price,
+      'old_price': oldPrice,
+      'cat': category,
+      'desc': description,
+      'brand': brand,
+      'colors': colors,
+      'age_min': minAge,
+      'age_max': maxAge,
+      'w_min': minWeight,
+      'w_max': maxWeight,
+      'size': size,
+      'model': model,
+      'material': material,
+      'care': care,
+    };
+    final files = {
+      'images': images,
+    };
+    print('Add product params sent to server $body. Files: $files');
+
+    var response = await networkService.postMultipart(
+      'users/add-product',
+      body: body,
+      files: files,
+      headers: headers,
+    );
+
+    print('Add product response $response');
+
+    return '';
+  }
+
+  Future<List<MostSearchedProductModel>> getMostSearched({
+    required int storeId,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+    };
+    print('Get most searched body sent to server $body');
+    var response = await networkService.post(
+      'users/most-searched',
+      body: body,
+      headers: headers,
+    );
+
+    print('Get most searched response $response');
+
+    List<MostSearchedProductModel> _products = [];
+    for (var review in response) {
+      _products.add(MostSearchedProductModel.fromJson(review));
+    }
+
+    print('Get most searched response $response');
+    return _products;
+  }
+
+  Future<AnalyticsModel> getAnalytics({
+    required String type,
+    required int storeId,
+    required String? week,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+      'week': week ?? 'current',
+    };
+    print('Get analytics body sent to server $body');
+    var response = await networkService.post(
+      'users/get-analytics/${type.toLowerCase() == 'search' ? 'search' : 'visit'}',
+      body: body,
+      headers: headers,
+    );
+
+    print('Get analytics response $response');
+
+    return AnalyticsModel.fromJson(response);
+  }
+
+  Future<int> getProductCount({
+    required String type,
+    required int storeId,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+    };
+    print('Get product count body sent to server $body');
+    var response = await networkService.post(
+      'users/${type.toLowerCase() == 'saved' ? 'get-saved' : 'get-count'}',
+      body: body,
+      headers: headers,
+    );
+
+    print('Get product count response $response');
+
+    return response['no'];
+  }
+
+  Future<void> initDash({required int storeId}) async {
+    await getMostSearched(storeId: storeId);
+    await getAnalytics(type: 'search', storeId: storeId, week: 'current');
+    await getAnalytics(type: 'visit', storeId: storeId, week: 'current');
+    await getProductCount(type: 'all', storeId: storeId);
+    await getProductCount(type: 'saved', storeId: storeId);
   }
 
   Future<List<String>> autoComplete({

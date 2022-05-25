@@ -1,7 +1,16 @@
+import 'dart:io';
+
+import 'package:buy_link/core/utilities/view_state.dart';
+import 'package:buy_link/features/core/notifiers/add_product_notifier.dart';
+import 'package:buy_link/features/core/notifiers/category_notifier.dart';
 import 'package:buy_link/features/core/views/add_product_desc.dart';
 import 'package:buy_link/services/navigation_service.dart';
+import 'package:buy_link/widgets/app_dropdown_field.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
+import 'package:buy_link/widgets/select_product_image_container.dart';
+import 'package:buy_link/widgets/special_text_field.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,14 +20,27 @@ import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
 
 class AddProductView extends ConsumerWidget {
-  const AddProductView({Key? key}) : super(key: key);
+  AddProductView({Key? key}) : super(key: key);
+
+  final productNameFN = FocusNode();
+  final minPriceFN = FocusNode();
+  final maxPriceFN = FocusNode();
+  final productSpecificsFN = FocusNode();
+  final productDescFN = FocusNode();
+
+  final productNameCtrl = TextEditingController();
+  final minPriceCtrl = FocusNode();
+  final maxPriceCtrl = FocusNode();
+  final productSpecificsCtrl = FocusNode();
+  final productDescCtrl = FocusNode();
 
   @override
   Widget build(BuildContext context, ref) {
+    final addProductNotifier = ref.watch(addProductNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: AppColors.dark, //change your color here
+          color: AppColors.dark,
         ),
         leading: IconButton(
           onPressed: () {},
@@ -30,8 +52,8 @@ class AddProductView extends ConsumerWidget {
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
-          "Product Specifics",
-          style: const TextStyle(
+          'Add Product',
+          style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,
             fontWeight: FontWeight.w500,
@@ -42,97 +64,149 @@ class AddProductView extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 24,
+            // vertical: 16,
+            horizontal: 16,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DottedBorder(
-                borderType: BorderType.RRect,
-                radius: const Radius.circular(20),
-                dashPattern: [6, 3],
-                color: AppColors.grey6,
-                strokeWidth: 2,
-                child: SizedBox(
-                  height: 144,
-                  width: double.maxFinite,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.image,
-                        color: AppColors.grey5,
-                        size: 30,
-                      ),
-                      Text(
-                        "You can only add upto 4 pictures of the product",
-                        style: TextStyle(
-                          color: AppColors.grey4,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
+              Text(
+                'Product Pictures(${addProductNotifier.imageList.length > 4 ? 4 : addProductNotifier.imageList.length}/4)',
+                style: TextStyle(
+                  color: AppColors.getColorFromHex('3A4150'),
+                  fontSize: 12,
                 ),
               ),
+              const Spacing.tinyHeight(),
+              SelectProductImageContainer(
+                onDottedContainerTapped: () async {
+                  print('Pick file Clicked');
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles(
+                    type: FileType.image,
+                    withData: true,
+                    allowMultiple: true,
+                  );
+
+                  if (result != null) {
+                    addProductNotifier.setImages(images: result.files);
+                  } else {
+                    // User canceled the picker
+                  }
+                },
+              ),
               const Spacing.mediumHeight(),
-              const AppTextField(
+              AppTextField(
                 hasBorder: true,
                 title: 'Product Name',
                 hintText: 'Name of the product',
+                onChanged: addProductNotifier.onNameChanged,
               ),
               const Spacing.mediumHeight(),
-              const AppTextField(
-                hasBorder: true,
-                title: 'Price',
-                hintText: '# 0',
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: SpecialTextField(
+                      title: 'Price',
+                      tit: 'Min Price',
+                      sub: '# ',
+                      onChanged: addProductNotifier.onMinPriceChanged,
+                    ),
+                  ),
+                  Spacing.smallWidth(),
+                  Expanded(
+                    child: SpecialTextField(
+                      tit: 'Max Price',
+                      sub: '# ',
+                      onChanged: addProductNotifier.onMaxPriceChanged,
+                    ),
+                  ),
+                ],
               ),
               const Spacing.mediumHeight(),
-              const AppTextField(
-                hasBorder: true,
+              AppDropdownField(
                 title: 'Product Category',
                 hintText: 'Select Product Category',
+                items: ref
+                    .read(categoryNotifierProvider)
+                    .categories
+                    .map(
+                      (category) => DropdownMenuItem(
+                        child: Text(category.name),
+                        value: category.name,
+                      ),
+                    )
+                    .toList(),
+                onChanged: addProductNotifier.categories.isEmpty
+                    ? null
+                    : (newCategory) {
+                        // _subCatKey.currentState?.reset();
+                        addProductNotifier.onCategoryChanged(
+                            newCategory: newCategory.toString());
+                      },
               ),
-              const Spacing.mediumHeight(),
-              const AppTextField(
-                hasBorder: true,
-                title: 'Product Sub Category',
-                hintText: 'Select Product Sub Category',
-              ),
+              // const Spacing.mediumHeight(),
+              // AppDropdownField(
+              //   title: 'Product Sub-Category',
+              //   hintText: 'Select Product Sub-Category',
+              //   items: addProductNotifier.categories
+              //       .map(
+              //         (category) => DropdownMenuItem(
+              //           child: Text(category),
+              //           value: category,
+              //         ),
+              //       )
+              //       .toList(),
+              //   onChanged: addProductNotifier.categories.isEmpty
+              //       ? null
+              //       : (newCategory) {
+              //           // _subCatKey.currentState?.reset();
+              //           addProductNotifier.onCategoryChanged(
+              //               newCategory: newCategory.toString());
+              //         },
+              // ),
               const Spacing.mediumHeight(),
               AppTextField(
                 hasBorder: true,
                 title: 'Product Specifics',
                 hintText: 'Brand, Size, Color, Material,Mobile',
+                enabled: true,
+                focusNode: productSpecificsFN,
+                fillColor: AppColors.grey8,
+                onTap: () {
+                  productSpecificsFN.unfocus();
+                  ref
+                      .read(navigationServiceProvider)
+                      .navigateToNamed(Routes.addProductSpecifics);
+                },
                 suffixIcon: IconButton(
                   icon: const Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 14,
                   ),
-                  onPressed: () => ref
-                      .read(navigationServiceProvider)
-                      .navigateToNamed(Routes.addProductDesc),
+                  onPressed: () {},
                 ),
               ),
               const Spacing.mediumHeight(),
-              const AppTextField(
+              AppTextField(
                 hasBorder: true,
                 title: 'Product Description',
                 hintText: 'Describe your product',
-                maxLines: 6,
+                maxLines: 10,
+                onChanged: addProductNotifier.onDescChanged,
               ),
-              Spacing.height(40),
+              const Spacing.height(40),
               AppButton(
+                isLoading: addProductNotifier.state.isLoading,
                 text: 'Save Product',
                 fontSize: 16,
                 backgroundColor: AppColors.primaryColor,
-                // onPressed: () => ref
-                //     .read(navigationServiceProvider)
-                //     .navigateToNamed(Routes.homeView),
-                onPressed: () {},
+                onPressed: () {
+                  addProductNotifier.addProduct();
+                },
               ),
+              const Spacing.height(54),
             ],
           ),
         ),
