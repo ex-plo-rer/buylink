@@ -1,5 +1,5 @@
-class SplineDataModel {
-  SplineDataModel(
+class ChartDataModel {
+  ChartDataModel(
     this.day,
     this.value,
   );

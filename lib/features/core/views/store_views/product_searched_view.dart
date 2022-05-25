@@ -3,8 +3,10 @@ import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/features/core/notifiers/store_notifier/store_dashboard_notifier.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
 import 'package:buy_link/widgets/app_button.dart';
+import 'package:buy_link/widgets/app_dropdown_field.dart';
 import 'package:buy_link/widgets/app_progress_bar.dart';
 import 'package:buy_link/widgets/app_rating_bar.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
@@ -27,7 +29,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../../services/navigation_service.dart';
 import '../../../../widgets/favorite_container.dart';
+import '../../models/chart_data_model.dart';
 
 class ProductSearchedView extends ConsumerStatefulWidget {
   const ProductSearchedView({Key? key}) : super(key: key);
@@ -37,31 +41,21 @@ class ProductSearchedView extends ConsumerStatefulWidget {
 }
 
 class _ProductSearchedViewState extends ConsumerState {
-  List<_SplineAreaData>? chartData;
   String dropdownValue = 'This Week';
 
   @override
   void initState() {
-    chartData = <_SplineAreaData>[
-      _SplineAreaData('Sun', 10.53, 3.3),
-      _SplineAreaData('Mon', 9.5, 5.4),
-      _SplineAreaData('Tue', 10, 2.65),
-      _SplineAreaData('Wed', 9.4, 2.62),
-      _SplineAreaData('Thu', 5.8, 1.99),
-      _SplineAreaData('Fri', 4.9, 1.44),
-      _SplineAreaData('Sat', 4.5, 2),
-    ];
     super.initState();
   }
 
   @override
   void dispose() {
-    chartData!.clear();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final storeDashboardNotifier = ref.watch(storeDashboardNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -86,9 +80,9 @@ class _ProductSearchedViewState extends ConsumerState {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -104,13 +98,14 @@ class _ProductSearchedViewState extends ConsumerState {
                       alignment: Alignment.bottomCenter,
                       child: SizedBox(
                         height: 171,
+                        // width: MediaQuery.of(context).size.width - 40,
                         child: SfCartesianChart(
-                          // legend: Legend(isVisible: true, opacity: 0.7),
-                          // title: ChartTitle(text: ''),
                           plotAreaBorderWidth: 0,
                           primaryXAxis: CategoryAxis(
                               interval: 1,
-                              majorGridLines: const MajorGridLines(width: 0),
+                              majorGridLines: const MajorGridLines(
+                                width: 0,
+                              ),
                               edgeLabelPlacement: EdgeLabelPlacement.shift),
                           primaryYAxis: NumericAxis(
                             // labelFormat: '{value}%',
@@ -133,7 +128,7 @@ class _ProductSearchedViewState extends ConsumerState {
                         height: 28,
                         width: 28,
                         padding: 5,
-                        favIcon: const Icon(
+                        favIcon: Icon(
                           Icons.search_outlined,
                           size: 16,
                           color: AppColors.primaryColor,
@@ -141,16 +136,16 @@ class _ProductSearchedViewState extends ConsumerState {
                         containerColor: AppColors.shade1,
                       ),
                       title: const Text(
-                        'Product Searched',
-                        style: const TextStyle(
+                        'Store Visits',
+                        style: TextStyle(
                           color: AppColors.grey4,
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       subtitle: const Text(
-                        '9,500',
-                        style: const TextStyle(
+                        '2,500',
+                        style: TextStyle(
                           color: AppColors.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -342,35 +337,35 @@ class _ProductSearchedViewState extends ConsumerState {
     );
   }
 
-  List<ChartSeries<_SplineAreaData, String>> _getSplieAreaSeries() {
-    return <ChartSeries<_SplineAreaData, String>>[
-      SplineAreaSeries<_SplineAreaData, String>(
-        dataSource: chartData!,
+  List<ChartSeries<ChartDataModel, String>> _getSplieAreaSeries() {
+    return <ChartSeries<ChartDataModel, String>>[
+      SplineAreaSeries<ChartDataModel, String>(
+        dataSource: ref.read(storeDashboardNotifierProvider).searchedData,
         borderColor: AppColors.primaryColor,
-        color: const Color.fromRGBO(192, 108, 132, 0.6),
-        // borderWidth: 1,
+        color: const Color.fromRGBO(65, 103, 178, 0.69),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            const Color(0xff4167B2).withOpacity(0.9),
+            const Color(0xff4167B2).withOpacity(0.6),
+            AppColors.light.withOpacity(0.5),
+          ],
+        ),
+        borderWidth: 3,
         // splineType: SplineType.cardinal,
         // name: 'China',
-        xValueMapper: (_SplineAreaData sales, _) => sales.year,
-        yValueMapper: (_SplineAreaData sales, _) => sales.y2,
+        xValueMapper: (ChartDataModel data, _) => data.day,
+        yValueMapper: (ChartDataModel data, _) => data.value,
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          textStyle: TextStyle(
+            fontSize: 10,
+            color: Color(0xff4267B2),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       )
     ];
   }
-}
-
-/// Private class for storing the spline area chart datapoints.
-class _SplineAreaData {
-  _SplineAreaData(this.year, this.y1, this.y2);
-  final String year;
-  final double y1;
-  final double y2;
-}
-
-class ChartSampleData {
-  ChartSampleData({
-    required this.x,
-    required this.y,
-  });
-  final String x;
-  final double y;
 }

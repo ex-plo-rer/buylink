@@ -28,6 +28,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../widgets/favorite_container.dart';
+import '../../models/chart_data_model.dart';
+import '../../notifiers/store_notifier/store_dashboard_notifier.dart';
 
 class StoreVisitsView extends ConsumerStatefulWidget {
   const StoreVisitsView({Key? key}) : super(key: key);
@@ -37,26 +39,15 @@ class StoreVisitsView extends ConsumerStatefulWidget {
 }
 
 class _StoreVisitsViewState extends ConsumerState {
-  List<_SplineAreaData>? chartData;
   String dropdownValue = 'This Week';
 
   @override
   void initState() {
-    chartData = <_SplineAreaData>[
-      _SplineAreaData('Sun', 10.53, 3.3),
-      _SplineAreaData('Mon', 9.5, 5.4),
-      _SplineAreaData('Tue', 10, 2.65),
-      _SplineAreaData('Wed', 9.4, 2.62),
-      _SplineAreaData('Thu', 5.8, 1.99),
-      _SplineAreaData('Fri', 4.9, 1.44),
-      _SplineAreaData('Sat', 4.5, 2),
-    ];
     super.initState();
   }
 
   @override
   void dispose() {
-    chartData!.clear();
     super.dispose();
   }
 
@@ -94,7 +85,6 @@ class _StoreVisitsViewState extends ConsumerState {
             children: [
               Container(
                 height: 243,
-                // padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: AppColors.light,
@@ -105,6 +95,7 @@ class _StoreVisitsViewState extends ConsumerState {
                       alignment: Alignment.bottomCenter,
                       child: SizedBox(
                         height: 171,
+                        // width: MediaQuery.of(context).size.width - 40,
                         child: SfCartesianChart(
                           plotAreaBorderWidth: 0,
                           title: ChartTitle(text: ''),
@@ -112,12 +103,15 @@ class _StoreVisitsViewState extends ConsumerState {
                             majorGridLines: const MajorGridLines(width: 0),
                           ),
                           primaryYAxis: NumericAxis(
-                              axisLine: const AxisLine(width: 0),
-                              labelFormat: '{value}%',
-                              majorTickLines: const MajorTickLines(size: 0)),
+                            axisLine: const AxisLine(width: 0),
+                            majorTickLines: const MajorTickLines(size: 0),
+                          ),
                           series: _getDefaultColumnSeries(),
                           tooltipBehavior: TooltipBehavior(
-                              enable: true, header: '', canShowMarker: false),
+                            enable: true,
+                            header: '',
+                            canShowMarker: false,
+                          ),
                         ),
                       ),
                     ),
@@ -341,39 +335,30 @@ class _StoreVisitsViewState extends ConsumerState {
     );
   }
 
-  List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSeries() {
-    return <ColumnSeries<ChartSampleData, String>>[
-      ColumnSeries<ChartSampleData, String>(
-        dataSource: <ChartSampleData>[
-          ChartSampleData(x: 'Mon', y: 0.541),
-          ChartSampleData(x: 'Tues', y: 0.818),
-          ChartSampleData(x: 'Wed', y: 1.51),
-          ChartSampleData(x: 'Thur', y: 1.302),
-          ChartSampleData(x: 'Fri', y: 2.017),
-          ChartSampleData(x: 'Sat', y: 1.683),
-        ],
-        xValueMapper: (ChartSampleData sales, _) => sales.x as String,
-        yValueMapper: (ChartSampleData sales, _) => sales.y,
+  List<ColumnSeries<ChartDataModel, String>> _getDefaultColumnSeries() {
+    return <ColumnSeries<ChartDataModel, String>>[
+      ColumnSeries<ChartDataModel, String>(
+        dataSource: ref.read(storeDashboardNotifierProvider).visitsData,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            const Color(0xff4167B2).withOpacity(0.9),
+            const Color(0xff4167B2).withOpacity(0.6),
+            // AppColors.light.withOpacity(0.5),
+          ],
+        ),
+        xValueMapper: (ChartDataModel data, _) => data.day,
+        yValueMapper: (ChartDataModel data, _) => data.value,
         dataLabelSettings: const DataLabelSettings(
-            isVisible: true, textStyle: TextStyle(fontSize: 10)),
+          isVisible: true,
+          textStyle: TextStyle(
+            fontSize: 10,
+            color: Color(0xff4267B2),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       )
     ];
   }
-}
-
-/// Private class for storing the spline area chart datapoints.
-class _SplineAreaData {
-  _SplineAreaData(this.year, this.y1, this.y2);
-  final String year;
-  final double y1;
-  final double y2;
-}
-
-class ChartSampleData {
-  ChartSampleData({
-    required this.x,
-    required this.y,
-  });
-  final String x;
-  final double y;
 }

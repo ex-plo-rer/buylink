@@ -2,7 +2,7 @@ import 'package:buy_link/features/core/models/analytics_model.dart';
 import 'package:buy_link/features/core/models/category_model.dart';
 import 'package:buy_link/features/core/models/most_searched_model.dart';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
-import 'package:buy_link/features/core/models/spline_data_model.dart';
+import 'package:buy_link/features/core/models/chart_data_model.dart';
 import 'package:buy_link/features/core/models/store_quick_model.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/repositories/store_repository.dart';
@@ -32,11 +32,11 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
   AnalyticsModel? _searchAnalytics;
   AnalyticsModel? get searchAnalytics => _searchAnalytics;
 
-  List<SplineDataModel> _searchedData = [];
-  List<SplineDataModel> get searchedData => _searchedData;
+  List<ChartDataModel> _searchedData = [];
+  List<ChartDataModel> get searchedData => _searchedData;
 
-  List<SplineDataModel> _visitsData = [];
-  List<SplineDataModel> get visitsData => _visitsData;
+  List<ChartDataModel> _visitsData = [];
+  List<ChartDataModel> get visitsData => _visitsData;
 
   AnalyticsModel? _visitAnalytics;
   AnalyticsModel? get visitAnalytics => _visitAnalytics;
@@ -102,19 +102,19 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
         week: week,
       );
       _searchedData
-          .add(SplineDataModel('Sun', _searchAnalytics!.sunday.toDouble()));
+          .add(ChartDataModel('Sun', _searchAnalytics!.sunday.toDouble()));
       _searchedData
-          .add(SplineDataModel('Mon', _searchAnalytics!.monday.toDouble()));
+          .add(ChartDataModel('Mon', _searchAnalytics!.monday.toDouble()));
       _searchedData
-          .add(SplineDataModel('Tue', _searchAnalytics!.tuesday.toDouble()));
+          .add(ChartDataModel('Tue', _searchAnalytics!.tuesday.toDouble()));
       _searchedData
-          .add(SplineDataModel('Wed', _searchAnalytics!.wednesday.toDouble()));
+          .add(ChartDataModel('Wed', _searchAnalytics!.wednesday.toDouble()));
       _searchedData
-          .add(SplineDataModel('Thur', _searchAnalytics!.thursday.toDouble()));
+          .add(ChartDataModel('Thur', _searchAnalytics!.thursday.toDouble()));
       _searchedData
-          .add(SplineDataModel('Fri', _searchAnalytics!.friday.toDouble()));
+          .add(ChartDataModel('Fri', _searchAnalytics!.friday.toDouble()));
       _searchedData
-          .add(SplineDataModel('Sat', _searchAnalytics!.saturday.toDouble()));
+          .add(ChartDataModel('Sat', _searchAnalytics!.saturday.toDouble()));
 
       print('Searched data : $_searchedData');
       setState(state: ViewState.idle);
@@ -140,19 +140,19 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
       );
 
       _visitsData
-          .add(SplineDataModel('Sun', _visitAnalytics!.sunday.toDouble()));
+          .add(ChartDataModel('Sun', _visitAnalytics!.sunday.toDouble()));
       _visitsData
-          .add(SplineDataModel('Mon', _visitAnalytics!.monday.toDouble()));
+          .add(ChartDataModel('Mon', _visitAnalytics!.monday.toDouble()));
       _visitsData
-          .add(SplineDataModel('Tue', _visitAnalytics!.tuesday.toDouble()));
+          .add(ChartDataModel('Tue', _visitAnalytics!.tuesday.toDouble()));
       _visitsData
-          .add(SplineDataModel('Wed', _visitAnalytics!.wednesday.toDouble()));
+          .add(ChartDataModel('Wed', _visitAnalytics!.wednesday.toDouble()));
       _visitsData
-          .add(SplineDataModel('Thur', _visitAnalytics!.thursday.toDouble()));
+          .add(ChartDataModel('Thur', _visitAnalytics!.thursday.toDouble()));
       _visitsData
-          .add(SplineDataModel('Fri', _visitAnalytics!.friday.toDouble()));
+          .add(ChartDataModel('Fri', _visitAnalytics!.friday.toDouble()));
       _visitsData
-          .add(SplineDataModel('Sat', _visitAnalytics!.saturday.toDouble()));
+          .add(ChartDataModel('Sat', _visitAnalytics!.saturday.toDouble()));
 
       print('Visit data : $_visitsData');
 

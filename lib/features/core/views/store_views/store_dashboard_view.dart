@@ -4,7 +4,7 @@ import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/features/core/models/spline_data_model.dart';
+import 'package:buy_link/features/core/models/chart_data_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/views/add_product_view.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
@@ -199,454 +199,501 @@ class _StoreDashboardViewState extends ConsumerState {
                           ),
                         ),
                         const Spacing.smallHeight(),
-                        Container(
-                          height: 243,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.light,
-                          ),
-                          child: Stack(
-                            children: [
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: SizedBox(
-                                  height: 171,
-                                  // width: MediaQuery.of(context).size.width - 40,
-                                  child: ClipRect(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 20.0),
-                                      child: OverflowBox(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width,
-                                        child: SfCartesianChart(
-                                          // legend: Legend(isVisible: true, opacity: 0.7),
-                                          // title: ChartTitle(text: ''),
-                                          plotAreaBorderWidth: 0,
-                                          primaryXAxis: CategoryAxis(
-                                              interval: 1,
-                                              majorGridLines:
-                                                  const MajorGridLines(
-                                                width: 0,
+                        GestureDetector(
+                          onTap: () => ref
+                              .read(navigationServiceProvider)
+                              .navigateToNamed(Routes.productSearched),
+                          child: Container(
+                            height: 243,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.light,
+                            ),
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: SizedBox(
+                                    height: 171,
+                                    // width: MediaQuery.of(context).size.width - 40,
+                                    child: GestureDetector(
+                                      // onTap: () => print('Chart tapped'),
+                                      child: ClipRect(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 20.0),
+                                          child: OverflowBox(
+                                            maxWidth: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: SfCartesianChart(
+                                              // onLegendTapped: (_) =>
+                                              //     print('onLegendTapped tapped'),
+                                              // onAxisLabelTapped: (_) => print(
+                                              //     'onAxisLabelTapped tapped'),
+                                              // onDataLabelTapped: (_) => print(
+                                              //     'onDataLabelTapped tapped'),
+                                              // onLegendTapped: (_) => print('Chart tapped'),
+                                              // legend: Legend(isVisible: true, opacity: 0.7),
+                                              // title: ChartTitle(text: ''),
+                                              plotAreaBorderWidth: 0,
+                                              primaryXAxis: CategoryAxis(
+                                                  interval: 1,
+                                                  majorGridLines:
+                                                      const MajorGridLines(
+                                                    width: 0,
+                                                  ),
+                                                  edgeLabelPlacement:
+                                                      EdgeLabelPlacement.shift),
+                                              primaryYAxis: NumericAxis(
+                                                // labelFormat: '{value}%',
+                                                axisLine:
+                                                    const AxisLine(width: 0),
+                                                majorTickLines:
+                                                    const MajorTickLines(
+                                                        size: 0),
                                               ),
-                                              edgeLabelPlacement:
-                                                  EdgeLabelPlacement.shift),
-                                          primaryYAxis: NumericAxis(
-                                            // labelFormat: '{value}%',
-                                            axisLine: const AxisLine(width: 0),
-                                            majorTickLines:
-                                                const MajorTickLines(size: 0),
+                                              series: _getSplieAreaSeries(),
+                                              tooltipBehavior:
+                                                  TooltipBehavior(enable: true),
+                                            ),
                                           ),
-                                          series: _getSplieAreaSeries(),
-                                          tooltipBehavior:
-                                              TooltipBehavior(enable: true),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            ref
-                                                .read(navigationServiceProvider)
-                                                .navigateToNamed(
-                                                    Routes.productSearched);
-                                          },
-                                          child: const Text(
-                                            'Product Searched',
-                                            style: TextStyle(
-                                              color: AppColors.grey4,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
+                                Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                      Routes.productSearched);
+                                            },
+                                            child: const Text(
+                                              'Product Searched',
+                                              style: TextStyle(
+                                                color: AppColors.grey4,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              minimumSize: Size.zero,
+                                              padding: EdgeInsets.zero,
+                                              tapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
                                             ),
                                           ),
-                                          style: TextButton.styleFrom(
-                                            minimumSize: Size.zero,
-                                            padding: EdgeInsets.zero,
-                                            tapTargetSize: MaterialTapTargetSize
-                                                .shrinkWrap,
+                                          const Text(
+                                            'This Week',
+                                            style: TextStyle(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
-                                        ),
-                                        const Text(
-                                          'This Week',
-                                          style: TextStyle(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      storeDashboardNotifier
-                                              .searchAnalytics?.total
-                                              .toString() ??
-                                          '0',
-                                      style: const TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        storeDashboardNotifier
+                                                .searchAnalytics?.total
+                                                .toString() ??
+                                            '0',
+                                        style: const TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         const Spacing.height(20),
                         Row(
                           children: [
                             Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                height: 154,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: AppColors.light,
-                                ),
-                                child: Column(
-                                  //mainAxisAlignment: Main,
-                                  children: [
-                                    FavoriteContainer(
-                                      height: 28,
-                                      width: 28,
-                                      favIcon: SvgPicture.asset(AppSvgs.star),
-                                      containerColor: AppColors.shade1,
-                                      padding: 6,
-                                    ),
-                                    const Text(
-                                      'Reviews',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.grey4,
+                              child: GestureDetector(
+                                // todo: pass store id along with navigation
+                                onTap: () => ref
+                                    .read(navigationServiceProvider)
+                                    .navigateToNamed(Routes.storeReviews),
+                                child: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  height: 154,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: AppColors.light,
+                                  ),
+                                  child: Column(
+                                    //mainAxisAlignment: Main,
+                                    children: [
+                                      FavoriteContainer(
+                                        height: 28,
+                                        width: 28,
+                                        favIcon: SvgPicture.asset(AppSvgs.star),
+                                        containerColor: AppColors.shade1,
+                                        padding: 6,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      width: 132,
-                                      child: Divider(thickness: 2),
-                                    ),
-                                    // const Spacing.mediumHeight(),
-                                    Stack(
-                                      alignment: Alignment.bottomCenter,
-                                      children: [
-                                        Container(
-                                          height: 50,
-                                          width: 70,
-                                          // color: AppColors.dark,
-                                          child: ClipRect(
-                                            clipBehavior: Clip.hardEdge,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 20.0),
-                                              child: OverflowBox(
-                                                maxHeight: 100,
-                                                // maxWidth: 100,
-                                                child: Container(
-                                                  // margin: EdgeInsets.only(top: 20),
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.light,
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      width: 10,
-                                                      color: Colors.blue,
+                                      const Text(
+                                        'Reviews',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.grey4,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 132,
+                                        child: Divider(thickness: 2),
+                                      ),
+                                      // const Spacing.mediumHeight(),
+                                      Stack(
+                                        alignment: Alignment.bottomCenter,
+                                        children: [
+                                          SizedBox(
+                                            height: 50,
+                                            width: 70,
+                                            // color: AppColors.dark,
+                                            child: ClipRect(
+                                              clipBehavior: Clip.hardEdge,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20.0),
+                                                child: OverflowBox(
+                                                  maxHeight: 100,
+                                                  // maxWidth: 100,
+                                                  child: Container(
+                                                    // margin: EdgeInsets.only(top: 20),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.light,
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                        width: 10,
+                                                        color: Colors.blue,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        IconNTextContainer(
-                                          text: '3',
-                                          textColor: const Color(0xff5C6475),
-                                          fontSize: 16,
-                                          icon: SvgPicture.asset(
-                                            AppSvgs.starFilled,
-                                            width: 15,
-                                            height: 15,
+                                          IconNTextContainer(
+                                            text: '3',
+                                            textColor: const Color(0xff5C6475),
+                                            fontSize: 16,
+                                            icon: SvgPicture.asset(
+                                              AppSvgs.starFilled,
+                                              width: 15,
+                                              height: 15,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacing.tinyHeight(),
-                                    const Text(
-                                      'See all reviews',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.primaryColor,
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      const Spacing.tinyHeight(),
+                                      const Text(
+                                        'See all reviews',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                             const Spacing.smallWidth(),
                             Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                height: 154,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: AppColors.light,
-                                ),
-                                child: Column(
-                                  children: [
-                                    FavoriteContainer(
-                                      height: 28,
-                                      width: 28,
-                                      favIcon:
-                                          SvgPicture.asset(AppSvgs.favorite),
-                                      containerColor: AppColors.shade1,
-                                      padding: 6,
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        ref
-                                            .read(navigationServiceProvider)
-                                            .navigateToNamed(
-                                                Routes.savedProducts);
-                                      },
-                                      child: const Text(
-                                        'Saved Products',
+                              child: GestureDetector(
+                                onTap: () => ref
+                                    .read(navigationServiceProvider)
+                                    .navigateToNamed(Routes.savedProducts),
+                                child: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  height: 154,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: AppColors.light,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      FavoriteContainer(
+                                        height: 28,
+                                        width: 28,
+                                        favIcon:
+                                            SvgPicture.asset(AppSvgs.favorite),
+                                        containerColor: AppColors.shade1,
+                                        padding: 6,
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          ref
+                                              .read(navigationServiceProvider)
+                                              .navigateToNamed(
+                                                  Routes.savedProducts);
+                                        },
+                                        child: const Text(
+                                          'Saved Products',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.grey4,
+                                          ),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          minimumSize: Size.zero,
+                                          padding: EdgeInsets.zero,
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 132,
+                                        child: Divider(thickness: 2),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CustomisedText(
+                                            text: storeDashboardNotifier
+                                                .savedProductCount
+                                                .toString(),
+                                            height: 40,
+                                            verticalPadding: 7,
+                                          ),
+                                          // Spacing.tinyWidth(),
+                                          // CustomisedText(
+                                          //   text: '9',
+                                          //   height: 40,
+                                          //   verticalPadding: 7,
+                                          // ),
+                                          // Spacing.tinyWidth(),
+                                          // CustomisedText(
+                                          //   text: '0',
+                                          //   height: 40,
+                                          //   verticalPadding: 7,
+                                          // ),
+                                        ],
+                                      ),
+                                      const Spacing.smallHeight(),
+                                      const Text(
+                                        'See all saved products',
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 10,
                                           fontWeight: FontWeight.w600,
-                                          color: AppColors.grey4,
+                                          color: AppColors.primaryColor,
                                         ),
                                       ),
-                                      style: TextButton.styleFrom(
-                                        minimumSize: Size.zero,
-                                        padding: EdgeInsets.zero,
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 132,
-                                      child: Divider(thickness: 2),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        CustomisedText(
-                                          text: storeDashboardNotifier
-                                              .savedProductCount
-                                              .toString(),
-                                          height: 40,
-                                          verticalPadding: 7,
-                                        ),
-                                        // Spacing.tinyWidth(),
-                                        // CustomisedText(
-                                        //   text: '9',
-                                        //   height: 40,
-                                        //   verticalPadding: 7,
-                                        // ),
-                                        // Spacing.tinyWidth(),
-                                        // CustomisedText(
-                                        //   text: '0',
-                                        //   height: 40,
-                                        //   verticalPadding: 7,
-                                        // ),
-                                      ],
-                                    ),
-                                    const Spacing.smallHeight(),
-                                    const Text(
-                                      'See all saved products',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.primaryColor,
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
                         const Spacing.height(20),
-                        Container(
-                          height: 243,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.light,
-                          ),
-                          child: Stack(
-                            children: [
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: SizedBox(
-                                  height: 171,
-                                  // width: MediaQuery.of(context).size.width - 40,
-                                  child: ClipRect(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 20.0),
-                                      child: OverflowBox(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width,
-                                        child: SfCartesianChart(
-                                          plotAreaBorderWidth: 0,
-                                          title: ChartTitle(text: ''),
-                                          primaryXAxis: CategoryAxis(
-                                            majorGridLines:
-                                                const MajorGridLines(width: 0),
-                                          ),
-                                          primaryYAxis: NumericAxis(
-                                            axisLine: const AxisLine(width: 0),
-                                            majorTickLines:
-                                                const MajorTickLines(size: 0),
-                                          ),
-                                          series: _getDefaultColumnSeries(),
-                                          tooltipBehavior: TooltipBehavior(
-                                            enable: true,
-                                            header: '',
-                                            canShowMarker: false,
+                        GestureDetector(
+                          onTap: () => ref
+                              .read(navigationServiceProvider)
+                              .navigateToNamed(Routes.storeVisits),
+                          child: Container(
+                            height: 243,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.light,
+                            ),
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: SizedBox(
+                                    height: 171,
+                                    // width: MediaQuery.of(context).size.width - 40,
+                                    child: ClipRect(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 20.0),
+                                        child: OverflowBox(
+                                          maxWidth:
+                                              MediaQuery.of(context).size.width,
+                                          child: SfCartesianChart(
+                                            plotAreaBorderWidth: 0,
+                                            title: ChartTitle(text: ''),
+                                            primaryXAxis: CategoryAxis(
+                                              majorGridLines:
+                                                  const MajorGridLines(
+                                                      width: 0),
+                                            ),
+                                            primaryYAxis: NumericAxis(
+                                              axisLine:
+                                                  const AxisLine(width: 0),
+                                              majorTickLines:
+                                                  const MajorTickLines(size: 0),
+                                            ),
+                                            series: _getDefaultColumnSeries(),
+                                            tooltipBehavior: TooltipBehavior(
+                                              enable: true,
+                                              header: '',
+                                              canShowMarker: false,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            ref
-                                                .read(navigationServiceProvider)
-                                                .navigateToNamed(
-                                                    Routes.storeVisits);
-                                          },
-                                          child: const Text(
-                                            'Store Visits',
-                                            style: TextStyle(
-                                              color: AppColors.grey4,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          style: TextButton.styleFrom(
-                                            minimumSize: Size.zero,
-                                            padding: EdgeInsets.zero,
-                                            tapTargetSize: MaterialTapTargetSize
-                                                .shrinkWrap,
-                                          ),
-                                        ),
-                                        const Text(
-                                          'This Week',
-                                          style: TextStyle(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      storeDashboardNotifier
-                                              .visitAnalytics?.total
-                                              .toString() ??
-                                          '0',
-                                      style: const TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacing.height(20),
-                        Container(
-                          height: 120,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.light,
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Spacing.smallHeight(),
-                                      const Text(
-                                        'Products',
-                                        style: TextStyle(
-                                          color: AppColors.grey4,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const Spacing.height(8),
                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          CustomisedText(
-                                            text: storeDashboardNotifier
-                                                .allProductCount
-                                                .toString(),
-                                            fontSize: 32,
+                                          TextButton(
+                                            onPressed: () {
+                                              ref
+                                                  .read(
+                                                      navigationServiceProvider)
+                                                  .navigateToNamed(
+                                                      Routes.storeVisits);
+                                            },
+                                            child: const Text(
+                                              'Store Visits',
+                                              style: TextStyle(
+                                                color: AppColors.grey4,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              minimumSize: Size.zero,
+                                              padding: EdgeInsets.zero,
+                                              tapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                            ),
                                           ),
-                                          // Spacing.tinyWidth(),
-                                          // CustomisedText(
-                                          //   text: '9',
-                                          //   fontSize: 32,
-                                          // ),
-                                          // Spacing.tinyWidth(),
-                                          // CustomisedText(
-                                          //   text: '0',
-                                          //   fontSize: 32,
-                                          // ),
+                                          const Text(
+                                            'This Week',
+                                            style: TextStyle(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                      const Spacing.height(10),
-                                      const Text(
-                                        'See all products',
-                                        style: TextStyle(
+                                      Text(
+                                        storeDashboardNotifier
+                                                .visitAnalytics?.total
+                                                .toString() ??
+                                            '0',
+                                        style: const TextStyle(
                                           color: AppColors.primaryColor,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  Image.asset(
-                                    AppImages.bag,
-                                    height: 120,
-                                  ),
-                                ],
-                              ),
-                            ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Spacing.height(20),
+                        GestureDetector(
+                          onTap: () => ref
+                              .read(navigationServiceProvider)
+                              .navigateToNamed(Routes.savedProducts),
+                          child: Container(
+                            height: 120,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.light,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Spacing.smallHeight(),
+                                        const Text(
+                                          'Products',
+                                          style: TextStyle(
+                                            color: AppColors.grey4,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const Spacing.height(8),
+                                        Row(
+                                          children: [
+                                            CustomisedText(
+                                              text: storeDashboardNotifier
+                                                  .allProductCount
+                                                  .toString(),
+                                              fontSize: 32,
+                                            ),
+                                            // Spacing.tinyWidth(),
+                                            // CustomisedText(
+                                            //   text: '9',
+                                            //   fontSize: 32,
+                                            // ),
+                                            // Spacing.tinyWidth(),
+                                            // CustomisedText(
+                                            //   text: '0',
+                                            //   fontSize: 32,
+                                            // ),
+                                          ],
+                                        ),
+                                        const Spacing.height(10),
+                                        const Text(
+                                          'See all products',
+                                          style: TextStyle(
+                                            color: AppColors.primaryColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Image.asset(
+                                      AppImages.bag,
+                                      height: 120,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         const Spacing.height(50),
@@ -676,9 +723,9 @@ class _StoreDashboardViewState extends ConsumerState {
   }
 
   /// Get default column series
-  List<ColumnSeries<SplineDataModel, String>> _getDefaultColumnSeries() {
-    return <ColumnSeries<SplineDataModel, String>>[
-      ColumnSeries<SplineDataModel, String>(
+  List<ColumnSeries<ChartDataModel, String>> _getDefaultColumnSeries() {
+    return <ColumnSeries<ChartDataModel, String>>[
+      ColumnSeries<ChartDataModel, String>(
         dataSource: ref.read(storeDashboardNotifierProvider).visitsData,
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -689,8 +736,8 @@ class _StoreDashboardViewState extends ConsumerState {
             // AppColors.light.withOpacity(0.5),
           ],
         ),
-        xValueMapper: (SplineDataModel data, _) => data.day,
-        yValueMapper: (SplineDataModel data, _) => data.value,
+        xValueMapper: (ChartDataModel data, _) => data.day,
+        yValueMapper: (ChartDataModel data, _) => data.value,
         dataLabelSettings: const DataLabelSettings(
           isVisible: true,
           textStyle: TextStyle(
@@ -703,9 +750,9 @@ class _StoreDashboardViewState extends ConsumerState {
     ];
   }
 
-  List<ChartSeries<SplineDataModel, String>> _getSplieAreaSeries() {
-    return <ChartSeries<SplineDataModel, String>>[
-      SplineAreaSeries<SplineDataModel, String>(
+  List<ChartSeries<ChartDataModel, String>> _getSplieAreaSeries() {
+    return <ChartSeries<ChartDataModel, String>>[
+      SplineAreaSeries<ChartDataModel, String>(
         dataSource: ref.read(storeDashboardNotifierProvider).searchedData,
         borderColor: AppColors.primaryColor,
         color: const Color.fromRGBO(65, 103, 178, 0.69),
@@ -721,8 +768,8 @@ class _StoreDashboardViewState extends ConsumerState {
         borderWidth: 3,
         // splineType: SplineType.cardinal,
         // name: 'China',
-        xValueMapper: (SplineDataModel data, _) => data.day,
-        yValueMapper: (SplineDataModel data, _) => data.value,
+        xValueMapper: (ChartDataModel data, _) => data.day,
+        yValueMapper: (ChartDataModel data, _) => data.value,
         dataLabelSettings: const DataLabelSettings(
           isVisible: true,
           textStyle: TextStyle(
