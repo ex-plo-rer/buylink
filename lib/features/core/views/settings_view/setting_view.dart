@@ -376,9 +376,7 @@ class SettingView extends ConsumerWidget {
                           title: 'Are you sure you want to log out?',
                           text1: 'No',
                           text2: 'Yes',
-                          onText2Pressed: () => ref
-                              .read(navigationServiceProvider)
-                              .navigateToNamed(Routes.login),
+                          onText2Pressed: () => settingNotifier.logOut(),
                         );
                       },
                     );

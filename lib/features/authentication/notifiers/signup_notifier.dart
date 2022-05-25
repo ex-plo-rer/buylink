@@ -11,6 +11,7 @@ import '../../../services/base/network_exception.dart';
 import '../../../services/local_storage_service.dart';
 import '../../../services/navigation_service.dart';
 import '../../../services/snackbar_service.dart';
+import '../../core/notifiers/user_provider.dart';
 
 class SignupNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -82,6 +83,8 @@ class SignupNotifier extends BaseChangeNotifier {
       _reader(localStorageService).deleteSecureData(AppStrings.otpEmailKey);
       _reader(navigationServiceProvider)
           .navigateOffAllNamed(Routes.dashboard, (p0) => false);
+
+      await _reader(userProvider).setUser();
 
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
