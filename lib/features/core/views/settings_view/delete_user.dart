@@ -93,11 +93,22 @@ class DeleteUser extends ConsumerWidget {
                                                   color: AppColors.grey1,
                                                   fontWeight: FontWeight.w500
                                               ),),
-                                              AppCCheckBox(onChanged: (){}, checked: false, text: 'I’m getting too much notifications',),
-                                              AppCCheckBox(onChanged: (){}, checked: false, text: 'I opened another account',),
-                                              AppCCheckBox(onChanged: (){}, checked: false, text: 'The app is buggy',),
-                                              AppCCheckBox(onChanged: (){}, checked: false, text: 'I have a privacy concern',),
-                                              AppCCheckBox(onChanged: (){}, checked: false, text: 'Others',),
+                                              AppCCheckBox(onChanged: (){
+                                                deleteUserNotifier.onReasonClicked(deleteUserNotifier.reasons[0]);
+                                              },
+                                                checked: false, text: 'I’m getting too much notifications',),
+                                              AppCCheckBox(onChanged: (){
+                                                deleteUserNotifier.onReasonClicked(deleteUserNotifier.reasons[1]);
+                                              },
+                                                checked: false, text: 'I opened another account',),
+                                              AppCCheckBox(onChanged: (){
+                                                deleteUserNotifier.onReasonClicked(deleteUserNotifier.reasons[2]);
+                                              },
+                                                checked: false, text: 'The app is buggy',),
+                                              AppCCheckBox(onChanged: (){ deleteUserNotifier.onReasonClicked(deleteUserNotifier.reasons[3]);},
+                                                checked: false, text: 'I have a privacy concern',),
+                                              AppCCheckBox(onChanged: (){ deleteUserNotifier.onReasonClicked(deleteUserNotifier.reasons[4]);},
+                                                checked: false, text: 'Others',),
 
                                               Container(
                                                   height: 200,
@@ -222,8 +233,8 @@ class DeleteUser extends ConsumerWidget {
                                           _detailController.text.isNotEmpty
                                       ){
                                         deleteUserNotifier.deleteAccount(
-                                          detail: _detailController.text,
-                                          reason: 'Others',);
+                                          details: _detailController.text,
+                                          );
 
                                         //: deleteUserNotifier.currentPage == 2 ?
                                         deleteUserNotifier.moveForward();
@@ -260,6 +271,9 @@ class DeleteUser extends ConsumerWidget {
                                                   text1: 'No',
                                                   text2: 'Yes',
                                                   onText2Pressed: () =>
+
+
+
                                                       ref
                                                           .read(
                                                           navigationServiceProvider)

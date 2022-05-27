@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/views/add_product_specifics_view.dart';
 import 'package:buy_link/features/core/views/add_product_view.dart';
 import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/categories_view.dart';
@@ -69,6 +70,7 @@ class Routes {
   static const settingNotification = '/setting-notification';
   static const privacyPolicy = '/privacy-policy';
   static const about = '/about';
+  static const addProductSpecifics = '/add-product-spec';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -163,6 +165,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => PrivacyPolicy());
       case about:
         return MaterialPageRoute(builder: (_) => About());
+      case addProductSpecifics:
+        return MaterialPageRoute(builder: (_) => AddProductSpecificsView());
+
 
 
 

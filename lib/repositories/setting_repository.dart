@@ -202,7 +202,7 @@ class SettingRepository {
   Future<String?> deleteAccount({
     // required int id,
     required String reason,
-    required String detail,
+    required String details,
 
   }) async {
 
@@ -210,9 +210,7 @@ class SettingRepository {
     final body = {
       'id' : id,
       'reason': reason,
-      'detail' : detail,
-
-    };
+      'details' : details,};
     print('delete account $body');
 
     var response = await networkService.post(

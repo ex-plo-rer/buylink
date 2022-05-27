@@ -10,6 +10,12 @@ class DeleteUserNotifier extends BaseChangeNotifier {
   final Reader _reader;
   DeleteUserNotifier(this._reader);
 
+  final List<String> reasons = ["I’m getting too much notifications",
+    "I opened another account", "The app is buggy", "I have a privacy concern", "Others"];
+
+  String _reason = '';
+  String get reason => _reason;
+
   bool _passwordVisible = false;
   bool get passwordVisible => _passwordVisible;
 
@@ -37,6 +43,12 @@ class DeleteUserNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
+  void onReasonClicked (String text){
+    _reason = text;
+    print (_reason);
+    notifyListeners();
+  }
+
   void moveBackward() {
     if (_currentPage > 1) {
       _currentPage -= 1;
@@ -58,19 +70,15 @@ class DeleteUserNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-
   Future<void> deleteAccount({
-    //required int id,
-    required String reason,
-    required String detail,
-
+    required String details,
   }) async {
     try {
       setState(state: ViewState.loading);
       await _reader(settingRepository).deleteAccount(
         // id : id,
-        reason : reason,
-        detail : detail
+        reason : _reason,
+        details : details
       );
 
     } on NetworkException catch (e) {

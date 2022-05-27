@@ -77,27 +77,31 @@ class _NotificationState extends ConsumerState<NotificationView>
   }
 }
 
-class ProductAlertScreen extends StatelessWidget {
+class ProductAlertScreen extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            body: ListView(
+            body: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
+             // itemCount: data.length,
+    itemBuilder: (BuildContext context, int index) {
+              return Column (
               children: <Widget>[
                 ListTile(
                     title: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                             style: TextStyle(
                               fontSize: 12.0,
                               color: Colors.black,),
                             children: <TextSpan>[
                               TextSpan ( text:
-                              "A ",),
+                              "A",),
                               TextSpan ( text:
-                              "Levi Jeans" ,
+                             "",
                                   style: TextStyle( fontWeight: FontWeight.bold)),
                               TextSpan ( text:
                               " store is around your present location",
@@ -111,6 +115,7 @@ class ProductAlertScreen extends StatelessWidget {
                     ),
                     trailing: Text("2hrs ago", style: TextStyle(fontSize: 12))),
               ],
+            );}
             )));
   }
 }

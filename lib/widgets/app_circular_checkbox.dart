@@ -12,13 +12,13 @@ class AppCCheckBox extends StatelessWidget {
   final Color checkColor;
 
 
-  const AppCCheckBox({
+   AppCCheckBox({
     Key? key,
     required this.text,
-    required this.checked,
+      this.checked  =false ,
     required this.onChanged,
     this.activeColor = AppColors.grey,
-    this.checkColor = AppColors.grey6,
+    this.checkColor = AppColors.primaryColor,
   }) : super(key: key);
 
   @override
@@ -29,7 +29,9 @@ class AppCCheckBox extends StatelessWidget {
         Checkbox(
           shape: CircleBorder(),
           value: checked,
-          onChanged: (v) => onChanged(),
+          onChanged: (v) {
+
+            onChanged();},
           activeColor: activeColor,
           checkColor: checkColor,
 
