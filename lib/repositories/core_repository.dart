@@ -9,6 +9,7 @@ import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants/strings.dart';
+import '../features/core/models/most_searched_count_model.dart';
 import '../features/core/models/most_searched_model.dart';
 import '../features/core/models/user_model.dart';
 import '../services/local_storage_service.dart';
@@ -291,7 +292,10 @@ class CoreRepository {
     required int storeId,
     required String name,
     // required List<String?> images,
-    required String? images,
+    required String? image1,
+    required String? image2,
+    required String? image3,
+    required String? image4,
     required String price,
     required String oldPrice,
     required String category,
@@ -328,7 +332,10 @@ class CoreRepository {
       'care': care,
     };
     final files = {
-      'images': images,
+      'image1': image1,
+      'image2': image2,
+      'image3': image3,
+      'image4': image4,
     };
     print('Add product params sent to server $body. Files: $files');
 
@@ -344,7 +351,7 @@ class CoreRepository {
     return '';
   }
 
-  Future<List<MostSearchedProductModel>> getMostSearched({
+  Future<MostSearchedModel> getMostSearchedNCount({
     required int storeId,
   }) async {
     var id = _reader(userProvider).currentUser?.id ?? 0;
@@ -361,13 +368,14 @@ class CoreRepository {
 
     print('Get most searched response $response');
 
-    List<MostSearchedProductModel> _products = [];
-    for (var review in response) {
-      _products.add(MostSearchedProductModel.fromJson(review));
-    }
-
-    print('Get most searched response $response');
-    return _products;
+    // List<MostSearchedModel> _products = [];
+    // for (var review in response) {
+    //   _products.add(MostSearchedModel.fromJson(review));
+    // }
+    //
+    // print('Get most searched response $response');
+    // return _products;
+    return MostSearchedModel.fromJson(response);
   }
 
   Future<AnalyticsModel> getAnalytics({
@@ -393,33 +401,33 @@ class CoreRepository {
     return AnalyticsModel.fromJson(response);
   }
 
-  Future<int> getProductCount({
-    required String type,
-    required int storeId,
-  }) async {
-    var id = _reader(userProvider).currentUser?.id ?? 0;
-    final body = {
-      'id': id,
-      'store_id': storeId,
-    };
-    print('Get product count body sent to server $body');
-    var response = await networkService.post(
-      'users/${type.toLowerCase() == 'saved' ? 'get-saved' : 'get-count'}',
-      body: body,
-      headers: headers,
-    );
-
-    print('Get product count response $response');
-
-    return response['no'];
-  }
+  // Future<int> getProductCount({
+  //   required String type,
+  //   required int storeId,
+  // }) async {
+  //   var id = _reader(userProvider).currentUser?.id ?? 0;
+  //   final body = {
+  //     'id': id,
+  //     'store_id': storeId,
+  //   };
+  //   print('Get product count body sent to server $body');
+  //   var response = await networkService.post(
+  //     'users/${type.toLowerCase() == 'saved' ? 'get-saved' : 'get-count'}',
+  //     body: body,
+  //     headers: headers,
+  //   );
+  //
+  //   print('Get product count response $response');
+  //
+  //   return response['no'];
+  // }
 
   Future<void> initDash({required int storeId}) async {
-    await getMostSearched(storeId: storeId);
+    await getMostSearchedNCount(storeId: storeId);
     await getAnalytics(type: 'search', storeId: storeId, week: 'current');
     await getAnalytics(type: 'visit', storeId: storeId, week: 'current');
-    await getProductCount(type: 'all', storeId: storeId);
-    await getProductCount(type: 'saved', storeId: storeId);
+    // await getProductCount(type: 'all', storeId: storeId);
+    // await getProductCount(type: 'saved', storeId: storeId);
   }
 
   Future<List<String>> autoComplete({

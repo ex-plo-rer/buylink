@@ -28,7 +28,7 @@ class StoreQuickModel {
   String name;
   String background;
   String logo;
-  int star;
+  num star;
   String about;
   String address;
   String telephone;

@@ -18,6 +18,7 @@ import '../features/core/models/compare_arg_model.dart';
 import '../features/core/models/product_model.dart';
 import '../features/core/views/add_product_desc.dart';
 import '../features/core/views/add_product_specifics_view.dart';
+import '../features/core/views/product_list_view.dart';
 import '../features/core/views/store_views/product_saved_view.dart';
 import '../features/core/views/store_views/store_messages.dart';
 import '../features/startup/views/onboarding_view.dart';
@@ -38,6 +39,7 @@ class Routes {
   static const dashboard = '/dashboard';
   static const forgotPassword = '/forgot-password';
   static const wishlist = '/wishlist';
+  static const productList = '/product-list';
   static const categories = '/categories';
   static const compare = '/compare';
   static const productDetails = '/product-details';
@@ -79,6 +81,13 @@ class Routes {
         return MaterialPageRoute(builder: (_) => DashboardView());
       case wishlist:
         return MaterialPageRoute(builder: (_) => const WishlistView());
+      case productList:
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+          builder: (_) => ProductListView(
+            store: store,
+          ),
+        );
       case categories:
         return MaterialPageRoute(builder: (_) => const CategoriesView());
       case compare:
@@ -123,7 +132,12 @@ class Routes {
       case productSearched:
         return MaterialPageRoute(builder: (_) => const ProductSearchedView());
       case storeDashboard:
-        return MaterialPageRoute(builder: (_) => const StoreDashboardView());
+        // Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+          builder: (_) => StoreDashboardView(
+              // store: store,
+              ),
+        );
       case storeMessages:
         return MaterialPageRoute(builder: (_) => const StoreMessagesView());
       case storeSettings:
@@ -138,8 +152,6 @@ class Routes {
         return MaterialPageRoute(builder: (_) => NoProductView());
       case addstoreView:
         return MaterialPageRoute(builder: (_) => AddStoreView());
-      case storesettingView:
-        return MaterialPageRoute(builder: (_) => StoreSetting());
       case messageView:
         return MaterialPageRoute(builder: (_) => MessageView());
 

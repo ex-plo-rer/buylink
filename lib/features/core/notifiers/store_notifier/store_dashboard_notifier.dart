@@ -12,6 +12,7 @@ import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../services/base/network_exception.dart';
+import '../../models/most_searched_count_model.dart';
 import '../../models/product_model.dart';
 
 class StoreDashboardNotifier extends BaseChangeNotifier {
@@ -19,9 +20,8 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
 
   StoreDashboardNotifier(this._reader);
 
-  List<MostSearchedProductModel> _mostSearchedProducts = [];
-  List<MostSearchedProductModel> get mostSearchedProducts =>
-      _mostSearchedProducts;
+  MostSearchedModel? _mostSearchedNCount;
+  MostSearchedModel? get mostSearchedNCount => _mostSearchedNCount;
 
   // List<ProductModel> _products = [];
   // List<ProductModel> get products => _products;
@@ -54,8 +54,8 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
       await fetchMostSearchedProducts(storeId: storeId, category: 'all');
       await fetchSearchAnalytics(storeId: storeId, week: 'current');
       await fetchVisitAnalytics(storeId: storeId, week: 'current');
-      await fetchAllProductCount(storeId: storeId, week: 'current');
-      await fetchSavedProductCount(storeId: storeId, week: 'current');
+      // await fetchAllProductCount(storeId: storeId, week: 'current');
+      // await fetchSavedProductCount(storeId: storeId, week: 'current');
       // await _reader(coreRepository).initDash(
       //   storeId: storeId,
       // );
@@ -77,7 +77,7 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
   }) async {
     try {
       setState(state: ViewState.loading);
-      _mostSearchedProducts = await _reader(coreRepository).getMostSearched(
+      _mostSearchedNCount = await _reader(coreRepository).getMostSearchedNCount(
         storeId: storeId,
       );
       setState(state: ViewState.idle);
@@ -156,44 +156,6 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
 
       print('Visit data : $_visitsData');
 
-      setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      setState(state: ViewState.error);
-      Alertify(title: e.error).error();
-    } finally {
-      // setState(state: ViewState.idle);
-    }
-  }
-
-  Future<void> fetchAllProductCount({
-    required int storeId,
-    required String week,
-  }) async {
-    try {
-      setState(state: ViewState.loading);
-      _allProductCount = await _reader(coreRepository).getProductCount(
-        type: 'all',
-        storeId: storeId,
-      );
-      setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      setState(state: ViewState.error);
-      Alertify(title: e.error).error();
-    } finally {
-      // setState(state: ViewState.idle);
-    }
-  }
-
-  Future<void> fetchSavedProductCount({
-    required int storeId,
-    required String week,
-  }) async {
-    try {
-      setState(state: ViewState.loading);
-      _savedProductCount = await _reader(coreRepository).getProductCount(
-        type: 'saved',
-        storeId: storeId,
-      );
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);

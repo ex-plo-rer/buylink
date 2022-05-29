@@ -39,17 +39,22 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../widgets/favorite_container.dart';
+import '../../models/product_model.dart';
 import '../../notifiers/store_notifier/store_dashboard_notifier.dart';
 
 // TODO: Make the product image scrollable and work on the see all reviews widget and also the app bar actions.
 class StoreDashboardView extends ConsumerStatefulWidget {
-  const StoreDashboardView({Key? key}) : super(key: key);
+  // final Store store;
+  const StoreDashboardView({
+    Key? key,
+    // required this.store,
+  }) : super(key: key);
 
   @override
-  _StoreDashboardViewState createState() => _StoreDashboardViewState();
+  ConsumerState<StoreDashboardView> createState() => _StoreDashboardViewState();
 }
 
-class _StoreDashboardViewState extends ConsumerState {
+class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
   @override
   void initState() {
     super.initState();
@@ -90,49 +95,51 @@ class _StoreDashboardViewState extends ConsumerState {
           ),
           centerTitle: true,
           actions: [
-            Row(children: <Widget>[
-              FavoriteContainer(
-                height: 32,
-                width: 32,
-                favIcon: IconButton(
-                  icon: const Icon(
-                    Icons.mail_outline_outlined,
-                    size: 14,
+            Row(
+              children: <Widget>[
+                FavoriteContainer(
+                  height: 32,
+                  width: 32,
+                  favIcon: IconButton(
+                    icon: const Icon(
+                      Icons.mail_outline_outlined,
+                      size: 14,
+                    ),
+                    onPressed: () {
+                      ref
+                          .read(navigationServiceProvider)
+                          .navigateToNamed(Routes.storeMessages);
+                    },
                   ),
-                  onPressed: () {
-                    ref
-                        .read(navigationServiceProvider)
-                        .navigateToNamed(Routes.storeMessages);
-                  },
+                  containerColor: AppColors.grey10,
+                  radius: 50,
+                  padding: 1,
+                  hasBorder: true,
                 ),
-                containerColor: AppColors.grey10,
-                radius: 50,
-                padding: 1,
-                hasBorder: true,
-              ),
-              const Spacing.smallWidth(),
-              FavoriteContainer(
-                height: 32,
-                width: 32,
-                favIcon: IconButton(
-                  icon: const Icon(
-                    Icons.settings,
-                    size: 14,
+                const Spacing.smallWidth(),
+                FavoriteContainer(
+                  height: 32,
+                  width: 32,
+                  favIcon: IconButton(
+                    icon: const Icon(
+                      Icons.settings,
+                      size: 14,
+                    ),
+                    onPressed: () {
+                      ref
+                          .read(navigationServiceProvider)
+                          .navigateToNamed(Routes.storeSettings);
+                    },
                   ),
-                  onPressed: () {
-                    ref
-                        .read(navigationServiceProvider)
-                        .navigateToNamed(Routes.storeSettings);
-                  },
+                  containerColor: AppColors.grey10,
+                  radius: 50,
+                  padding: 1,
+                  hasBorder: true,
                 ),
-                containerColor: AppColors.grey10,
-                radius: 50,
-                padding: 1,
-                hasBorder: true,
-              ),
-              const Spacing.smallWidth(),
-              const Spacing.mediumWidth(),
-            ])
+                const Spacing.smallWidth(),
+                const Spacing.mediumWidth(),
+              ],
+            )
           ]
           // actions: [
           //   FavoriteContainer(
@@ -165,22 +172,30 @@ class _StoreDashboardViewState extends ConsumerState {
                         SizedBox(
                           height: 164,
                           child: storeDashboardNotifier
-                                  .mostSearchedProducts.isEmpty
+                                  .mostSearchedNCount!.products.isEmpty
                               ? const Center(child: Text('No Product yet'))
                               : ListView.separated(
                                   itemCount: storeDashboardNotifier
-                                      .mostSearchedProducts.length,
+                                      .mostSearchedNCount!.products.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) =>
                                       MostSearchedProductContainer(
                                     productName: storeDashboardNotifier
-                                        .mostSearchedProducts[index].name,
+                                        .mostSearchedNCount!
+                                        .products[index]
+                                        .name,
                                     productImage: storeDashboardNotifier
-                                        .mostSearchedProducts[index].image,
+                                        .mostSearchedNCount!
+                                        .products[index]
+                                        .image,
                                     rating: storeDashboardNotifier
-                                        .mostSearchedProducts[index].star,
+                                        .mostSearchedNCount!
+                                        .products[index]
+                                        .star,
                                     noOfSearches: storeDashboardNotifier
-                                        .mostSearchedProducts[index].searches,
+                                        .mostSearchedNCount!
+                                        .products[index]
+                                        .searches,
                                   ),
                                   separatorBuilder: (context, index) =>
                                       const Spacing.smallWidth(),
@@ -330,10 +345,12 @@ class _StoreDashboardViewState extends ConsumerState {
                           children: [
                             Expanded(
                               child: GestureDetector(
-                                // todo: pass store id along with navigation
                                 onTap: () => ref
                                     .read(navigationServiceProvider)
-                                    .navigateToNamed(Routes.storeReviews),
+                                    .navigateToNamed(
+                                      Routes.storeReviews,
+                                      // arguments: widget.store,
+                                    ),
                                 child: Container(
                                   padding: const EdgeInsets.all(12),
                                   height: 154,
@@ -395,7 +412,9 @@ class _StoreDashboardViewState extends ConsumerState {
                                             ),
                                           ),
                                           IconNTextContainer(
-                                            text: '3',
+                                            text: storeDashboardNotifier
+                                                .mostSearchedNCount!.storeGrade
+                                                .toString(),
                                             textColor: const Color(0xff5C6475),
                                             fontSize: 16,
                                             icon: SvgPicture.asset(
@@ -475,7 +494,8 @@ class _StoreDashboardViewState extends ConsumerState {
                                         children: [
                                           CustomisedText(
                                             text: storeDashboardNotifier
-                                                .savedProductCount
+                                                .mostSearchedNCount!
+                                                .storeProductsSaved
                                                 .toString(),
                                             height: 40,
                                             verticalPadding: 7,
@@ -627,7 +647,10 @@ class _StoreDashboardViewState extends ConsumerState {
                         GestureDetector(
                           onTap: () => ref
                               .read(navigationServiceProvider)
-                              .navigateToNamed(Routes.savedProducts),
+                              .navigateToNamed(
+                                Routes.productList,
+                                // arguments: widget.store,
+                              ),
                           child: Container(
                             height: 120,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -659,7 +682,8 @@ class _StoreDashboardViewState extends ConsumerState {
                                           children: [
                                             CustomisedText(
                                               text: storeDashboardNotifier
-                                                  .allProductCount
+                                                  .mostSearchedNCount!
+                                                  .storeProductCount
                                                   .toString(),
                                               fontSize: 32,
                                             ),
