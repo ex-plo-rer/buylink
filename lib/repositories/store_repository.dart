@@ -80,7 +80,7 @@ class StoreRepository {
     return _products;
   }
 
-  Future<List<MyStoreModel>> fetchMyStores() async {
+  Future<List<Store>> fetchMyStores() async {
     print(
         '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
     var id = _reader(userProvider).currentUser?.id ?? 0;
@@ -96,9 +96,9 @@ class StoreRepository {
     );
 
     print('Fetch my stores response ${response}');
-    List<MyStoreModel> _myStores = [];
+    List<Store> _myStores = [];
     for (var product in response) {
-      _myStores.add(MyStoreModel.fromJson(product));
+      _myStores.add(Store.fromJson(product));
     }
 
     print('Fetch my stores response $response');
@@ -139,6 +139,55 @@ class StoreRepository {
 
     print('Create store response $response');
     // return _myStores;
+  }
+
+  Future<void> editStore({
+    required int storeId,
+    required String attribute,
+    required String newValue,
+  }) async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+      'attr': attribute,
+      'new': newValue,
+    };
+    print('Edit store params sent to server $body');
+
+    var response = await networkService.post(
+      'users/edit-store',
+      body: body,
+      headers: headers,
+    );
+
+    print('Edit store response $response');
+  }
+
+  Future<bool> deleteStore({
+    required int storeId,
+    required String password,
+  }) async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+      'password': password,
+    };
+    print('Delete store params sent to server $body');
+
+    var response = await networkService.post(
+      'users/del-store',
+      body: body,
+      headers: headers,
+    );
+
+    print('Delete store response $response');
+    return response['success'];
   }
 }
 

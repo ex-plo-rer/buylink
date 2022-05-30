@@ -12,7 +12,7 @@ import '../core/routes.dart';
 class StoreContainer extends ConsumerWidget {
   final String storeImage;
   final String storeName;
-  final int starRate;
+  final num starRate;
   final void Function()? onTap;
 
   const StoreContainer({
@@ -26,9 +26,7 @@ class StoreContainer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     return GestureDetector(
-      onTap: () => ref
-          .read(navigationServiceProvider)
-          .navigateToNamed(Routes.storeDashboard),
+      onTap: onTap,
       child: Container(
         //margin: EdgeInsets.all(10),
         height: 160,

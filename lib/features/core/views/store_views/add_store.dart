@@ -139,8 +139,6 @@ class AddStoreView extends ConsumerWidget {
                           AppTextField(
                             hintText: 'Tell us about your store',
                             maxLines: 5,
-                            hasPrefixIcon: false,
-                            hasSuffixIcon: false,
                             focusNode: _storeDescriptionFN,
                             controller: _storeDescriptionController,
                             onChanged: addStoreNotifier.onDescriptionChanged,

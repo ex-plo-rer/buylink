@@ -5,6 +5,7 @@ import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
+import 'package:buy_link/features/core/views/store_views/delete_store_validation.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
@@ -19,6 +20,7 @@ import '../features/core/models/product_model.dart';
 import '../features/core/views/add_product_desc.dart';
 import '../features/core/views/add_product_specifics_view.dart';
 import '../features/core/views/product_list_view.dart';
+import '../features/core/views/store_views/delete_store_view.dart';
 import '../features/core/views/store_views/product_saved_view.dart';
 import '../features/core/views/store_views/store_messages.dart';
 import '../features/startup/views/onboarding_view.dart';
@@ -59,6 +61,8 @@ class Routes {
   static const storesettingView = '/storesetting';
   static const messageView = '/message';
   static const addProduct = '/addproduct';
+  static const deleteStore = '/delete-store';
+  static const deleteStoreVal = '/delete-store-val';
   static const addProductSpecifics = '/add-product-specifics';
   static const addProductDesc = '/add-product-desc';
   static const storeMessages = '/store-messages';
@@ -127,21 +131,34 @@ class Routes {
             storeId: storeId,
           ),
         );
+      case deleteStore:
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+          builder: (_) => DeleteStore(
+            store: store,
+          ),
+        );
+      case deleteStoreVal:
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+          builder: (_) => DeleteStoreVal(
+            store: store,
+          ),
+        );
       case storeView:
         return MaterialPageRoute(builder: (_) => const StoreView());
       case productSearched:
         return MaterialPageRoute(builder: (_) => const ProductSearchedView());
       case storeDashboard:
-        // Store store = settings.arguments as Store;
+        Store store = settings.arguments as Store;
         return MaterialPageRoute(
-          builder: (_) => StoreDashboardView(
-              // store: store,
-              ),
+          builder: (_) => StoreDashboardView(store: store),
         );
       case storeMessages:
         return MaterialPageRoute(builder: (_) => const StoreMessagesView());
       case storeSettings:
-        return MaterialPageRoute(builder: (_) => StoreSetting());
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(builder: (_) => StoreSetting(store: store));
       case storeVisits:
         return MaterialPageRoute(builder: (_) => const StoreVisitsView());
       case savedProducts:
@@ -156,7 +173,11 @@ class Routes {
         return MaterialPageRoute(builder: (_) => MessageView());
 
       case addProduct:
-        return MaterialPageRoute(builder: (_) => AddProductView());
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+            builder: (_) => AddProductView(
+                  store: store,
+                ));
       case addProductSpecifics:
         return MaterialPageRoute(builder: (_) => AddProductSpecificsView());
       case addProductDesc:

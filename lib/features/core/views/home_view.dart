@@ -65,7 +65,6 @@ class HomeView extends ConsumerWidget {
                 hasBorder: false,
                 isSearch: true,
                 fillColor: AppColors.grey8,
-                hasPrefixIcon: true,
                 focusNode: searchFN,
               ),
               //   ),

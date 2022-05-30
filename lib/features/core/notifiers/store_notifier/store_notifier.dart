@@ -6,6 +6,7 @@ import 'package:buy_link/services/base/network_exception.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/utilities/base_change_notifier.dart';
+import '../../models/product_model.dart';
 
 class StoreNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -14,8 +15,8 @@ class StoreNotifier extends BaseChangeNotifier {
     fetchMyStores();
   }
 
-  List<MyStoreModel> _myStores = [];
-  List<MyStoreModel> get myStores => _myStores;
+  List<Store> _myStores = [];
+  List<Store> get myStores => _myStores;
 
   Future<void> fetchMyStores() async {
     try {

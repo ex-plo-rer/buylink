@@ -18,9 +18,14 @@ import '../../../core/constants/colors.dart';
 import '../../../core/routes.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
+import '../models/product_model.dart';
 
 class AddProductView extends ConsumerWidget {
-  AddProductView({Key? key}) : super(key: key);
+  final Store store;
+  AddProductView({
+    Key? key,
+    required this.store,
+  }) : super(key: key);
 
   final productNameFN = FocusNode();
   final minPriceFN = FocusNode();

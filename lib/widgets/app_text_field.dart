@@ -18,8 +18,6 @@ class AppTextField extends StatelessWidget {
   final bool hasBorder;
   final bool isSearch;
   final Color? fillColor;
-  final bool hasPrefixIcon;
-  final bool hasSuffixIcon;
   final int? maxLines;
   final bool? enabled;
   final void Function()? onTap;
@@ -41,8 +39,6 @@ class AppTextField extends StatelessWidget {
     this.hasBorder = true,
     this.isSearch = false,
     this.fillColor = AppColors.transparent,
-    this.hasPrefixIcon = false,
-    this.hasSuffixIcon = true,
     this.maxLines = 1,
     this.enabled,
     this.onTap,
@@ -89,14 +85,14 @@ class AppTextField extends StatelessWidget {
               ),
               hintText: hintText,
               hintStyle: const TextStyle(fontSize: 14),
-              suffixIcon: hasSuffixIcon
+              suffixIcon: suffixIcon != null
                   ? UnconstrainedBox(
                       child: suffixIcon,
                       alignment:
                           hasBorder ? Alignment.center : Alignment.topRight,
                     )
                   : null,
-              prefixIcon: hasPrefixIcon
+              prefixIcon: prefixIcon != null
                   ? UnconstrainedBox(
                       child: prefixIcon,
                       alignment: hasBorder

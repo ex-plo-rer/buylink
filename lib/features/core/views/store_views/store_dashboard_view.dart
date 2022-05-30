@@ -44,10 +44,10 @@ import '../../notifiers/store_notifier/store_dashboard_notifier.dart';
 
 // TODO: Make the product image scrollable and work on the see all reviews widget and also the app bar actions.
 class StoreDashboardView extends ConsumerStatefulWidget {
-  // final Store store;
+  final Store store;
   const StoreDashboardView({
     Key? key,
-    // required this.store,
+    required this.store,
   }) : super(key: key);
 
   @override
@@ -58,7 +58,9 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
   @override
   void initState() {
     super.initState();
-    ref.read(storeDashboardNotifierProvider).initFetch(storeId: 3);
+    ref
+        .read(storeDashboardNotifierProvider)
+        .initFetch(storeId: widget.store.id);
   }
 
   @override
@@ -85,9 +87,9 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
           ),
           elevation: 0,
           backgroundColor: AppColors.transparent,
-          title: const Text(
-            'Atinuke Stores',
-            style: TextStyle(
+          title: Text(
+            widget.store.name,
+            style: const TextStyle(
               color: AppColors.dark,
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -126,9 +128,10 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                       size: 14,
                     ),
                     onPressed: () {
-                      ref
-                          .read(navigationServiceProvider)
-                          .navigateToNamed(Routes.storeSettings);
+                      ref.read(navigationServiceProvider).navigateToNamed(
+                            Routes.storeSettings,
+                            arguments: widget.store,
+                          );
                     },
                   ),
                   containerColor: AppColors.grey10,
@@ -349,7 +352,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                     .read(navigationServiceProvider)
                                     .navigateToNamed(
                                       Routes.storeReviews,
-                                      // arguments: widget.store,
+                                      arguments: widget.store,
                                     ),
                                 child: Container(
                                   padding: const EdgeInsets.all(12),
@@ -649,7 +652,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                               .read(navigationServiceProvider)
                               .navigateToNamed(
                                 Routes.productList,
-                                // arguments: widget.store,
+                                arguments: widget.store,
                               ),
                           child: Container(
                             height: 120,
@@ -734,12 +737,16 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
           icon: SvgPicture.asset(AppSvgs.addProduct),
           width: null,
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddProductView(),
-              ),
-            );
+            ref.read(navigationServiceProvider).navigateToNamed(
+                  Routes.addProduct,
+                  arguments: widget.store,
+                );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => AddProductView(),
+            //   ),
+            // );
           },
         ),
       ),

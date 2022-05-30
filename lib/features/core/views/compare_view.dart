@@ -112,7 +112,6 @@ class _CompareViewState extends ConsumerState<CompareView> {
                 focusNode: searchFN,
                 isSearch: true,
                 fillColor: AppColors.grey8,
-                hasPrefixIcon: true,
               ),
               const Spacing.height(12),
               Expanded(
