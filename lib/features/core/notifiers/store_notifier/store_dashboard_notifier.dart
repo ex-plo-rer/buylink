@@ -23,9 +23,6 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
   MostSearchedModel? _mostSearchedNCount;
   MostSearchedModel? get mostSearchedNCount => _mostSearchedNCount;
 
-  // List<ProductModel> _products = [];
-  // List<ProductModel> get products => _products;
-
   bool _initLoading = false;
   bool get initLoading => _initLoading;
 
@@ -40,12 +37,6 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
 
   AnalyticsModel? _visitAnalytics;
   AnalyticsModel? get visitAnalytics => _visitAnalytics;
-
-  int _allProductCount = 0;
-  int get allProductCount => _allProductCount;
-
-  int _savedProductCount = 0;
-  int get savedProductCount => _savedProductCount;
 
   Future<void> initFetch({required int storeId}) async {
     try {

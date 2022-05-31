@@ -58,9 +58,11 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
   @override
   void initState() {
     super.initState();
-    ref
-        .read(storeDashboardNotifierProvider)
-        .initFetch(storeId: widget.store.id);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      ref
+          .read(storeDashboardNotifierProvider)
+          .initFetch(storeId: widget.store.id);
+    });
   }
 
   @override

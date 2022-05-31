@@ -101,38 +101,41 @@ class AddProductNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addProduct() async {
+  Future<void> addProduct({
+    required storeId,
+  }) async {
     try {
       setState(state: ViewState.loading);
       await _reader(coreRepository).addProduct(
-        storeId: 1,
+        storeId: storeId,
         name: _name!,
         image1: _imageList[0],
         image2: _imageList.length < 2 ? null : _imageList[1],
         image3: _imageList.length < 3 ? null : _imageList[2],
         image4: _imageList.length < 4 ? null : _imageList[3],
-        price: _minPrice!,
-        oldPrice: _maxPrice!,
+        price: _minPrice,
+        oldPrice: _maxPrice,
         // category: _categoryValue!,
         category: '_categoryValue!',
         description: _desc!,
-        brand: _brand!,
-        colors: _color!,
-        minAge: _minAge!,
-        maxAge: _maxAge!,
-        minWeight: _minWeight!,
-        maxWeight: _maxWeight!,
-        size: _sizeValue!,
-        model: _model!,
-        material: _material!,
-        care: _care!,
+        brand: _brand,
+        colors: _color,
+        minAge: _minAge,
+        maxAge: _maxAge,
+        minWeight: _minWeight,
+        maxWeight: _maxWeight,
+        size: _sizeValue,
+        model: _model,
+        material: _material,
+        care: _care,
       );
       Alertify(title: 'Your product has been added').success();
-      // _reader(navigationServiceProvider).navigateBack();
+      _reader(navigationServiceProvider).navigateBack();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      // Alertify(title: e.error!).error();
+      Alertify(title: 'There\'s a problem adding your product').error();
     } finally {
       setState(state: ViewState.idle);
     }

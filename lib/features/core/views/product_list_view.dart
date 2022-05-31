@@ -27,7 +27,10 @@ import '../notifiers/product_list_notifier.dart';
 
 class ProductListView extends ConsumerStatefulWidget {
   final Store store;
-  const ProductListView({Key? key, required this.store,}) : super(key: key);
+  const ProductListView({
+    Key? key,
+    required this.store,
+  }) : super(key: key);
   @override
   ConsumerState<ProductListView> createState() => _WishlistState();
 }
@@ -44,8 +47,9 @@ class _WishlistState extends ConsumerState<ProductListView>
         vsync: this);
     _tabController.addListener(_handleTabChange);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      ref.watch(productListNotifierProvider).fetchStoreProducts(
-          storeId: widget.store.id,category: 'all');
+      ref
+          .watch(productListNotifierProvider)
+          .fetchStoreProducts(storeId: widget.store.id, category: 'all');
     });
     super.initState();
   }
@@ -59,11 +63,12 @@ class _WishlistState extends ConsumerState<ProductListView>
 
   void _handleTabChange() {
     ref.read(productListNotifierProvider).fetchStoreProducts(
-        storeId: widget.store.id,
-        category: ref
-            .watch(categoryNotifierProvider)
-            .mCategories[_tabController.index]
-            .name);
+          storeId: widget.store.id,
+          category: ref
+              .watch(categoryNotifierProvider)
+              .mCategories[_tabController.index]
+              .name,
+        );
   }
 
   // TODO: Make the third product fill the screen's width
@@ -132,14 +137,15 @@ class _WishlistState extends ConsumerState<ProductListView>
                                       storeLon: productListNotifier
                                           .products[index].lon,
                                     ),
-                                isFavorite: true,
+                                isFavorite:
+                                    productListNotifier.products[index].isFav!,
                                 onProductTapped: () {
                                   ref
                                       .read(navigationServiceProvider)
                                       .navigateToNamed(
                                         Routes.productDetails,
-                                        arguments: productListNotifier
-                                            .products[index],
+                                        arguments:
+                                            productListNotifier.products[index],
                                       );
                                 },
                                 onDistanceTapped: () {},
