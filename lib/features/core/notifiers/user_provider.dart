@@ -6,7 +6,6 @@ import '../models/user_model.dart';
 
 class UserProvider extends BaseChangeNotifier {
   final Reader _reader;
-
   UserProvider(this._reader) {
     setUser();
     // setToken();

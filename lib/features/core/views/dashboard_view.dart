@@ -1,4 +1,4 @@
-import 'package:buy_link/features/authentication/views/notification_view.dart';
+import 'package:buy_link/features/core/views/notification_view.dart';
 import 'package:buy_link/features/core/views/home_view.dart';
 import 'package:buy_link/features/core/views/settings_view/setting_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_view.dart';

@@ -12,14 +12,21 @@ import '../../../../widgets/otp_form.dart';
 import '../../../../widgets/spacing.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/settings_notifier/change_password_notifier.dart';
+import '../../notifiers/settings_notifier/delete_user_notifier.dart';
 
 class ChangePassword extends ConsumerWidget {
   ChangePassword({Key? key}) : super(key: key);
   final PageController _pageController = PageController();
 
+  final _oldPasswordController = TextEditingController();
+  final _oldPasswordFN = FocusNode();
+  final _newPasswordController = TextEditingController();
+  final _newPasswordFN = FocusNode();
+
   @override
   Widget build(BuildContext context, ref) {
     final changePasswordNotifier = ref.watch(editUserPasswordNotifierProvider);
+    final deleteUserNotifier = ref.watch(deleteUserNotifierProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -93,8 +100,11 @@ class ChangePassword extends ConsumerWidget {
                                     AppTextField(
                                       title: '',
                                       hintText: 'Ayodeji123',
+                                      controller: _oldPasswordController ,
+                                      focusNode: _oldPasswordFN,
+                                      onChanged: changePasswordNotifier.onCheckPassword,
                                       suffixIcon: GestureDetector(
-                                        onTap: () {},
+                                        onTap: () => _oldPasswordController.clear(),
                                         child: const CircleAvatar(
                                           backgroundColor: AppColors.grey7,
                                           radius: 10,
@@ -120,7 +130,10 @@ class ChangePassword extends ConsumerWidget {
                                     const Spacing.height(12),
                                     AppTextField(
                                       title: '',
+                                      controller: _newPasswordController,
+                                      focusNode: _newPasswordFN,
                                       hintText: 'Example123',
+                                      onChanged: changePasswordNotifier.onPasswordChanged,
                                       obscureText: changePasswordNotifier.passwordVisible,
                                       suffixIcon: Row(
                                         mainAxisSize: MainAxisSize.min,
@@ -137,7 +150,7 @@ class ChangePassword extends ConsumerWidget {
                                           ),
                                           const Spacing.smallWidth(),
                                           GestureDetector(
-                                            onTap: () {},
+                                            onTap: () => _newPasswordController.clear(),
                                             child: const CircleAvatar(
                                               backgroundColor: AppColors.grey7,
                                               radius: 10,
@@ -173,21 +186,32 @@ class ChangePassword extends ConsumerWidget {
                       AppButton(
                         text:
                         changePasswordNotifier.currentPage == changePasswordNotifier.totalPage
-                            ? AppStrings.signup
+                            ? AppStrings.changePassword
                             : AppStrings.next,
                         backgroundColor: AppColors.primaryColor,
-                        onPressed: () {
-                          changePasswordNotifier.moveForward();
-                          print(changePasswordNotifier.currentPage);
-                          _pageController.animateToPage(
-                            // array starts at 0 (lol)
-                            changePasswordNotifier.currentPage - 1,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn,
-                          );
+                        onPressed:
+                          () async {
+                            if (changePasswordNotifier.currentPage == 1 ){
+                            await
+                            changePasswordNotifier.checkPassword(
+                              password: _oldPasswordController.text,
+                            );
+                            changePasswordNotifier.moveForward();
+                            print(changePasswordNotifier.currentPage);
+                            _pageController.animateToPage(
+                              // array starts at 0 (lol)
+                              changePasswordNotifier.currentPage - 1,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeIn,
+                            );
+                          }
+                         if (changePasswordNotifier.currentPage == 2){
+                              await changePasswordNotifier.changePassword(
+                                password: _newPasswordController.text,
+                              );
+                            };
                         },
                       ),
-
                     ])
 
             ),

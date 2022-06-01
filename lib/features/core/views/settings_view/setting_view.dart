@@ -1,19 +1,21 @@
 import 'package:buy_link/core/utilities/extensions/strings.dart';
-import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/features/core/views/settings_view/change_name.dart';
 import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
 import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
 import 'package:buy_link/features/core/views/settings_view/term_of_use.dart';
-import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/svgs.dart';
 import '../../../../core/routes.dart';
+import '../../../../services/navigation_service.dart';
 import '../../../../widgets/spacing.dart';
 import '../../notifiers/settings_notifier/setting_notifier.dart';
+import '../../notifiers/user_provider.dart';
 import 'about_buylink.dart';
 import 'change_email.dart';
 import 'change_password.dart';
@@ -30,15 +32,14 @@ class SettingView extends ConsumerWidget {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              const SizedBox(
-                height: 50,
-              ),
-              const SizedBox(height: 10),
+              Spacing.mediumHeight(),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: Row(
-                  children: const <Widget>[
-                    SizedBox(width: 20),
+                  children:  <Widget>[
+                    Spacing.smallWidth(),
+                    Image.asset("assets/images/setting.png"),
+                    Spacing.smallWidth(),
                     Text(
                       'Settings',
                       style: TextStyle(fontSize: 24),
@@ -68,19 +69,19 @@ class SettingView extends ConsumerWidget {
               ),
               const Spacing.smallHeight(),
               Text(userProv.currentUser?.email ?? 'user@gmail.com'),
-              const SizedBox(height: 30),
+              Spacing.largeHeight(),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                 alignment: Alignment.topLeft,
                 child: const Text(
                   "Account Settings",
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.grey3),
                   textAlign: TextAlign.start,
                 ),
               ),
               Container(
-                margin: const EdgeInsets.all(20),
-                height: 280,
+                margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                height: 220,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
                     20,
@@ -92,10 +93,11 @@ class SettingView extends ConsumerWidget {
                   padding: const EdgeInsets.all(4),
                   children: <Widget>[
                     ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Change Username",
                         style: TextStyle(
-                          color: AppColors.shade6,
+                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
                         ),
                       ),
                       leading: const Icon(
@@ -107,13 +109,9 @@ class SettingView extends ConsumerWidget {
                         color: AppColors.shade5,
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditUserName(),
-                          ),
-                        );
-                      },
+                        ref
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.editUser);},
                     ),
                     Container(
                       margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -122,10 +120,11 @@ class SettingView extends ConsumerWidget {
                       ),
                     ),
                     ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Change Email Address",
                         style: TextStyle(
-                          color: AppColors.shade6,
+                          color: AppColors.shade6,fontSize: 14, fontWeight: FontWeight.w600
                         ),
                       ),
                       leading: const Icon(
@@ -135,12 +134,9 @@ class SettingView extends ConsumerWidget {
                       trailing: const Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChangeEmail(),
-                          ),
-                        );
+                        ref
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.changeEmail);
                       },
                     ),
                     Container(
@@ -150,10 +146,11 @@ class SettingView extends ConsumerWidget {
                       ),
                     ),
                     ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Change Password",
                         style: TextStyle(
-                          color: AppColors.shade6,
+                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
                         ),
                       ),
                       leading: const Icon(
@@ -165,38 +162,37 @@ class SettingView extends ConsumerWidget {
                         color: AppColors.shade5,
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChangePassword(),
-                          ),
-                        );
+                        ref
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.changePassword);
                       },
                     ),
                     Container(
                       margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: const Divider(color: AppColors.shade4),
                     ),
-                    const ListTile(
+                    ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: Text(
                         "Delete Account",
                         style: TextStyle(
-                          color: AppColors.shade6,
+                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
                         ),
                       ),
                       leading: Icon(Icons.delete, color: AppColors.shade5),
                       trailing: Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
+                      onTap: () =>ref
+                          .read(navigationServiceProvider)
+                          .navigateToNamed(Routes.deleteUser),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+             Spacing.smallHeight(),
               Container(
                 margin: const EdgeInsets.all(20),
-                height: 60,
+                height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: AppColors.shade1,
@@ -206,9 +202,10 @@ class SettingView extends ConsumerWidget {
                   padding: const EdgeInsets.all(4),
                   children: <Widget>[
                     ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Notification",
-                        style: TextStyle(color: AppColors.shade6),
+                        style: TextStyle(color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       leading: const Icon(Icons.notifications_none,
                           color: AppColors.shade5),
@@ -217,31 +214,28 @@ class SettingView extends ConsumerWidget {
                         color: AppColors.shade5,
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SettingNotification(),
-                          ),
-                        );
+                        ref
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.settingNotification);
                       },
                     )
                   ],
                 ),
               ),
-              const Spacing.mediumHeight(),
+              const Spacing.smallHeight(),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                 alignment: Alignment.topLeft,
                 child: const Text(
                   "Help",
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(color: AppColors.grey3, fontSize: 14, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.start,
                 ),
               ),
               const Spacing.mediumHeight(),
               Container(
-                margin: const EdgeInsets.all(20),
-                height: 280,
+                margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                height: 220,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
                     20,
@@ -253,10 +247,11 @@ class SettingView extends ConsumerWidget {
                   padding: const EdgeInsets.all(4),
                   children: <Widget>[
                     const ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: Text(
                         "Customer Support",
                         style: TextStyle(
-                          color: AppColors.shade6,
+                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
                         ),
                       ),
                       leading: Icon(
@@ -275,10 +270,11 @@ class SettingView extends ConsumerWidget {
                       ),
                     ),
                     ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Privacy policy",
                         style: TextStyle(
-                          color: AppColors.shade6,
+                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
                         ),
                       ),
                       leading: const Icon(
@@ -290,12 +286,9 @@ class SettingView extends ConsumerWidget {
                         color: AppColors.shade5,
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PrivacyPolicy(),
-                          ),
-                        );
+                        ref
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.privacyPolicy);
                       },
                     ),
                     Container(
@@ -303,10 +296,11 @@ class SettingView extends ConsumerWidget {
                       child: const Divider(color: AppColors.shade4),
                     ),
                     ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Terms of use",
                         style: TextStyle(
-                          color: AppColors.shade6,
+                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
                         ),
                       ),
                       leading: const Icon(Icons.insert_drive_file_outlined,
@@ -325,10 +319,11 @@ class SettingView extends ConsumerWidget {
                       child: const Divider(color: AppColors.shade4),
                     ),
                     ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "About Buylink",
                         style: TextStyle(
-                          color: AppColors.shade6,
+                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
                         ),
                       ),
                       leading: const Icon(Icons.info_outline_rounded,
@@ -336,8 +331,10 @@ class SettingView extends ConsumerWidget {
                       trailing: const Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => About()));
+
+                        ref
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.about);
                       },
                     ),
                   ],

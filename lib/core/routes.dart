@@ -6,6 +6,12 @@ import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/delete_store_validation.dart';
+import 'package:buy_link/features/core/views/settings_view/change_email.dart';
+import 'package:buy_link/features/core/views/settings_view/change_name.dart';
+import 'package:buy_link/features/core/views/settings_view/change_password.dart';
+import 'package:buy_link/features/core/views/settings_view/delete_user.dart';
+import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
+import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
@@ -18,6 +24,7 @@ import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/compare_arg_model.dart';
 import '../features/core/models/product_model.dart';
 import '../features/core/views/add_product_desc.dart';
+import '../features/core/views/settings_view/about_buylink.dart';
 import '../features/core/views/add_product_specifics_view.dart';
 import '../features/core/views/product_list_view.dart';
 import '../features/core/views/store_views/delete_store_view.dart';
@@ -58,7 +65,6 @@ class Routes {
   static const noproductView = '/noproduct';
   static const addstoreView = '/addstore';
   static const emptystoreView = '/emptystore';
-  static const storesettingView = '/storesetting';
   static const messageView = '/message';
   static const addProduct = '/addproduct';
   static const deleteStore = '/delete-store';
@@ -68,6 +74,14 @@ class Routes {
   static const storeMessages = '/store-messages';
   static const storeSettings = '/store-settings';
   static const savedProducts = '/saved-products';
+  static const deleteUser = '/delete-user';
+  static const editUser = '/edit-username';
+  static const changeEmail = '/change-email';
+  static const changePassword = '/change-password';
+  static const settingNotification = '/setting-notification';
+  static const privacyPolicy = '/privacy-policy';
+  static const about = '/about';
+  // static const addProductSpecifics = '/add-product-spec';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -185,6 +199,26 @@ class Routes {
         return MaterialPageRoute(builder: (_) => AddProductSpecificsView());
       case addProductDesc:
         return MaterialPageRoute(builder: (_) => AddProductDescView());
+      case deleteUser:
+        return MaterialPageRoute(builder: (_) => DeleteUser());
+      case editUser:
+        return MaterialPageRoute(builder: (_) => EditUserName());
+      case changeEmail:
+        return MaterialPageRoute(builder: (_) => ChangeEmail());
+
+      case changePassword:
+        return MaterialPageRoute(builder: (_) => ChangePassword());
+      case settingNotification:
+        return MaterialPageRoute(builder: (_) => SettingNotification());
+      case privacyPolicy:
+        return MaterialPageRoute(builder: (_) => PrivacyPolicy());
+      case about:
+        return MaterialPageRoute(builder: (_) => About());
+      case addProductSpecifics:
+        return MaterialPageRoute(builder: (_) => AddProductSpecificsView());
+
+
+
 
       // case otpVerification:
       // case otpVerification:
