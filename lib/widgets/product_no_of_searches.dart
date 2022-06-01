@@ -13,7 +13,7 @@ class ProductCount extends StatelessWidget {
   }) : super(key: key);
   final String productImage;
   final String productName;
-  final int productNum;
+  final String productNum;
   final String type;
 
   @override

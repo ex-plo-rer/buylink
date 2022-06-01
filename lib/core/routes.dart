@@ -148,7 +148,9 @@ class Routes {
       case storeView:
         return MaterialPageRoute(builder: (_) => const StoreView());
       case productSearched:
-        return MaterialPageRoute(builder: (_) => const ProductSearchedView());
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+            builder: (_) => ProductSearchedView(store: store));
       case storeDashboard:
         Store store = settings.arguments as Store;
         return MaterialPageRoute(
@@ -160,7 +162,8 @@ class Routes {
         Store store = settings.arguments as Store;
         return MaterialPageRoute(builder: (_) => StoreSetting(store: store));
       case storeVisits:
-        return MaterialPageRoute(builder: (_) => const StoreVisitsView());
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(builder: (_) => StoreVisitsView(store: store));
       case savedProducts:
         return MaterialPageRoute(builder: (_) => ProductSavedView());
       case storeDirection:

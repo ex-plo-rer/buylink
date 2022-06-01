@@ -222,7 +222,8 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                         GestureDetector(
                           onTap: () => ref
                               .read(navigationServiceProvider)
-                              .navigateToNamed(Routes.productSearched),
+                              .navigateToNamed(Routes.productSearched,
+                                  arguments: widget.store),
                           child: Container(
                             height: 243,
                             decoration: BoxDecoration(
@@ -539,7 +540,8 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                         GestureDetector(
                           onTap: () => ref
                               .read(navigationServiceProvider)
-                              .navigateToNamed(Routes.storeVisits),
+                              .navigateToNamed(Routes.storeVisits,
+                                  arguments: widget.store),
                           child: Container(
                             height: 243,
                             decoration: BoxDecoration(

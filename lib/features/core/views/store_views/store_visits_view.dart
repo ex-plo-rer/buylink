@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
 import 'package:buy_link/widgets/app_button.dart';
@@ -27,23 +28,37 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../../widgets/circular_progress.dart';
 import '../../../../widgets/favorite_container.dart';
+import '../../../../widgets/weekly_widget.dart';
 import '../../models/chart_data_model.dart';
+import '../../models/product_model.dart';
+import '../../notifiers/product_searched_notifier.dart';
 import '../../notifiers/store_notifier/store_dashboard_notifier.dart';
+import '../../notifiers/store_notifier/store_visits_notifier.dart';
 
 class StoreVisitsView extends ConsumerStatefulWidget {
-  const StoreVisitsView({Key? key}) : super(key: key);
+  final Store store;
+  const StoreVisitsView({
+    Key? key,
+    required this.store,
+  }) : super(key: key);
 
   @override
-  _StoreVisitsViewState createState() => _StoreVisitsViewState();
+  ConsumerState<StoreVisitsView> createState() => _StoreVisitsViewState();
 }
 
-class _StoreVisitsViewState extends ConsumerState {
+class _StoreVisitsViewState extends ConsumerState<StoreVisitsView> {
   String dropdownValue = 'This Week';
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      ref
+          .read(storeVisitsNotifierProvider)
+          .fetchWeeklyData(storeId: widget.store.id, week: 'current');
+    });
   }
 
   @override
@@ -53,6 +68,7 @@ class _StoreVisitsViewState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
+    final storeVisitsNotifier = ref.watch(storeVisitsNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -67,8 +83,8 @@ class _StoreVisitsViewState extends ConsumerState {
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
-        title: const Text(
-          'Atinuke Stores',
+        title: Text(
+          widget.store.name,
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,
@@ -77,259 +93,330 @@ class _StoreVisitsViewState extends ConsumerState {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 243,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.light,
-                ),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox(
-                        height: 171,
-                        // width: MediaQuery.of(context).size.width - 40,
-                        child: SfCartesianChart(
-                          plotAreaBorderWidth: 0,
-                          title: ChartTitle(text: ''),
-                          primaryXAxis: CategoryAxis(
-                            majorGridLines: const MajorGridLines(width: 0),
-                          ),
-                          primaryYAxis: NumericAxis(
-                            axisLine: const AxisLine(width: 0),
-                            majorTickLines: const MajorTickLines(size: 0),
-                          ),
-                          series: _getDefaultColumnSeries(),
-                          tooltipBehavior: TooltipBehavior(
-                            enable: true,
-                            header: '',
-                            canShowMarker: false,
-                          ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 243,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.light,
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      height: 171,
+                      // width: MediaQuery.of(context).size.width - 40,
+                      child: SfCartesianChart(
+                        plotAreaBorderWidth: 0,
+                        title: ChartTitle(text: ''),
+                        primaryXAxis: CategoryAxis(
+                          majorGridLines: const MajorGridLines(width: 0),
+                        ),
+                        primaryYAxis: NumericAxis(
+                          axisLine: const AxisLine(width: 0),
+                          majorTickLines: const MajorTickLines(size: 0),
+                        ),
+                        series: _getDefaultColumnSeries(),
+                        tooltipBehavior: TooltipBehavior(
+                          enable: true,
+                          header: '',
+                          canShowMarker: false,
                         ),
                       ),
                     ),
-                    ListTile(
-                      horizontalTitleGap: 0,
-                      dense: true,
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 20,
+                  ),
+                  ListTile(
+                    horizontalTitleGap: 0,
+                    dense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 0,
+                      horizontal: 20,
+                    ),
+                    leading: FavoriteContainer(
+                      height: 28,
+                      width: 28,
+                      padding: 5,
+                      favIcon: SvgPicture.asset(
+                        AppSvgs.store,
+                        height: 16,
+                        width: 16,
                       ),
-                      leading: FavoriteContainer(
-                        height: 28,
-                        width: 28,
-                        padding: 5,
-                        favIcon: SvgPicture.asset(
-                          AppSvgs.store,
-                          height: 16,
-                          width: 16,
-                        ),
-                        containerColor: AppColors.shade1,
+                      containerColor: AppColors.shade1,
+                    ),
+                    title: const Text(
+                      'Store Visits',
+                      style: TextStyle(
+                        color: AppColors.grey4,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
                       ),
-                      title: const Text(
-                        'Store Visits',
-                        style: TextStyle(
-                          color: AppColors.grey4,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    ),
+                    subtitle: const Text(
+                      '2,500',
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
                       ),
-                      subtitle: const Text(
-                        '2,500',
-                        style: TextStyle(
+                    ),
+                    trailing: Container(
+                      height: 32,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
                           color: AppColors.primaryColor,
-                          fontSize: 16,
+                        ),
+                        color: AppColors.light,
+                      ),
+                      child: DropdownButton<String>(
+                        value: storeVisitsNotifier.dropdownValue,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        elevation: 16,
+                        style: const TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 12,
                           fontWeight: FontWeight.w700,
                         ),
-                      ),
-                      trailing: Container(
-                        height: 32,
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: AppColors.primaryColor,
-                          ),
-                          color: AppColors.light,
+                        iconSize: 16,
+                        onChanged: (newValue) =>
+                            storeVisitsNotifier.onDropDownChanged(
+                          newValue: newValue!,
+                          storeId: widget.store.id,
                         ),
-                        child: DropdownButton<String>(
-                          value: dropdownValue,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          elevation: 16,
-                          style: const TextStyle(
-                            color: AppColors.primaryColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          iconSize: 16,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValue = newValue!;
-                            });
-                          },
-                          underline: const SizedBox(),
-                          items: <String>['This Week', 'Two', 'Free', 'Four']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+                        underline: const SizedBox(),
+                        items: <String>[
+                          'This Week',
+                          'Last Week',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const Spacing.height(20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Sunday',
-                    style: TextStyle(
-                      color: AppColors.grey4,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
                   ),
                 ],
               ),
-              const Spacing.height(20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Monday',
-                    style: TextStyle(
-                      color: AppColors.grey4,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                ],
-              ),
-              const Spacing.height(20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Tuesday',
-                    style: TextStyle(
-                      color: AppColors.grey4,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                ],
-              ),
-              const Spacing.height(20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Wednesday',
-                    style: TextStyle(
-                      color: AppColors.grey4,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                  Spacing.smallHeight(),
-                  ProductCount(
-                    productImage: AppImages.bag,
-                    productName: 'Black Levi Jeans',
-                    productNum: 300,
-                    type: 'visits',
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            const Spacing.height(20),
+            storeVisitsNotifier.state.isLoading
+                ? const CircularProgress()
+                : storeVisitsNotifier.state.isError
+                    ? const Center(child: Text('An error occurred'))
+                    : storeVisitsNotifier.weeklyData == null
+                        ? const Center(child: Text('Something went wrong'))
+                        : Expanded(
+                            child: ListView(
+                              physics: const ScrollPhysics(),
+                              shrinkWrap: true,
+                              children: [
+                                WeeklyWidget(
+                                  category: 'Sunday',
+                                  itemCount: storeVisitsNotifier
+                                          .weeklyData!.sunday.isEmpty
+                                      ? 1
+                                      : storeVisitsNotifier
+                                          .weeklyData!.sunday.length,
+                                  itemBuilder: (context, index) {
+                                    return storeVisitsNotifier
+                                            .weeklyData!.sunday.isEmpty
+                                        ? const Center(child: Text('Empty'))
+                                        : ProductCount(
+                                            productImage: storeVisitsNotifier
+                                                .weeklyData!
+                                                .sunday[index]
+                                                .image,
+                                            productName: storeVisitsNotifier
+                                                .weeklyData!.sunday[index].name,
+                                            productNum: storeVisitsNotifier
+                                                .weeklyData!
+                                                .sunday[index]
+                                                .searches,
+                                            type: 'searches',
+                                          );
+                                  },
+                                ),
+                                const Spacing.height(20),
+                                WeeklyWidget(
+                                  category: 'Monday',
+                                  itemCount: storeVisitsNotifier
+                                          .weeklyData!.monday.isEmpty
+                                      ? 1
+                                      : storeVisitsNotifier
+                                          .weeklyData!.monday.length,
+                                  itemBuilder: (context, index) {
+                                    return storeVisitsNotifier
+                                            .weeklyData!.monday.isEmpty
+                                        ? const Center(child: Text('Empty'))
+                                        : ProductCount(
+                                            productImage: storeVisitsNotifier
+                                                .weeklyData!
+                                                .monday[index]
+                                                .image,
+                                            productName: storeVisitsNotifier
+                                                .weeklyData!.monday[index].name,
+                                            productNum: storeVisitsNotifier
+                                                .weeklyData!
+                                                .monday[index]
+                                                .searches,
+                                            type: 'searches',
+                                          );
+                                  },
+                                ),
+                                const Spacing.height(20),
+                                WeeklyWidget(
+                                  category: 'Tuesday',
+                                  itemCount: storeVisitsNotifier
+                                          .weeklyData!.tuesday.isEmpty
+                                      ? 1
+                                      : storeVisitsNotifier
+                                          .weeklyData!.tuesday.length,
+                                  itemBuilder: (context, index) {
+                                    return storeVisitsNotifier
+                                            .weeklyData!.tuesday.isEmpty
+                                        ? const Center(child: Text('Empty'))
+                                        : ProductCount(
+                                            productImage: storeVisitsNotifier
+                                                .weeklyData!
+                                                .tuesday[index]
+                                                .image,
+                                            productName: storeVisitsNotifier
+                                                .weeklyData!
+                                                .tuesday[index]
+                                                .name,
+                                            productNum: storeVisitsNotifier
+                                                .weeklyData!
+                                                .tuesday[index]
+                                                .searches,
+                                            type: 'searches',
+                                          );
+                                  },
+                                ),
+                                const Spacing.height(20),
+                                WeeklyWidget(
+                                  category: 'Wednesday',
+                                  itemCount: storeVisitsNotifier
+                                          .weeklyData!.wednesday.isEmpty
+                                      ? 1
+                                      : storeVisitsNotifier
+                                          .weeklyData!.wednesday.length,
+                                  itemBuilder: (context, index) {
+                                    return storeVisitsNotifier
+                                            .weeklyData!.wednesday.isEmpty
+                                        ? const Center(child: Text('Empty'))
+                                        : ProductCount(
+                                            productImage: storeVisitsNotifier
+                                                .weeklyData!
+                                                .wednesday[index]
+                                                .image,
+                                            productName: storeVisitsNotifier
+                                                .weeklyData!
+                                                .wednesday[index]
+                                                .name,
+                                            productNum: storeVisitsNotifier
+                                                .weeklyData!
+                                                .wednesday[index]
+                                                .searches,
+                                            type: 'searches',
+                                          );
+                                  },
+                                ),
+                                const Spacing.height(20),
+                                WeeklyWidget(
+                                  category: 'Thursday',
+                                  itemCount: storeVisitsNotifier
+                                          .weeklyData!.thursday.isEmpty
+                                      ? 1
+                                      : storeVisitsNotifier
+                                          .weeklyData!.thursday.length,
+                                  itemBuilder: (context, index) {
+                                    return storeVisitsNotifier
+                                            .weeklyData!.thursday.isEmpty
+                                        ? const Center(child: Text('Empty'))
+                                        : ProductCount(
+                                            productImage: storeVisitsNotifier
+                                                .weeklyData!
+                                                .thursday[index]
+                                                .image,
+                                            productName: storeVisitsNotifier
+                                                .weeklyData!
+                                                .thursday[index]
+                                                .name,
+                                            productNum: storeVisitsNotifier
+                                                .weeklyData!
+                                                .thursday[index]
+                                                .searches,
+                                            type: 'searches',
+                                          );
+                                  },
+                                ),
+                                WeeklyWidget(
+                                  category: 'Friday',
+                                  itemCount: storeVisitsNotifier
+                                          .weeklyData!.friday.isEmpty
+                                      ? 1
+                                      : storeVisitsNotifier
+                                          .weeklyData!.friday.length,
+                                  itemBuilder: (context, index) {
+                                    return storeVisitsNotifier
+                                            .weeklyData!.friday.isEmpty
+                                        ? const Center(child: Text('Empty'))
+                                        : ProductCount(
+                                            productImage: storeVisitsNotifier
+                                                .weeklyData!
+                                                .friday[index]
+                                                .image,
+                                            productName: storeVisitsNotifier
+                                                .weeklyData!.friday[index].name,
+                                            productNum: storeVisitsNotifier
+                                                .weeklyData!
+                                                .friday[index]
+                                                .searches,
+                                            type: 'searches',
+                                          );
+                                  },
+                                ),
+                                const Spacing.height(20),
+                                WeeklyWidget(
+                                  category: 'Saturday',
+                                  itemCount: storeVisitsNotifier
+                                          .weeklyData!.saturday.isEmpty
+                                      ? 1
+                                      : storeVisitsNotifier
+                                          .weeklyData!.saturday.length,
+                                  itemBuilder: (context, index) {
+                                    return storeVisitsNotifier
+                                            .weeklyData!.saturday.isEmpty
+                                        ? const Center(child: Text('Empty'))
+                                        : ProductCount(
+                                            productImage: storeVisitsNotifier
+                                                .weeklyData!
+                                                .saturday[index]
+                                                .image,
+                                            productName: storeVisitsNotifier
+                                                .weeklyData!
+                                                .saturday[index]
+                                                .name,
+                                            productNum: storeVisitsNotifier
+                                                .weeklyData!
+                                                .saturday[index]
+                                                .searches,
+                                            type: 'searches',
+                                          );
+                                  },
+                                ),
+                                const Spacing.height(20),
+                              ],
+                            ),
+                          ),
+          ],
         ),
       ),
     );
@@ -338,7 +425,7 @@ class _StoreVisitsViewState extends ConsumerState {
   List<ColumnSeries<ChartDataModel, String>> _getDefaultColumnSeries() {
     return <ColumnSeries<ChartDataModel, String>>[
       ColumnSeries<ChartDataModel, String>(
-        dataSource: ref.read(storeDashboardNotifierProvider).visitsData,
+        dataSource: ref.watch(storeDashboardNotifierProvider).visitsData,
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

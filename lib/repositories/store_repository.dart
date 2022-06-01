@@ -1,5 +1,6 @@
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/models/store_quick_model.dart';
+import 'package:buy_link/features/core/models/weekly_data_model.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants/strings.dart';
@@ -47,37 +48,6 @@ class StoreRepository {
     print('Fetch store quick details response ${response}');
 
     return StoreQuickModel.fromJson(response);
-  }
-
-  Future<List<ProductModel>> fetchStoreProducts({
-    required int storeId,
-    required String category,
-  }) async {
-    // await _reader(userProvider).setUser();
-    print(
-        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
-    var id = _reader(userProvider).currentUser?.id ?? 0;
-    final body = {
-      'id': id,
-      'store_id': storeId,
-      'category': category,
-    };
-    print('Fetch store products params sent to server $body');
-
-    var response = await networkService.post(
-      'users/store-products/1',
-      body: body,
-      headers: headers,
-    );
-
-    print('Fetch store products response ${response}');
-    List<ProductModel> _products = [];
-    for (var product in response) {
-      _products.add(ProductModel.fromJson(product));
-    }
-
-    print('Fetch store products response $response');
-    return _products;
   }
 
   Future<List<Store>> fetchMyStores() async {
@@ -164,6 +134,65 @@ class StoreRepository {
     );
 
     print('Edit store response $response');
+  }
+
+  Future<List<ProductModel>> fetchStoreProducts({
+    required int storeId,
+    required String category,
+  }) async {
+    // await _reader(userProvider).setUser();
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+      'category': category,
+    };
+    print('Fetch store products params sent to server $body');
+
+    var response = await networkService.post(
+      'users/store-products/1',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch store products response ${response}');
+    List<ProductModel> _products = [];
+    for (var product in response) {
+      _products.add(ProductModel.fromJson(product));
+    }
+
+    print('Fetch store products response $response');
+    return _products;
+  }
+
+  Future<WeeklyDataModel> fetchWeeklyData({
+    required int storeId,
+    required String week,
+    required String domain,
+  }) async {
+    // await _reader(userProvider).setUser();
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+      'week': week,
+      'domain': domain,
+    };
+    print('Fetch weekly data params sent to server $body');
+
+    var response = await networkService.post(
+      'users/load-data',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch weekly data response ${response}');
+
+    return WeeklyDataModel.fromJson(response);
   }
 
   Future<bool> deleteStore({

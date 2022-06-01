@@ -452,7 +452,7 @@ class CoreRepository {
     }
 
     print('Auto complete response $response');
-    // return _autoComplete;
+    return _autoComplete;
     return [
       '_autoComplete',
       '_autoComplete2',
