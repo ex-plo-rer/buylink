@@ -212,7 +212,7 @@ class ForgotPasswordView extends ConsumerWidget {
                           AppCheckBox(
                             text: 'Minimum of 8 characters',
                             checked: _passwordController.text.length > 7,
-                            onChanged: () {},
+                            onChanged: (_) {},
                           ),
                           const Spacing.smallHeight(),
                           const Spacing.tinyHeight(),
@@ -220,7 +220,7 @@ class ForgotPasswordView extends ConsumerWidget {
                             text: 'At least a Number',
                             checked: _passwordController.text
                                 .contains(RegExp(r'[0-9]')),
-                            onChanged: () {},
+                            onChanged: (_) {},
                           )
                         ],
                       ),

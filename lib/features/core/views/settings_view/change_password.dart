@@ -1,3 +1,5 @@
+import 'package:buy_link/core/utilities/alertify.dart';
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -33,25 +35,26 @@ class ChangePassword extends ConsumerWidget {
         leading: changePasswordNotifier.currentPage == 1
             ? null
             : IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            color: AppColors.dark,
-          ),
-          onPressed: () {
-            changePasswordNotifier.moveBackward();
-            print(changePasswordNotifier.currentPage);
-            _pageController.animateToPage(
-              // array starts at 0 (lol)
-              changePasswordNotifier.currentPage - 1,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-            );
-          },
-        ),
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppColors.dark,
+                ),
+                onPressed: () {
+                  changePasswordNotifier.moveBackward();
+                  print(changePasswordNotifier.currentPage);
+                  _pageController.animateToPage(
+                    // array starts at 0 (lol)
+                    changePasswordNotifier.currentPage - 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+              ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
-        title:  Text( "Change Email Address",
-          style: TextStyle(
+        title: const Text(
+          "Change Email Address",
+          style: const TextStyle(
             color: AppColors.dark,
             fontSize: 14,
             fontWeight: FontWeight.w500,
@@ -60,51 +63,75 @@ class ChangePassword extends ConsumerWidget {
         centerTitle: true,
       ),
       body: Column(
-          children: [
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppLinearProgress(
+                  current: changePasswordNotifier.currentPage,
+                  total: changePasswordNotifier.totalPage,
+                  value: changePasswordNotifier.currentPage /
+                      changePasswordNotifier.totalPage,
+                ),
+                const Spacing.height(12),
+                SizedBox(
+                  height: 400,
+                  child: PageView(
+                    controller: _pageController,
+                    physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      AppLinearProgress(
-                        current: changePasswordNotifier.currentPage,
-                        total: changePasswordNotifier.totalPage,
-                        value: changePasswordNotifier.currentPage / changePasswordNotifier.totalPage,
-                      ),
-                      const Spacing.height(12),
-                      SizedBox(
-                          height: 400,
-                          child: PageView(
-                              controller: _pageController,
-                              physics: const NeverScrollableScrollPhysics(),
-                              children: [
-                                Column(
-                                  children: [
-                                    const TextWithRich(
-                                      firstText: 'Change',
-                                      secondText: 'password',
-                                      fontSize: 24,
-                                      firstColor: AppColors.primaryColor,
-                                    ),
-                                    Align (
-                                        alignment: Alignment.topLeft,
-                                        child:
-
-                                        Text(
-                                            'Enter your old password ', textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: AppColors.grey2,
-                                              fontWeight: FontWeight.w500,
-                                            ))),
-                                    AppTextField(
-                                      title: '',
-                                      hintText: 'Ayodeji123',
-                                      controller: _oldPasswordController ,
-                                      focusNode: _oldPasswordFN,
-                                      onChanged: changePasswordNotifier.onCheckPassword,
-                                      suffixIcon: GestureDetector(
-                                        onTap: () => _oldPasswordController.clear(),
+                      Column(
+                        children: [
+                          const TextWithRich(
+                            firstText: 'Change',
+                            secondText: 'password',
+                            fontSize: 24,
+                            firstColor: AppColors.primaryColor,
+                          ),
+                          const Align(
+                            alignment: Alignment.topLeft,
+                            child: const Text(
+                              'Enter your old password ',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.grey2,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          AppTextField(
+                            title: '',
+                            hintText: 'Ayodeji123',
+                            obscureText:
+                                !changePasswordNotifier.oldPasswordVisible,
+                            controller: _oldPasswordController,
+                            focusNode: _oldPasswordFN,
+                            onChanged:
+                                changePasswordNotifier.onOldPasswordChanged,
+                            suffixIcon: _oldPasswordController.text.isEmpty
+                                ? null
+                                : Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => changePasswordNotifier
+                                            .toggleOldPassword(),
+                                        child: Icon(
+                                          changePasswordNotifier
+                                                  .oldPasswordVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: AppColors.dark,
+                                        ),
+                                      ),
+                                      const Spacing.smallWidth(),
+                                      GestureDetector(
+                                        onTap: () =>
+                                            _oldPasswordController.clear(),
                                         child: const CircleAvatar(
                                           backgroundColor: AppColors.grey7,
                                           radius: 10,
@@ -115,106 +142,125 @@ class ChangePassword extends ConsumerWidget {
                                           ),
                                         ),
                                       ),
-                                      hasBorder: false,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    const TextWithRich(
-                                      firstText: 'Create your',
-                                      secondText: 'password',
-                                      fontSize: 24,
-                                      secondColor: AppColors.primaryColor,
-                                    ),
-                                    const Spacing.height(12),
-                                    AppTextField(
-                                      title: '',
-                                      controller: _newPasswordController,
-                                      focusNode: _newPasswordFN,
-                                      hintText: 'Example123',
-                                      onChanged: changePasswordNotifier.onPasswordChanged,
-                                      obscureText: changePasswordNotifier.passwordVisible,
-                                      suffixIcon: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          GestureDetector(
-                                            //onTap: () => changePasswordNotifier.togglePassword(),
-                                            child: Icon(
-                                              changePasswordNotifier.passwordVisible
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                              color: AppColors.dark,
-                                            ),
-                                          ),
-                                          const Spacing.smallWidth(),
-                                          GestureDetector(
-                                            onTap: () => _newPasswordController.clear(),
-                                            child: const CircleAvatar(
-                                              backgroundColor: AppColors.grey7,
-                                              radius: 10,
-                                              child: Icon(
-                                                Icons.clear_rounded,
-                                                color: AppColors.light,
-                                                size: 15,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      hasBorder: false,
-                                    ),
-                                    const Spacing.largeHeight(),
-                                    const Spacing.largeHeight(),
-                                    AppCheckBox(
-                                      text: 'Minimum of 8 characters',
-                                      checked: false,
-                                      onChanged: () {},
-                                    ),
-                                    const Spacing.smallHeight(),
-                                    const Spacing.tinyHeight(),
-                                    AppCheckBox(
-                                      text: 'At least a Number',
-                                      checked: false,
-                                      onChanged: () {},
-                                    )
-                                  ],
-                                ),
-
-                              ])),
-                      AppButton(
-                        text:
-                        changePasswordNotifier.currentPage == changePasswordNotifier.totalPage
-                            ? AppStrings.changePassword
-                            : AppStrings.next,
-                        backgroundColor: AppColors.primaryColor,
-                        onPressed:
-                          () async {
-                            if (changePasswordNotifier.currentPage == 1 ){
-                            await
-                            changePasswordNotifier.checkPassword(
-                              password: _oldPasswordController.text,
-                            );
-                            changePasswordNotifier.moveForward();
-                            print(changePasswordNotifier.currentPage);
-                            _pageController.animateToPage(
-                              // array starts at 0 (lol)
-                              changePasswordNotifier.currentPage - 1,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeIn,
-                            );
-                          }
-                         if (changePasswordNotifier.currentPage == 2){
-                              await changePasswordNotifier.changePassword(
-                                password: _newPasswordController.text,
-                              );
-                            };
-                        },
+                                    ],
+                                  ),
+                            hasBorder: false,
+                          ),
+                        ],
                       ),
-                    ])
-
+                      Column(
+                        children: [
+                          const TextWithRich(
+                            firstText: 'Create your',
+                            secondText: 'password',
+                            fontSize: 24,
+                            secondColor: AppColors.primaryColor,
+                          ),
+                          const Spacing.height(12),
+                          AppTextField(
+                            title: '',
+                            controller: _newPasswordController,
+                            focusNode: _newPasswordFN,
+                            hintText: 'Example123',
+                            onChanged:
+                                changePasswordNotifier.onNewPasswordChanged,
+                            obscureText:
+                                !changePasswordNotifier.newPasswordVisible,
+                            suffixIcon: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  onTap: () => changePasswordNotifier
+                                      .toggleNewPassword(),
+                                  child: Icon(
+                                    changePasswordNotifier.newPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: AppColors.dark,
+                                  ),
+                                ),
+                                const Spacing.smallWidth(),
+                                GestureDetector(
+                                  onTap: () => _newPasswordController.clear(),
+                                  child: const CircleAvatar(
+                                    backgroundColor: AppColors.grey7,
+                                    radius: 10,
+                                    child: Icon(
+                                      Icons.clear_rounded,
+                                      color: AppColors.light,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            hasBorder: false,
+                          ),
+                          const Spacing.largeHeight(),
+                          const Spacing.largeHeight(),
+                          AppCheckBox(
+                            text: 'Minimum of 8 characters',
+                            checked: _newPasswordController.text.length > 7,
+                            onChanged: (_) {},
+                          ),
+                          const Spacing.smallHeight(),
+                          const Spacing.tinyHeight(),
+                          AppCheckBox(
+                            text: 'At least a Number',
+                            checked: _newPasswordController.text
+                                .contains(RegExp(r'[0-9]')),
+                            onChanged: (_) {},
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                AppButton(
+                  isLoading: changePasswordNotifier.state.isLoading,
+                  text: changePasswordNotifier.currentPage ==
+                          changePasswordNotifier.totalPage
+                      ? AppStrings.changePassword
+                      : AppStrings.next,
+                  backgroundColor: changePasswordNotifier.currentPage == 1 &&
+                          _oldPasswordController.text.isEmpty
+                      ? AppColors.grey6
+                      : changePasswordNotifier.currentPage == 2 &&
+                              _newPasswordController.text.isEmpty
+                          ? AppColors.grey6
+                          : AppColors.primaryColor,
+                  onPressed: () async {
+                    if (changePasswordNotifier.currentPage == 1) {
+                      await changePasswordNotifier.checkPassword(
+                        password: _oldPasswordController.text,
+                      );
+                      if (changePasswordNotifier.oldPasswordCorrect) {
+                        changePasswordNotifier.moveForward();
+                        print(changePasswordNotifier.currentPage);
+                        _pageController.animateToPage(
+                          // array starts at 0 (lol)
+                          changePasswordNotifier.currentPage - 1,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        );
+                      } else {
+                        Alertify(title: 'Your old password is not correct')
+                            .error();
+                      }
+                    } else if (changePasswordNotifier.currentPage == 2) {
+                      await changePasswordNotifier.changePassword(
+                        newPassword: _newPasswordController.text,
+                      );
+                    }
+                    ;
+                  },
+                ),
+              ],
             ),
-          ]),
-
-    );}}
+          ),
+        ],
+      ),
+    );
+  }
+}

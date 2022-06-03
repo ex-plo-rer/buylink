@@ -1,3 +1,5 @@
+import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/utilities/alertify.dart';
@@ -5,9 +7,12 @@ import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../repositories/setting_repository.dart';
 import '../../../../services/base/network_exception.dart';
+import '../user_provider.dart';
 
 class EditUserNameNotifier extends BaseChangeNotifier {
   final Reader _reader;
+
+  EditUserNameNotifier(this._reader);
 
   String _name = '';
   String get name => _name;
@@ -18,28 +23,24 @@ class EditUserNameNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> changeName({
-    //required int id,
-    required String name,
-
-  }) async {
+  Future<void> changeName() async {
     try {
       setState(state: ViewState.loading);
       await _reader(settingRepository).changeName(
-       // id : id,
         name: name,
       );
-
+      // await _reader(userProvider).setUser();
+      _reader(navigationServiceProvider)
+          .navigateOffAllNamed(Routes.dashboard, (p0) => false);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
     } finally {
-      setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
-  }
-  EditUserNameNotifier(this._reader) {
   }
 }
 
 final editUserNameNotifierProvider =
-ChangeNotifierProvider<EditUserNameNotifier>((ref) => EditUserNameNotifier(ref.read));
+    ChangeNotifierProvider<EditUserNameNotifier>(
+        (ref) => EditUserNameNotifier(ref.read));

@@ -217,9 +217,6 @@ class Routes {
       case addProductSpecifics:
         return MaterialPageRoute(builder: (_) => AddProductSpecificsView());
 
-
-
-
       // case otpVerification:
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;

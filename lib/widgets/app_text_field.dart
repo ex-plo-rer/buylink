@@ -21,6 +21,7 @@ class AppTextField extends StatelessWidget {
   final int? maxLines;
   final bool? enabled;
   final void Function()? onTap;
+  final double contentPadding;
 
   const AppTextField({
     Key? key,
@@ -42,6 +43,7 @@ class AppTextField extends StatelessWidget {
     this.maxLines = 1,
     this.enabled,
     this.onTap,
+    this.contentPadding = 0,
   }) : super(key: key);
 
   @override
@@ -81,7 +83,7 @@ class AppTextField extends StatelessWidget {
                     ? 16
                     : isSearch
                         ? 16
-                        : 0,
+                        : contentPadding,
               ),
               hintText: hintText,
               hintStyle: const TextStyle(fontSize: 14),

@@ -58,7 +58,7 @@ extension StringExtension on String {
   String firstName() {
     return substring(
       0,
-      !contains(' ') ? length + 1 : indexOf(' '),
+      !contains(' ') ? length : indexOf(' '),
     );
   }
 }
