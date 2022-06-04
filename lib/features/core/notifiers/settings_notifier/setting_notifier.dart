@@ -25,23 +25,6 @@ class SettingNotifier extends BaseChangeNotifier {
     _reader(navigationServiceProvider)
         .navigateOffAllNamed(Routes.login, (p0) => false);
   }
-
-  Future<void> fetchUser(
-      //required int id,
-      ) async {
-    try {
-      //setState(state: ViewState.loading);
-      var userDetails = await _reader(userProvider).currentUser?.id ?? 0;
-
-      // Alertify(title: 'User logged in').success();
-      setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
-    } finally {
-      setState(state: ViewState.idle);
-    }
-  }
 }
 
 final settingNotifierProvider =
