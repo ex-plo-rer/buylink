@@ -18,7 +18,7 @@ class Alertify {
     // if (this.icon == null) {
     //   this.icon = Icons.check;
     // }
-    botToast(Colors.green);
+    botToast(Colors.greenAccent);
   }
 
   void warning() {

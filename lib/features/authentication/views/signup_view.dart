@@ -184,6 +184,7 @@ class SignupView extends ConsumerWidget {
                                 _otp = val;
                               },
                             ),
+
                           ],
                         ),
                         Column(
