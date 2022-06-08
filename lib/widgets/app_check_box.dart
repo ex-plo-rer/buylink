@@ -6,15 +6,19 @@ import '../core/constants/colors.dart';
 class AppCheckBox extends StatelessWidget {
   final String text;
   final bool checked;
-  final Function onChanged;
+  final void Function(bool?)? onChanged;
   final Color activeColor;
   final Color checkColor;
+  final OutlinedBorder? shape;
 
-  const AppCheckBox({
+  AppCheckBox({
     Key? key,
     required this.text,
     required this.checked,
     required this.onChanged,
+    this.shape = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(1.0)),
+    ),
     this.activeColor = AppColors.primaryColor,
     this.checkColor = AppColors.light,
   }) : super(key: key);
@@ -29,9 +33,10 @@ class AppCheckBox extends StatelessWidget {
           width: 12.0,
           child: Checkbox(
             value: checked,
-            onChanged: (v) => onChanged(),
+            onChanged: onChanged,
             activeColor: activeColor,
             checkColor: checkColor,
+            shape: shape,
           ),
         ),
         const Spacing.mediumWidth(),

@@ -32,17 +32,17 @@ class SettingView extends ConsumerWidget {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Spacing.mediumHeight(),
+              const Spacing.mediumHeight(),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: Row(
-                  children:  <Widget>[
-                    Spacing.smallWidth(),
+                  children: <Widget>[
+                    const Spacing.smallWidth(),
                     Image.asset("assets/images/setting.png"),
-                    Spacing.smallWidth(),
-                    Text(
+                    const Spacing.smallWidth(),
+                    const Text(
                       'Settings',
-                      style: TextStyle(fontSize: 24),
+                      style: const TextStyle(fontSize: 24),
                     ),
                   ],
                 ),
@@ -69,13 +69,16 @@ class SettingView extends ConsumerWidget {
               ),
               const Spacing.smallHeight(),
               Text(userProv.currentUser?.email ?? 'user@gmail.com'),
-              Spacing.largeHeight(),
+              const Spacing.largeHeight(),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                 alignment: Alignment.topLeft,
                 child: const Text(
                   "Account Settings",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.grey3),
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.grey3),
                   textAlign: TextAlign.start,
                 ),
               ),
@@ -93,12 +96,14 @@ class SettingView extends ConsumerWidget {
                   padding: const EdgeInsets.all(4),
                   children: <Widget>[
                     ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Change Username",
                         style: TextStyle(
-                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
-                        ),
+                            color: AppColors.shade6,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                       leading: const Icon(
                         Icons.person,
@@ -111,7 +116,8 @@ class SettingView extends ConsumerWidget {
                       onTap: () {
                         ref
                             .read(navigationServiceProvider)
-                            .navigateToNamed(Routes.editUser);},
+                            .navigateToNamed(Routes.editUser);
+                      },
                     ),
                     Container(
                       margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -120,12 +126,14 @@ class SettingView extends ConsumerWidget {
                       ),
                     ),
                     ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Change Email Address",
                         style: TextStyle(
-                          color: AppColors.shade6,fontSize: 14, fontWeight: FontWeight.w600
-                        ),
+                            color: AppColors.shade6,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                       leading: const Icon(
                         Icons.email_outlined,
@@ -146,12 +154,14 @@ class SettingView extends ConsumerWidget {
                       ),
                     ),
                     ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Change Password",
                         style: TextStyle(
-                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
-                        ),
+                            color: AppColors.shade6,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                       leading: const Icon(
                         Icons.vpn_key_rounded,
@@ -172,24 +182,27 @@ class SettingView extends ConsumerWidget {
                       child: const Divider(color: AppColors.shade4),
                     ),
                     ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                      title: Text(
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: -4),
+                      title: const Text(
                         "Delete Account",
-                        style: TextStyle(
-                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
-                        ),
+                        style: const TextStyle(
+                            color: AppColors.shade6,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
-                      leading: Icon(Icons.delete, color: AppColors.shade5),
-                      trailing: Icon(Icons.keyboard_arrow_right,
+                      leading:
+                          const Icon(Icons.delete, color: AppColors.shade5),
+                      trailing: const Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
-                      onTap: () =>ref
+                      onTap: () => ref
                           .read(navigationServiceProvider)
                           .navigateToNamed(Routes.deleteUser),
                     ),
                   ],
                 ),
               ),
-             Spacing.smallHeight(),
+              const Spacing.smallHeight(),
               Container(
                 margin: const EdgeInsets.all(20),
                 height: 50,
@@ -202,10 +215,14 @@ class SettingView extends ConsumerWidget {
                   padding: const EdgeInsets.all(4),
                   children: <Widget>[
                     ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Notification",
-                        style: TextStyle(color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            color: AppColors.shade6,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                       leading: const Icon(Icons.notifications_none,
                           color: AppColors.shade5),
@@ -228,7 +245,10 @@ class SettingView extends ConsumerWidget {
                 alignment: Alignment.topLeft,
                 child: const Text(
                   "Help",
-                  style: TextStyle(color: AppColors.grey3, fontSize: 14, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: AppColors.grey3,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
                   textAlign: TextAlign.start,
                 ),
               ),
@@ -251,8 +271,9 @@ class SettingView extends ConsumerWidget {
                       title: Text(
                         "Customer Support",
                         style: TextStyle(
-                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
-                        ),
+                            color: AppColors.shade6,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                       leading: Icon(
                         Icons.headset_mic_outlined,
@@ -270,12 +291,14 @@ class SettingView extends ConsumerWidget {
                       ),
                     ),
                     ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Privacy policy",
                         style: TextStyle(
-                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
-                        ),
+                            color: AppColors.shade6,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                       leading: const Icon(
                         Icons.lock_outline_rounded,
@@ -296,12 +319,14 @@ class SettingView extends ConsumerWidget {
                       child: const Divider(color: AppColors.shade4),
                     ),
                     ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "Terms of use",
                         style: TextStyle(
-                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
-                        ),
+                            color: AppColors.shade6,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                       leading: const Icon(Icons.insert_drive_file_outlined,
                           color: AppColors.shade5),
@@ -319,19 +344,20 @@ class SettingView extends ConsumerWidget {
                       child: const Divider(color: AppColors.shade4),
                     ),
                     ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         "About Buylink",
                         style: TextStyle(
-                          color: AppColors.shade6, fontSize: 14, fontWeight: FontWeight.w600
-                        ),
+                            color: AppColors.shade6,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                       leading: const Icon(Icons.info_outline_rounded,
                           color: AppColors.shade5),
                       trailing: const Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
                       onTap: () {
-
                         ref
                             .read(navigationServiceProvider)
                             .navigateToNamed(Routes.about);
@@ -373,9 +399,7 @@ class SettingView extends ConsumerWidget {
                           title: 'Are you sure you want to log out?',
                           text1: 'No',
                           text2: 'Yes',
-                          onText2Pressed: () => ref
-                              .read(navigationServiceProvider)
-                              .navigateToNamed(Routes.login),
+                          onText2Pressed: () => settingNotifier.logOut(),
                         );
                       },
                     );

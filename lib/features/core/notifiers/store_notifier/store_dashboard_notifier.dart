@@ -2,7 +2,7 @@ import 'package:buy_link/features/core/models/analytics_model.dart';
 import 'package:buy_link/features/core/models/category_model.dart';
 import 'package:buy_link/features/core/models/most_searched_model.dart';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
-import 'package:buy_link/features/core/models/spline_data_model.dart';
+import 'package:buy_link/features/core/models/chart_data_model.dart';
 import 'package:buy_link/features/core/models/store_quick_model.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/repositories/store_repository.dart';
@@ -12,6 +12,7 @@ import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../services/base/network_exception.dart';
+import '../../models/most_searched_count_model.dart';
 import '../../models/product_model.dart';
 
 class StoreDashboardNotifier extends BaseChangeNotifier {
@@ -19,12 +20,8 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
 
   StoreDashboardNotifier(this._reader);
 
-  List<MostSearchedProductModel> _mostSearchedProducts = [];
-  List<MostSearchedProductModel> get mostSearchedProducts =>
-      _mostSearchedProducts;
-
-  // List<ProductModel> _products = [];
-  // List<ProductModel> get products => _products;
+  MostSearchedModel? _mostSearchedNCount;
+  MostSearchedModel? get mostSearchedNCount => _mostSearchedNCount;
 
   bool _initLoading = false;
   bool get initLoading => _initLoading;
@@ -32,17 +29,14 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
   AnalyticsModel? _searchAnalytics;
   AnalyticsModel? get searchAnalytics => _searchAnalytics;
 
-  List<SplineDataModel> _splineDataModel = [];
-  List<SplineDataModel> get splineDataModel => _splineDataModel;
+  List<ChartDataModel> _searchedData = [];
+  List<ChartDataModel> get searchedData => _searchedData;
+
+  List<ChartDataModel> _visitsData = [];
+  List<ChartDataModel> get visitsData => _visitsData;
 
   AnalyticsModel? _visitAnalytics;
   AnalyticsModel? get visitAnalytics => _visitAnalytics;
-
-  int _allProductCount = 0;
-  int get allProductCount => _allProductCount;
-
-  int _savedProductCount = 0;
-  int get savedProductCount => _savedProductCount;
 
   Future<void> initFetch({required int storeId}) async {
     try {
@@ -51,8 +45,8 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
       await fetchMostSearchedProducts(storeId: storeId, category: 'all');
       await fetchSearchAnalytics(storeId: storeId, week: 'current');
       await fetchVisitAnalytics(storeId: storeId, week: 'current');
-      await fetchAllProductCount(storeId: storeId, week: 'current');
-      await fetchSavedProductCount(storeId: storeId, week: 'current');
+      // await fetchAllProductCount(storeId: storeId, week: 'current');
+      // await fetchSavedProductCount(storeId: storeId, week: 'current');
       // await _reader(coreRepository).initDash(
       //   storeId: storeId,
       // );
@@ -74,7 +68,7 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
   }) async {
     try {
       setState(state: ViewState.loading);
-      _mostSearchedProducts = await _reader(coreRepository).getMostSearched(
+      _mostSearchedNCount = await _reader(coreRepository).getMostSearchedNCount(
         storeId: storeId,
       );
       setState(state: ViewState.idle);
@@ -92,28 +86,28 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
   }) async {
     try {
       setState(state: ViewState.loading);
-      _splineDataModel.clear();
+      _searchedData.clear();
       _searchAnalytics = await _reader(coreRepository).getAnalytics(
         type: 'search',
         storeId: storeId,
         week: week,
       );
-      _splineDataModel
-          .add(SplineDataModel('SUN', _searchAnalytics!.sunday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('MON', _searchAnalytics!.monday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('TUE', _searchAnalytics!.tuesday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('WED', _searchAnalytics!.wednesday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('THUR', _searchAnalytics!.thursday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('FRI', _searchAnalytics!.friday.toDouble()));
-      _splineDataModel
-          .add(SplineDataModel('SAT', _searchAnalytics!.saturday.toDouble()));
+      _searchedData
+          .add(ChartDataModel('Sun', _searchAnalytics!.sunday.toDouble()));
+      _searchedData
+          .add(ChartDataModel('Mon', _searchAnalytics!.monday.toDouble()));
+      _searchedData
+          .add(ChartDataModel('Tue', _searchAnalytics!.tuesday.toDouble()));
+      _searchedData
+          .add(ChartDataModel('Wed', _searchAnalytics!.wednesday.toDouble()));
+      _searchedData
+          .add(ChartDataModel('Thur', _searchAnalytics!.thursday.toDouble()));
+      _searchedData
+          .add(ChartDataModel('Fri', _searchAnalytics!.friday.toDouble()));
+      _searchedData
+          .add(ChartDataModel('Sat', _searchAnalytics!.saturday.toDouble()));
 
-      print('Spline data : $_splineDataModel');
+      print('Searched data : $_searchedData');
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
@@ -128,50 +122,31 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
     required String week,
   }) async {
     try {
+      _visitsData.clear();
       setState(state: ViewState.loading);
       _visitAnalytics = await _reader(coreRepository).getAnalytics(
         type: 'visit',
         storeId: storeId,
         week: week,
       );
-      setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      setState(state: ViewState.error);
-      Alertify(title: e.error).error();
-    } finally {
-      // setState(state: ViewState.idle);
-    }
-  }
 
-  Future<void> fetchAllProductCount({
-    required int storeId,
-    required String week,
-  }) async {
-    try {
-      setState(state: ViewState.loading);
-      _allProductCount = await _reader(coreRepository).getProductCount(
-        type: 'all',
-        storeId: storeId,
-      );
-      setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      setState(state: ViewState.error);
-      Alertify(title: e.error).error();
-    } finally {
-      // setState(state: ViewState.idle);
-    }
-  }
+      _visitsData
+          .add(ChartDataModel('Sun', _visitAnalytics!.sunday.toDouble()));
+      _visitsData
+          .add(ChartDataModel('Mon', _visitAnalytics!.monday.toDouble()));
+      _visitsData
+          .add(ChartDataModel('Tue', _visitAnalytics!.tuesday.toDouble()));
+      _visitsData
+          .add(ChartDataModel('Wed', _visitAnalytics!.wednesday.toDouble()));
+      _visitsData
+          .add(ChartDataModel('Thur', _visitAnalytics!.thursday.toDouble()));
+      _visitsData
+          .add(ChartDataModel('Fri', _visitAnalytics!.friday.toDouble()));
+      _visitsData
+          .add(ChartDataModel('Sat', _visitAnalytics!.saturday.toDouble()));
 
-  Future<void> fetchSavedProductCount({
-    required int storeId,
-    required String week,
-  }) async {
-    try {
-      setState(state: ViewState.loading);
-      _savedProductCount = await _reader(coreRepository).getProductCount(
-        type: 'saved',
-        storeId: storeId,
-      );
+      print('Visit data : $_visitsData');
+
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);

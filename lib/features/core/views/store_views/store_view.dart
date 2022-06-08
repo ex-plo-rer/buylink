@@ -78,8 +78,13 @@ class StoreView extends ConsumerWidget {
                               return StoreContainer(
                                 storeName: storeNotifier.myStores[index].name,
                                 starRate: storeNotifier.myStores[index].star,
-                                storeImage: storeNotifier.myStores[index].image,
-                                onTap: () {},
+                                storeImage: storeNotifier.myStores[index].logo,
+                                onTap: () => ref
+                                    .read(navigationServiceProvider)
+                                    .navigateToNamed(
+                                      Routes.storeDashboard,
+                                      arguments: storeNotifier.myStores[index],
+                                    ),
                               );
                             }
                           },

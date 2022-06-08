@@ -18,11 +18,10 @@ class AppTextField extends StatelessWidget {
   final bool hasBorder;
   final bool isSearch;
   final Color? fillColor;
-  final bool hasPrefixIcon;
-  final bool hasSuffixIcon;
   final int? maxLines;
   final bool? enabled;
   final void Function()? onTap;
+  final double contentPadding;
 
   const AppTextField({
     Key? key,
@@ -41,11 +40,10 @@ class AppTextField extends StatelessWidget {
     this.hasBorder = true,
     this.isSearch = false,
     this.fillColor = AppColors.transparent,
-    this.hasPrefixIcon = false,
-    this.hasSuffixIcon = true,
     this.maxLines = 1,
     this.enabled,
     this.onTap,
+    this.contentPadding = 0,
   }) : super(key: key);
 
   @override
@@ -85,18 +83,18 @@ class AppTextField extends StatelessWidget {
                     ? 16
                     : isSearch
                         ? 16
-                        : 0,
+                        : contentPadding,
               ),
               hintText: hintText,
               hintStyle: const TextStyle(fontSize: 14),
-              suffixIcon: hasSuffixIcon
+              suffixIcon: suffixIcon != null
                   ? UnconstrainedBox(
                       child: suffixIcon,
                       alignment:
                           hasBorder ? Alignment.center : Alignment.topRight,
                     )
                   : null,
-              prefixIcon: hasPrefixIcon
+              prefixIcon: prefixIcon != null
                   ? UnconstrainedBox(
                       child: prefixIcon,
                       alignment: hasBorder

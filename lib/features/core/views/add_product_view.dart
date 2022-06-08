@@ -18,9 +18,15 @@ import '../../../core/constants/colors.dart';
 import '../../../core/routes.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
+import '../models/product_model.dart';
+import '../notifiers/store_notifier/store_dashboard_notifier.dart';
 
 class AddProductView extends ConsumerWidget {
-  AddProductView({Key? key}) : super(key: key);
+  final Store store;
+  AddProductView({
+    Key? key,
+    required this.store,
+  }) : super(key: key);
 
   final productNameFN = FocusNode();
   final minPriceFN = FocusNode();
@@ -202,8 +208,11 @@ class AddProductView extends ConsumerWidget {
                 text: 'Save Product',
                 fontSize: 16,
                 backgroundColor: AppColors.primaryColor,
-                onPressed: () {
-                  addProductNotifier.addProduct();
+                onPressed: () async {
+                  addProductNotifier.addProduct(storeId: store.id);
+                  await ref
+                      .read(storeDashboardNotifierProvider)
+                      .initFetch(storeId: store.id);
                 },
               ),
               const Spacing.height(54),

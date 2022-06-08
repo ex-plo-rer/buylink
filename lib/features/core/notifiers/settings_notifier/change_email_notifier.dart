@@ -1,16 +1,17 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../core/routes.dart';
 import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../repositories/setting_repository.dart';
 import '../../../../services/base/network_exception.dart';
+import '../../../../services/navigation_service.dart';
 
 class EditUserEmailNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  EditUserEmailNotifier(this._reader) {
-  }
+  EditUserEmailNotifier(this._reader);
 
   int _currentPage = 1;
   int get currentPage => _currentPage;
@@ -44,19 +45,16 @@ class EditUserEmailNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-
   Future<void> changeEmail({
-    //required int id,
     required String email,
-
   }) async {
     try {
       setState(state: ViewState.loading);
       await _reader(settingRepository).changeEmail(
-        // id : id,
         email: email,
       );
-
+      _reader(navigationServiceProvider)
+          .navigateOffAllNamed(Routes.dashboard, (p0) => false);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
@@ -65,7 +63,6 @@ class EditUserEmailNotifier extends BaseChangeNotifier {
     }
   }
 
-
   Future<void> checkEmail({
     required String reason,
     required String email,
@@ -73,6 +70,7 @@ class EditUserEmailNotifier extends BaseChangeNotifier {
     try {
       setState(state: ViewState.loading);
 
+      // _code =
       await _reader(settingRepository).checkEmail(
         reason: reason,
         email: email,
@@ -89,8 +87,8 @@ class EditUserEmailNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     }
   }
-
 }
 
 final editUserEmailNotifierProvider =
-ChangeNotifierProvider<EditUserEmailNotifier>((ref) => EditUserEmailNotifier(ref.read));
+    ChangeNotifierProvider<EditUserEmailNotifier>(
+        (ref) => EditUserEmailNotifier(ref.read));

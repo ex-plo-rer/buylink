@@ -107,10 +107,10 @@ class Store {
 
   int id;
   String name;
-  String location;
+  String? location;
   double lon;
   double lat;
-  double star;
+  num star;
   String logo;
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(

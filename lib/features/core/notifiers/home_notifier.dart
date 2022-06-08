@@ -35,6 +35,9 @@ class HomeNotifier extends BaseChangeNotifier {
   ProductAttrModel? _productAttr;
   ProductAttrModel get productAttr => _productAttr!;
 
+  List<String> _autoCompleteStrings = [];
+  List<String> get autoCompleteStrings => _autoCompleteStrings;
+
   Position? position;
   //
   // Future<void> setLocation(context) async {
@@ -73,9 +76,8 @@ class HomeNotifier extends BaseChangeNotifier {
   }) async {
     try {
       setState(state: ViewState.loading);
-      _productAttr = await _reader(coreRepository).fetchProductAttr(
-        productId: productId,
-      );
+      _productAttr =
+          await _reader(coreRepository).fetchProductAttr(productId: productId);
       // Alertify(title: 'User logged in').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
@@ -104,18 +106,20 @@ class HomeNotifier extends BaseChangeNotifier {
     try {
       _searchLoading = true;
       setState(state: ViewState.loading);
-      await Future.delayed(Duration(seconds: 2));
-      return [
-        'Oluwatobiloba Ajayi',
-        'The Lord is good',
-        'I will not fail',
-        'GGMU',
-        'Revrd. Tolu Agboola',
-      ]
-          .where(
-              (element) => element.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      // await _reader(coreRepository).autoComplete(query: query);
+      // await Future.delayed(Duration(seconds: 2));
+      // return [
+      //   'Oluwatobiloba Ajayi',
+      //   'The Lord is good',
+      //   'I will not fail',
+      //   'GGMU',
+      //   'Revrd. Tolu Agboola',
+      // ]
+      //     .where(
+      //         (element) => element.toLowerCase().contains(query.toLowerCase()))
+      //     .toList();
+      _autoCompleteStrings =
+          await _reader(coreRepository).autoComplete(query: query);
+      return _autoCompleteStrings;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       _searchLoading = false;
@@ -123,10 +127,41 @@ class HomeNotifier extends BaseChangeNotifier {
       return [];
     } finally {
       _searchLoading = false;
-      setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
       // return [];
     }
   }
+
+  // Future<List<String>> autoComplete({
+  //   required String query,
+  // }) async {
+  //   print('Query......: $query');
+  //   try {
+  //     _searchLoading = true;
+  //     setState(state: ViewState.loading);
+  //     await Future.delayed(Duration(seconds: 2));
+  //     return [
+  //       'Oluwatobiloba Ajayi',
+  //       'The Lord is good',
+  //       'I will not fail',
+  //       'GGMU',
+  //       'Revrd. Tolu Agboola',
+  //     ]
+  //         .where(
+  //             (element) => element.toLowerCase().contains(query.toLowerCase()))
+  //         .toList();
+  //     // await _reader(coreRepository).autoComplete(query: query);
+  //     setState(state: ViewState.idle);
+  //   } on NetworkException catch (e) {
+  //     _searchLoading = false;
+  //     setState(state: ViewState.idle);
+  //     return [];
+  //   } finally {
+  //     _searchLoading = false;
+  //     // setState(state: ViewState.idle);
+  //     // return [];
+  //   }
+  // }
 
   // TODO: Modify this code and separate the shared preference to the local storage service
   Future<List<String>> getRecentSearchesLike(String query) async {

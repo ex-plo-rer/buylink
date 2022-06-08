@@ -1,3 +1,4 @@
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/utilities/alertify.dart';
@@ -9,15 +10,18 @@ import '../../../../services/base/network_exception.dart';
 class EditUserPasswordNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  EditUserPasswordNotifier(this._reader) {
-  }
+  EditUserPasswordNotifier(this._reader) {}
 
   int _currentPage = 1;
   int get currentPage => _currentPage;
   int _totalPage = 2;
   int get totalPage => _totalPage;
-  bool _passwordVisible = false;
-  bool get passwordVisible => _passwordVisible;
+
+  bool _oldPasswordVisible = false;
+  bool get oldPasswordVisible => _oldPasswordVisible;
+
+  bool _newPasswordVisible = false;
+  bool get newPasswordVisible => _newPasswordVisible;
 
   String _newpassword = '';
   String get newpassword => _newpassword;
@@ -25,17 +29,29 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
   String _oldpassword = '';
   String get oldpassword => _oldpassword;
 
-  void onPasswordChanged(String newPassword) {
+  late bool _oldPasswordCorrect;
+  bool get oldPasswordCorrect => _oldPasswordCorrect;
+
+  void toggleOldPassword() {
+    _oldPasswordVisible = !_oldPasswordVisible;
+    notifyListeners();
+  }
+
+  void toggleNewPassword() {
+    _newPasswordVisible = !_newPasswordVisible;
+    notifyListeners();
+  }
+
+  void onNewPasswordChanged(String newPassword) {
     _newpassword = newPassword;
     print(_newpassword);
     notifyListeners();
   }
 
-  void onCheckPassword(String oldPassword){
+  void onOldPasswordChanged(String oldPassword) {
     _oldpassword = oldPassword;
     print(_oldpassword);
     notifyListeners();
-
   }
 
   void moveBackward() {
@@ -55,17 +71,15 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
   }
 
   Future<void> changePassword({
-    //required int id,
-    required String password,
-
+    required String newPassword,
   }) async {
     try {
       setState(state: ViewState.loading);
       await _reader(settingRepository).changePassword(
-        // id : id,
-        password: password,
+        password: newPassword,
       );
-
+      _reader(navigationServiceProvider).navigateBack();
+      Alertify(title: 'Password changed successfully').success();
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
@@ -80,7 +94,7 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
     try {
       setState(state: ViewState.loading);
 
-      await _reader(settingRepository).checkPassword(
+      _oldPasswordCorrect = await _reader(settingRepository).checkPassword(
         password: password,
       );
       setState(state: ViewState.idle);
@@ -91,10 +105,8 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     }
   }
-
-
-
 }
 
 final editUserPasswordNotifierProvider =
-ChangeNotifierProvider<EditUserPasswordNotifier>((ref) => EditUserPasswordNotifier(ref.read));
+    ChangeNotifierProvider<EditUserPasswordNotifier>(
+        (ref) => EditUserPasswordNotifier(ref.read));

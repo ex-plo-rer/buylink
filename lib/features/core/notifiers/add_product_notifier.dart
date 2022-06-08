@@ -15,11 +15,11 @@ class AddProductNotifier extends BaseChangeNotifier {
 
   String? _categoryValue;
   String? get categoryValue => _categoryValue;
-String? _sizeValue;
+  String? _sizeValue;
   String? get sizeValue => _sizeValue;
 
   List<String> _categories = ['Aaaa', 'Bbbbb', 'Ccccc'];
-  List<String> get categories =>_categories;
+  List<String> get categories => _categories;
 
   List<String> _sizes = ['S', 'M', 'L', 'XL', 'XXL'];
   List<String> get sizes => _sizes;
@@ -33,6 +33,7 @@ String? _sizeValue;
     _categoryValue = newCategory;
     notifyListeners();
   }
+
   void onSizeChanged({
     required String newSize,
   }) async {
@@ -53,11 +54,6 @@ String? _sizeValue;
   String? _model;
   String? _material;
   String? _care;
-
-  String? image1;
-  String? image2;
-  String? image3;
-  String? image4;
 
   void setImageFile({
     required String imageFile,
@@ -105,34 +101,41 @@ String? _sizeValue;
     notifyListeners();
   }
 
-  Future<void> addProduct() async {
+  Future<void> addProduct({
+    required storeId,
+  }) async {
     try {
       setState(state: ViewState.loading);
       await _reader(coreRepository).addProduct(
-        storeId: 1,
+        storeId: storeId,
         name: _name!,
-        images: _imageList[0],
-        price: _minPrice!,
-        oldPrice: _maxPrice!,
-        category: _categoryValue!,
+        image1: _imageList[0],
+        image2: _imageList.length < 2 ? null : _imageList[1],
+        image3: _imageList.length < 3 ? null : _imageList[2],
+        image4: _imageList.length < 4 ? null : _imageList[3],
+        price: _minPrice,
+        oldPrice: _maxPrice,
+        // category: _categoryValue!,
+        category: '_categoryValue!',
         description: _desc!,
-        brand: _brand!,
-        colors: _color!,
-        minAge: _minAge!,
-        maxAge: _maxAge!,
-        minWeight: _minWeight!,
-        maxWeight: _maxWeight!,
-        size: _sizeValue!,
-        model: _model!,
-        material: _material!,
-        care: _care!,
+        brand: _brand,
+        colors: _color,
+        minAge: _minAge,
+        maxAge: _maxAge,
+        minWeight: _minWeight,
+        maxWeight: _maxWeight,
+        size: _sizeValue,
+        model: _model,
+        material: _material,
+        care: _care,
       );
       Alertify(title: 'Your product has been added').success();
       _reader(navigationServiceProvider).navigateBack();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      // Alertify(title: e.error!).error();
+      Alertify(title: 'There\'s a problem adding your product').error();
     } finally {
       setState(state: ViewState.idle);
     }
