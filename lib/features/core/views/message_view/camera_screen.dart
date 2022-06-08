@@ -10,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../core/constants/colors.dart';
 import 'camera_preview_screen.dart';
 
-
 class CameraScreen extends ConsumerStatefulWidget {
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -50,6 +49,7 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
       setState(() {});
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -61,15 +61,13 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
         });
 
         _initCameraController(cameras[selectedCameraIdx]).then((void v) {});
-      }else{
+      } else {
         print("No camera available");
       }
     }).catchError((err) {
       print('Error: $err.code\nError Message: $err.message');
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -89,14 +87,13 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
                 // mainAxisAlignment: MainAxisAlignment.,
                 children: [
                   Spacing.mediumWidth(),
-                  Container (
+                  Container(
                     height: 72,
                     width: 72,
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
-
                   ),
                   Spacing.largeWidth(),
                   Spacing.largeWidth(),
@@ -140,14 +137,13 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           //mainAxisSize: MainAxisSize.max,
           children: [
-            Container (
+            Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white, width: 4),
                   //color: Colors.yellow,
                   shape: BoxShape.circle,
                 ),
-                child:
-                FloatingActionButton(
+                child: FloatingActionButton(
                     child: Icon(Icons.camera_alt_outlined, color: Colors.white),
                     backgroundColor: AppColors.primaryColor,
                     onPressed: () {
@@ -173,7 +169,8 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
         alignment: Alignment.centerLeft,
         child: IconButton(
           onPressed: _onSwitchCamera,
-          icon: Icon(_getCameraLensIcon(lensDirection), color: Colors.white, size: 24),
+          icon: Icon(_getCameraLensIcon(lensDirection),
+              color: Colors.white, size: 24),
         ),
       ),
     );
@@ -194,7 +191,7 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
 
   void _onSwitchCamera() {
     selectedCameraIdx =
-    selectedCameraIdx < cameras.length - 1 ? selectedCameraIdx + 1 : 0;
+        selectedCameraIdx < cameras.length - 1 ? selectedCameraIdx + 1 : 0;
     CameraDescription selectedCamera = cameras[selectedCameraIdx];
     _initCameraController(selectedCamera);
   }

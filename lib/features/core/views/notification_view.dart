@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/routes.dart';
+import '../../../services/navigation_service.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
 import '../notifiers/notification_notifier.dart';
@@ -178,56 +180,63 @@ class MessageScreen extends ConsumerWidget {
                   ? 1
                   : notificationNotifier.messages.length,
               itemBuilder: (context, index) =>
-                  notificationNotifier.messages.isEmpty
-                      ? const Center(
-                          child: Text('Empty'),
-                        )
+                  notificationNotifier.messages.isNotEmpty
+                      ? const Center(child: Text('Empty'))
                       : GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            ref
+                                .read(navigationServiceProvider)
+                                .navigateToNamed(Routes.messageView);
+                          },
                           child: ListTile(
-                            title: Text(
-                              notificationNotifier.messages[index].name,
+                            title: const Text(
+                              'name',
+                              // notificationNotifier.messages[index].name,
                               style: TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.bold),
                             ),
-                            leading: CircleAvatar(
+                            leading: const CircleAvatar(
                               backgroundColor: AppColors.shade3,
-                              child: Text(notificationNotifier
-                                  .messages[index].name
-                                  .initials()),
+                              child: Text('DE'
+                                  // notificationNotifier
+                                  // .messages[index].name
+                                  // .initials()
+                                  ),
                               radius: 24,
                             ),
-                            subtitle: Text(
-                              notificationNotifier.messages[index].msg,
+                            subtitle: const Text(
+                              'notificationNotifier.messages[index].msg',
+                              // notificationNotifier.messages[index].msg,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            trailing: Column(children: [
-                              SizedBox(height: 6),
-                              CircleAvatar(
-                                backgroundColor: AppColors.shade3,
-                                child: Text(
-                                  notificationNotifier.messages[index].unread
-                                      .toString(),
+                            trailing: Column(
+                              children: const [
+                                SizedBox(height: 6),
+                                CircleAvatar(
+                                  backgroundColor: AppColors.shade3,
+                                  child: Text(
+                                    '2',
+                                    // notificationNotifier.messages[index].unread
+                                    //     .toString(),
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  radius: 10,
+                                ),
+                                Text(
+                                  'Today',
+                                  // notificationNotifier.messages[index].time,
+                                  // "${DateFormat.jm()
+                                  //     .format(notificationNotifier.messages[index].time)
+                                  //     .toString()}",
                                   style: TextStyle(fontSize: 12),
                                 ),
-                                radius: 10,
-                              ),
-                              Text(
-                                notificationNotifier.messages[index].time,
-                                // "${DateFormat.jm()
-                                //     .format(notificationNotifier.messages[index].time)
-                                //     .toString()}",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ]),
+                              ],
+                            ),
                             onTap: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => MessageView(),
-                              //   ),
-                              // );
+                              ref
+                                  .read(navigationServiceProvider)
+                                  .navigateToNamed(Routes.messageView);
                             },
                           ),
                         ),

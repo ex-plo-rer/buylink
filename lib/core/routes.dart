@@ -24,6 +24,7 @@ import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/compare_arg_model.dart';
 import '../features/core/models/product_model.dart';
 import '../features/core/views/add_product_desc.dart';
+import '../features/core/views/message_view/camera_screen.dart';
 import '../features/core/views/settings_view/about_buylink.dart';
 import '../features/core/views/add_product_specifics_view.dart';
 import '../features/core/views/product_list_view.dart';
@@ -82,6 +83,7 @@ class Routes {
   static const privacyPolicy = '/privacy-policy';
   static const about = '/about';
   // static const addProductSpecifics = '/add-product-spec';
+  static const cameraScreen = '/camera-screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -214,8 +216,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => PrivacyPolicy());
       case about:
         return MaterialPageRoute(builder: (_) => About());
-      case addProductSpecifics:
-        return MaterialPageRoute(builder: (_) => AddProductSpecificsView());
+      case cameraScreen:
+        return MaterialPageRoute(builder: (_) => CameraScreen());
 
       // case otpVerification:
       // case otpVerification:

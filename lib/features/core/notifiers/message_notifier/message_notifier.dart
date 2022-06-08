@@ -10,7 +10,6 @@ class MessageViewNotifier extends BaseChangeNotifier {
   MessageViewNotifier(this._reader);
 
   void pickFile() async {
-
     // opens storage to pick files and the picked file or files
     // are assigned into result and if no file is chosen result is null.
     // you can also toggle "allowMultiple" true or false depending on your need
@@ -28,9 +27,7 @@ class MessageViewNotifier extends BaseChangeNotifier {
   void openFile(PlatformFile file) {
     OpenFile.open(file.path);
   }
-
-
 }
 
-final messageViewNotifierProvider =
-ChangeNotifierProvider<MessageViewNotifier>((ref) => MessageViewNotifier(ref.read));
+final messageViewNotifierProvider = ChangeNotifierProvider<MessageViewNotifier>(
+    (ref) => MessageViewNotifier(ref.read));
