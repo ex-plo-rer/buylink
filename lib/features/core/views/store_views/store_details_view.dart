@@ -27,8 +27,10 @@ import '../../../../core/constants/strings.dart';
 import '../../../../services/location_service.dart';
 import '../../../../widgets/iconNtext_container.dart';
 import '../../models/compare_arg_model.dart';
+import '../../models/message_model.dart';
 import '../../models/product_model.dart';
 import '../../notifiers/category_notifier.dart';
+import '../../notifiers/user_provider.dart';
 import '../../notifiers/wishlist_notifier.dart';
 
 class StoreDetailsView extends ConsumerStatefulWidget {
@@ -99,7 +101,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
                               image: CachedNetworkImageProvider(
-                                storeDetailsNotifier.storeDetails.logo,
+                                storeDetailsNotifier.storeDetails.background,
                               ),
                               fit: BoxFit.fill,
                             ),
@@ -127,10 +129,10 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                   ),
                                   Row(
                                     children: [
-                                      const FavoriteContainer(
+                                      FavoriteContainer(
                                         height: 32,
                                         width: 32,
-                                        favIcon: Icon(
+                                        favIcon: const Icon(
                                           Icons.mail_outline_outlined,
                                           size: 16,
                                           color: AppColors.primaryColor,
@@ -139,6 +141,22 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                         radius: 50,
                                         padding: 1,
                                         hasBorder: true,
+                                        onFavoriteTapped: () {
+                                          ref
+                                              .read(navigationServiceProvider)
+                                              .navigateToNamed(
+                                                Routes.messageView,
+                                                arguments: MessageModel(
+                                                  id: storeDetailsNotifier
+                                                      .storeId,
+                                                  name: storeDetailsNotifier
+                                                      .storeDetails.name,
+                                                  imageUrl: storeDetailsNotifier
+                                                      .storeDetails.background,
+                                                  fromUser: true,
+                                                ),
+                                              );
+                                        },
                                       ),
                                       const Spacing.smallWidth(),
                                       FavoriteContainer(

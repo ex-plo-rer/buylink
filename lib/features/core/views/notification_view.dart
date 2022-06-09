@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/product_notification_model.dart';
+import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/features/core/views/message_view/message_view.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import '../../../core/routes.dart';
 import '../../../services/navigation_service.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
+import '../models/message_model.dart';
 import '../notifiers/notification_notifier.dart';
 
 class NotificationView extends ConsumerStatefulWidget {
@@ -179,67 +181,78 @@ class MessageScreen extends ConsumerWidget {
               itemCount: notificationNotifier.messages.isEmpty
                   ? 1
                   : notificationNotifier.messages.length,
-              itemBuilder: (context, index) =>
-                  notificationNotifier.messages.isNotEmpty
-                      ? const Center(child: Text('Empty'))
-                      : GestureDetector(
-                          onTap: () {
-                            ref
-                                .read(navigationServiceProvider)
-                                .navigateToNamed(Routes.messageView);
-                          },
-                          child: ListTile(
-                            title: const Text(
-                              'name',
-                              // notificationNotifier.messages[index].name,
-                              style: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold),
-                            ),
-                            leading: const CircleAvatar(
-                              backgroundColor: AppColors.shade3,
-                              child: Text('DE'
-                                  // notificationNotifier
-                                  // .messages[index].name
-                                  // .initials()
-                                  ),
-                              radius: 24,
-                            ),
-                            subtitle: const Text(
-                              'notificationNotifier.messages[index].msg',
-                              // notificationNotifier.messages[index].msg,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: Column(
-                              children: const [
-                                SizedBox(height: 6),
-                                CircleAvatar(
-                                  backgroundColor: AppColors.shade3,
-                                  child: Text(
-                                    '2',
-                                    // notificationNotifier.messages[index].unread
-                                    //     .toString(),
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  radius: 10,
-                                ),
-                                Text(
-                                  'Today',
-                                  // notificationNotifier.messages[index].time,
-                                  // "${DateFormat.jm()
-                                  //     .format(notificationNotifier.messages[index].time)
-                                  //     .toString()}",
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                            onTap: () {
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateToNamed(Routes.messageView);
-                            },
-                          ),
+              itemBuilder: (context, index) => notificationNotifier
+                      .messages.isNotEmpty
+                  ? const Center(child: Text('Empty'))
+                  : GestureDetector(
+                      onTap: () {
+                        // ref.read(navigationServiceProvider).navigateToNamed(
+                        //       Routes.messageView,
+                        //       arguments: MessageModel(
+                        //         id: ref.read(userProvider).currentUser?.id,
+                        //         name: ref.read(userProvider).currentUser!.name,
+                        //       ),
+                        //     );
+                      },
+                      child: ListTile(
+                        title: const Text(
+                          'name',
+                          // notificationNotifier.messages[index].name,
+                          style: TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.bold),
                         ),
+                        leading: const CircleAvatar(
+                          backgroundColor: AppColors.shade3,
+                          child: Text('DE'
+                              // notificationNotifier
+                              // .messages[index].name
+                              // .initials()
+                              ),
+                          radius: 24,
+                        ),
+                        subtitle: const Text(
+                          'notificationNotifier.messages[index].msg',
+                          // notificationNotifier.messages[index].msg,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        trailing: Column(
+                          children: const [
+                            SizedBox(height: 6),
+                            CircleAvatar(
+                              backgroundColor: AppColors.shade3,
+                              child: Text(
+                                '2',
+                                // notificationNotifier.messages[index].unread
+                                //     .toString(),
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              radius: 10,
+                            ),
+                            Text(
+                              'Today',
+                              // notificationNotifier.messages[index].time,
+                              // "${DateFormat.jm()
+                              //     .format(notificationNotifier.messages[index].time)
+                              //     .toString()}",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          ref.read(navigationServiceProvider).navigateToNamed(
+                                Routes.messageView,
+                                arguments: MessageModel(
+                                  id: ref.read(userProvider).currentUser?.id,
+                                  name:
+                                      ref.read(userProvider).currentUser!.name,
+                                  imageUrl: null,
+                                  fromUser: true,
+                                ),
+                              );
+                        },
+                      ),
+                    ),
               separatorBuilder: (__, _) => const Spacing.mediumHeight(),
             ),
     );

@@ -88,9 +88,10 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                       size: 14,
                     ),
                     onPressed: () {
-                      ref
-                          .read(navigationServiceProvider)
-                          .navigateToNamed(Routes.storeMessages);
+                      ref.read(navigationServiceProvider).navigateToNamed(
+                            Routes.storeMessages,
+                            arguments: widget.store,
+                          );
                     },
                   ),
                   containerColor: AppColors.grey10,
@@ -144,9 +145,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
           child: storeDashboardNotifier.state.isError
-              ? const Center(
-                  child: Text('An error occurred.'),
-                )
+              ? const Center(child: Text('An error occurred.'))
               : storeDashboardNotifier.initLoading
                   ? const CircularProgress()
                   : Column(

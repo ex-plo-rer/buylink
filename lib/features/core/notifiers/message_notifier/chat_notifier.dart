@@ -21,9 +21,13 @@ class ChatNotifier extends BaseChangeNotifier {
   late User loggedInUser;
   String? messageText;
 
-  Stream<QuerySnapshot<Object?>>? fetchAllMessages() {
+  String chatId = '';
+
+  Stream<QuerySnapshot<Object?>>? fetchAllMessages(
+      {required var senderId, required var receiverId}) {
+    generateId(senderId: senderId, receiverId: receiverId);
     return firestoreInstance
-        .collection('chats/{loggedInUser.uid}/messages')
+        .collection('chats/$chatId/messages')
         .orderBy('timeStamp')
         .snapshots();
   }
@@ -31,14 +35,36 @@ class ChatNotifier extends BaseChangeNotifier {
   //QrVcmRUPcV
   //0dQmu9zWtr
 
+  void generateId({
+    required var senderId,
+    required var receiverId,
+  }) {
+    // var myId = _reader(userProvider).currentUser?.id;
+    print('senderId: $senderId, receiverId: $receiverId');
+    senderId.hashCode;
+    print('myId.hashCode : ${senderId.hashCode}');
+    if (senderId.hashCode <= receiverId.hashCode) {
+      chatId = '$senderId-$receiverId';
+    } else {
+      chatId = '$receiverId-$senderId';
+    }
+  }
+
   void sendMessage({
     required String messageText,
+    required String senderName,
+    required var senderId,
+    required String? senderImage,
     required bool isImage,
+    required var receiverId,
   }) {
-    firestoreInstance.collection('chats/{loggedInUser.uid}/messages').add({
+    generateId(senderId: senderId, receiverId: receiverId);
+    firestoreInstance.collection('chats/$chatId/messages').add({
       'timeStamp': DateTime.now(),
       'text': messageText,
-      'sender': _reader(userProvider).currentUser?.email ?? 'user@gmail.com',
+      'senderName': senderName,
+      'senderId': senderId,
+      'senderImage': senderImage,
       'isImage': isImage,
     });
   }

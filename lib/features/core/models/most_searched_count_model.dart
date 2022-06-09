@@ -24,7 +24,7 @@ class MostSearchedModel {
   List<MostSearchedProductModel> products;
   int storeProductCount;
   int storeProductsSaved;
-  int storeGrade;
+  num storeGrade;
 
   factory MostSearchedModel.fromJson(Map<String, dynamic> json) =>
       MostSearchedModel(
