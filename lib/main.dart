@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:buy_link/features/startup/views/startup_view.dart';
 import 'package:buy_link/services/navigation_service.dart';
@@ -23,9 +23,10 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   runApp(const ProviderScope(child: MyApp()));
 }

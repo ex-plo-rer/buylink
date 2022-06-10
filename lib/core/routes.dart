@@ -22,7 +22,9 @@ import 'package:flutter/material.dart';
 
 import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/compare_arg_model.dart';
+import '../features/core/models/message_model.dart';
 import '../features/core/models/product_model.dart';
+import '../features/core/models/user_model.dart';
 import '../features/core/views/add_product_desc.dart';
 import '../features/core/views/message_view/camera_screen.dart';
 import '../features/core/views/settings_view/about_buylink.dart';
@@ -82,6 +84,7 @@ class Routes {
   static const settingNotification = '/setting-notification';
   static const privacyPolicy = '/privacy-policy';
   static const about = '/about';
+  // static const addProductSpecifics = '/add-product-spec';
   static const cameraScreen = '/camera-screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -172,7 +175,10 @@ class Routes {
           builder: (_) => StoreDashboardView(store: store),
         );
       case storeMessages:
-        return MaterialPageRoute(builder: (_) => const StoreMessagesView());
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+          builder: (_) => StoreMessagesView(store: store),
+        );
       case storeSettings:
         Store store = settings.arguments as Store;
         return MaterialPageRoute(builder: (_) => StoreSetting(store: store));
@@ -188,7 +194,8 @@ class Routes {
       case addstoreView:
         return MaterialPageRoute(builder: (_) => AddStoreView());
       case messageView:
-        return MaterialPageRoute(builder: (_) => MessageView());
+        MessageModel args = settings.arguments as MessageModel;
+        return MaterialPageRoute(builder: (_) => MessageView(args: args));
 
       case addProduct:
         Store store = settings.arguments as Store;
@@ -215,8 +222,6 @@ class Routes {
         return MaterialPageRoute(builder: (_) => PrivacyPolicy());
       case about:
         return MaterialPageRoute(builder: (_) => About());
-      case addProductSpecifics:
-        return MaterialPageRoute(builder: (_) => AddProductSpecificsView());
       case cameraScreen:
         return MaterialPageRoute(builder: (_) => CameraScreen());
 
