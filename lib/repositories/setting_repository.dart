@@ -190,7 +190,7 @@ class SettingRepository {
       body: body,
       headers: headers,
     );
-    print('change password response $response');
+    print('fetch notification response $response');
     return FetchNotificationModel.fromJson(response);
   }
 

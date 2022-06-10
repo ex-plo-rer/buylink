@@ -12,21 +12,7 @@ class SettingNotificationNotifier extends BaseChangeNotifier {
 
   SettingNotificationNotifier(this._reader){fetchNotifications();}
 
-  FetchNotificationModel? notifications;
-
-  String _type = '';
-  String get type => _type;
-
-  bool _fetchState = false;
-  bool get fetchState => _fetchState;
-  //bool fetchState;
-
-  void onNotChanged({required String text, required bool fetchState}) {
-    _type = text;
-    print(_type);
-    notifyListeners();
-  }
-
+   FetchNotificationModel? notifications;
 
   Future<void> fetchNotifications() async {
     try {
@@ -44,14 +30,15 @@ class SettingNotificationNotifier extends BaseChangeNotifier {
   }
 
 
-  Future<void> setNotification() async {
+  Future<void> setNotification({required String text, required bool fetchState}) async {
     try {
-      setState(state: ViewState.loading);
+     // setState(state: ViewState.loading);
       await _reader(settingRepository).setNotification(
-          type: type,
+          type: text,
           state: fetchState
 
       );
+      await fetchNotifications();
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
