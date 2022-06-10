@@ -175,9 +175,9 @@ class Routes {
           builder: (_) => StoreDashboardView(store: store),
         );
       case storeMessages:
-        Store store = settings.arguments as Store;
+        int id = settings.arguments as int;
         return MaterialPageRoute(
-          builder: (_) => StoreMessagesView(store: store),
+          builder: (_) => StoreMessagesView(id: id),
         );
       case storeSettings:
         Store store = settings.arguments as Store;

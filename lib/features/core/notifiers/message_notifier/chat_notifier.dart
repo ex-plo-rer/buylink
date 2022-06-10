@@ -23,18 +23,6 @@ class ChatNotifier extends BaseChangeNotifier {
 
   String chatId = '';
 
-  Stream<QuerySnapshot<Object?>>? fetchAllMessages(
-      {required var senderId, required var receiverId}) {
-    generateId(senderId: senderId, receiverId: receiverId);
-    return firestoreInstance
-        .collection('chats/$chatId/messages')
-        .orderBy('timeStamp')
-        .snapshots();
-  }
-
-  //QrVcmRUPcV
-  //0dQmu9zWtr
-
   void generateId({
     required var senderId,
     required var receiverId,
@@ -49,6 +37,18 @@ class ChatNotifier extends BaseChangeNotifier {
       chatId = '$receiverId-$senderId';
     }
   }
+
+  Stream<QuerySnapshot<Object?>>? fetchAllMessages(
+      {required var senderId, required var receiverId}) {
+    generateId(senderId: senderId, receiverId: receiverId);
+    return firestoreInstance
+        .collection('chats/$chatId/messages')
+        .orderBy('timeStamp')
+        .snapshots();
+  }
+
+  //QrVcmRUPcV
+  //0dQmu9zWtr
 
   void sendMessage({
     required String messageText,
@@ -99,7 +99,7 @@ class ChatNotifier extends BaseChangeNotifier {
   void messagesStream() async {
     // firestoreInstance.collection('messages').snapshots();
     await for (var snapshot
-        in firestoreInstance.collection('messages').snapshots()) {
+        in firestoreInstance.collection('chats/$chatId/messages').snapshots()) {
       for (var message in snapshot.docs) {
         print(message.data());
       }

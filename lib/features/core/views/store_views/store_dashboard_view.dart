@@ -90,7 +90,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                     onPressed: () {
                       ref.read(navigationServiceProvider).navigateToNamed(
                             Routes.storeMessages,
-                            arguments: widget.store,
+                            arguments: widget.store.id,
                           );
                     },
                   ),
