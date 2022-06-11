@@ -1,5 +1,4 @@
 import 'package:buy_link/core/constants/strings.dart';
-import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/message_model.dart';
 import 'package:buy_link/features/core/notifiers/message_notifier/message_list_notifier.dart';
 import 'package:buy_link/widgets/spacing.dart';
@@ -11,7 +10,6 @@ import '../../../../core/constants/colors.dart';
 import '../../../../core/routes.dart';
 import '../../../../services/navigation_service.dart';
 import '../../../../widgets/circular_progress.dart';
-import '../../models/product_model.dart';
 
 class StoreMessagesView extends ConsumerWidget {
   const StoreMessagesView({
@@ -51,49 +49,98 @@ class StoreMessagesView extends ConsumerWidget {
           : ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.all(4),
-              itemCount: messageListNotifier.chats.length,
-              itemBuilder: (context, index) => ListTile(
-                title: Text(
-                  messageListNotifier.chats[index].name,
-                  style: const TextStyle(
-                      fontSize: 13, fontWeight: FontWeight.bold),
-                ),
-                leading: const CircleAvatar(
-                  backgroundColor: AppColors.shade1,
-                  child: Text('DE'),
-                  radius: 24,
-                ),
-                subtitle: const Text("Good evening i wanted to ask if you... "),
-                trailing: Column(
-                  children: const <Widget>[
-                    SizedBox(height: 6),
-                    CircleAvatar(
-                      backgroundColor: AppColors.primaryColor,
-                      child: Text(
-                        '1',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      radius: 10,
-                    ),
-                    Text(
-                      "6 Nov",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  ref.read(navigationServiceProvider).navigateToNamed(
-                        Routes.messageView,
-                        arguments: MessageModel(
-                          id: 7,
-                          storeId: id,
-                          name: 'store.name',
-                          imageUrl: AppStrings.ronaldo,
-                          fromUser: false,
+              itemCount: messageListNotifier.chats.isEmpty
+                  ? 1
+                  : messageListNotifier.chats.length,
+              itemBuilder: (context, index) => messageListNotifier.chats.isEmpty
+                  ? ListTile(
+                      title: Text(
+                        'Deji',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                },
-              ),
+                      ),
+                      leading: const CircleAvatar(
+                        backgroundColor: AppColors.shade1,
+                        child: Text('DE'),
+                        radius: 24,
+                      ),
+                      subtitle:
+                          const Text("Good evening i wanted to ask if you... "),
+                      trailing: Column(
+                        children: const <Widget>[
+                          SizedBox(height: 6),
+                          CircleAvatar(
+                            backgroundColor: AppColors.primaryColor,
+                            child: Text(
+                              '1',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            radius: 10,
+                          ),
+                          Text(
+                            "6 Nov",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        ref.read(navigationServiceProvider).navigateToNamed(
+                              Routes.messageView,
+                              arguments: MessageModel(
+                                id: 7,
+                                storeId: id,
+                                name: 'store.name',
+                                imageUrl: AppStrings.ronaldo,
+                                fromUser: false,
+                              ),
+                            );
+                      },
+                    )
+                  : ListTile(
+                      title: Text(
+                        messageListNotifier.chats[index].name,
+                        style: const TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.bold),
+                      ),
+                      leading: const CircleAvatar(
+                        backgroundColor: AppColors.shade1,
+                        child: Text('DE'),
+                        radius: 24,
+                      ),
+                      subtitle:
+                          const Text("Good evening i wanted to ask if you... "),
+                      trailing: Column(
+                        children: const <Widget>[
+                          SizedBox(height: 6),
+                          CircleAvatar(
+                            backgroundColor: AppColors.primaryColor,
+                            child: Text(
+                              '1',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            radius: 10,
+                          ),
+                          Text(
+                            "6 Nov",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        ref.read(navigationServiceProvider).navigateToNamed(
+                              Routes.messageView,
+                              arguments: MessageModel(
+                                id: 7,
+                                storeId: id,
+                                name: 'store.name',
+                                imageUrl: AppStrings.ronaldo,
+                                fromUser: false,
+                              ),
+                            );
+                      },
+                    ),
               separatorBuilder: (_, __) => const Spacing.smallHeight(),
             ),
     );

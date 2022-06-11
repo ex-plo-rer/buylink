@@ -13,6 +13,7 @@ class MessageListNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   final int id;
+
   MessageListNotifier(this._reader, {required this.id}) {
     getChatList(id: id);
     // getCurrentUser();
@@ -27,24 +28,33 @@ class MessageListNotifier extends BaseChangeNotifier {
   String chatId = '';
 
   List<ChatUserModel> _chats = [];
+
   List<ChatUserModel> get chats => _chats;
 
   bool _fetchingList = false;
+
   bool get fetchingList => _fetchingList;
 
   Future<void> getChatList({required dynamic id}) async {
     print('Get chat list called with id $id');
-    // _fetchingList = true;
+    _fetchingList = true;
 
-    // await for (var doc in firestoreInstance.collection('messages').snapshots())
+    // await FirebaseFirestore.instance
+    //     .collection('chats/7-31/messages')
+    //     .get()
+    //     .then((value) {
+    //   print('value Size: ${value.size}');
+    //   for (var element in value.docs) {
+    //     print('elementelementelement:${element.data()}');
+    //   }
+    // });
     await FirebaseFirestore.instance.collection('chats').get().then((value) {
-      print('valuevaluevalue: $value');
-      print('valuevaluevalueSize: ${value.size}');
-      value.docs.forEach((element) {
-        print('elementelementelement:${element.data()}');
-      });
-
-      // print('doc.data(): ${doc.data()}');
+      print('value Size: ${value.size}');
+      for (var element in value.docs) {
+        if (element.id.contains('31')) {
+          //Do something with the messages collection.
+        }
+      }
     });
     // firestoreInstance.collection('chats').snapshots().then((value) {
     //   print('valuevaluevalue $value');
@@ -60,7 +70,8 @@ class MessageListNotifier extends BaseChangeNotifier {
         print('element.data(): ${element.data()}');
         FirebaseFirestore.instance.collection('messages').snapshots();
       });
-    */ // for (var element in value.docs) {
+    */
+    // for (var element in value.docs) {
     //   print('elementelementelement $element');
     //   if (element.id.contains(id)) {
     //     chats.add(ChatUserModel(id: 1, name: 'name', image: 'email'));
@@ -70,7 +81,8 @@ class MessageListNotifier extends BaseChangeNotifier {
     //   // print(element);
     // }
     print('Get chat list finished');
-    // _fetchingList = false;
+    _fetchingList = false;
+    notifyListeners();
   }
 /*
   Stream<QuerySnapshot<Object?>>? fetchAllMessages(

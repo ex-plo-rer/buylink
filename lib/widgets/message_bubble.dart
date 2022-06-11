@@ -22,6 +22,7 @@ class MessageBubble extends StatelessWidget {
   final String text;
   final DateTime timeStamp;
   final bool isImage;
+
   // final bool isUser;
 
   @override
@@ -38,8 +39,8 @@ class MessageBubble extends StatelessWidget {
                       : Alignment.centerLeft,
                   child: Padding(
                     padding: currentUserId == senderId
-                        ? EdgeInsets.only(left: 100.0)
-                        : EdgeInsets.only(right: 100.0),
+                        ? const EdgeInsets.only(left: 100.0)
+                        : const EdgeInsets.only(right: 100.0),
                     child: Material(
                       elevation: 5,
                       color: currentUserId == senderId
@@ -128,8 +129,8 @@ class MessageBubble extends StatelessWidget {
                       : Alignment.centerLeft,
                   child: Padding(
                     padding: storeId == senderId
-                        ? EdgeInsets.only(left: 100.0)
-                        : EdgeInsets.only(right: 100.0),
+                        ? const EdgeInsets.only(left: 100.0)
+                        : const EdgeInsets.only(right: 100.0),
                     child: Material(
                       elevation: 5,
                       color: storeId == senderId
@@ -176,7 +177,7 @@ class MessageBubble extends StatelessWidget {
                 ),
                 const Spacing.smallHeight(),
                 Align(
-                  alignment: currentUserId == senderId
+                  alignment: storeId == senderId
                       ? Alignment.centerRight
                       : Alignment.centerLeft,
                   child: Text(
