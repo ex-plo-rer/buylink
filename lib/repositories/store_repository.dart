@@ -4,12 +4,13 @@ import 'package:buy_link/features/core/models/weekly_data_model.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants/strings.dart';
-import '../features/core/models/my_store_model.dart';
 import '../features/core/models/product_model.dart';
+import '../features/core/models/search_result_model.dart';
 import '../features/core/models/user_model.dart';
 import '../features/core/notifiers/user_provider.dart';
 import '../services/local_storage_service.dart';
 import '../services/network/network_service.dart';
+
 
 class StoreRepository {
   final Reader _reader;
@@ -217,6 +218,47 @@ class StoreRepository {
 
     print('Delete store response $response');
     return response['success'];
+  }
+
+  Future<List<LoadResultsModel>> fetchProductSearch({
+    required int id,
+    required String search_term,
+    required double lon,
+    required double lat,
+    required int range,
+    required int min_price,
+    required int max_price
+
+  }) async {
+    // await _reader(userProvider).setUser();
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'search_term': search_term,
+      'lon': lon,
+      'lat': lat,
+      'range': range,
+      'min_price': min_price,
+      'max_price': max_price
+    };
+    print('Fetch store products params sent to server $body');
+
+    var response = await networkService.post(
+      'users/load-results',
+      body: body,
+      headers: headers,
+    );
+
+    print('search products response ${response}');
+     List<LoadResultsModel> _searchresults = [];
+     for (var store in response) {
+       _searchresults.add(LoadResultsModel.fromJson(store));
+     }
+    //
+     print('Fetch store products response $response');
+     return _searchresults;
   }
 }
 

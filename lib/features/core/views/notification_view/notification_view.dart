@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/routes.dart';
-import '../../../services/navigation_service.dart';
-import '../../../widgets/app_button.dart';
-import '../../../widgets/spacing.dart';
-import '../models/message_model.dart';
-import '../notifiers/notification_notifier.dart';
+import '../../../../core/routes.dart';
+import '../../../../services/navigation_service.dart';
+import '../../../../widgets/app_button.dart';
+import '../../../../widgets/spacing.dart';
+import '../../models/message_model.dart';
+import '../../notifiers/notification_notifier/notification_notifier.dart';
 
 class NotificationView extends ConsumerStatefulWidget {
   const NotificationView({Key? key}) : super(key: key);
@@ -59,7 +59,7 @@ class _NotificationState extends ConsumerState<NotificationView>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Notification',
+                'Notifications',
                 style: TextStyle(
                   color: AppColors.grey1,
                   fontSize: 24,
@@ -117,8 +117,17 @@ class ProductAlertScreen extends ConsumerWidget {
                   : notificationNotifier.notifications.length,
               itemBuilder: (context, int index) =>
                   notificationNotifier.notifications.isEmpty
-                      ? const Center(
-                          child: const Text('Empty'),
+                      ? Center(
+                          child: Column (children:  <Widget>[
+                            Spacing.largeHeight(),
+                            Spacing.largeWidth(),
+                            Spacing.largeHeight(),
+                            Image.asset("assets/images/no_notifications.png"),
+                            Spacing.mediumHeight(),
+                            Text ("No notifications yet", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.grey1),)
+
+
+                          ],),
                         )
                       : Column(
                           children: <Widget>[
@@ -183,7 +192,16 @@ class MessageScreen extends ConsumerWidget {
                   : notificationNotifier.messages.length,
               itemBuilder: (context, index) => notificationNotifier
                       .messages.isNotEmpty
-                  ? const Center(child: Text('Empty'))
+                  ? Center(child: Column (children:  <Widget>[
+                    Spacing.largeHeight(),
+                Spacing.largeWidth(),
+                Spacing.largeHeight(),
+                Image.asset("assets/images/no_messages.png"),
+                Spacing.mediumHeight(),
+                Text ("No messages yet", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.grey1),)
+
+
+              ],))
                   : GestureDetector(
                       onTap: () {
                         // ref.read(navigationServiceProvider).navigateToNamed(

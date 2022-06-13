@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:buy_link/features/core/views/store_views/product_searched_result_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:buy_link/features/startup/views/startup_view.dart';
@@ -42,7 +43,7 @@ class MyApp extends ConsumerWidget {
       navigatorObservers: [BotToastNavigatorObserver()],
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: StartupView(),
+      home: ProductSearchedResult(),
       // home: AddProductView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,

@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/routes.dart';
+import '../../../services/navigation_service.dart';
 
 typedef OnSearchChanged = Future<List<String>> Function(String);
 
@@ -89,6 +90,11 @@ class ProductSearch extends SearchDelegate<String> {
           if (snapshot.hasData) {
             _oldFilters = snapshot.data as List<String>;
             print('_oldFilters: ${_oldFilters}');
+            if (_oldFilters.isNotEmpty){
+              ref
+                  .read(navigationServiceProvider)
+                  .navigateToNamed(Routes.productSearchedResult);
+            }
             return ref.watch(homeNotifierProvider('')).searchLoading
                 ? const CircularProgress()
                 : _oldFilters.isEmpty
