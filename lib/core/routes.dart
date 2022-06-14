@@ -12,7 +12,7 @@ import 'package:buy_link/features/core/views/settings_view/change_password.dart'
 import 'package:buy_link/features/core/views/settings_view/delete_user.dart';
 import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
 import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
-import 'package:buy_link/features/core/views/store_views/product_searched_result_view.dart';
+import 'package:buy_link/features/core/views/store_views/product_searched_result.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';

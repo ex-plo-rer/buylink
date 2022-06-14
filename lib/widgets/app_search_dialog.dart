@@ -70,12 +70,20 @@ class AppSearchDialog extends StatelessWidget {
            alignment: Alignment.topLeft,
              child: Text ("Distance",style:
              TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.grey1), textAlign: TextAlign.start,)),
-          Slider (onChanged: onChanged ,
-            value: value,
+Spacing.smallHeight(),
+          SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                trackHeight: 2.0,
+                overlayShape: SliderComponentShape.noOverlay,
+                valueIndicatorColor: AppColors.light,
+              ), child:Slider (onChanged: onChanged ,
+            value: 8,
               min: 1,
-            max: 15,
-          ),
-          Spacing.smallWidth(),
+            max: 10,
+            divisions: 9,
+          )),
+          Spacing.smallHeight(),
+
           Align(
               alignment: Alignment.topLeft,
          child: Text ("Price Range", style:
