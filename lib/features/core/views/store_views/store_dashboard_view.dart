@@ -23,6 +23,7 @@ import '../../notifiers/store_notifier/store_dashboard_notifier.dart';
 // TODO: Make the product image scrollable and work on the see all reviews widget and also the app bar actions.
 class StoreDashboardView extends ConsumerStatefulWidget {
   final Store store;
+
   const StoreDashboardView({
     Key? key,
     required this.store,
@@ -90,7 +91,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                     onPressed: () {
                       ref.read(navigationServiceProvider).navigateToNamed(
                             Routes.storeMessages,
-                            arguments: widget.store.id,
+                            arguments: widget.store,
                           );
                     },
                   ),

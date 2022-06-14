@@ -1,8 +1,10 @@
 import 'package:buy_link/core/constants/strings.dart';
+import 'package:buy_link/core/utilities/extensions/strings.dart';
+import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/message_model.dart';
+import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/message_notifier/message_list_notifier.dart';
 import 'package:buy_link/widgets/spacing.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,16 +13,33 @@ import '../../../../core/routes.dart';
 import '../../../../services/navigation_service.dart';
 import '../../../../widgets/circular_progress.dart';
 
-class StoreMessagesView extends ConsumerWidget {
+class StoreMessagesView extends ConsumerStatefulWidget {
   const StoreMessagesView({
     Key? key,
-    required this.id,
+    required this.store,
   }) : super(key: key);
-  final int id;
+  final Store store;
 
   @override
-  Widget build(BuildContext context, ref) {
-    final messageListNotifier = ref.watch(messageListNotifierProvider(id));
+  ConsumerState<StoreMessagesView> createState() => _StoreMessagesViewState();
+}
+
+class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    print('_StoreMessagesViewState Init state called');
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      ref
+          .read(messageListNotifierProvider)
+          .getChatList(sessionId: '${widget.store.id}s');
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final messageListNotifier = ref.watch(messageListNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -44,7 +63,7 @@ class StoreMessagesView extends ConsumerWidget {
         ),
         centerTitle: true,
       ),
-      body: messageListNotifier.fetchingList
+      body: messageListNotifier.state.isLoading
           ? const CircularProgress()
           : ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
@@ -53,50 +72,9 @@ class StoreMessagesView extends ConsumerWidget {
                   ? 1
                   : messageListNotifier.chats.length,
               itemBuilder: (context, index) => messageListNotifier.chats.isEmpty
-                  ? ListTile(
-                      title: Text(
-                        'Deji',
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      leading: const CircleAvatar(
-                        backgroundColor: AppColors.shade1,
-                        child: Text('DE'),
-                        radius: 24,
-                      ),
-                      subtitle:
-                          const Text("Good evening i wanted to ask if you... "),
-                      trailing: Column(
-                        children: const <Widget>[
-                          SizedBox(height: 6),
-                          CircleAvatar(
-                            backgroundColor: AppColors.primaryColor,
-                            child: Text(
-                              '1',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            radius: 10,
-                          ),
-                          Text(
-                            "6 Nov",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        ref.read(navigationServiceProvider).navigateToNamed(
-                              Routes.messageView,
-                              arguments: MessageModel(
-                                id: 7,
-                                storeId: id,
-                                name: 'store.name',
-                                imageUrl: AppStrings.ronaldo,
-                                fromUser: false,
-                              ),
-                            );
-                      },
+                  ? const Center(
+                      child: Text(
+                          'You don\'t have an active conversation going on'),
                     )
                   : ListTile(
                       title: Text(
@@ -104,39 +82,45 @@ class StoreMessagesView extends ConsumerWidget {
                         style: const TextStyle(
                             fontSize: 13, fontWeight: FontWeight.bold),
                       ),
-                      leading: const CircleAvatar(
+                      leading: CircleAvatar(
                         backgroundColor: AppColors.shade1,
-                        child: Text('DE'),
+                        child: Text(
+                            messageListNotifier.chats[index].name.initials()),
                         radius: 24,
                       ),
-                      subtitle:
-                          const Text("Good evening i wanted to ask if you... "),
-                      trailing: Column(
-                        children: const <Widget>[
-                          SizedBox(height: 6),
-                          CircleAvatar(
-                            backgroundColor: AppColors.primaryColor,
-                            child: Text(
-                              '1',
-                              style: TextStyle(fontSize: 12),
+                      subtitle: Text(messageListNotifier.chats[index].msg),
+                      trailing: messageListNotifier.chats[index].unreadCount < 1
+                          ? const Spacing.empty()
+                          : Column(
+                              children: <Widget>[
+                                const SizedBox(height: 6),
+                                CircleAvatar(
+                                  backgroundColor: AppColors.primaryColor,
+                                  child: Text(
+                                    messageListNotifier.chats[index].unreadCount
+                                        .toString(),
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                  radius: 10,
+                                ),
+                                Text(
+                                  messageListNotifier.chats[index].parsedTime,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
                             ),
-                            radius: 10,
-                          ),
-                          Text(
-                            "6 Nov",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
                       onTap: () {
                         ref.read(navigationServiceProvider).navigateToNamed(
                               Routes.messageView,
                               arguments: MessageModel(
-                                id: 7,
-                                storeId: id,
-                                name: 'store.name',
-                                imageUrl: AppStrings.ronaldo,
-                                fromUser: false,
+                                // This should be the id of this specific index in this listview
+                                id: '${messageListNotifier.chats[index].userId}u',
+                                storeId: widget.store.id,
+                                storeName: widget.store.name,
+                                name: messageListNotifier.chats[index].name,
+                                imageUrl:
+                                    messageListNotifier.chats[index].image,
+                                from: 'storeMessages',
                               ),
                             );
                       },

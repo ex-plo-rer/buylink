@@ -84,6 +84,7 @@ class Routes {
   static const settingNotification = '/setting-notification';
   static const privacyPolicy = '/privacy-policy';
   static const about = '/about';
+
   // static const addProductSpecifics = '/add-product-spec';
   static const cameraScreen = '/camera-screen';
 
@@ -175,9 +176,9 @@ class Routes {
           builder: (_) => StoreDashboardView(store: store),
         );
       case storeMessages:
-        int id = settings.arguments as int;
+        Store store = settings.arguments as Store;
         return MaterialPageRoute(
-          builder: (_) => StoreMessagesView(id: id),
+          builder: (_) => StoreMessagesView(store: store),
         );
       case storeSettings:
         Store store = settings.arguments as Store;

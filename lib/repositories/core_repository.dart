@@ -5,6 +5,7 @@ import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/models/review_stats_model.dart';
 import 'package:buy_link/features/core/models/reviews_model.dart';
+import 'package:buy_link/features/core/models/saved_session_model.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -460,6 +461,51 @@ class CoreRepository {
       '_autoComplete4',
       '_autoComplete',
     ];
+  }
+
+  Future<void> saveSession({
+    required String chatId,
+    required String message,
+  }) async {
+    final body = {
+      'chat_id': chatId,
+      'msg': message,
+    };
+    print('Save session body sent to server $body');
+    var response = await networkService.post(
+      'users/save-session',
+      body: body,
+      headers: headers,
+    );
+
+    print('Save session response $response');
+  }
+
+  Future<List<SavedSessionModel>> getSessions({
+    required String sessionId,
+    required String suffix,
+  }) async {
+    final body = {
+      'sess_id': sessionId,
+      'suffix': suffix,
+    };
+    print('Get session body sent to server $body');
+    var response = await networkService.post(
+      'users/get-sessions',
+      body: body,
+      headers: headers,
+    );
+
+    print('Get session response $response');
+
+    List<SavedSessionModel> _sessions = [];
+    for (var session in response) {
+      print('Single session response $session');
+      _sessions.add(SavedSessionModel.fromJson(session));
+    }
+
+    print('Get session response $response');
+    return _sessions;
   }
 }
 

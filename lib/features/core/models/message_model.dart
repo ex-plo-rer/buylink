@@ -4,15 +4,17 @@ import 'package:buy_link/features/core/models/product_model.dart';
 class MessageModel {
   dynamic id;
   dynamic storeId;
+  dynamic storeName;
   String name;
   String? imageUrl;
-  bool fromUser;
+  String from;
 
   MessageModel({
-    required this.id,
+    required this.id, // Id of the person I want to have a conversation with
     this.storeId,
+    this.storeName,
     required this.name,
     required this.imageUrl,
-    required this.fromUser,
+    required this.from,
   });
 }

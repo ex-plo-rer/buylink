@@ -35,10 +35,12 @@ import '../../notifiers/wishlist_notifier.dart';
 
 class StoreDetailsView extends ConsumerStatefulWidget {
   final Store store;
+
   const StoreDetailsView({
     Key? key,
     required this.store,
   }) : super(key: key);
+
   @override
   ConsumerState<StoreDetailsView> createState() => _WishlistState();
 }
@@ -153,7 +155,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                       .storeDetails.name,
                                                   imageUrl: storeDetailsNotifier
                                                       .storeDetails.background,
-                                                  fromUser: true,
+                                                  from: 'storeDetails',
                                                 ),
                                               );
                                         },

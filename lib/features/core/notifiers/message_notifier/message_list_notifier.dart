@@ -1,53 +1,60 @@
 import 'package:buy_link/features/core/models/chat_user_model.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
+import 'package:buy_link/repositories/core_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/routes.dart';
+import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
+import '../../../../core/utilities/view_state.dart';
+import '../../../../repositories/store_repository.dart';
+import '../../../../services/base/network_exception.dart';
 import '../../../../services/local_storage_service.dart';
 import '../../../../services/navigation_service.dart';
+import '../../models/saved_session_model.dart';
 
 class MessageListNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  final int id;
+  // final String id;
 
-  MessageListNotifier(this._reader, {required this.id}) {
-    getChatList(id: id);
-    // getCurrentUser();
-    // getMessages();
-  }
+  MessageListNotifier(
+    this._reader,
+    // {required this.id}
+  );
+
+  // {
+  //   // getUnreadCount();
+  //   // getChatList(
+  //   //   sessionId: id,
+  //   // );
+  //   // getCurrentUser();
+  //   // getMessages();
+  // }
 
   final firestoreInstance = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
   late User loggedInUser;
   String? messageText;
 
-  String chatId = '';
+  String _chatId = '';
 
-  List<ChatUserModel> _chats = [];
+  String get chatId => _chatId;
 
-  List<ChatUserModel> get chats => _chats;
+  List<SavedSessionModel> _chats = [];
 
-  bool _fetchingList = false;
+  List<SavedSessionModel> get chats => _chats;
 
-  bool get fetchingList => _fetchingList;
+  List<int> unreadM = [];
 
-  Future<void> getChatList({required dynamic id}) async {
+  // bool _fetchingList = false;
+  // bool get fetchingList => _fetchingList;
+
+/*  Future<void> getChatList({required dynamic id,}) async {
     print('Get chat list called with id $id');
     _fetchingList = true;
-
-    // await FirebaseFirestore.instance
-    //     .collection('chats/7-31/messages')
-    //     .get()
-    //     .then((value) {
-    //   print('value Size: ${value.size}');
-    //   for (var element in value.docs) {
-    //     print('elementelementelement:${element.data()}');
-    //   }
-    // });
     await FirebaseFirestore.instance.collection('chats').get().then((value) {
       print('value Size: ${value.size}');
       for (var element in value.docs) {
@@ -56,119 +63,70 @@ class MessageListNotifier extends BaseChangeNotifier {
         }
       }
     });
-    // firestoreInstance.collection('chats').snapshots().then((value) {
-    //   print('valuevaluevalue $value');
-    //   List<ChatUserModel> chats = [];
-    //   value.docs.forEach((element) {
-    //     print('element.data(): ${element.data()}');
-    //     FirebaseFirestore.instance.collection('messages').snapshots();
-    //   });
-    /*firestoreInstance.collection('chats').get().then((value) {
-      print('valuevaluevalue $value');
-      List<ChatUserModel> chats = [];
-      value.docs.forEach((element) {
-        print('element.data(): ${element.data()}');
-        FirebaseFirestore.instance.collection('messages').snapshots();
-      });
-    */
-    // for (var element in value.docs) {
-    //   print('elementelementelement $element');
-    //   if (element.id.contains(id)) {
-    //     chats.add(ChatUserModel(id: 1, name: 'name', image: 'email'));
-    //     DocumentSnapshot document = element;
-    //     print(document);
-    //   }
-    //   // print(element);
-    // }
     print('Get chat list finished');
     _fetchingList = false;
     notifyListeners();
-  }
-/*
-  Stream<QuerySnapshot<Object?>>? fetchAllMessages(
-      {required var senderId, required var receiverId}) {
-    generateId(senderId: senderId, receiverId: receiverId);
-    return firestoreInstance
+  }*/
+
+  Future<int> getUnreadCount({
+    required String chatId,
+    required DateTime lastMessageTime,
+  }) async {
+    int unreadMessages = 0;
+    await firestoreInstance
         .collection('chats/$chatId/messages')
         .orderBy('timeStamp')
-        .snapshots();
-  }
-
-  //QrVcmRUPcV
-  //0dQmu9zWtr
-
-  void generateId({
-    required var senderId,
-    required var receiverId,
-  }) {
-    // var myId = _reader(userProvider).currentUser?.id;
-    print('senderId: $senderId, receiverId: $receiverId');
-    senderId.hashCode;
-    print('myId.hashCode : ${senderId.hashCode}');
-    if (senderId.hashCode <= receiverId.hashCode) {
-      chatId = '$senderId-$receiverId';
-    } else {
-      chatId = '$receiverId-$senderId';
-    }
-  }
-
-  void sendMessage({
-    required String messageText,
-    required String senderName,
-    required var senderId,
-    required String? senderImage,
-    required bool isImage,
-    required var receiverId,
-  }) {
-    generateId(senderId: senderId, receiverId: receiverId);
-    firestoreInstance.collection('chats/$chatId/messages').add({
-      'timeStamp': DateTime.now(),
-      'text': messageText,
-      'senderName': senderName,
-      'senderId': senderId,
-      'senderImage': senderImage,
-      'isImage': isImage,
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        print('The data : ${element.data()}');
+        Timestamp time = element.get('timeStamp');
+        if (lastMessageTime.isAfter(time.toDate())) {
+          print('The timestamp : ${element.get('timeStamp')}');
+          unreadMessages += 1;
+        }
+      }
     });
+    return unreadMessages;
   }
 
-  // void signOut() {
-  //   firebaseAuth.signOut();
-  //   _reader(navigationServiceProvider).navigateToNamed(Routes.welcomeView);
-  //   // _reader(localStorageService).emptyPreference();
-  // }
-
-  void getCurrentUser() {
-    _reader(userProvider).currentUser;
+  Future<void> getChatList({
+    required String sessionId,
+  }) async {
     try {
-      final user = firebaseAuth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        print(user.email);
-        print(loggedInUser.email);
+      setState(state: ViewState.loading);
+      _chats = await _reader(coreRepository).getSessions(
+        sessionId: sessionId,
+        suffix: sessionId.substring(sessionId.length - 1),
+      );
+      if (_chats.isNotEmpty) {
+        // for (var chat in _chats) {
+        print('unreadM 1 : $unreadM');
+        for (int i = 0; i < _chats.length; i++) {
+          print('_chats[i].unreadCount 1 : ${_chats[i].unreadCount}');
+          // print('_chats[i].unreadCount ${_chats[i].unreadCount}');
+          _chats[i].unreadCount = await getUnreadCount(
+            chatId: _chats[i].chatId,
+            lastMessageTime: _chats[i].time,
+          );
+          print('_chats[i].unreadCount 2 : ${_chats[i].unreadCount}');
+          // unreadM.add(await getUnreadCount(
+          //   chatId: _chats[i].chatId,
+          //   lastMessageTime: DateTime(2022, 6, 13, 22, 08),
+          // ));
+        }
+        print('unreadM 2 : $unreadM');
+        // print('unreadM 2 : $unreadM');
       }
-    } catch (e) {
-      print(e);
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify().error();
+    } finally {
+      // setState(state: ViewState.idle);
     }
   }
-
-  void getMessages() async {
-    final messages = await firestoreInstance.collection('messages').get();
-    for (var message in messages.docs) {
-      print(message.data());
-    }
-  }
-
-  void messagesStream() async {
-    // firestoreInstance.collection('messages').snapshots();
-    await for (var snapshot
-        in firestoreInstance.collection('messages').snapshots()) {
-      for (var message in snapshot.docs) {
-        print(message.data());
-      }
-    }
-  }*/
 }
 
-final messageListNotifierProvider =
-    ChangeNotifierProvider.family<MessageListNotifier, int>(
-        (ref, id) => MessageListNotifier(ref.read, id: id));
+final messageListNotifierProvider = ChangeNotifierProvider<MessageListNotifier>(
+    (ref) => MessageListNotifier(ref.read));

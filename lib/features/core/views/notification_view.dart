@@ -10,15 +10,18 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/constants/strings.dart';
 import '../../../core/routes.dart';
 import '../../../services/navigation_service.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
 import '../models/message_model.dart';
+import '../notifiers/message_notifier/message_list_notifier.dart';
 import '../notifiers/notification_notifier.dart';
 
 class NotificationView extends ConsumerStatefulWidget {
   const NotificationView({Key? key}) : super(key: key);
+
   @override
   ConsumerState<NotificationView> createState() => _NotificationState();
 }
@@ -41,7 +44,8 @@ class _NotificationState extends ConsumerState<NotificationView>
   void _handleTabChange() {
     _tabController.index == 0
         ? ref.read(notificationNotifierProvider).fetchNotifications()
-        : ref.read(notificationNotifierProvider).fetchMessages();
+        : ref.read(messageListNotifierProvider).getChatList(
+            sessionId: '${ref.read(userProvider).currentUser!.id}u');
   }
 
   // TODO: Make the third product fill the screen's width
@@ -81,7 +85,9 @@ class _NotificationState extends ConsumerState<NotificationView>
                     ? ref
                         .read(notificationNotifierProvider)
                         .fetchNotifications()
-                    : ref.read(notificationNotifierProvider).fetchMessages(),
+                    : ref.read(messageListNotifierProvider).getChatList(
+                        sessionId:
+                            '${ref.read(userProvider).currentUser!.id}u'),
               ),
               Expanded(
                 child: TabBarView(
@@ -172,86 +178,71 @@ class MessageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final notificationNotifier = ref.watch(notificationNotifierProvider);
+    final messageListNotifier = ref.watch(messageListNotifierProvider);
     return Scaffold(
-      body: notificationNotifier.messagesLoading
+      body: messageListNotifier.state.isLoading
           ? const CircularProgress()
           : ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              itemCount: notificationNotifier.messages.isEmpty
+              itemCount: messageListNotifier.chats.isEmpty
                   ? 1
-                  : notificationNotifier.messages.length,
-              itemBuilder: (context, index) => notificationNotifier
-                      .messages.isNotEmpty
+                  : messageListNotifier.chats.length,
+              itemBuilder: (context, index) => messageListNotifier.chats.isEmpty
                   ? const Center(child: Text('Empty'))
-                  : GestureDetector(
-                      onTap: () {
-                        // ref.read(navigationServiceProvider).navigateToNamed(
-                        //       Routes.messageView,
-                        //       arguments: MessageModel(
-                        //         id: ref.read(userProvider).currentUser?.id,
-                        //         name: ref.read(userProvider).currentUser!.name,
-                        //       ),
-                        //     );
-                      },
-                      child: ListTile(
-                        title: const Text(
-                          'name',
-                          // notificationNotifier.messages[index].name,
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold),
+                  : ListTile(
+                      title: Text(
+                        messageListNotifier.chats[index].name,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
                         ),
-                        leading: const CircleAvatar(
-                          backgroundColor: AppColors.shade3,
-                          child: Text('DE'
-                              // notificationNotifier
-                              // .messages[index].name
-                              // .initials()
-                              ),
-                          radius: 24,
-                        ),
-                        subtitle: const Text(
-                          'notificationNotifier.messages[index].msg',
-                          // notificationNotifier.messages[index].msg,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: Column(
-                          children: const [
-                            SizedBox(height: 6),
-                            CircleAvatar(
-                              backgroundColor: AppColors.shade3,
-                              child: Text(
-                                '2',
-                                // notificationNotifier.messages[index].unread
-                                //     .toString(),
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              radius: 10,
-                            ),
-                            Text(
-                              'Today',
-                              // notificationNotifier.messages[index].time,
-                              // "${DateFormat.jm()
-                              //     .format(notificationNotifier.messages[index].time)
-                              //     .toString()}",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          ref.read(navigationServiceProvider).navigateToNamed(
-                                Routes.messageView,
-                                arguments: MessageModel(
-                                  id: ref.read(userProvider).currentUser?.id,
-                                  name:
-                                      ref.read(userProvider).currentUser!.name,
-                                  imageUrl: null,
-                                  fromUser: true,
-                                ),
-                              );
-                        },
                       ),
+                      leading: CircleAvatar(
+                        backgroundColor: AppColors.shade1,
+                        child: Text(
+                            messageListNotifier.chats[index].name.initials()),
+                        radius: 24,
+                      ),
+                      subtitle: Text(
+                        messageListNotifier.chats[index].msg,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: messageListNotifier.chats[index].unreadCount < 1
+                          ? const Spacing.empty()
+                          : Column(
+                              children: <Widget>[
+                                const SizedBox(height: 6),
+                                CircleAvatar(
+                                  backgroundColor: AppColors.primaryColor,
+                                  child: Text(
+                                    messageListNotifier.chats[index].unreadCount
+                                        .toString(),
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                  radius: 10,
+                                ),
+                                Text(
+                                  messageListNotifier.chats[index].parsedTime,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                      onTap: () {
+                        ref.read(navigationServiceProvider).navigateToNamed(
+                              Routes.messageView,
+                              arguments: MessageModel(
+                                // This should be the id of this specific index in this listview
+                                id: '${messageListNotifier.chats[index].storeId}s',
+                                storeId: null,
+                                name: messageListNotifier.chats[index].name,
+                                imageUrl:
+                                    messageListNotifier.chats[index].image,
+                                from: 'notification',
+                              ),
+                            );
+                      },
                     ),
               separatorBuilder: (__, _) => const Spacing.mediumHeight(),
             ),

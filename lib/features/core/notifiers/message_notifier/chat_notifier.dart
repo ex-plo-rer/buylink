@@ -4,7 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/routes.dart';
+import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
+import '../../../../core/utilities/view_state.dart';
+import '../../../../repositories/core_repository.dart';
+import '../../../../services/base/network_exception.dart';
 import '../../../../services/local_storage_service.dart';
 import '../../../../services/navigation_service.dart';
 
@@ -22,6 +26,9 @@ class ChatNotifier extends BaseChangeNotifier {
   String? messageText;
 
   String chatId = '';
+
+  String? _lastMessage;
+  String? get lastMessage => _lastMessage;
 
   void generateId({
     required var senderId,
@@ -54,7 +61,7 @@ class ChatNotifier extends BaseChangeNotifier {
     required String messageText,
     required String senderName,
     required var senderId,
-    required String? senderImage,
+    // required String? senderImage,
     required bool isImage,
     required var receiverId,
   }) {
@@ -64,7 +71,7 @@ class ChatNotifier extends BaseChangeNotifier {
       'text': messageText,
       'senderName': senderName,
       'senderId': senderId,
-      'senderImage': senderImage,
+      // 'senderImage': senderImage,
       'isImage': isImage,
     });
   }
@@ -103,6 +110,33 @@ class ChatNotifier extends BaseChangeNotifier {
       for (var message in snapshot.docs) {
         print(message.data());
       }
+    }
+  }
+
+  void saveLastMessage({
+    required String message,
+  }) {
+    _lastMessage = message;
+    print('Last message: $_lastMessage');
+    notifyListeners();
+  }
+
+  Future<void> saveSession({
+    required String chatId,
+    required String message,
+  }) async {
+    try {
+      setState(state: ViewState.loading);
+      await _reader(coreRepository).saveSession(
+        chatId: chatId,
+        message: message,
+      );
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify().error();
+    } finally {
+      setState(state: ViewState.idle);
     }
   }
 }

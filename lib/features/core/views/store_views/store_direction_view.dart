@@ -315,7 +315,7 @@ class _StoreDirectionViewState extends ConsumerState {
                 //   zoom: 13.0,
                 // ),
                 MapOptions(
-              bounds: LatLngBounds(LatLng(58.8, 6.1), LatLng(59, 6.2)),
+              bounds: LatLngBounds(LatLng(8.17, 4.26), LatLng(8.27, 4.36)),
               boundsOptions:
                   const FitBoundsOptions(padding: EdgeInsets.all(8.0)),
             ),
@@ -333,7 +333,7 @@ class _StoreDirectionViewState extends ConsumerState {
                   Marker(
                     width: 80.0,
                     height: 80.0,
-                    point: LatLng(51.5, -0.09),
+                    point: LatLng(8.17, 4.26),
                     builder: (ctx) => Container(
                       child: const FlutterLogo(),
                     ),
