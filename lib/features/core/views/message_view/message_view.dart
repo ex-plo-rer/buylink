@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/loader.dart';
@@ -9,6 +11,7 @@ import 'package:buy_link/features/core/views/settings_view/change_name.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -37,17 +40,26 @@ class MessageView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final messageNotifier = ref.watch(messageViewNotifierProvider);
+    // final messageNotifier = ref.watch(messageViewNotifierProvider);
+    final chatNotifier = ref.watch(chatNotifierProvider);
     return WillPopScope(
       onWillPop: () async {
         if (ref.watch(chatNotifierProvider).lastMessage != null) {
           Loader(context).showLoader(text: 'Saving session');
-          await ref.read(chatNotifierProvider).saveSession(
-              chatId: ref.read(chatNotifierProvider).chatId,
+          await chatNotifier.saveSession(
+              chatId: chatNotifier.chatId,
               message: ref.watch(chatNotifierProvider).lastMessage!);
-          ref
-              .read(messageListNotifierProvider)
-              .getChatList(sessionId: ref.read(chatNotifierProvider).chatId);
+          // args.from == 'storeMessages'
+          //     ? '${args.storeId}s'
+          //     : '${ref.read(userProvider).currentUser!.id}u',
+          if (args.from == 'storeMessages') {
+            ref
+                .read(messageListNotifierProvider)
+                .getChatList(sessionId: '${args.storeId}s');
+          } else if (args.from == 'notifications') {
+            ref.read(messageListNotifierProvider).getChatList(
+                sessionId: '${ref.read(userProvider).currentUser!.id}u');
+          }
           Loader(context).hideLoader();
         }
 
@@ -118,16 +130,16 @@ class MessageView extends ConsumerWidget {
             children: <Widget>[
               // messageList(),
               StreamBuilder<QuerySnapshot>(
-                stream: ref.read(chatNotifierProvider).fetchAllMessages(
-                      senderId: args.from == 'storeMessages'
-                          ? '${args.storeId}s'
-                          : '${ref.read(userProvider).currentUser!.id}u',
-                      // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
-                      // The only time I'll be passing the receiver id is when I want to initiate a chat.
-                      // I'll have to use the id gotten from the server in other places (storeMessages & notification)
-                      receiverId:
-                          args.from == 'storeDetails' ? '${args.id}s' : args.id,
-                    ),
+                stream: chatNotifier.fetchAllMessages(
+                  senderId: args.from == 'storeMessages'
+                      ? '${args.storeId}s'
+                      : '${ref.read(userProvider).currentUser!.id}u',
+                  // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
+                  // The only time I'll be passing the receiver id is when I want to initiate a chat.
+                  // I'll have to use the id gotten from the server in other places (storeMessages & notification)
+                  receiverId:
+                      args.from == 'storeDetails' ? '${args.id}s' : args.id,
+                ),
                 builder: (context, snapshot) {
                   List<MessageBubble> messageBubbles = [];
                   if (!snapshot.hasData) {
@@ -200,6 +212,92 @@ class MessageView extends ConsumerWidget {
                         hasBorder: false,
                         contentPadding: 15,
                         borderRadius: 8,
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // IconButton(
+                            //   // constraints: const BoxConstraints(),
+                            //   icon: const Icon(
+                            //     Icons.camera_alt_outlined,
+                            //     color: AppColors.grey5,
+                            //   ),
+                            //   onPressed: () => {
+                            //     ref
+                            //         .read(navigationServiceProvider)
+                            //         .navigateToNamed(Routes.cameraScreen)
+                            //   },
+                            //   //onSendMessage(textEditingController.text, TypeMessage.text),
+                            //   color: AppColors.dark,
+                            // ),
+                            IconButton(
+                              // iconSize: 10,
+                              // padding: EdgeInsets.zero,
+                              // constraints: const BoxConstraints(),
+                              icon: Transform.rotate(
+                                angle: 45 * math.pi / -180,
+                                child: const Icon(
+                                  Icons.attachment,
+                                  color: AppColors.grey5,
+                                  size: 18,
+                                ),
+                              ),
+                              onPressed: () async {
+                                print('Pick file Clicked');
+                                FilePickerResult? result =
+                                    await FilePicker.platform.pickFiles(
+                                  type: FileType.image,
+                                  withData: true,
+                                );
+
+                                if (result != null) {
+                                  Loader(context).showLoader(text: '');
+                                  await chatNotifier
+                                      .uploadFile(result.files.first);
+                                  if (chatNotifier.imageUrl != null) {
+                                    chatNotifier.sendMessage(
+                                      messageText: chatNotifier.imageUrl!,
+                                      senderId: args.from == 'storeMessages'
+                                          ? '${args.storeId}s'
+                                          : '${ref.read(userProvider).currentUser!.id}u',
+                                      // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
+                                      // senderId: args.from
+                                      //     ? '${ref.read(userProvider).currentUser!.id}u'
+                                      //     : '${args.storeId}s',
+                                      senderName: args.from == 'storeMessages'
+                                          ? args.storeName
+                                          : ref
+                                              .read(userProvider)
+                                              .currentUser!
+                                              .name,
+                                      // senderImage: args.from ? null : args.imageUrl,
+                                      isImage: true,
+                                      // The only time I'll be passing the receiver id is when I want to initiate a chat.
+                                      // I'll have to use the id gotten from the server in other places (storeMessages & notification)
+                                      receiverId: args.from == 'storeDetails'
+                                          ? '${args.id}s'
+                                          : args.id,
+                                    );
+                                    chatNotifier.resetImage();
+                                  }
+                                  Loader(context).hideLoader();
+                                  // File imageFile = File(
+                                  //     (result.files.single.path) as String);
+                                  // print('File @@@@@@@@@@ : $imageFile');
+                                  // print('imageFile.path: ${imageFile.path}');
+                                  // // addStoreNotifier.setImageFile(
+                                  // //   imageFile: imageFile.path,
+                                  // //   isImage: true,
+                                  // // );
+                                  // result.files.first.name;
+                                } else {
+                                  // User canceled the picker
+                                }
+                              },
+                              //onSendMessage(textEditingController.text, TypeMessage.text),
+                              color: AppColors.dark,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -212,26 +310,26 @@ class MessageView extends ConsumerWidget {
                       }
 
                       //Implement send functionality.
-                      ref.read(chatNotifierProvider).sendMessage(
-                            messageText: messageTextController.value.text,
-                            senderId: args.from == 'storeMessages'
-                                ? '${args.storeId}s'
-                                : '${ref.read(userProvider).currentUser!.id}u',
-                            // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
-                            // senderId: args.from
-                            //     ? '${ref.read(userProvider).currentUser!.id}u'
-                            //     : '${args.storeId}s',
-                            senderName: args.from == 'storeMessages'
-                                ? args.storeName
-                                : ref.read(userProvider).currentUser!.name,
-                            // senderImage: args.from ? null : args.imageUrl,
-                            isImage: false,
-                            // The only time I'll be passing the receiver id is when I want to initiate a chat.
-                            // I'll have to use the id gotten from the server in other places (storeMessages & notification)
-                            receiverId: args.from == 'storeDetails'
-                                ? '${args.id}s'
-                                : args.id,
-                          );
+                      chatNotifier.sendMessage(
+                        messageText: messageTextController.value.text,
+                        senderId: args.from == 'storeMessages'
+                            ? '${args.storeId}s'
+                            : '${ref.read(userProvider).currentUser!.id}u',
+                        // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
+                        // senderId: args.from
+                        //     ? '${ref.read(userProvider).currentUser!.id}u'
+                        //     : '${args.storeId}s',
+                        senderName: args.from == 'storeMessages'
+                            ? args.storeName
+                            : ref.read(userProvider).currentUser!.name,
+                        // senderImage: args.from ? null : args.imageUrl,
+                        isImage: false,
+                        // The only time I'll be passing the receiver id is when I want to initiate a chat.
+                        // I'll have to use the id gotten from the server in other places (storeMessages & notification)
+                        receiverId: args.from == 'storeDetails'
+                            ? '${args.id}s'
+                            : args.id,
+                      );
                       messageTextController.clear();
                     },
                     child: Container(

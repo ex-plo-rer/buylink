@@ -14,6 +14,7 @@ import '../../../core/constants/strings.dart';
 import '../../../core/routes.dart';
 import '../../../services/navigation_service.dart';
 import '../../../widgets/app_button.dart';
+import '../../../widgets/chat_tile.dart';
 import '../../../widgets/spacing.dart';
 import '../models/message_model.dart';
 import '../notifiers/message_notifier/message_list_notifier.dart';
@@ -190,45 +191,12 @@ class MessageScreen extends ConsumerWidget {
                   : messageListNotifier.chats.length,
               itemBuilder: (context, index) => messageListNotifier.chats.isEmpty
                   ? const Center(child: Text('Empty'))
-                  : ListTile(
-                      title: Text(
-                        messageListNotifier.chats[index].name,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      leading: CircleAvatar(
-                        backgroundColor: AppColors.shade1,
-                        child: Text(
-                            messageListNotifier.chats[index].name.initials()),
-                        radius: 24,
-                      ),
-                      subtitle: Text(
-                        messageListNotifier.chats[index].msg,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: messageListNotifier.chats[index].unreadCount < 1
-                          ? const Spacing.empty()
-                          : Column(
-                              children: <Widget>[
-                                const SizedBox(height: 6),
-                                CircleAvatar(
-                                  backgroundColor: AppColors.primaryColor,
-                                  child: Text(
-                                    messageListNotifier.chats[index].unreadCount
-                                        .toString(),
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  radius: 10,
-                                ),
-                                Text(
-                                  messageListNotifier.chats[index].parsedTime,
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
+                  : ChatTile(
+                      title: messageListNotifier.chats[index].name,
+                      subtitle: messageListNotifier.chats[index].msg,
+                      unreadCount: messageListNotifier.chats[index].unreadCount,
+                      time: messageListNotifier.chats[index].parsedTime,
+                      imageUrl: messageListNotifier.chats[index].image,
                       onTap: () {
                         ref.read(navigationServiceProvider).navigateToNamed(
                               Routes.messageView,

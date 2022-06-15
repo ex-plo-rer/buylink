@@ -4,6 +4,7 @@ import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/message_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/message_notifier/message_list_notifier.dart';
+import 'package:buy_link/widgets/chat_tile.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -76,39 +77,12 @@ class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
                       child: Text(
                           'You don\'t have an active conversation going on'),
                     )
-                  : ListTile(
-                      title: Text(
-                        messageListNotifier.chats[index].name,
-                        style: const TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      leading: CircleAvatar(
-                        backgroundColor: AppColors.shade1,
-                        child: Text(
-                            messageListNotifier.chats[index].name.initials()),
-                        radius: 24,
-                      ),
-                      subtitle: Text(messageListNotifier.chats[index].msg),
-                      trailing: messageListNotifier.chats[index].unreadCount < 1
-                          ? const Spacing.empty()
-                          : Column(
-                              children: <Widget>[
-                                const SizedBox(height: 6),
-                                CircleAvatar(
-                                  backgroundColor: AppColors.primaryColor,
-                                  child: Text(
-                                    messageListNotifier.chats[index].unreadCount
-                                        .toString(),
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  radius: 10,
-                                ),
-                                Text(
-                                  messageListNotifier.chats[index].parsedTime,
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
+                  : ChatTile(
+                      title: messageListNotifier.chats[index].name,
+                      subtitle: messageListNotifier.chats[index].msg,
+                      unreadCount: messageListNotifier.chats[index].unreadCount,
+                      time: messageListNotifier.chats[index].parsedTime,
+                      imageUrl: null,
                       onTap: () {
                         ref.read(navigationServiceProvider).navigateToNamed(
                               Routes.messageView,

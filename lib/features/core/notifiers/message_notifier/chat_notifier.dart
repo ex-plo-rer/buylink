@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/routes.dart';
@@ -15,9 +19,30 @@ import '../../../../services/navigation_service.dart';
 class ChatNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  ChatNotifier(this._reader) {
-    getCurrentUser();
-    getMessages();
+  ChatNotifier(this._reader);
+
+  UploadTask? uploadTask;
+
+  String? _imageUrl;
+  String? get imageUrl => _imageUrl;
+
+  Future<void> uploadFile(PlatformFile pickedFile) async {
+    final path = 'images/${pickedFile.name}';
+    final file = File(pickedFile.path!);
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putFile(file);
+
+    final snapshot = await uploadTask!.whenComplete(() {});
+
+    _imageUrl = await snapshot.ref.getDownloadURL();
+    print('Download url: $imageUrl');
+    notifyListeners();
+  }
+
+  void resetImage() {
+    _imageUrl = null;
+    notifyListeners();
   }
 
   final firestoreInstance = FirebaseFirestore.instance;
@@ -28,6 +53,7 @@ class ChatNotifier extends BaseChangeNotifier {
   String chatId = '';
 
   String? _lastMessage;
+
   String? get lastMessage => _lastMessage;
 
   void generateId({
@@ -54,9 +80,6 @@ class ChatNotifier extends BaseChangeNotifier {
         .snapshots();
   }
 
-  //QrVcmRUPcV
-  //0dQmu9zWtr
-
   void sendMessage({
     required String messageText,
     required String senderName,
@@ -75,12 +98,6 @@ class ChatNotifier extends BaseChangeNotifier {
       'isImage': isImage,
     });
   }
-
-  // void signOut() {
-  //   firebaseAuth.signOut();
-  //   _reader(navigationServiceProvider).navigateToNamed(Routes.welcomeView);
-  //   // _reader(localStorageService).emptyPreference();
-  // }
 
   void getCurrentUser() {
     _reader(userProvider).currentUser;

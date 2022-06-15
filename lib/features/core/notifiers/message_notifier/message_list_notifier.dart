@@ -78,14 +78,17 @@ class MessageListNotifier extends BaseChangeNotifier {
         .orderBy('timeStamp')
         .get()
         .then((value) {
+      print('Last message time : $lastMessageTime');
       for (var element in value.docs) {
-        print('The data : ${element.data()}');
+        // print('The data : ${element.data()}');
         Timestamp time = element.get('timeStamp');
-        if (lastMessageTime.isAfter(time.toDate())) {
-          print('The timestamp : ${element.get('timeStamp')}');
+        print('Time before : ${time.toDate()}');
+        if (time.toDate().isAfter(lastMessageTime)) {
+          print('Time after : ${time.toDate()}');
           unreadMessages += 1;
         }
       }
+      print('Unread messages count: $unreadMessages');
     });
     return unreadMessages;
   }
