@@ -178,7 +178,6 @@ class MessageScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final notificationNotifier = ref.watch(notificationNotifierProvider);
     final messageListNotifier = ref.watch(messageListNotifierProvider);
     return Scaffold(
       body: messageListNotifier.state.isLoading

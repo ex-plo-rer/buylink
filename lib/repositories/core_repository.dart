@@ -466,10 +466,12 @@ class CoreRepository {
   Future<void> saveSession({
     required String chatId,
     required String message,
+    required String actor,
   }) async {
     final body = {
       'chat_id': chatId,
       'msg': message,
+      'actor': actor,
     };
     print('Save session body sent to server $body');
     var response = await networkService.post(

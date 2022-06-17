@@ -69,6 +69,7 @@ class MessageListNotifier extends BaseChangeNotifier {
   }*/
 
   Future<int> getUnreadCount({
+    required String ownerId,
     required String chatId,
     required DateTime lastMessageTime,
   }) async {
@@ -82,8 +83,10 @@ class MessageListNotifier extends BaseChangeNotifier {
       for (var element in value.docs) {
         // print('The data : ${element.data()}');
         Timestamp time = element.get('timeStamp');
+        final senderId = element.get('senderId');
         print('Time before : ${time.toDate()}');
-        if (time.toDate().isAfter(lastMessageTime)) {
+        print('Owner id : ${ownerId} Sender id : ${senderId}');
+        if (ownerId != senderId && time.toDate().isAfter(lastMessageTime)) {
           print('Time after : ${time.toDate()}');
           unreadMessages += 1;
         }
@@ -104,11 +107,12 @@ class MessageListNotifier extends BaseChangeNotifier {
       );
       if (_chats.isNotEmpty) {
         // for (var chat in _chats) {
-        print('unreadM 1 : $unreadM');
         for (int i = 0; i < _chats.length; i++) {
           print('_chats[i].unreadCount 1 : ${_chats[i].unreadCount}');
           // print('_chats[i].unreadCount ${_chats[i].unreadCount}');
+          print('{_chats[i].time}: ${_chats[i].time}');
           _chats[i].unreadCount = await getUnreadCount(
+            ownerId: sessionId,
             chatId: _chats[i].chatId,
             lastMessageTime: _chats[i].time,
           );
@@ -118,7 +122,6 @@ class MessageListNotifier extends BaseChangeNotifier {
           //   lastMessageTime: DateTime(2022, 6, 13, 22, 08),
           // ));
         }
-        print('unreadM 2 : $unreadM');
         // print('unreadM 2 : $unreadM');
       }
       setState(state: ViewState.idle);

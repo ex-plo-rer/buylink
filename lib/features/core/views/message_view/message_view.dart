@@ -40,15 +40,17 @@ class MessageView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    // final messageNotifier = ref.watch(messageViewNotifierProvider);
-    final chatNotifier = ref.watch(chatNotifierProvider);
+    // final chatNotifier = ref.watch(chatNotifierProvider);
     return WillPopScope(
       onWillPop: () async {
+        // if (ref.watch(chatNotifierProvider).canSaveSession) {
         if (ref.watch(chatNotifierProvider).lastMessage != null) {
           Loader(context).showLoader(text: 'Saving session');
-          await chatNotifier.saveSession(
-              chatId: chatNotifier.chatId,
-              message: ref.watch(chatNotifierProvider).lastMessage!);
+          await ref.read(chatNotifierProvider).saveSession(
+                chatId: ref.watch(chatNotifierProvider).chatId,
+                message: ref.watch(chatNotifierProvider).lastMessage ?? '',
+                actor: args.from == 'storeMessages' ? 'store' : 'user',
+              );
           // args.from == 'storeMessages'
           //     ? '${args.storeId}s'
           //     : '${ref.read(userProvider).currentUser!.id}u',
@@ -56,12 +58,13 @@ class MessageView extends ConsumerWidget {
             ref
                 .read(messageListNotifierProvider)
                 .getChatList(sessionId: '${args.storeId}s');
-          } else if (args.from == 'notifications') {
+          } else if (args.from == 'notification') {
             ref.read(messageListNotifierProvider).getChatList(
                 sessionId: '${ref.read(userProvider).currentUser!.id}u');
           }
           Loader(context).hideLoader();
         }
+        // }
 
         print('Done...');
         ref.read(navigationServiceProvider).navigateBack();
@@ -78,12 +81,10 @@ class MessageView extends ConsumerWidget {
             ),
             leading: CircleAvatar(
               backgroundColor: AppColors.shade3,
-              child: args.imageUrl == null
-                  ? Text(
-                      args.name.initials(),
-                      style: const TextStyle(color: Colors.white),
-                    )
-                  : CachedNetworkImage(imageUrl: args.imageUrl!),
+              child: args.imageUrl == null ? Text(args.name.initials()) : null,
+              backgroundImage: args.imageUrl == null
+                  ? null
+                  : CachedNetworkImageProvider(args.imageUrl!),
               radius: 40,
             ),
 /*
@@ -130,16 +131,16 @@ class MessageView extends ConsumerWidget {
             children: <Widget>[
               // messageList(),
               StreamBuilder<QuerySnapshot>(
-                stream: chatNotifier.fetchAllMessages(
-                  senderId: args.from == 'storeMessages'
-                      ? '${args.storeId}s'
-                      : '${ref.read(userProvider).currentUser!.id}u',
-                  // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
-                  // The only time I'll be passing the receiver id is when I want to initiate a chat.
-                  // I'll have to use the id gotten from the server in other places (storeMessages & notification)
-                  receiverId:
-                      args.from == 'storeDetails' ? '${args.id}s' : args.id,
-                ),
+                stream: ref.read(chatNotifierProvider).fetchAllMessages(
+                      senderId: args.from == 'storeMessages'
+                          ? '${args.storeId}s'
+                          : '${ref.read(userProvider).currentUser!.id}u',
+                      // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
+                      // The only time I'll be passing the receiver id is when I want to initiate a chat.
+                      // I'll have to use the id gotten from the server in other places (storeMessages & notification)
+                      receiverId:
+                          args.from == 'storeDetails' ? '${args.id}s' : args.id,
+                    ),
                 builder: (context, snapshot) {
                   List<MessageBubble> messageBubbles = [];
                   if (!snapshot.hasData) {
@@ -149,13 +150,17 @@ class MessageView extends ConsumerWidget {
                     final messages = snapshot.data?.docs.reversed;
                     if (messages!.isNotEmpty) {
                       print('messages is not empty');
-                      ref
-                          .read(chatNotifierProvider)
-                          .saveLastMessage(message: messages.first.get('text'));
+                      ref.read(chatNotifierProvider).saveLastMessage(
+                            message: messages.first.get('text'),
+                            messageTime:
+                                (messages.first.get('timeStamp') as Timestamp)
+                                    .toDate(),
+                          );
                     }
                     for (var message in messages) {
                       final messageText = message.get('text');
                       final messageSenderId = message.get('senderId');
+                      print('Sender id: $messageSenderId');
                       final messageIsImage = message.get('isImage');
                       final timeStamp =
                           (message.get('timeStamp') as Timestamp).toDate();
@@ -251,33 +256,41 @@ class MessageView extends ConsumerWidget {
 
                                 if (result != null) {
                                   Loader(context).showLoader(text: '');
-                                  await chatNotifier
+                                  await ref
+                                      .watch(chatNotifierProvider)
                                       .uploadFile(result.files.first);
-                                  if (chatNotifier.imageUrl != null) {
-                                    chatNotifier.sendMessage(
-                                      messageText: chatNotifier.imageUrl!,
-                                      senderId: args.from == 'storeMessages'
-                                          ? '${args.storeId}s'
-                                          : '${ref.read(userProvider).currentUser!.id}u',
-                                      // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
-                                      // senderId: args.from
-                                      //     ? '${ref.read(userProvider).currentUser!.id}u'
-                                      //     : '${args.storeId}s',
-                                      senderName: args.from == 'storeMessages'
-                                          ? args.storeName
-                                          : ref
-                                              .read(userProvider)
-                                              .currentUser!
-                                              .name,
-                                      // senderImage: args.from ? null : args.imageUrl,
-                                      isImage: true,
-                                      // The only time I'll be passing the receiver id is when I want to initiate a chat.
-                                      // I'll have to use the id gotten from the server in other places (storeMessages & notification)
-                                      receiverId: args.from == 'storeDetails'
-                                          ? '${args.id}s'
-                                          : args.id,
-                                    );
-                                    chatNotifier.resetImage();
+                                  if (ref
+                                          .watch(chatNotifierProvider)
+                                          .imageUrl !=
+                                      null) {
+                                    ref.watch(chatNotifierProvider).sendMessage(
+                                          messageText: ref
+                                              .watch(chatNotifierProvider)
+                                              .imageUrl!,
+                                          senderId: args.from == 'storeMessages'
+                                              ? '${args.storeId}s'
+                                              : '${ref.read(userProvider).currentUser!.id}u',
+                                          // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
+                                          // senderId: args.from
+                                          //     ? '${ref.read(userProvider).currentUser!.id}u'
+                                          //     : '${args.storeId}s',
+                                          senderName:
+                                              args.from == 'storeMessages'
+                                                  ? args.storeName
+                                                  : ref
+                                                      .read(userProvider)
+                                                      .currentUser!
+                                                      .name,
+                                          // senderImage: args.from ? null : args.imageUrl,
+                                          isImage: true,
+                                          // The only time I'll be passing the receiver id is when I want to initiate a chat.
+                                          // I'll have to use the id gotten from the server in other places (storeMessages & notification)
+                                          receiverId:
+                                              args.from == 'storeDetails'
+                                                  ? '${args.id}s'
+                                                  : args.id,
+                                        );
+                                    ref.read(chatNotifierProvider).resetImage();
                                   }
                                   Loader(context).hideLoader();
                                   // File imageFile = File(
@@ -310,26 +323,26 @@ class MessageView extends ConsumerWidget {
                       }
 
                       //Implement send functionality.
-                      chatNotifier.sendMessage(
-                        messageText: messageTextController.value.text,
-                        senderId: args.from == 'storeMessages'
-                            ? '${args.storeId}s'
-                            : '${ref.read(userProvider).currentUser!.id}u',
-                        // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
-                        // senderId: args.from
-                        //     ? '${ref.read(userProvider).currentUser!.id}u'
-                        //     : '${args.storeId}s',
-                        senderName: args.from == 'storeMessages'
-                            ? args.storeName
-                            : ref.read(userProvider).currentUser!.name,
-                        // senderImage: args.from ? null : args.imageUrl,
-                        isImage: false,
-                        // The only time I'll be passing the receiver id is when I want to initiate a chat.
-                        // I'll have to use the id gotten from the server in other places (storeMessages & notification)
-                        receiverId: args.from == 'storeDetails'
-                            ? '${args.id}s'
-                            : args.id,
-                      );
+                      ref.read(chatNotifierProvider).sendMessage(
+                            messageText: messageTextController.value.text,
+                            senderId: args.from == 'storeMessages'
+                                ? '${args.storeId}s'
+                                : '${ref.read(userProvider).currentUser!.id}u',
+                            // else, You are either coming from storeDetails or notification. hence, the sender is the currentuser's id
+                            // senderId: args.from
+                            //     ? '${ref.read(userProvider).currentUser!.id}u'
+                            //     : '${args.storeId}s',
+                            senderName: args.from == 'storeMessages'
+                                ? args.storeName
+                                : ref.read(userProvider).currentUser!.name,
+                            // senderImage: args.from ? null : args.imageUrl,
+                            isImage: false,
+                            // The only time I'll be passing the receiver id is when I want to initiate a chat.
+                            // I'll have to use the id gotten from the server in other places (storeMessages & notification)
+                            receiverId: args.from == 'storeDetails'
+                                ? '${args.id}s'
+                                : args.id,
+                          );
                       messageTextController.clear();
                     },
                     child: Container(

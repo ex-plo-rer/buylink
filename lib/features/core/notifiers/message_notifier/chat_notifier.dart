@@ -21,10 +21,31 @@ class ChatNotifier extends BaseChangeNotifier {
 
   ChatNotifier(this._reader);
 
+  final firestoreInstance = FirebaseFirestore.instance;
+  final firebaseAuth = FirebaseAuth.instance;
+  late User loggedInUser;
+  String? messageText;
+
+  String chatId = '';
+
+  String? _lastMessage;
+
+  String? get lastMessage => _lastMessage;
+
+  DateTime? _lastMessageTime;
+  DateTime? _newMessageTime;
+
+  DateTime? get lastMessageTime => _lastMessageTime;
+
   UploadTask? uploadTask;
 
   String? _imageUrl;
+
   String? get imageUrl => _imageUrl;
+
+  bool _canSaveSession = false;
+
+  bool get canSaveSession => _canSaveSession;
 
   Future<void> uploadFile(PlatformFile pickedFile) async {
     final path = 'images/${pickedFile.name}';
@@ -44,17 +65,6 @@ class ChatNotifier extends BaseChangeNotifier {
     _imageUrl = null;
     notifyListeners();
   }
-
-  final firestoreInstance = FirebaseFirestore.instance;
-  final firebaseAuth = FirebaseAuth.instance;
-  late User loggedInUser;
-  String? messageText;
-
-  String chatId = '';
-
-  String? _lastMessage;
-
-  String? get lastMessage => _lastMessage;
 
   void generateId({
     required var senderId,
@@ -132,21 +142,35 @@ class ChatNotifier extends BaseChangeNotifier {
 
   void saveLastMessage({
     required String message,
+    required DateTime messageTime,
   }) {
+    print('Message time: $messageTime');
     _lastMessage = message;
+    if (_lastMessageTime == null) {
+      _lastMessageTime = messageTime;
+      _canSaveSession = true;
+    } else {
+      _newMessageTime = messageTime;
+      _canSaveSession = _lastMessageTime!.isBefore(_newMessageTime!);
+      _lastMessageTime = _newMessageTime;
+    }
+    print('Can save session: $_canSaveSession');
     print('Last message: $_lastMessage');
+    print('Last message time: $_lastMessageTime');
     notifyListeners();
   }
 
   Future<void> saveSession({
     required String chatId,
     required String message,
+    required String actor,
   }) async {
     try {
       setState(state: ViewState.loading);
       await _reader(coreRepository).saveSession(
         chatId: chatId,
         message: message,
+        actor: actor,
       );
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {

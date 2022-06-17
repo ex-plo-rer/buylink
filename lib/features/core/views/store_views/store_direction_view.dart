@@ -21,9 +21,12 @@ class StoreDirectionView extends ConsumerStatefulWidget {
 }
 
 class _StoreDirectionViewState extends ConsumerState {
+  MapController? mapController;
+
   @override
   void initState() {
     // TODO: implement initState
+    mapController = MapController();
     init();
     super.initState();
   }
@@ -309,13 +312,16 @@ class _StoreDirectionViewState extends ConsumerState {
       child: Stack(
         children: [
           FlutterMap(
+            mapController: mapController,
             options:
                 // MapOptions(
                 //   center: LatLng(51.5, -0.09),
                 //   zoom: 13.0,
                 // ),
                 MapOptions(
-              bounds: LatLngBounds(LatLng(8.17, 4.26), LatLng(8.27, 4.36)),
+              zoom: 15,
+              center: LatLng(8.17, 4.26),
+              // bounds: LatLngBounds(LatLng(8.17, 4.26), LatLng(8.27, 4.36)),
               boundsOptions:
                   const FitBoundsOptions(padding: EdgeInsets.all(8.0)),
             ),
@@ -331,15 +337,52 @@ class _StoreDirectionViewState extends ConsumerState {
               MarkerLayerOptions(
                 markers: [
                   Marker(
-                    width: 80.0,
-                    height: 80.0,
+                    width: 28.0,
+                    height: 34.44,
                     point: LatLng(8.17, 4.26),
-                    builder: (ctx) => Container(
-                      child: const FlutterLogo(),
+                    builder: (ctx) => const Icon(
+                      Icons.location_pin,
+                      color: Color(0xffCD261F),
+                    ),
+                  ),
+                  Marker(
+                    width: 28.0,
+                    height: 34.44,
+                    point: LatLng(8.165, 4.255),
+                    builder: (ctx) => const Icon(
+                      Icons.location_history,
+                      color: AppColors.primaryColor,
                     ),
                   ),
                 ],
               ),
+              PolylineLayerOptions(
+                polylineCulling: false,
+                polylines: [
+                  Polyline(
+                    points: [
+                      LatLng(8.181, 4.250),
+                      LatLng(8.15, 4.265),
+                      LatLng(8.176, 4.264),
+                    ],
+                    strokeWidth: 10,
+                    color: Colors.blue,
+                  ),
+                ],
+              ),
+              // PolygonLayerOptions(
+              //   polygonCulling: false,
+              //   polygons: [
+              //     Polygon(
+              //       points: [
+              //         LatLng(8.181, 4.250),
+              //         LatLng(8.15, 4.265),
+              //         LatLng(8.176, 4.264),
+              //       ],
+              //       color: Colors.blue,
+              //     ),
+              //   ],
+              // ),
             ],
           ),
           const BackArrow(),
