@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "78558653817",
-    "project_id": "buy-link-61d94",
-    "storage_bucket": "buy-link-61d94.appspot.com"
+    "project_number": "847148197607",
+    "project_id": "buylink-d9de3",
+    "storage_bucket": "buylink-d9de3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:78558653817:android:e54dc8aece13d6f17953a8",
+        "mobilesdk_app_id": "1:847148197607:android:6e149410c34700eb26a442",
         "android_client_info": {
           "package_name": "com.buylink.buy_link"
         }
       },
       "oauth_client": [
         {
-          "client_id": "78558653817-h5t3e3a6hoatmqrsei38n4tjbvlma0a0.apps.googleusercontent.com",
+          "client_id": "847148197607-fvagpbb4fdlor5b51ib1r8teik95bma1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCsd3woUql6KNngeZiDZyoXuZCteUgYVqA"
+          "current_key": "AIzaSyAJnXRhJw2_rCokZ8AHk51EnK76HtwyT4M"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "78558653817-h5t3e3a6hoatmqrsei38n4tjbvlma0a0.apps.googleusercontent.com",
+              "client_id": "847148197607-fvagpbb4fdlor5b51ib1r8teik95bma1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
