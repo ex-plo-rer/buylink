@@ -189,7 +189,9 @@ class Routes {
       case savedProducts:
         return MaterialPageRoute(builder: (_) => ProductSavedView());
       case storeDirection:
-        return MaterialPageRoute(builder: (_) => const StoreDirectionView());
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+            builder: (_) => StoreDirectionView(store: store));
       case noproductView:
         return MaterialPageRoute(builder: (_) => NoProductView());
       case addstoreView:

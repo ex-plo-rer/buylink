@@ -23,9 +23,11 @@ class ProductDetailsNotifier extends BaseChangeNotifier {
   }
 
   int _activeIndex = 0;
+
   int get activeIndex => _activeIndex;
 
   List<ProductModel> _products = [];
+
   List<ProductModel> get similarProducts => _products;
 
   void nextPage(index, reason) {
@@ -46,9 +48,9 @@ class ProductDetailsNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      // Alertify(title: e.error!).error();
     } finally {
-      setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 }

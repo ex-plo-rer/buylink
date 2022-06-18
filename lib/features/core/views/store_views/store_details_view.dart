@@ -229,9 +229,9 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                     // text: '4.6 km',
                                     text:
                                         '${ref.read(locationService).getDistance(
-                                              storeLat: storeDetailsNotifier
+                                              endLat: storeDetailsNotifier
                                                   .storeDetails.lat,
-                                              storeLon: storeDetailsNotifier
+                                              endLon: storeDetailsNotifier
                                                   .storeDetails.lon,
                                             )} km',
                                     icon: const Icon(
@@ -323,9 +323,9 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                             distance: ref
                                                 .read(locationService)
                                                 .getDistance(
-                                                  storeLat: storeDetailsNotifier
+                                                  endLat: storeDetailsNotifier
                                                       .products[index].lat,
-                                                  storeLon: storeDetailsNotifier
+                                                  endLon: storeDetailsNotifier
                                                       .products[index].lon,
                                                 ),
                                             isFavorite: true,

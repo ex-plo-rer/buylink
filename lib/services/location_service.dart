@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:buy_link/core/utilities/base_change_notifier.dart';
@@ -15,26 +16,54 @@ import 'package:location/location.dart' as lll;
 
 class LocationService extends BaseChangeNotifier {
   final Reader _reader;
+
   LocationService(this._reader) {
     // getCurrentLocation();
   }
-  late double lat;
-  late double lon;
+
+  double? _lat;
+
+  double? get lat => _lat;
+  double? _lon;
+
+  double? get lon => _lon;
   late bool serviceEnabled;
   late bool _serviceEnabled;
 
   lll.Location location = lll.Location();
 
-  String getDistance({
-    required double storeLat,
-    required double storeLon,
+  void updateLocationAfterLeavingMap({
+    required double newLat,
+    required double newLon,
   }) {
-    double distance = Geolocator.distanceBetween(lat, lon, storeLat, storeLon);
+    print('Old lat: $_lat, Old lon: $_lon');
+    _lat = newLat;
+    _lon = newLon;
+    print('Updated lat: $_lat, Updated lon: $_lon');
+  }
+
+  String getDistance({
+    required double endLat,
+    required double endLon,
+  }) {
+    double distance = Geolocator.distanceBetween(_lat!, _lon!, endLat, endLon);
 
     return (distance / 1000).toStringAsFixed(1);
   }
 
-  Future<Position?> getCurrentLocation() async {
+  String getDist({
+    required double startLat,
+    required double startLon,
+    required double endLat,
+    required double endLon,
+  }) {
+    double distance = Geolocator.distanceBetween(_lat!, _lon!, endLat, endLon);
+
+    return (distance / 1000).toStringAsFixed(1);
+  }
+
+  Future<void> getCurrentLocation() async {
+    print('Get current location called...................');
     LocationPermission permission;
 
     _serviceEnabled = await location.serviceEnabled();
@@ -91,12 +120,26 @@ class LocationService extends BaseChangeNotifier {
       desiredAccuracy: LocationAccuracy.high,
     );
 
-    lat = position.latitude;
-    lon = position.longitude;
+    _lat = position.latitude;
+    _lon = position.longitude;
+    //
+    // const LocationSettings locationSettings = LocationSettings(
+    //   accuracy: LocationAccuracy.high,
+    //   distanceFilter: 0,
+    // );
+    // // StreamSubscription<Position> positionStream =
+    //     Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+    //   (Position? position) {
+    //     print(position == null
+    //         ? 'positionStream Unknown'
+    //         : 'positionStream : ${position.latitude.toString()}, ${position.longitude.toString()}');
+    //   },
+    // );
 
-    print('lat : $lat, lon : $lon.');
+    print('lat : $_lat, lon : $_lon.');
+    print('Get current location left...................');
     notifyListeners();
-    return position;
+    // return position;
   }
 }
 

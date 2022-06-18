@@ -27,10 +27,12 @@ import '../notifiers/product_list_notifier.dart';
 
 class ProductListView extends ConsumerStatefulWidget {
   final Store store;
+
   const ProductListView({
     Key? key,
     required this.store,
   }) : super(key: key);
+
   @override
   ConsumerState<ProductListView> createState() => _WishlistState();
 }
@@ -132,9 +134,9 @@ class _WishlistState extends ConsumerState<ProductListView>
                                 productPrice:
                                     productListNotifier.products[index].price,
                                 distance: ref.read(locationService).getDistance(
-                                      storeLat: productListNotifier
+                                      endLat: productListNotifier
                                           .products[index].lat,
-                                      storeLon: productListNotifier
+                                      endLon: productListNotifier
                                           .products[index].lon,
                                     ),
                                 isFavorite:

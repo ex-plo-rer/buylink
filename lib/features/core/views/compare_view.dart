@@ -33,6 +33,7 @@ class _CompareViewState extends ConsumerState<CompareView> {
   // final compareNotifier = ref.read(compareNotifierProvider(widget.arguments.product!));
 
   final searchFN = FocusNode();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -181,17 +182,17 @@ class _CompareViewState extends ConsumerState<CompareView> {
                               title: 'Distance',
                               subTitle1:
                                   '${ref.read(locationService).getDistance(
-                                        storeLat:
+                                        endLat:
                                             compareNotifier.product1!.store.lat,
-                                        storeLon:
+                                        endLon:
                                             compareNotifier.product1!.store.lon,
                                       )}km',
                               subTitle2:
                                   '${ref.read(locationService).getDistance(
-                                        storeLat: compareNotifier
+                                        endLat: compareNotifier
                                                 .product2?.store.lat ??
                                             0,
-                                        storeLon: compareNotifier
+                                        endLon: compareNotifier
                                                 .product2?.store.lon ??
                                             0,
                                       )}km',

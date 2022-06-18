@@ -138,8 +138,8 @@ class ProductDetailsView extends ConsumerWidget {
                     ),
                     trailing: DistanceContainer(
                       distance: ref.watch(locationService).getDistance(
-                            storeLat: product.lat,
-                            storeLon: product.lon,
+                            endLat: product.lat,
+                            endLon: product.lon,
                           ),
                       // distance: product.store.distance,
                       containerColor: AppColors.grey2,
@@ -210,7 +210,10 @@ class ProductDetailsView extends ConsumerWidget {
                             icon: SvgPicture.asset(AppSvgs.locate),
                             onPressed: () => ref
                                 .read(navigationServiceProvider)
-                                .navigateToNamed(Routes.storeDirection),
+                                .navigateToNamed(
+                                  Routes.storeDirection,
+                                  arguments: product.store,
+                                ),
                           ),
                         ),
                         const Spacing.smallWidth(),
@@ -318,9 +321,9 @@ class ProductDetailsView extends ConsumerWidget {
                                       distance: ref
                                           .watch(locationService)
                                           .getDistance(
-                                            storeLat: productDetailsNotifier
+                                            endLat: productDetailsNotifier
                                                 .similarProducts[index].lat,
-                                            storeLon: productDetailsNotifier
+                                            endLon: productDetailsNotifier
                                                 .similarProducts[index].lon,
                                           ),
                                       isFavorite: productDetailsNotifier

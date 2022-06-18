@@ -28,6 +28,7 @@ class HomeView extends ConsumerWidget {
   HomeView({Key? key}) : super(key: key);
 
   final searchFN = FocusNode();
+
   @override
   Widget build(BuildContext context, ref) {
     final homeNotifier = ref.watch(homeNotifierProvider(null));
@@ -171,9 +172,9 @@ class HomeView extends ConsumerWidget {
                                   distance: ref
                                       .watch(locationService)
                                       .getDistance(
-                                        storeLat:
+                                        endLat:
                                             homeNotifier.products[index].lat,
-                                        storeLon:
+                                        endLon:
                                             homeNotifier.products[index].lon,
                                       ),
                                   isFavorite:

@@ -30,15 +30,19 @@ class HomeNotifier extends BaseChangeNotifier {
   }
 
   List<ProductModel> _products = [];
+
   List<ProductModel> get products => _products;
 
   ProductAttrModel? _productAttr;
+
   ProductAttrModel get productAttr => _productAttr!;
 
   List<String> _autoCompleteStrings = [];
+
   List<String> get autoCompleteStrings => _autoCompleteStrings;
 
   Position? position;
+
   //
   // Future<void> setLocation(context) async {
   //   position = await _reader(locationService).getCurrentLocation();
@@ -51,13 +55,13 @@ class HomeNotifier extends BaseChangeNotifier {
       setState(state: ViewState.loading);
       // serviceEnabled = await Geolocator.isLocationServiceEnabled();
       // if (serviceEnabled) {
-      position = await _reader(locationService).getCurrentLocation();
+      await _reader(locationService).getCurrentLocation();
       _products = await _reader(coreRepository).fetchProducts(
         lat: 3.4,
         lon: 3.7,
         //TODO: the below
-        // lat: position!.latitude,
-        // lon: position.longitude,
+        // lat: _reader(locationService).lat!,
+        // lon: _reader(locationService).lon!,
         category: category,
       );
       // }
@@ -89,6 +93,7 @@ class HomeNotifier extends BaseChangeNotifier {
   }
 
   bool _isFavorite = false;
+
   bool get isFavorite => _isFavorite;
 
   void toggleFavorite() {
@@ -97,6 +102,7 @@ class HomeNotifier extends BaseChangeNotifier {
   }
 
   bool _searchLoading = false;
+
   bool get searchLoading => _searchLoading;
 
   Future<List<String>> autoComplete({

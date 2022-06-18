@@ -25,6 +25,7 @@ import '../notifiers/category_notifier.dart';
 
 class WishlistView extends ConsumerStatefulWidget {
   const WishlistView({Key? key}) : super(key: key);
+
   @override
   ConsumerState<WishlistView> createState() => _WishlistState();
 }
@@ -126,9 +127,9 @@ class _WishlistState extends ConsumerState<WishlistView>
                                         wishlistNotifier.products[index].price,
                                     distance:
                                         ref.read(locationService).getDistance(
-                                              storeLat: wishlistNotifier
+                                              endLat: wishlistNotifier
                                                   .products[index].lat,
-                                              storeLon: wishlistNotifier
+                                              endLon: wishlistNotifier
                                                   .products[index].lon,
                                             ),
                                     isFavorite: true,
