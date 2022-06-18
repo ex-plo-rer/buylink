@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/models/fetch_notification_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/constants/strings.dart';
@@ -176,7 +177,47 @@ class SettingRepository {
     print('Delete account response $response');
     return response['success'];
   }
+
+  Future<FetchNotificationModel> fetchNotification() async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+    };
+    print('fetch notification parameter $body');
+
+    var response = await networkService.post(
+      'users/load-alerts',
+      body: body,
+      headers: headers,
+    );
+    print('fetch notification response $response');
+    return FetchNotificationModel.fromJson(response);
+  }
+
+  Future<bool> setNotification({
+    required String type,
+    required bool state,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'type': type,
+      'state': state,
+    };
+    print('set notification $body');
+
+    var response = await networkService.post(
+      'users/set-alert',
+      body: body,
+      headers: headers,
+    );
+
+    print('set notification $response');
+    return response['success'];
+  }
 }
+
+
 
 final settingRepository = Provider(
   ((ref) => SettingRepository(

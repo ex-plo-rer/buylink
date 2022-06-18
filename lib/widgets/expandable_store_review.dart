@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class ExpandableText extends ConsumerStatefulWidget {
   const ExpandableText(
       this.text, {
-
         this.trimLines = 2,
       })  : assert(text != null),
         super();
