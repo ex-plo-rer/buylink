@@ -20,17 +20,16 @@ class StoreDirectionNotifier extends BaseChangeNotifier {
 
   StoreDirectionNotifier(this._reader);
 
-  double? _lat;
+  double? _userLat;
+  double? get userLat => _userLat;
 
-  double? get lat => _lat;
-  double? _lon;
-
-  double? get lon => _lon;
+  double? _userLon;
+  double? get userLon => _userLon;
 
   void initLocation() {
     // Uses the initial location of when the app was lauched first.
-    _lat = _reader(locationService).lat;
-    _lon = _reader(locationService).lon;
+    _userLat = _reader(locationService).lat;
+    _userLon = _reader(locationService).lon;
     notifyListeners();
   }
 
@@ -56,8 +55,8 @@ class StoreDirectionNotifier extends BaseChangeNotifier {
         print(position == null
             ? 'positionStream Unknown'
             : 'positionStream : ${position.latitude.toString()}, ${position.longitude.toString()}');
-        _lat = position?.latitude;
-        _lon = position?.longitude;
+        _userLat = position?.latitude;
+        _userLon = position?.longitude;
         print('Get location Updateeeeeeeeeeeeeeeeeeeeee end');
         notifyListeners();
       },

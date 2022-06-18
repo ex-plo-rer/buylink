@@ -57,11 +57,11 @@ class HomeNotifier extends BaseChangeNotifier {
       // if (serviceEnabled) {
       await _reader(locationService).getCurrentLocation();
       _products = await _reader(coreRepository).fetchProducts(
-        // lat: 3.4,
-        // lon: 3.7,
+        lat: 3.4,
+        lon: 3.7,
         // TODO: the below
-        lat: _reader(locationService).lat!,
-        lon: _reader(locationService).lon!,
+        // lat: _reader(locationService).lat!,
+        // lon: _reader(locationService).lon!,
         category: category,
       );
       // }

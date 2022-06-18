@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:buy_link/core/constants/colors.dart';
+import 'package:buy_link/core/utilities/map/circle.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/store_direction_notifier.dart';
 import 'package:buy_link/features/core/views/store_views/store_messages.dart';
 import 'package:buy_link/services/location_service.dart';
@@ -46,8 +47,8 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
   @override
   void dispose() {
     ref.read(locationService).updateLocationAfterLeavingMap(
-          newLat: ref.read(storeDirectionNotifierProvider).lat!,
-          newLon: ref.read(storeDirectionNotifierProvider).lon!,
+          newLat: ref.read(storeDirectionNotifierProvider).userLat!,
+          newLon: ref.read(storeDirectionNotifierProvider).userLon!,
         );
     super.dispose();
   }
@@ -64,8 +65,8 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
         controller: ModalScrollController.of(context),
         child: StoreDirectionBottomSheet(
           distance: ref.read(locationService).getDist(
-                startLat: ref.watch(storeDirectionNotifierProvider).lat!,
-                startLon: ref.watch(storeDirectionNotifierProvider).lon!,
+                startLat: ref.watch(storeDirectionNotifierProvider).userLat!,
+                startLon: ref.watch(storeDirectionNotifierProvider).userLon!,
                 endLat: widget.store.lat,
                 endLon: widget.store.lon,
               ),
@@ -99,8 +100,8 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
               center:
                   // LatLng(8.17, 4.26),
                   LatLng(
-                storeDirNotifier.lat ?? 8.17,
-                storeDirNotifier.lon ?? 4.26,
+                storeDirNotifier.userLat ?? 8.17,
+                storeDirNotifier.userLon ?? 4.26,
               ),
               // bounds: LatLngBounds(LatLng(8.17, 4.26), LatLng(8.27, 4.36)),
               boundsOptions:
@@ -114,37 +115,48 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
                 subdomains: ['a', 'b', 'c'],
                 attributionBuilder: (_) {
                   return Text(
-                      "Got more work to do... ${storeDirNotifier.lat}, ${ref.read(locationService).getDist(
-                            startLat:
-                                ref.watch(storeDirectionNotifierProvider).lat!,
-                            startLon:
-                                ref.watch(storeDirectionNotifierProvider).lon!,
-                            endLat: widget.store.lat,
-                            endLon: widget.store.lon,
-                          )}");
+                    "Testing purpose... ${storeDirNotifier.userLat}, ${ref.read(locationService).getDist(
+                          startLat: ref
+                              .watch(storeDirectionNotifierProvider)
+                              .userLat!,
+                          startLon: ref
+                              .watch(storeDirectionNotifierProvider)
+                              .userLon!,
+                          endLat: widget.store.lat,
+                          endLon: widget.store.lon,
+                        )}",
+                    style: TextStyle(fontSize: 15),
+                  );
                 },
               ),
-              CircleLayerOptions(
-                circles: [
-                  CircleMarker(
-                    point:
-                        // LatLng(8.17, 4.26),
-                        LatLng(
-                      storeDirNotifier.lat ?? 8.17,
-                      storeDirNotifier.lon ?? 4.26,
-                    ),
-                    color: AppColors.primaryColor.withOpacity(0.5),
-                    radius: 100,
-                  ),
-                ],
+              // CircleLayerOptions(
+              //   circles: [
+              //     CircleMarker(
+              //       point:
+              //           // LatLng(8.17, 4.26),
+              //           LatLng(
+              //         storeDirNotifier.lat ?? 8.17,
+              //         storeDirNotifier.lon ?? 4.26,
+              //       ),
+              //       color: AppColors.primaryColor.withOpacity(0.5),
+              //       radius: 100,
+              //     ),
+              //   ],
+              // ),
+              CircleRegion(
+                      LatLng(storeDirNotifier.userLat ?? 8.17,
+                          storeDirNotifier.userLon ?? 4.26),
+                      10)
+                  .toDrawable(
+                fillColor: AppColors.primaryColor.withOpacity(0.5),
               ),
               MarkerLayerOptions(
                 markers: [
                   Marker(
                     width: 28.0,
                     height: 34.44,
-                    point: LatLng(storeDirNotifier.lat ?? 8.17,
-                        storeDirNotifier.lon ?? 4.26),
+                    point: LatLng(storeDirNotifier.userLat ?? 8.17,
+                        storeDirNotifier.userLon ?? 4.26),
                     builder: (ctx) => const Icon(
                       Icons.location_pin,
                       color: Color(0xffCD261F),
