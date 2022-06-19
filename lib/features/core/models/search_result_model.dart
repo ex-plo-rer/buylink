@@ -6,7 +6,23 @@ LoadResultsModel loadResultsFromJson(String str) =>
 String loadResultsToJson(LoadResultsModel data) => json.encode(data.toJson());
 
 class LoadResultsModel {
+
   LoadResultsModel({
+    required this.result
+});
+  List <LoadResults> result;
+
+  factory LoadResultsModel.fromJson(Map<String, dynamic> json) => LoadResultsModel(
+    result: json["result"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "result": result,
+  };
+}
+
+class LoadResults {
+  LoadResults({
     required this.id,
     required this.name,
     required this.image,
@@ -17,7 +33,6 @@ class LoadResultsModel {
     required this.store
 
   });
-
   int id;
   String name;
   List <String> image;
@@ -27,7 +42,7 @@ class LoadResultsModel {
   int old_price;
   StoreResults store;
 
-  factory LoadResultsModel.fromJson(Map<String, dynamic> json) => LoadResultsModel(
+  factory LoadResults.fromJson(Map<String, dynamic> json) => LoadResults(
     id: json["id"],
     name: json["name"],
     image: json ["image"],
@@ -62,7 +77,7 @@ class StoreResults {
 
   int id;
   String name;
-  String? location;
+  String location;
 
 
   factory StoreResults.fromJson(Map<String, dynamic> json) => StoreResults(

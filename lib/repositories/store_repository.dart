@@ -220,8 +220,7 @@ class StoreRepository {
     return response['success'];
   }
 
-  Future<List<LoadResultsModel>> fetchProductSearch({
-    required int id,
+  Future<LoadResultsModel> fetchProductSearch({
     required String search_term,
     required double lon,
     required double lat,
@@ -231,9 +230,10 @@ class StoreRepository {
 
   }) async {
     // await _reader(userProvider).setUser();
-    print(
-        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
-    var id = _reader(userProvider).currentUser?.id ?? 0;
+  //  print(
+    //'_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = 1;
+        //_reader(userProvider).currentUser?.id ?? 0;
     final body = {
       'id': id,
       'search_term': search_term,
@@ -244,21 +244,19 @@ class StoreRepository {
       'max_price': max_price
     };
     print('Fetch store products params sent to server $body');
-
     var response = await networkService.post(
       'users/load-results',
       body: body,
       headers: headers,
     );
-
     print('search products response ${response}');
-     List<LoadResultsModel> _searchresults = [];
-     for (var store in response) {
-       _searchresults.add(LoadResultsModel.fromJson(store));
-     }
+     LoadResultsModel? searchresults;
+    //  for (var store in response) {
+    //    _searchresults.add(LoadResultsModel.fromJson(store));
+    //  }
     //
      print('Fetch store products response $response');
-     return _searchresults;
+     return response ['result'];
   }
 }
 

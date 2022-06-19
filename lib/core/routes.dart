@@ -13,6 +13,7 @@ import 'package:buy_link/features/core/views/settings_view/delete_user.dart';
 import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
 import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
 import 'package:buy_link/features/core/views/store_views/input_search_location.dart';
+import 'package:buy_link/features/core/views/store_views/product_searched_result_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
@@ -89,6 +90,7 @@ class Routes {
   static const cameraScreen = '/camera-screen';
   static const productSearchedResult = 'product-searched-result';
   static const inputSearchLocation ='input-search-location';
+
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -230,8 +232,12 @@ class Routes {
 
       case inputSearchLocation:
         return MaterialPageRoute(builder: (_) => InputSearchLocation());
+      case productSearchedResult:
+        return MaterialPageRoute(builder: (_) => ProductSearchedResultView());
 
-      // case otpVerification:
+
+
+    // case otpVerification:
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(
