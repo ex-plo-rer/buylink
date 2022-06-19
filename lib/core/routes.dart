@@ -90,8 +90,7 @@ class Routes {
   // static const addProductSpecifics = '/add-product-spec';
   static const cameraScreen = '/camera-screen';
   static const productSearchedResult = 'product-searched-result';
-  static const inputSearchLocation ='input-search-location';
-
+  static const inputSearchLocation = 'input-search-location';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -106,7 +105,7 @@ class Routes {
       case onboarding:
         return MaterialPageRoute(builder: (_) => OnboardingView());
       case dashboard:
-        return MaterialPageRoute(builder: (_) => DashboardView());
+        return MaterialPageRoute(builder: (_) => const DashboardView());
       case wishlist:
         return MaterialPageRoute(builder: (_) => const WishlistView());
       case productList:
@@ -212,9 +211,10 @@ class Routes {
                   store: store,
                 ));
       case addProductSpecifics:
-        return MaterialPageRoute(builder: (_) => AddProductSpecificsView());
+        return MaterialPageRoute(
+            builder: (_) => const AddProductSpecificsView());
       case addProductDesc:
-        return MaterialPageRoute(builder: (_) => AddProductDescView());
+        return MaterialPageRoute(builder: (_) => const AddProductDescView());
       case deleteUser:
         return MaterialPageRoute(builder: (_) => DeleteUser());
       case editUser:
@@ -234,13 +234,12 @@ class Routes {
         return MaterialPageRoute(builder: (_) => CameraScreen());
 
       case inputSearchLocation:
-        return MaterialPageRoute(builder: (_) => InputSearchLocation());
+        return MaterialPageRoute(builder: (_) => const InputSearchLocation());
       case productSearchedResult:
-        return MaterialPageRoute(builder: (_) => ProductSearchedResultView());
+        return MaterialPageRoute(
+            builder: (_) => const ProductSearchedResultView());
 
-
-
-    // case otpVerification:
+      // case otpVerification:
       // case otpVerification:
       //   var fromRegister = settings.arguments as bool;
       // return MaterialPageRoute(

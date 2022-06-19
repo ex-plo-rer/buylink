@@ -11,7 +11,6 @@ import '../features/core/notifiers/user_provider.dart';
 import '../services/local_storage_service.dart';
 import '../services/network/network_service.dart';
 
-
 class StoreRepository {
   final Reader _reader;
   final NetworkService networkService;
@@ -220,28 +219,26 @@ class StoreRepository {
     return response['success'];
   }
 
-  Future<LoadResultsModel> fetchProductSearch({
-    required String search_term,
-    required double lon,
-    required double lat,
-    required int range,
-    required int min_price,
-    required int max_price
-
-  }) async {
+  Future<LoadResultsModel> fetchProductSearch(
+      {required String searchTerm,
+      required double lon,
+      required double lat,
+      required double distanceRange,
+      required double minPrice,
+      required double maxPrice}) async {
     // await _reader(userProvider).setUser();
-  //  print(
+    //  print(
     //'_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
     var id = 1;
-        //_reader(userProvider).currentUser?.id ?? 0;
+    //_reader(userProvider).currentUser?.id ?? 0;
     final body = {
       'id': id,
-      'search_term': search_term,
+      'search_term': searchTerm,
       'lon': lon,
       'lat': lat,
-      'range': range,
-      'min_price': min_price,
-      'max_price': max_price
+      'range': distanceRange,
+      'min_price': minPrice,
+      'max_price': maxPrice
     };
     print('Fetch store products params sent to server $body');
     var response = await networkService.post(
@@ -250,13 +247,13 @@ class StoreRepository {
       headers: headers,
     );
     print('search products response ${response}');
-     LoadResultsModel? searchresults;
+    LoadResultsModel? searchresults;
     //  for (var store in response) {
     //    _searchresults.add(LoadResultsModel.fromJson(store));
     //  }
     //
-     print('Fetch store products response $response');
-     return response ['result'];
+    print('Fetch store products response $response');
+    return response['result'];
   }
 }
 

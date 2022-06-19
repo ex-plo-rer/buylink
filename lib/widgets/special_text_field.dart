@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SpecialTextField extends StatelessWidget {
+  final double height;
   final String title;
   final String? Function(String?)? validator;
   final double borderRadius;
@@ -28,6 +29,7 @@ class SpecialTextField extends StatelessWidget {
 
   const SpecialTextField({
     Key? key,
+    this.height = 52,
     this.title = '',
     this.validator,
     this.borderRadius = 8,
@@ -67,7 +69,7 @@ class SpecialTextField extends StatelessWidget {
           ),
           const Spacing.tinyHeight(),
           Container(
-            height: 52,
+            height: height,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: Colors.grey)),

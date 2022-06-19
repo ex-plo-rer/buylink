@@ -44,7 +44,7 @@ class MyApp extends ConsumerWidget {
       navigatorObservers: [BotToastNavigatorObserver()],
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: InputSearchLocation(),
+      home: StartupView(),
       // home: AddProductView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,

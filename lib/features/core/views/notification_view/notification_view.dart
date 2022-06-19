@@ -10,15 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/constants/strings.dart';
-import '../../../core/routes.dart';
-import '../../../services/navigation_service.dart';
-import '../../../widgets/app_button.dart';
-import '../../../widgets/chat_tile.dart';
-import '../../../widgets/spacing.dart';
-import '../models/message_model.dart';
-import '../notifiers/message_notifier/message_list_notifier.dart';
-import '../notifiers/notification_notifier.dart';
+import '../../../../core/routes.dart';
+import '../../../../services/navigation_service.dart';
+import '../../../../widgets/chat_tile.dart';
+import '../../../../widgets/spacing.dart';
+import '../../models/message_model.dart';
+import '../../notifiers/message_notifier/message_list_notifier.dart';
+import '../../notifiers/notification_notifier/notification_notifier.dart';
 
 class NotificationView extends ConsumerStatefulWidget {
   const NotificationView({Key? key}) : super(key: key);
