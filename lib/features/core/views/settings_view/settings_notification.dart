@@ -52,13 +52,8 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
             AppToggle(state: settingNotifier.notifications?.push_alert ??  true, type: "push",
               title: "Push notifications", subtitle: "Notifies you of events even when you’re not in the app",
               onChanged: (bool value)  {
-
                 print (value );
-                //settingNotifier.onNotChanged(text: "push" , fetchState: true  );
-
                 settingNotifier.setNotification(text: 'push', fetchState: value);
-
-
               },),
             Container(
               margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -68,8 +63,6 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
                 title: "Product alert notifications", subtitle: "Notifies you of your favorite products in range.",
                 onChanged:(bool value){
                   print (value );
-                  //settingNotifier.onNotChanged(text: "push" , fetchState: true  );
-
                   settingNotifier.setNotification(text: 'product', fetchState: value);
                 }),
 
@@ -80,8 +73,6 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
             AppToggle(state: settingNotifier.notifications?.chat_alert ?? true, type: "chat",
                 title: "Chat notifications", subtitle: "Notifies you of messages in your inbox", onChanged: (bool value){
                   print (value );
-                  //settingNotifier.onNotChanged(text: "push" , fetchState: true  );
-
                   settingNotifier.setNotification(text: 'chat', fetchState: value);
                 }),
 
@@ -92,8 +83,6 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
             AppToggle(state: settingNotifier.notifications?.email_alert ?? true , type: "email",
                 title: "Email Notifications", subtitle: "Notifies you of important occurrences from Buylink",
                 onChanged: (bool value){print (value );
-                //settingNotifier.onNotChanged(text: "push" , fetchState: true  );
-
                 settingNotifier.setNotification(text: 'email', fetchState: value);}),
 
           ],),),),);
