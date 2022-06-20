@@ -76,7 +76,7 @@ class HomeView extends ConsumerWidget {
               ),
               //   ),
               // ),
-              const Spacing.height(12),
+              const Spacing.height(8),
               Visibility(
                 visible: ref.watch(userProvider).currentUser == null,
                 child: AppButton(

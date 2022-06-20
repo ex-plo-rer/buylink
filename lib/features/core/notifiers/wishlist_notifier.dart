@@ -42,7 +42,7 @@ class WishlistNotifier extends BaseChangeNotifier {
     required int productId,
   }) async {
     try {
-      setState(state: ViewState.loading);
+     // setState(state: ViewState.loading);
       await _reader(coreRepository).addToWishList(
         productId: productId,
       );
