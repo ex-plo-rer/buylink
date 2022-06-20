@@ -18,7 +18,7 @@ class TermOfUse extends ConsumerWidget {
         leading:  IconButton(
         icon: const Icon(
         Icons.arrow_back_ios_outlined,
-        color: AppColors.dark,
+        color: AppColors.grey2, size: 15,
     ),
     onPressed: () {},),
     elevation: 0,

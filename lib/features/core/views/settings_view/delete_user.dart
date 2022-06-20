@@ -153,6 +153,7 @@ class DeleteUser extends ConsumerWidget {
                               ),
                               const Spacing.height(18),
                               AppTextField(
+                                style: TextStyle(color: AppColors.grey5, fontSize: 14, fontWeight: FontWeight.w500),
                                 title: '',
                                 hintText: 'Steve Jobs',
                                 focusNode: _detailFN,
@@ -208,6 +209,7 @@ class DeleteUser extends ConsumerWidget {
                                 ),
                               ),
                               AppTextField(
+                                style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                                 title: '',
                                 hintText: 'Password123',
                                 keyboardType: TextInputType.emailAddress,

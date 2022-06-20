@@ -205,6 +205,7 @@ class MessageView extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: AppTextField(
+                        style: TextStyle(color: AppColors.grey3, fontSize: 12, fontWeight: FontWeight.w500),
                         hintText: 'Type something...',
                         controller: messageTextController,
                         fillColor: AppColors.grey10,

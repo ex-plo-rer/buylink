@@ -94,6 +94,7 @@ class ChangeEmail extends ConsumerWidget {
                             ),
                             const Spacing.height(12),
                             AppTextField(
+                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                               title: '',
                               hintText: 'Example@gmail.com',
                               keyboardType: TextInputType.emailAddress,

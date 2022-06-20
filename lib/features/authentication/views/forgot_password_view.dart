@@ -43,7 +43,7 @@ class ForgotPasswordView extends ConsumerWidget {
             ? null
             : IconButton(
                 icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
+                  Icons.arrow_back_ios_outlined, size: 14,
                   color: AppColors.dark,
                 ),
                 onPressed: () {
@@ -107,6 +107,7 @@ class ForgotPasswordView extends ConsumerWidget {
                             ),
                           ),
                           AppTextField(
+                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                             title: '',
                             hintText: 'Example@gmail.com',
                             keyboardType: TextInputType.emailAddress,
@@ -167,6 +168,7 @@ class ForgotPasswordView extends ConsumerWidget {
                           ),
                           const Spacing.height(12),
                           AppTextField(
+                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                             title: '',
                             hintText: 'Example123',
                             obscureText:

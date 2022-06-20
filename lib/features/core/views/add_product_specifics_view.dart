@@ -66,12 +66,16 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.height(20),
               AppTextField(
+                style: TextStyle(color: AppColors.primaryColor, fontSize: 14, fontWeight:
+                FontWeight.w600),
                 hasBorder: true,
                 title: 'Brand',
                 hintText: 'Brand of the product',
                 onChanged: addProductNotifier.onBrandChanged,
               ),
               AppTextField(
+                style: TextStyle(color:
+                AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Colors',
                 hintText: 'Colors of the product',
@@ -144,6 +148,8 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
+                style: TextStyle(color:
+                AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Model',
                 hintText: 'Model',
@@ -151,6 +157,8 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
+                style: TextStyle(color:
+                AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Material',
                 hintText: 'Material of the product',
@@ -159,6 +167,8 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
+                style: TextStyle(color: AppColors.primaryColor, fontSize: 14,
+                    fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Care',
                 hintText: 'How to take care of the product',

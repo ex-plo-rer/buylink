@@ -103,6 +103,7 @@ class ChangePassword extends ConsumerWidget {
                             ),
                           ),
                           AppTextField(
+                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                             title: '',
                             hintText: 'Ayodeji123',
                             obscureText:
@@ -158,6 +159,7 @@ class ChangePassword extends ConsumerWidget {
                           ),
                           const Spacing.height(12),
                           AppTextField(
+                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                             title: '',
                             controller: _newPasswordController,
                             focusNode: _newPasswordFN,

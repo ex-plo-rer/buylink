@@ -75,6 +75,7 @@ class DeleteStoreVal extends ConsumerWidget {
                   textAlign: TextAlign.start,
                 ),
                 AppTextField(
+                  style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                   title: '',
                   hintText: 'Example123',
                   obscureText: !storeSettingsNotifier.passwordVisible,

@@ -46,6 +46,7 @@ class HomeView extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppTextField(
+                style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w500),
                 hintText: 'What would you like to buy ?',
                 onTap: () async {
                   searchFN.unfocus();

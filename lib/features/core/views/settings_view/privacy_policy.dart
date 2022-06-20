@@ -17,8 +17,8 @@ class PrivacyPolicy extends ConsumerWidget {
         appBar: AppBar(
           leading:  IconButton(
             icon: const Icon(
-              Icons.arrow_back_ios_outlined,
-              color: AppColors.dark,
+              Icons.arrow_back_ios_outlined, size: 15,
+              color: AppColors.grey2,
             ),
             onPressed: () {},),
           elevation: 0,

@@ -60,6 +60,7 @@ class EditUserName extends ConsumerWidget {
                 ),
                 const Spacing.smallHeight(),
                 AppTextField(
+                  style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                   title: '',
                   hintText: 'Deji',
                   focusNode: _nameFN,

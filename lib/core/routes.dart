@@ -5,6 +5,7 @@ import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
+import 'package:buy_link/features/core/views/settings_view/term_of_use.dart';
 import 'package:buy_link/features/core/views/store_views/delete_store_validation.dart';
 import 'package:buy_link/features/core/views/settings_view/change_email.dart';
 import 'package:buy_link/features/core/views/settings_view/change_name.dart';
@@ -91,6 +92,7 @@ class Routes {
   static const cameraScreen = '/camera-screen';
   static const productSearchedResult = 'product-searched-result';
   static const inputSearchLocation = 'input-search-location';
+  static const termOfUse = 'term-of-use';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -238,6 +240,9 @@ class Routes {
       case productSearchedResult:
         return MaterialPageRoute(
             builder: (_) => const ProductSearchedResultView());
+      case termOfUse:
+        return MaterialPageRoute(
+            builder: (_) =>  TermOfUse());
 
       // case otpVerification:
       // case otpVerification:

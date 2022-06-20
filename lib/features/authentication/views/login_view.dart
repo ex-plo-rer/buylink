@@ -74,6 +74,7 @@ class LoginView extends ConsumerWidget {
                   ),
                   const Spacing.largeHeight(),
                   AppTextField(
+                    style: TextStyle(color: AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w600),
                     title: 'Email Address',
                     hintText: 'example@email.com',
                     focusNode: _emailFN,
@@ -83,6 +84,7 @@ class LoginView extends ConsumerWidget {
                   const Spacing.mediumHeight(),
                   Spacing.smallHeight(),
                   AppTextField(
+                    style: TextStyle(color: AppColors.grey5, fontSize: 14, fontWeight: FontWeight.w600),
                     title: 'Password',
                     hintText: 'Enter your password',
                     focusNode: _passwordFN,

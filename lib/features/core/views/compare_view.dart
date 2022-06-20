@@ -94,6 +94,7 @@ class _CompareViewState extends ConsumerState<CompareView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppTextField(
+                style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                 hintText: 'Search for another product to compare',
                 onTap: () async {
                   searchFN.unfocus();

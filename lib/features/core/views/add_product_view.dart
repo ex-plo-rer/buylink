@@ -103,6 +103,7 @@ class AddProductView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
+                style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Product Name',
                 hintText: 'Name of the product',
@@ -174,6 +175,7 @@ class AddProductView extends ConsumerWidget {
               // ),
               const Spacing.mediumHeight(),
               AppTextField(
+                style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w500),
                 hasBorder: true,
                 title: 'Product Specifics',
                 hintText: 'Brand, Size, Color, Material,Mobile',
@@ -196,6 +198,7 @@ class AddProductView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
+                style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w500),
                 hasBorder: true,
                 title: 'Product Description',
                 hintText: 'Describe your product',

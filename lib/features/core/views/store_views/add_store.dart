@@ -103,6 +103,7 @@ class AddStoreView extends ConsumerWidget {
                           ),
                           Spacing.height(12),
                           AppTextField(
+                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                             title: '',
                             hintText: 'Store name',
                             hasBorder: false,
@@ -137,6 +138,7 @@ class AddStoreView extends ConsumerWidget {
                           Spacing.height(12),
                           // TextField(),
                           AppTextField(
+                            style: TextStyle(color: AppColors.grey1, fontSize: 14, fontWeight: FontWeight.w500),
                             hintText: 'Tell us about your store',
                             maxLines: 5,
                             focusNode: _storeDescriptionFN,

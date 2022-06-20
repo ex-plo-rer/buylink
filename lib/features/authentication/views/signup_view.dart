@@ -46,7 +46,8 @@ class SignupView extends ConsumerWidget {
             : IconButton(
                 icon: const Icon(
                   Icons.arrow_back_ios_outlined,
-                  color: AppColors.dark,
+                  size: 15,
+                  color: AppColors.grey2,
                 ),
                 onPressed: () {
                   signupNotifier.moveBackward();
@@ -101,9 +102,10 @@ class SignupView extends ConsumerWidget {
                               fontSize: 24,
                               secondColor: AppColors.primaryColor,
                             ),
-                            const Spacing.height(12),
+                            const Spacing.height(4),
                             AppTextField(
                               title: '',
+                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                               hintText: 'Steve Jobs',
                               focusNode: _nameFN,
                               controller: _nameController,
@@ -136,6 +138,7 @@ class SignupView extends ConsumerWidget {
                             ),
                             const Spacing.height(12),
                             AppTextField(
+                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                               title: '',
                               hintText: 'Example@gmail.com',
                               keyboardType: TextInputType.emailAddress,
@@ -197,6 +200,7 @@ class SignupView extends ConsumerWidget {
                             ),
                             const Spacing.height(12),
                             AppTextField(
+                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                               title: '',
                               hintText: 'Example123',
                               obscureText: !signupNotifier.passwordVisible,
@@ -374,17 +378,56 @@ class SignupView extends ConsumerWidget {
                           style: TextStyle(color: AppColors.grey5),
                         ),
                       ),
-                      const Align(
+                       Align(
                         alignment: Alignment.center,
-                        child: Text(
-                          'Terms of Use and Privacy Policy',
+                        child: Row (
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                          GestureDetector(
+                            onTap:(){
+
+                              ref
+                                  .read(navigationServiceProvider).navigateToNamed(Routes.termOfUse);
+                            },
+                        child:
+                          Text(
+                          'Terms of Use',
                           style: TextStyle(
                             color: AppColors.primaryColor,
                             decoration: TextDecoration.underline,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
-                        ),
+
+
+                        )),
+                         SizedBox(width: 4),
+
+                          Text(
+                              'and',
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),),
+                              SizedBox(width: 4),
+
+                GestureDetector(
+                    onTap:(){
+                      ref
+                          .read(navigationServiceProvider).navigateToNamed(Routes.privacyPolicy);
+
+                    },
+                    child: Text(
+                               'Privacy Policy',
+                               style: TextStyle(
+                                 color: AppColors.primaryColor,
+                                 decoration: TextDecoration.underline,
+                                 fontSize: 12,
+                                 fontWeight: FontWeight.w600,
+                               ),)),
+                        ]
+                        )
                       ),
                     ],
                   ),
