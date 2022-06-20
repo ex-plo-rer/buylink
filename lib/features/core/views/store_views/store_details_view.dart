@@ -103,7 +103,10 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
                               image: CachedNetworkImageProvider(
+
                                 storeDetailsNotifier.storeDetails.background,
+
+
                               ),
                               fit: BoxFit.fill,
                             ),
@@ -269,7 +272,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               ),
                               const Spacing.tinyHeight(),
                               Text(
-                                storeDetailsNotifier.storeDetails.email,
+                                storeDetailsNotifier.storeDetails.email ,
                                 style: const TextStyle(
                                   color: AppColors.grey4,
                                   fontSize: 14,

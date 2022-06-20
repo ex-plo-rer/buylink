@@ -8,8 +8,10 @@ import 'package:buy_link/widgets/iconNtext_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/constants/svgs.dart';
 import '../../../widgets/circular_progress.dart';
 import '../models/product_model.dart';
 import '../notifiers/store_notifier/store_review_notifier.dart';
@@ -103,9 +105,10 @@ class StoreReviewsView extends ConsumerWidget {
                                       itemCount: 5,
                                       itemPadding: const EdgeInsets.symmetric(
                                           horizontal: 0.0),
-                                      itemBuilder: (context, _) => const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
+                                      itemBuilder: (context, _) => SvgPicture.asset(
+                                        AppSvgs.starFilled,
+                                        width: 6,
+                                        height: 6,
                                       ),
                                       onRatingUpdate: (rating) {
                                         print(rating);

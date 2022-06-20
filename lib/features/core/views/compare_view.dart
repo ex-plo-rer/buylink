@@ -69,7 +69,7 @@ class _CompareViewState extends ConsumerState<CompareView> {
         leading: IconButton(
           onPressed: () {},
           icon: const Icon(
-            Icons.arrow_back_ios_outlined,
+            Icons.arrow_back_ios_outlined, color: AppColors.grey2, size: 15
           ),
         ),
         elevation: 0,

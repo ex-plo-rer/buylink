@@ -101,7 +101,11 @@ class ProductDetailsView extends ConsumerWidget {
                   AnimatedSmoothIndicator(
                     count: product.image.length,
                     activeIndex: productDetailsNotifier.activeIndex,
-                    effect: const WormEffect(
+                    effect: const ExpandingDotsEffect(
+                      spacing: 3,
+                      expansionFactor: 5,
+                      activeDotColor: AppColors.primaryColor,
+                      dotColor: AppColors.primaryColor,
                       dotHeight: 4,
                       dotWidth: 4,
                     ),
@@ -130,9 +134,10 @@ class ProductDetailsView extends ConsumerWidget {
                       // text: product.store.rating,
                       padding: 0,
                       icon: SvgPicture.asset(
-                        AppSvgs.favoriteFilled,
+                        AppSvgs.star,
                         width: 12,
                         height: 12,
+                        color: AppColors.yellow,
                       ),
                       containerColor: AppColors.transparent,
                     ),

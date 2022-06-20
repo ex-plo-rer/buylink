@@ -19,6 +19,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
+import '../../../services/navigation_service.dart';
 
 class ProductDetailsMoreView extends ConsumerWidget {
   ProductDetailsMoreView({Key? key}) : super(key: key);
@@ -32,9 +33,13 @@ class ProductDetailsMoreView extends ConsumerWidget {
           color: AppColors.dark, //change your color here
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            ref
+                .read(navigationServiceProvider)
+                .navigateBack();
+          },
           icon: const Icon(
-            Icons.arrow_back_ios_outlined,
+            Icons.arrow_back_ios_outlined, size: 15, color: AppColors.grey2
           ),
         ),
         elevation: 0,
@@ -61,6 +66,8 @@ class ProductDetailsMoreView extends ConsumerWidget {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Spacing.smallHeight(),
+                      Spacing.smallHeight(),
                       CompareTexts(
                         title: 'Brand:',
                         subTitle: homeNotifier.productAttr.brand,
