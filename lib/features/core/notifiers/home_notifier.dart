@@ -37,10 +37,6 @@ class HomeNotifier extends BaseChangeNotifier {
 
   ProductAttrModel get productAttr => _productAttr!;
 
-  List<String> _autoCompleteStrings = [];
-
-  List<String> get autoCompleteStrings => _autoCompleteStrings;
-
   Position? position;
 
   //
@@ -99,93 +95,6 @@ class HomeNotifier extends BaseChangeNotifier {
   void toggleFavorite() {
     _isFavorite = !_isFavorite;
     notifyListeners();
-  }
-
-  bool _searchLoading = false;
-
-  bool get searchLoading => _searchLoading;
-
-  Future<List<String>> autoComplete({
-    required String query,
-  }) async {
-    print('Query......: $query');
-    try {
-      _searchLoading = true;
-      setState(state: ViewState.loading);
-      // await Future.delayed(Duration(seconds: 2));
-      // return [
-      //   'Oluwatobiloba Ajayi',
-      //   'The Lord is good',
-      //   'I will not fail',
-      //   'GGMU',
-      //   'Revrd. Tolu Agboola',
-      // ]
-      //     .where(
-      //         (element) => element.toLowerCase().contains(query.toLowerCase()))
-      //     .toList();
-      _autoCompleteStrings =
-          await _reader(coreRepository).autoComplete(query: query);
-      return _autoCompleteStrings;
-      setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      _searchLoading = false;
-      setState(state: ViewState.idle);
-      return [];
-    } finally {
-      _searchLoading = false;
-      // setState(state: ViewState.idle);
-      // return [];
-    }
-  }
-
-  // Future<List<String>> autoComplete({
-  //   required String query,
-  // }) async {
-  //   print('Query......: $query');
-  //   try {
-  //     _searchLoading = true;
-  //     setState(state: ViewState.loading);
-  //     await Future.delayed(Duration(seconds: 2));
-  //     return [
-  //       'Oluwatobiloba Ajayi',
-  //       'The Lord is good',
-  //       'I will not fail',
-  //       'GGMU',
-  //       'Revrd. Tolu Agboola',
-  //     ]
-  //         .where(
-  //             (element) => element.toLowerCase().contains(query.toLowerCase()))
-  //         .toList();
-  //     // await _reader(coreRepository).autoComplete(query: query);
-  //     setState(state: ViewState.idle);
-  //   } on NetworkException catch (e) {
-  //     _searchLoading = false;
-  //     setState(state: ViewState.idle);
-  //     return [];
-  //   } finally {
-  //     _searchLoading = false;
-  //     // setState(state: ViewState.idle);
-  //     // return [];
-  //   }
-  // }
-
-  // TODO: Modify this code and separate the shared preference to the local storage service
-  Future<List<String>> getRecentSearchesLike(String query) async {
-    final pref = await SharedPreferences.getInstance();
-    final allSearches = pref.getStringList(AppStrings.recentSearchKey);
-    return allSearches!.where((search) => search.startsWith(query)).toList();
-  }
-
-  Future<void> saveToRecentSearches(String searchText) async {
-    final pref = await SharedPreferences.getInstance();
-
-    //Use `Set` to avoid duplication of recentSearches
-    Set<String> allSearches =
-        pref.getStringList(AppStrings.recentSearchKey)?.toSet() ?? {};
-
-    //Place it at first in the set
-    allSearches = {searchText, ...allSearches};
-    pref.setStringList(AppStrings.recentSearchKey, allSearches.toList());
   }
 }
 

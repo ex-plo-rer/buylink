@@ -1,4 +1,4 @@
-import 'package:buy_link/features/core/notifiers/store_notifier/input_search_location_notifier.dart';
+import 'package:buy_link/features/core/notifiers/store_notifier/product_search_notifier.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:buy_link/widgets/special_text_field.dart';
@@ -88,13 +88,13 @@ class AppSearchDialog extends ConsumerWidget {
                       child: Slider(
                         onChanged: onSliderChanged,
                         value: ref
-                            .watch(inputSearchLocationNotifierProvider)
+                            .watch(productSearchNotifierProvider)
                             .sliderValue,
                         min: 1,
                         max: 10,
                         divisions: 9,
                         label:
-                            '${ref.watch(inputSearchLocationNotifierProvider).sliderValue} km',
+                            '${ref.watch(productSearchNotifierProvider).sliderValue} km',
                       ),
                     ),
                     const Spacing.smallHeight(),
@@ -141,9 +141,7 @@ class AppSearchDialog extends ConsumerWidget {
                         onTap: () {
                           minPriceController.clear();
                           maxPriceController.clear();
-                          ref
-                              .read(inputSearchLocationNotifierProvider)
-                              .clearFilter();
+                          ref.read(productSearchNotifierProvider).clearFilter();
                         },
                         child: const Text(
                           'Clear Filter',

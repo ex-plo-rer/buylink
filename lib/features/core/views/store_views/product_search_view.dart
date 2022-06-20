@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:buy_link/widgets/app_search_dialog.dart';
-import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,22 +9,19 @@ import 'package:flutter_map_dragmarker/dragmarker.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../../core/constants/colors.dart';
-import '../../../../core/routes.dart';
-import '../../../../services/navigation_service.dart';
 import '../../../../widgets/app_button.dart';
-import '../../notifiers/store_notifier/input_search_location_notifier.dart';
-import '../../notifiers/store_notifier/store_direction_notifier.dart';
+import '../../notifiers/store_notifier/product_search_notifier.dart';
 
-class InputSearchLocation extends ConsumerStatefulWidget {
-  const InputSearchLocation({Key? key}) : super(key: key);
+class ProductSearchView extends ConsumerStatefulWidget {
+  const ProductSearchView({Key? key, required this.searchTerm,}) : super(key: key);
+  final String searchTerm;
 
   @override
-  _InputSearchLocationState createState() => _InputSearchLocationState();
+  ConsumerState<ProductSearchView> createState() => _ProductSearchViewState();
 }
 
-class _InputSearchLocationState extends ConsumerState {
+class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
   final searchFocus = FocusNode();
   final searchController = TextEditingController();
   late CenterOnLocationUpdate _centerOnLocationUpdate;
@@ -36,7 +32,7 @@ class _InputSearchLocationState extends ConsumerState {
   void initState() {
     super.initState();
     // ref.read(storeDirectionNotifierProvider).initLocation();
-    ref.read(inputSearchLocationNotifierProvider).initLocation();
+    ref.read(productSearchNotifierProvider).initLocation();
     _centerOnLocationUpdate = CenterOnLocationUpdate.always;
     _centerCurrentLocationStreamController = StreamController<double>();
     // init();
@@ -50,7 +46,7 @@ class _InputSearchLocationState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
-    final inputSearchNotifier = ref.watch(inputSearchLocationNotifierProvider);
+    final inputSearchNotifier = ref.watch(productSearchNotifierProvider);
 
     return Scaffold(
       bottomSheet: BottomSheet(
@@ -260,7 +256,7 @@ class _InputSearchLocationState extends ConsumerState {
                 //     ),
                 //   ),
                 // ),
-                const Expanded(child: Text('Black Shirt')),
+                Expanded(child: Text(widget.searchTerm)),
                 const Spacing.mediumWidth(),
                 Container(
                   height: 40,
