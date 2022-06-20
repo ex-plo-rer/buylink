@@ -38,6 +38,13 @@ class LoginView extends ConsumerWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
+        leading: IconButton(
+          padding: EdgeInsets.zero,
+          constraints: BoxConstraints(),
+          onPressed: (){
+          ref
+              .read(navigationServiceProvider).navigateToNamed(Routes.onboarding);
+        }, icon: Icon(Icons.arrow_back_ios_outlined, size: 14, color: AppColors.grey2,),),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -50,6 +57,7 @@ class LoginView extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Spacing.smallHeight(),
                   const TextWithRich(
                     firstText: 'Welcome',
                     secondText: 'Back!',
@@ -72,7 +80,8 @@ class LoginView extends ConsumerWidget {
                     controller: _emailAddressController,
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  const Spacing.largeHeight(),
+                  const Spacing.mediumHeight(),
+                  Spacing.smallHeight(),
                   AppTextField(
                     title: 'Password',
                     hintText: 'Enter your password',
@@ -90,21 +99,26 @@ class LoginView extends ConsumerWidget {
                       onPressed: () => loginNotifier.togglePassword(),
                     ),
                   ),
-                  const Spacing.largeHeight(),
+                  const Spacing.mediumHeight(),
+                  Spacing.smallHeight(),
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      child: const Text("Forgotten your password?"),
+                      child: const Text("Forgotten your password?",
+                        style: TextStyle(color: AppColors.grey4, fontSize: 14, fontWeight: FontWeight.w500),),
                       onPressed: () => ref
                           .read(navigationServiceProvider)
                           .navigateToNamed(Routes.forgotPassword),
                     ),
                   ),
-                  const Spacing.height(52),
+                  const Spacing.height(50),
                   AppButton(
                       isLoading: loginNotifier.state.isLoading,
                       text: AppStrings.login,
-                      backgroundColor: AppColors.primaryColor,
+                      backgroundColor: _passwordController.text.isNotEmpty &&
+                          _emailAddressController.text.isNotEmpty ?
+                      AppColors.primaryColor
+                      : AppColors.grey6,
                       onPressed: () async {
                         // ref
                         //     .read(navigationServiceProvider)
