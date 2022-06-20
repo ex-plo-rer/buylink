@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:buy_link/core/constants/strings.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/constants/colors.dart';
 import '../../../core/routes.dart';
 import '../../../core/utilities/base_change_notifier.dart';
 import '../../../services/local_storage_service.dart';
@@ -22,6 +25,7 @@ class OnboardingNotifier extends BaseChangeNotifier {
   int get currentPage => _currentPage;
   int _totalPage = 3;
   int get totalPage => _totalPage;
+  static Color dotColor = AppColors.shade3;
 
 
   void moveForward() async {
@@ -44,6 +48,7 @@ class OnboardingNotifier extends BaseChangeNotifier {
 
   void changePage(int page) {
     _currentPage = page;
+    dotColor = AppColors.primaryColor;
     notifyListeners();
   }
 
@@ -66,9 +71,9 @@ class OnboardingNotifier extends BaseChangeNotifier {
 
   List<OnBoardContent> onBoardingProvContents = [
     OnBoardContent("assets/images/walkthrough1.png",
-        "Search for anything you want to buy"),
+        "\n Search for anything you want to buy"),
     OnBoardContent("assets/images/walkthrough2.png",
-        "Locate stores around you that have what you want"),
+        "\n Locate stores around you that have what you want"),
     OnBoardContent("assets/images/walkthrough3.png",
         "Make your products & services instanly visible to everybody"),
   ];

@@ -25,7 +25,7 @@ class DotsIndicator extends AnimatedWidget {
     required this.controller,
     required this.itemCount,
     required this.onPageSelected,
-    this.color = AppColors.primaryColor,
+     this.color = AppColors.shade3,
   }) : super(listenable: controller);
 
   /// The PageController that this DotsIndicator is representing.
@@ -53,12 +53,12 @@ class DotsIndicator extends AnimatedWidget {
 
   Widget _buildDot(int index) {
     return Container(
-      height: 10,
-      width: controller.page == index ? 25 : 10,
+      height: 6,
+      width: controller.page == index ? 25 : 6,
       margin: EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: AppColors.primaryColor,
+        color: controller.page == index ? AppColors.primaryColor: AppColors.shade3,
       ),
     );
   }
