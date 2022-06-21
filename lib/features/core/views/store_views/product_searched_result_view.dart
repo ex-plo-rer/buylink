@@ -152,12 +152,11 @@ class _ProductSearchedResultViewState extends ConsumerState {
                         context: context,
                         builder: (BuildContext context) {
                           return AppSearchDialog(
-                            onClearFilter: () {},
                             onMinChanged: (String) {},
                             onSliderChanged: (double) {},
                             value: 2,
                             onMaxChanged: (String) {},
-                            sliderLabel: '',
+                            onApplyPressed: () {},
                           );
                         });
                   },

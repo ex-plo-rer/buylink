@@ -9,11 +9,8 @@ class ProductSearchResultNotifier extends BaseChangeNotifier {
   ProductSearchResultNotifier(this._reader) {
 
   }
-
-  List<LoadResultsModel> _searchresult = [];
-  List<LoadResultsModel> get searchresult => _searchresult;
-
 }
 
 final productSearchResultNotifierProvider =
-ChangeNotifierProvider<ProductSearchResultNotifier>((ref) => ProductSearchResultNotifier(ref.read));
+ChangeNotifierProvider<ProductSearchResultNotifier>((ref) =>
+    ProductSearchResultNotifier(ref.read));

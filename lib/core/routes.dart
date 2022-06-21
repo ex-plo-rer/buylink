@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/models/search_result_arg_model.dart';
 import 'package:buy_link/features/core/views/add_product_view.dart';
 import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/categories_view.dart';
@@ -34,6 +35,7 @@ import '../features/core/views/add_product_specifics_view.dart';
 import '../features/core/views/product_list_view.dart';
 import '../features/core/views/store_views/delete_store_view.dart';
 import '../features/core/views/store_views/product_saved_view.dart';
+import '../features/core/views/store_views/product_search_result_view.dart';
 import '../features/core/views/store_views/store_messages.dart';
 import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
@@ -89,6 +91,7 @@ class Routes {
 
   // static const addProductSpecifics = '/add-product-spec';
   static const cameraScreen = '/camera-screen';
+  static const productSearchResult = 'product-search-result';
   static const productSearchedResult = 'product-searched-result';
   static const productSearch = 'product-search';
 
@@ -235,10 +238,19 @@ class Routes {
 
       case productSearch:
         String searchTerm = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => ProductSearchView(searchTerm: searchTerm));
+        return MaterialPageRoute(
+            builder: (_) => ProductSearchView(searchTerm: searchTerm));
+      case productSearchResult:
+        SearchResultArgModel args = settings.arguments as SearchResultArgModel;
+        return MaterialPageRoute(
+          builder: (_) => ProductSearchResultView(
+            args: args,
+          ),
+        );
       case productSearchedResult:
         return MaterialPageRoute(
-            builder: (_) => const ProductSearchedResultView());
+          builder: (_) => const ProductSearchedResultView(),
+        );
 
       // case otpVerification:
       // case otpVerification:

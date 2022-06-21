@@ -13,10 +13,10 @@ import '../../../../services/base/network_exception.dart';
 import '../../../../services/location_service.dart';
 import '../../../../services/navigation_service.dart';
 
-class ProductSearchNotifier extends BaseChangeNotifier {
+class ProductSearchResultNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  ProductSearchNotifier(this._reader);
+  ProductSearchResultNotifier(this._reader);
 
   SearchResultModel? _searchResult;
 
@@ -28,6 +28,16 @@ class ProductSearchNotifier extends BaseChangeNotifier {
   double get filterLat => _filterLat;
 
   double get filterLon => _filterLon;
+
+  int _activeIndex = 0;
+
+  int get activeIndex => _activeIndex;
+
+  void nextPage(index, reason) {
+    _activeIndex = index;
+    print('$_activeIndex $index');
+    notifyListeners();
+  }
 
   void initLocation() {
     // // Uses the initial location of when the app was lauched first.
@@ -42,10 +52,6 @@ class ProductSearchNotifier extends BaseChangeNotifier {
 
   double? _minPrice;
   double? _maxPrice;
-
-  double? get minPrice => _minPrice;
-
-  double? get maxPrice => _maxPrice;
 
   AutoCompleteModel? _autoComplete;
 
@@ -71,15 +77,9 @@ class ProductSearchNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  void onMinPriceChanged(String value) {
-    _minPrice = double.parse(value);
-    notifyListeners();
-  }
+  void onMinPriceChanged(String value) => _minPrice = value as double?;
 
-  void onMaxPriceChanged(String value) {
-    _maxPrice = double.parse(value);
-    notifyListeners();
-  }
+  void onMaxPriceChanged(String value) => _maxPrice = value as double?;
 
   void onSliderChanged(double newValue) {
     _sliderValue = newValue;
@@ -88,7 +88,6 @@ class ProductSearchNotifier extends BaseChangeNotifier {
 
   Future<void> fetchProductSearch({
     required String searchTerm,
-    bool isConfirmButton = true,
   }) async {
     try {
       setState(state: ViewState.loading);
@@ -96,9 +95,9 @@ class ProductSearchNotifier extends BaseChangeNotifier {
         searchTerm: 'a',
         lon: _filterLon,
         lat: _filterLat,
-        distanceRange: isConfirmButton ? 10 : _sliderValue,
-        minPrice: isConfirmButton ? 0 : _minPrice ?? 0,
-        maxPrice: isConfirmButton ? 10000000000 : _maxPrice ?? 10000000000,
+        distanceRange: _sliderValue,
+        minPrice: _minPrice ?? 0,
+        maxPrice: _maxPrice ?? 1000000000,
       );
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
@@ -147,6 +146,6 @@ class ProductSearchNotifier extends BaseChangeNotifier {
   }
 }
 
-final productSearchNotifierProvider =
-    ChangeNotifierProvider<ProductSearchNotifier>(
-        (ref) => ProductSearchNotifier(ref.read));
+final productSearchResultNotifierProvider =
+    ChangeNotifierProvider<ProductSearchResultNotifier>(
+        (ref) => ProductSearchResultNotifier(ref.read));

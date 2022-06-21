@@ -25,19 +25,19 @@ class CircleRegion implements BaseRegion {
     bool isDotted = false,
     String? label,
     TextStyle labelStyle = const TextStyle(),
-    // PolygonLabelPlacement labelPlacement = PolygonLabelPlacement.polylabel,
+    PolygonLabelPlacement labelPlacement = PolygonLabelPlacement.polylabel,
   }) =>
       PolygonLayerOptions(
         polygons: [
           Polygon(
-            // isFilled: fillColor != null,
+            isFilled: fillColor != null,
             color: fillColor ?? Colors.transparent,
             borderColor: borderColor,
             borderStrokeWidth: borderStrokeWidth,
             isDotted: isDotted,
-            // label: label,
-            // labelStyle: labelStyle,
-            // labelPlacement: labelPlacement,
+            label: label,
+            labelStyle: labelStyle,
+            labelPlacement: labelPlacement,
             points: toList(),
           )
         ],

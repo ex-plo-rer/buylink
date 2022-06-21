@@ -1,96 +1,39 @@
+// To parse this JSON data, do
+//
+//     final searchResultModel = searchResultModelFromJson(jsonString);
+
+import 'package:buy_link/features/core/models/product_model.dart';
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
-LoadResultsModel loadResultsFromJson(String str) =>
-    LoadResultsModel.fromJson(json.decode(str));
+SearchResultModel searchResultModelFromJson(String str) =>
+    SearchResultModel.fromJson(json.decode(str));
 
-String loadResultsToJson(LoadResultsModel data) => json.encode(data.toJson());
+String searchResultModelToJson(SearchResultModel data) =>
+    json.encode(data.toJson());
 
-class LoadResultsModel {
-
-  LoadResultsModel({
-    required this.result
-});
-  List <LoadResults> result;
-
-  factory LoadResultsModel.fromJson(Map<String, dynamic> json) => LoadResultsModel(
-    result: json["result"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "result": result,
-  };
-}
-
-class LoadResults {
-  LoadResults({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.lon,
-    required this.lat,
-    required this.price,
-    required this.old_price,
-    required this.store
-
-  });
-  int id;
-  String name;
-  List <String> image;
-  double lon;
-  double lat;
-  int  price;
-  int old_price;
-  StoreResults store;
-
-  factory LoadResults.fromJson(Map<String, dynamic> json) => LoadResults(
-    id: json["id"],
-    name: json["name"],
-    image: json ["image"],
-    lon: json ["lon"],
-    lat: json["lat"],
-    price: json ["price"],
-    old_price: json["old_price"],
-    store: json ["store"]
-
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "image": image,
-    "lon": lon,
-    "lat": lat,
-    "price": price,
-    "old_price": old_price,
-    "store": store
-
-
-  };
-}
-
-class StoreResults {
-  StoreResults({
-    required this.id,
-    required this.name,
-    required this.location,
+class SearchResultModel {
+  SearchResultModel({
+    required this.result,
+    required this.searchTerm,
+    required this.range,
   });
 
-  int id;
-  String name;
-  String location;
+  List<ProductModel> result;
+  String searchTerm;
+  int range;
 
-
-  factory StoreResults.fromJson(Map<String, dynamic> json) => StoreResults(
-    id: json["id"],
-    name: json["name"],
-    location: json["location"],
-
-  );
+  factory SearchResultModel.fromJson(Map<String, dynamic> json) =>
+      SearchResultModel(
+        result: List<ProductModel>.from(
+            json["result"].map((x) => ProductModel.fromJson(x))),
+        searchTerm: json["search_term"],
+        range: json["range"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "location": location,
-
-  };
+        "result": List<dynamic>.from(result.map((x) => x.toJson())),
+        "search_term": searchTerm,
+        "range": range,
+      };
 }

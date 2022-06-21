@@ -45,7 +45,7 @@ class StoreRepository {
       headers: headers,
     );
 
-    print('Fetch store quick details response ${response}');
+    print('Fetch store quick details response $response');
 
     return StoreQuickModel.fromJson(response);
   }
@@ -65,7 +65,7 @@ class StoreRepository {
       headers: headers,
     );
 
-    print('Fetch my stores response ${response}');
+    print('Fetch my stores response $response');
     List<Store> _myStores = [];
     for (var product in response) {
       _myStores.add(Store.fromJson(product));
@@ -157,7 +157,7 @@ class StoreRepository {
       headers: headers,
     );
 
-    print('Fetch store products response ${response}');
+    print('Fetch store products response $response');
     List<ProductModel> _products = [];
     for (var product in response) {
       _products.add(ProductModel.fromJson(product));
@@ -190,7 +190,7 @@ class StoreRepository {
       headers: headers,
     );
 
-    print('Fetch weekly data response ${response}');
+    print('Fetch weekly data response $response');
 
     return WeeklyDataModel.fromJson(response);
   }
@@ -219,18 +219,15 @@ class StoreRepository {
     return response['success'];
   }
 
-  Future<LoadResultsModel> fetchProductSearch(
-      {required String searchTerm,
-      required double lon,
-      required double lat,
-      required double distanceRange,
-      required double minPrice,
-      required double maxPrice}) async {
-    // await _reader(userProvider).setUser();
-    //  print(
-    //'_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
-    var id = 1;
-    //_reader(userProvider).currentUser?.id ?? 0;
+  Future<SearchResultModel> fetchProductSearch({
+    required String searchTerm,
+    required double lon,
+    required double lat,
+    required double distanceRange,
+    required double minPrice,
+    required double maxPrice,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
     final body = {
       'id': id,
       'search_term': searchTerm,
@@ -240,20 +237,14 @@ class StoreRepository {
       'min_price': minPrice,
       'max_price': maxPrice
     };
-    print('Fetch store products params sent to server $body');
+    print('Fetch search result params sent to server $body');
     var response = await networkService.post(
       'users/load-results',
       body: body,
       headers: headers,
     );
-    print('search products response ${response}');
-    LoadResultsModel? searchresults;
-    //  for (var store in response) {
-    //    _searchresults.add(LoadResultsModel.fromJson(store));
-    //  }
-    //
-    print('Fetch store products response $response');
-    return response['result'];
+    print('search products response $response');
+    return SearchResultModel.fromJson(response);
   }
 }
 

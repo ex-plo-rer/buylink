@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 
 class Alertify {
   final String? title;
-  final String message;
+
+  // final String message;
   // IconData icon;
   final Alignment alignment;
 
   Alertify({
     this.title,
-    this.message = "Could not connect to the internet",
+    // this.message = "Could not connect to the internet",
     // this.icon,
     this.alignment = const Alignment(0, -0.99),
   });

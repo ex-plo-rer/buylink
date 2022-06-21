@@ -99,8 +99,13 @@ class ProductSearch extends SearchDelegate<String> {
                             productSearchNotifier.autoComplete!.result.length,
                         itemBuilder: (context, index) => GestureDetector(
                           onTap: () {
-                            ref.read(navigationServiceProvider).navigateToNamed(Routes.productSearch, arguments: productSearchNotifier.autoComplete!
-                                .result[index]);
+                            ref
+                                .read(navigationServiceProvider)
+                                .navigateOffNamed(
+                                  Routes.productSearch,
+                                  arguments: productSearchNotifier
+                                      .autoComplete!.result[index],
+                                );
                           },
                           child: Row(
                             children: [
@@ -188,15 +193,21 @@ class ProductSearch extends SearchDelegate<String> {
                               itemBuilder: (context, index) => index == 0
                                   ? const Text('Popular Searches')
                                   : GestureDetector(
-                                onTap: () {
-                                  ref.read(navigationServiceProvider).navigateToNamed(Routes.productSearch, arguments: productSearchNotifier.autoComplete!
-                                      .result[index - 1]);
-                                },
-                                    child: Row(
+                                      onTap: () {
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateOffNamed(
+                                                Routes.productSearch,
+                                                arguments: productSearchNotifier
+                                                    .autoComplete!
+                                                    .result[index - 1]);
+                                      },
+                                      child: Row(
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              productSearchNotifier.autoComplete!
+                                              productSearchNotifier
+                                                  .autoComplete!
                                                   .result[index - 1],
                                               style: const TextStyle(
                                                 color: AppColors.grey1,
@@ -212,7 +223,7 @@ class ProductSearch extends SearchDelegate<String> {
                                           ),
                                         ],
                                       ),
-                                  ),
+                                    ),
                               separatorBuilder: (context, index) =>
                                   const Spacing.tinyHeight(),
                             ),
@@ -224,14 +235,17 @@ class ProductSearch extends SearchDelegate<String> {
                           productSearchNotifier.autoComplete!.result.length,
                       itemBuilder: (context, index) => GestureDetector(
                         onTap: () {
-                          ref.read(navigationServiceProvider).navigateToNamed(Routes.productSearch, arguments: productSearchNotifier.autoComplete!
-                              .result[index]);
+                          ref.read(navigationServiceProvider).navigateOffNamed(
+                              Routes.productSearch,
+                              arguments: productSearchNotifier
+                                  .autoComplete!.result[index]);
                         },
                         child: Row(
                           children: [
                             Expanded(
                               child: Text(
-                                productSearchNotifier.autoComplete!.result[index],
+                                productSearchNotifier
+                                    .autoComplete!.result[index],
                                 style: const TextStyle(
                                   color: AppColors.grey1,
                                   fontSize: 14,

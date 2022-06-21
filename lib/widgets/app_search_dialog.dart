@@ -15,20 +15,19 @@ class AppSearchDialog extends ConsumerWidget {
     required this.onSliderChanged,
     required this.onMinChanged,
     required this.onMaxChanged,
-    required this.onClearFilter,
-    required this.sliderLabel,
+    required this.onApplyPressed,
   }) : super(key: key);
   final double value;
   final void Function(double)? onSliderChanged;
   final void Function(String)? onMinChanged;
   final void Function(String)? onMaxChanged;
-  final void Function()? onClearFilter;
-  final String? sliderLabel;
+  final void Function()? onApplyPressed;
   final minPriceController = TextEditingController();
   final maxPriceController = TextEditingController();
 
   @override
   Widget build(BuildContext context, ref) {
+    final productSearchNotifier = ref.watch(productSearchNotifierProvider);
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Stack(
@@ -87,14 +86,11 @@ class AppSearchDialog extends ConsumerWidget {
                       ),
                       child: Slider(
                         onChanged: onSliderChanged,
-                        value: ref
-                            .watch(productSearchNotifierProvider)
-                            .sliderValue,
+                        value: productSearchNotifier.sliderValue,
                         min: 1,
                         max: 10,
                         divisions: 9,
-                        label:
-                            '${ref.watch(productSearchNotifierProvider).sliderValue} km',
+                        label: '${productSearchNotifier.sliderValue} km',
                       ),
                     ),
                     const Spacing.smallHeight(),
@@ -117,7 +113,8 @@ class AppSearchDialog extends ConsumerWidget {
                             height: 62,
                             tit: 'Min Price',
                             sub: '# ',
-                            onChanged: onMinChanged,
+                            keyboardType: TextInputType.number,
+                            onChanged: productSearchNotifier.onMinPriceChanged,
                             controller: minPriceController,
                           ),
                         ),
@@ -127,7 +124,8 @@ class AppSearchDialog extends ConsumerWidget {
                             height: 62,
                             tit: 'Max Price',
                             sub: '# ',
-                            onChanged: onMaxChanged,
+                            keyboardType: TextInputType.number,
+                            onChanged: productSearchNotifier.onMaxPriceChanged,
                             controller: maxPriceController,
                           ),
                         ),
@@ -141,7 +139,7 @@ class AppSearchDialog extends ConsumerWidget {
                         onTap: () {
                           minPriceController.clear();
                           maxPriceController.clear();
-                          ref.read(productSearchNotifierProvider).clearFilter();
+                          productSearchNotifier.clearFilter();
                         },
                         child: const Text(
                           'Clear Filter',
@@ -155,8 +153,14 @@ class AppSearchDialog extends ConsumerWidget {
                     const Spacing.largeHeight(),
                     AppButton(
                       text: 'Apply',
-                      backgroundColor: AppColors.primaryColor,
-                      onPressed: () {},
+                      backgroundColor: productSearchNotifier.minPrice == null ||
+                              productSearchNotifier.maxPrice == null
+                          ? AppColors.grey6
+                          : AppColors.primaryColor,
+                      onPressed: productSearchNotifier.minPrice == null ||
+                              productSearchNotifier.maxPrice == null
+                          ? null
+                          : onApplyPressed,
                     ),
                   ],
                 ),
