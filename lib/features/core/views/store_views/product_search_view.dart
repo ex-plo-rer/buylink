@@ -196,12 +196,16 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
             // ],
             layers: [
               TileLayerOptions(
+                tileProvider: NetworkTileProvider(),
                 urlTemplate:
-                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: ['a', 'b', 'c'],
-                // attributionBuilder: (_) {
-                //   return const Text("Got more work to do...");
-                // },
+                    "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                // urlTemplate:
+                //     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                // subdomains: ['a', 'b', 'c'],
+                // // attributionBuilder: (_) {
+                // //   return const Text("Got more work to do...");
+                // // },
               ),
               // MarkerLayerOptions(
               //   markers: [

@@ -93,7 +93,7 @@ class ProductSearchNotifier extends BaseChangeNotifier {
     try {
       setState(state: ViewState.loading);
       _searchResult = await _reader(storeRepository).fetchProductSearch(
-        searchTerm: 'a',
+        searchTerm: searchTerm,
         lon: _filterLon,
         lat: _filterLat,
         distanceRange: isConfirmButton ? 10 : _sliderValue,
@@ -148,5 +148,5 @@ class ProductSearchNotifier extends BaseChangeNotifier {
 }
 
 final productSearchNotifierProvider =
-    ChangeNotifierProvider<ProductSearchNotifier>(
+ChangeNotifierProvider<ProductSearchNotifier>(
         (ref) => ProductSearchNotifier(ref.read));

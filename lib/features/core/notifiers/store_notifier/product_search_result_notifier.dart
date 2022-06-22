@@ -1,6 +1,8 @@
+import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/utilities/base_change_notifier.dart';
 import 'package:buy_link/features/core/models/auto_complete_model.dart';
 import 'package:buy_link/features/core/models/search_result_model.dart';
+import 'package:flutter/painting.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -60,6 +62,42 @@ class ProductSearchResultNotifier extends BaseChangeNotifier {
   bool _searchLoading = false;
 
   bool get searchLoading => _searchLoading;
+  bool _isHorizontal = false;
+
+  bool get isHorizontal => _isHorizontal;
+
+  late List<Color> markerColors;
+  late List<Color> markerTextColors;
+
+  void changeViewToHorizontal() {
+    _isHorizontal = true;
+  }
+
+  void initColors({
+    required int length,
+  }) {
+    markerColors = List.generate(length, (index) => AppColors.light);
+    markerTextColors = List.generate(length, (index) => AppColors.primaryColor);
+    notifyListeners();
+  }
+
+  void changeColor({required int index}) {
+    markerColors =
+        List.generate(markerColors.length, (index) => AppColors.light);
+    markerColors[index] = markerColors[index] == AppColors.light
+        ? AppColors.primaryColor
+        : AppColors.light;
+    notifyListeners();
+  }
+
+  void changeTextColor({required int index}) {
+    markerTextColors = List.generate(
+        markerTextColors.length, (index) => AppColors.primaryColor);
+    markerTextColors[index] = markerTextColors[index] == AppColors.light
+        ? AppColors.primaryColor
+        : AppColors.light;
+    notifyListeners();
+  }
 
   void setFilterPosition({
     required double lat,
@@ -106,43 +144,6 @@ class ProductSearchResultNotifier extends BaseChangeNotifier {
     } finally {
       //Do something...
     }
-  }
-
-  Future<void> autoCompleteM({
-    required String query,
-  }) async {
-    print('Query......: $query');
-    try {
-      _searchLoading = true;
-      setState(state: ViewState.loading);
-      _autoComplete = await _reader(coreRepository).autoComplete(query: query);
-      // return _autoComplete;
-      // setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      _searchLoading = false;
-      setState(state: ViewState.idle);
-    } finally {
-      _searchLoading = false;
-    }
-  }
-
-  // TODO: Modify this code and separate the shared preference to the local storage service
-  Future<List<String>> getRecentSearchesLike(String query) async {
-    final pref = await SharedPreferences.getInstance();
-    final allSearches = pref.getStringList(AppStrings.recentSearchKey);
-    return allSearches!.where((search) => search.startsWith(query)).toList();
-  }
-
-  Future<void> saveToRecentSearches(String searchText) async {
-    final pref = await SharedPreferences.getInstance();
-
-    //Use `Set` to avoid duplication of recentSearches
-    Set<String> allSearches =
-        pref.getStringList(AppStrings.recentSearchKey)?.toSet() ?? {};
-
-    //Place it at first in the set
-    allSearches = {searchText, ...allSearches};
-    pref.setStringList(AppStrings.recentSearchKey, allSearches.toList());
   }
 }
 
