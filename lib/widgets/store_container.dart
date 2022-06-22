@@ -4,9 +4,11 @@ import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/constants/colors.dart';
+import '../core/constants/svgs.dart';
 import '../core/routes.dart';
 
 class StoreContainer extends ConsumerWidget {
@@ -33,7 +35,8 @@ class StoreContainer extends ConsumerWidget {
 
       Container(
         //margin: EdgeInsets.all(10),
-        height: 162,
+        width: (MediaQuery.of(context).size.width - 74) / 2,
+        height: 163,
         // width: 164,
         decoration: BoxDecoration(
           color: AppColors.grey,
@@ -52,10 +55,12 @@ class StoreContainer extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const Icon(
-                    Icons.star_rate_rounded,
-                    color: AppColors.yellow,
+                  SvgPicture.asset(
+                    AppSvgs.starFilled,
+                    width: 14,
+                    height: 14,
                   ),
+                  Spacing.tinyWidth(),
                   Text(
                     starRate.toString(),
                     style:

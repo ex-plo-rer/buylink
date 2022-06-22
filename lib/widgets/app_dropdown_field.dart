@@ -41,7 +41,9 @@ class AppDropdownField extends StatelessWidget {
             ),
           ),
           const Spacing.tinyHeight(),
+
           DropdownButtonFormField(
+            isExpanded: true,
             // value: addProductNotifier.categoryValue,
             key: dKey,
             hint: Text(hintText != null ? hintText! : ''),

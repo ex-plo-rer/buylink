@@ -78,8 +78,9 @@ class StoreReviewsView extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      '4.6',
+                                     Text(
+                                      //'4.6',
+                                storeReviewNotifier.reviewStats!.total.toString(),
                                       style: TextStyle(
                                         fontSize: 44,
                                         color: AppColors.grey1,
@@ -164,6 +165,7 @@ class StoreReviewsView extends ConsumerWidget {
               ),
               const Spacing.bigHeight(),
               const Divider(thickness: 2),
+              Spacing.tinyHeight(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
@@ -180,11 +182,13 @@ class StoreReviewsView extends ConsumerWidget {
 
                      Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
-                            Icons.chat,
-                            size: 16,
+                        children:[
+                          SvgPicture.asset(
+                            AppSvgs.addReviewIcon,
+                            width: 12,
+                            height: 12,
                           ),
+                          Spacing.tinyWidth(),
                           Text(
                             ' Add Review',
                             style: TextStyle(
@@ -203,6 +207,7 @@ class StoreReviewsView extends ConsumerWidget {
                   ]
                 ),
               )),
+              Spacing.tinyHeight(),
               const Divider(thickness: 2),
               const Spacing.mediumHeight(),
               Row(
@@ -213,8 +218,8 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: AppColors.shade1,
                     icon:  SvgPicture.asset(
                       AppSvgs.starFilled,
-                      width: 8,
-                      height: 8,
+                      width: 12,
+                      height: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
@@ -224,8 +229,8 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: AppColors.shade1,
                     icon:  SvgPicture.asset(
                       AppSvgs.starFilled,
-                      width: 8,
-                      height: 8,
+                      width: 12,
+                      height: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
@@ -235,8 +240,8 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: AppColors.shade1,
                     icon:  SvgPicture.asset(
                       AppSvgs.starFilled,
-                      width: 6,
-                      height: 6,
+                      width: 12,
+                      height: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
@@ -246,8 +251,8 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: AppColors.shade1,
                     icon:  SvgPicture.asset(
                       AppSvgs.starFilled,
-                      width: 8,
-                      height: 8,
+                      width: 12,
+                      height: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
@@ -257,8 +262,8 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: AppColors.shade1,
                     icon: SvgPicture.asset(
                       AppSvgs.starFilled,
-                      width: 8,
-                      height: 8,
+                      width: 12,
+                      height: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
@@ -268,8 +273,8 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: AppColors.shade1,
                     icon: SvgPicture.asset(
                       AppSvgs.starFilled,
-                      width: 8,
-                      height: 8,
+                      width: 12,
+                      height: 12,
                     ),
                     radius: 6,
                     fontSize: 14,

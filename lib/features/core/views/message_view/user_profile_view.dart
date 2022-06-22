@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../services/navigation_service.dart';
 import '../../../../widgets/app_dialog.dart';
 import '../../../../widgets/app_dialog_2.dart';
 import '../../notifiers/message_notifier/user_profile.dart';
@@ -23,7 +24,11 @@ class UserProfile extends ConsumerWidget {
               Icons.arrow_back_ios_outlined,
               color: AppColors.dark,
             ),
-            onPressed: () {},),
+            onPressed: () {
+              ref
+                  .read(navigationServiceProvider)
+                  .navigateBack();
+            },),
           elevation: 0,
           backgroundColor: AppColors.transparent,
           centerTitle: true,

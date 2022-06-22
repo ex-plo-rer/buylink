@@ -28,6 +28,8 @@ class ChatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
       title: Text(
         title,
         style: const TextStyle(

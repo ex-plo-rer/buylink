@@ -30,7 +30,11 @@ class AddProductSpecificsView extends ConsumerWidget {
           color: AppColors.dark, //change your color here
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            ref
+                .read(navigationServiceProvider)
+                .navigateBack();
+          },
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             size: 14,
@@ -87,6 +91,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: SpecialTextField(
+                      height: 56,
                       title: 'Age',
                       tit: 'Min',
                       sub: 'Years ',
@@ -97,6 +102,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                   Spacing.smallWidth(),
                   Expanded(
                     child: SpecialTextField(
+                      height: 56,
                       tit: 'Max',
                       sub: 'Years ',
                       hintText: '0',
@@ -110,6 +116,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: SpecialTextField(
+                      height: 56,
                       title: 'Weight',
                       tit: 'Min',
                       sub: 'Kg ',
@@ -119,6 +126,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                   Spacing.smallWidth(),
                   Expanded(
                     child: SpecialTextField(
+                      height: 56,
                       tit: 'Max',
                       sub: 'Kg ',
                       onChanged: addProductNotifier.onMaxWeightChanged,

@@ -5,6 +5,7 @@ import 'package:buy_link/features/core/models/product_notification_model.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/features/core/views/message_view/message_view.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -115,7 +116,7 @@ class ProductAlertScreen extends ConsumerWidget {
       body: notificationNotifier.notificationsLoading
           ? const CircularProgress()
           : ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
+             // physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               itemCount: notificationNotifier.notifications.isEmpty
                   ? 1
@@ -128,7 +129,9 @@ class ProductAlertScreen extends ConsumerWidget {
                       : Column(
                           children: <Widget>[
                             ListTile(
+                              contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
                               title: RichText(
+                                //textAlign: TextAlign.,
                                 text: TextSpan(
                                   style: const TextStyle(
                                     fontSize: 12.0,
@@ -136,25 +139,33 @@ class ProductAlertScreen extends ConsumerWidget {
                                   ),
                                   children: <TextSpan>[
                                     const TextSpan(
-                                      text: "A ",
+                                      text: "A ", style: TextStyle(
+                                      fontWeight: FontWeight.w500, fontSize: 12,color: AppColors.grey5),
                                     ),
                                     TextSpan(
                                       text: notificationNotifier
                                           .notifications[index].product,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.w600, fontSize: 12,),
                                     ),
                                     const TextSpan(
                                       text:
-                                          " store is around your present location",
+                                          " store is around your present location", style: TextStyle(
+                                        fontWeight: FontWeight.w500, fontSize: 12,color: AppColors.grey5)
                                     )
                                   ],
                                 ),
                               ),
-                              leading: const CircleAvatar(
+                              leading: CircleAvatar(
                                 backgroundColor: AppColors.shade3,
-                                child: Text('DE'),
-                                radius: 24,
+                                child:  notificationNotifier
+                                    .notifications[index].image == null ? Icon(Icons.person) : null,
+                                backgroundImage: notificationNotifier
+                                    .notifications[index].image == null
+                                    ? null
+                                    : CachedNetworkImageProvider(notificationNotifier
+                                    .notifications[index].image!),
+                                radius: 26,
                               ),
                               trailing: Text(
                                 DateFormat.jm()
@@ -164,6 +175,7 @@ class ProductAlertScreen extends ConsumerWidget {
                                 style: const TextStyle(fontSize: 12),
                               ),
                             ),
+                            Spacing.smallHeight(),
                           ],
                         ),
             ),
@@ -180,7 +192,7 @@ class MessageScreen extends ConsumerWidget {
     return Scaffold(
       body: messageListNotifier.state.isLoading
           ? const CircularProgress()
-          : ListView.separated(
+          : ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               itemCount: messageListNotifier.chats.isEmpty
@@ -209,7 +221,7 @@ class MessageScreen extends ConsumerWidget {
                             );
                       },
                     ),
-              separatorBuilder: (__, _) => const Spacing.mediumHeight(),
+              //separatorBuilder: (__, _) => const Spacing.tinyHeight(),
             ),
     );
   }

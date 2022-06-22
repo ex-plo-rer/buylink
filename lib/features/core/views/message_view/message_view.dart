@@ -74,7 +74,9 @@ class MessageView extends ConsumerWidget {
         appBar: AppBar(
           toolbarHeight: 90,
           title: ListTile(
-            contentPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+          //  contentPadding: EdgeInsets.zero,
             title: Text(
               args.name,
               style: const TextStyle(color: Colors.white),
@@ -104,12 +106,9 @@ class MessageView extends ConsumerWidget {
               icon: const Icon(Icons.info_outline),
               tooltip: 'Setting Icon',
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserProfile(),
-                  ),
-                );
+                ref
+                    .read(navigationServiceProvider)
+                    .navigateToNamed(Routes.userProfile);
               },
             ), //IconButton
           ],
@@ -122,7 +121,11 @@ class MessageView extends ConsumerWidget {
               size: 16,
             ),
             tooltip: 'Back arrow',
-            onPressed: () {},
+            onPressed: () {
+              ref
+                  .read(navigationServiceProvider)
+                  .navigateBack();
+            },
           ),
           //IconButton
         ),
@@ -205,7 +208,7 @@ class MessageView extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.only(bottom: 14),
                       child: AppTextField(
                         style: TextStyle(color: AppColors.grey3, fontSize: 12, fontWeight: FontWeight.w500),
                         hintText: 'Type something...',
@@ -218,7 +221,7 @@ class MessageView extends ConsumerWidget {
                           return null;
                         },
                         hasBorder: false,
-                        contentPadding: 15,
+                        contentPadding: 19,
                         borderRadius: 8,
                         suffixIcon: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -349,8 +352,9 @@ class MessageView extends ConsumerWidget {
                       messageTextController.clear();
                     },
                     child: Container(
-                      height: 48,
-                      width: 48,
+                      height: 52,
+                      width: 49,
+                      margin: EdgeInsets.fromLTRB(0, 0,0, 7),
                       decoration: const BoxDecoration(
                         color: AppColors.primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),

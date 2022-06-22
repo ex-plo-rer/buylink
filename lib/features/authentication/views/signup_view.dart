@@ -148,7 +148,10 @@ class SignupView extends ConsumerWidget {
                               suffixIcon: _emailAddressController.text.isEmpty
                                   ? null
                                   : GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        _emailAddressController.clear();
+
+                                      },
                                       child: const CircleAvatar(
                                         backgroundColor: AppColors.grey7,
                                         radius: 10,

@@ -21,29 +21,38 @@ class StoreView extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final storeNotifier = ref.watch(storeNotifierProvider);
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: AppColors.dark, //change your color here
-        ),
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.arrow_back_ios_outlined),
-        ),
-        elevation: 0,
-        backgroundColor: AppColors.transparent,
-        title: const Text(
-          'My Stores',
-          style: TextStyle(
-            color: AppColors.dark,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+      // appBar: AppBar(
+      //   iconTheme: const IconThemeData(
+      //     color: AppColors.dark, //change your color here
+      //   ),
+      //   elevation: 0,
+      //   backgroundColor: AppColors.transparent,
+      //   title: const Text(
+      //     'My Stores',
+      //     style: TextStyle(
+      //       color: AppColors.dark,
+      //       fontSize: 14,
+      //       fontWeight: FontWeight.w500,
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      // ),
+      body: SafeArea(
+        child:Padding(
+        padding:  EdgeInsets.symmetric(horizontal: 18 , vertical: 18),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+          Text(
+            'My Stores',
+            style: TextStyle(
+              color: AppColors.grey1,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: storeNotifier.state.isLoading
+          const Spacing.mediumHeight(),
+          storeNotifier.state.isLoading
             ? const CircularProgress()
             : storeNotifier.state.isError
                 ? const Center(
@@ -66,7 +75,7 @@ class StoreView extends ConsumerWidget {
                           itemCount: storeNotifier.myStores.length + 1,
                           crossAxisCount: 2,
                           mainAxisSpacing: 20,
-                          crossAxisSpacing: 15,
+                          crossAxisSpacing: 12,
                           itemBuilder: (context, index) {
                             if (index == storeNotifier.myStores.length) {
                               return AddStoreContainer(
@@ -90,7 +99,7 @@ class StoreView extends ConsumerWidget {
                           },
                         ),
                       ),
-      ),
-    );
+     ] ),
+    )));
   }
 }

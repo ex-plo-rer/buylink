@@ -4,8 +4,10 @@ import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/categories_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
+import 'package:buy_link/features/core/views/message_view/user_profile_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
+import 'package:buy_link/features/core/views/settings_view/term_of_use.dart';
 import 'package:buy_link/features/core/views/store_views/delete_store_validation.dart';
 import 'package:buy_link/features/core/views/settings_view/change_email.dart';
 import 'package:buy_link/features/core/views/settings_view/change_name.dart';
@@ -94,6 +96,8 @@ class Routes {
   static const productSearchResult = 'product-search-result';
   static const productSearchedResult = 'product-searched-result';
   static const productSearch = 'product-search';
+  static const termOfUse = 'term-of-use';
+  static const userProfile = 'user-profile';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -235,6 +239,12 @@ class Routes {
         return MaterialPageRoute(builder: (_) => About());
       case cameraScreen:
         return MaterialPageRoute(builder: (_) => CameraScreen());
+      case termOfUse:
+        return MaterialPageRoute(builder: (_) => TermOfUse());
+      case userProfile:
+        return MaterialPageRoute(builder: (_) => UserProfile());
+
+
 
       case productSearch:
         String searchTerm = settings.arguments as String;

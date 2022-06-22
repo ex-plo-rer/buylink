@@ -5,8 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import '../core/constants/colors.dart';
 import '../core/constants/svgs.dart';
 
-class IconNTextContainer extends StatelessWidget {
-  const IconNTextContainer(
+class IconNTextContainer2 extends StatelessWidget {
+  const IconNTextContainer2(
       {Key? key,
       this.onDistanceTapped,
       required this.text,
@@ -39,6 +39,8 @@ class IconNTextContainer extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            icon,
+            SizedBox(width: 1),
             Text(
               ' $text',
               style: TextStyle(
@@ -47,8 +49,6 @@ class IconNTextContainer extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Spacing.tinyWidth(),
-            icon,
             // SvgPicture.asset(
             //   AppSvgs.text,
             //   color: icon,

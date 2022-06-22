@@ -11,7 +11,7 @@ class SnackbarService {
   ) {
     return scaffoldMessengerKey.currentState!.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.greenAccent,
+        backgroundColor: AppColors.primaryColor,
         content: Text(text),
       ),
     );

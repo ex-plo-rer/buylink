@@ -228,20 +228,18 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  IconNTextContainer(
-                                    // text: '4.6 km',
-                                    text:
-                                        '${ref.read(locationService).getDistance(
-                                              endLat: storeDetailsNotifier
-                                                  .storeDetails.lat,
-                                              endLon: storeDetailsNotifier
-                                                  .storeDetails.lon,
-                                            )} km',
-                                    icon: const Icon(
-                                      Icons.star_outline,
-                                      size: 12,
-                                    ),
+                                  Spacing.smallWidth(),
+                                  SvgPicture.asset(
+                                    AppSvgs.star,
+                                    width: 12,
+                                    height: 12,
+                                    color: AppColors.yellow,
                                   ),
+                                  SizedBox(width: 2,),
+
+                                  Text(storeDetailsNotifier.storeDetails.star.toString(), style:
+                                  TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.grey1),),
+
                                 ],
                               ),
                               Text(

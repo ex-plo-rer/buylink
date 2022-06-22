@@ -35,10 +35,10 @@ class AddProductView extends ConsumerWidget {
   final productDescFN = FocusNode();
 
   final productNameCtrl = TextEditingController();
-  final minPriceCtrl = FocusNode();
-  final maxPriceCtrl = FocusNode();
-  final productSpecificsCtrl = FocusNode();
-  final productDescCtrl = FocusNode();
+  final minPriceCtrl = TextEditingController();
+  final maxPriceCtrl =TextEditingController();
+  final productSpecificsCtrl = TextEditingController();
+  final productDescCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context, ref) {
@@ -49,7 +49,11 @@ class AddProductView extends ConsumerWidget {
           color: AppColors.dark,
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            ref
+                .read(navigationServiceProvider)
+                .navigateBack();
+          },
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             size: 14,
@@ -105,6 +109,7 @@ class AddProductView extends ConsumerWidget {
               AppTextField(
                 style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w600),
                 hasBorder: true,
+                controller: productNameCtrl,
                 title: 'Product Name',
                 hintText: 'Name of the product',
                 onChanged: addProductNotifier.onNameChanged,
@@ -115,6 +120,8 @@ class AddProductView extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: SpecialTextField(
+                      controller: minPriceCtrl ,
+                      height: 56,
                       title: 'Price',
                       tit: 'Min Price',
                       sub: '# ',
@@ -124,6 +131,8 @@ class AddProductView extends ConsumerWidget {
                   Spacing.smallWidth(),
                   Expanded(
                     child: SpecialTextField(
+                      controller: maxPriceCtrl,
+                      height: 56,
                       tit: 'Max Price',
                       sub: '# ',
                       onChanged: addProductNotifier.onMaxPriceChanged,
@@ -178,8 +187,9 @@ class AddProductView extends ConsumerWidget {
                 style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w500),
                 hasBorder: true,
                 title: 'Product Specifics',
-                hintText: 'Brand, Size, Color, Material,Mobile',
+                hintText: 'Brand, Size, Color, Material, Mobile',
                 enabled: true,
+                controller: productSpecificsCtrl,
                 focusNode: productSpecificsFN,
                 fillColor: AppColors.grey8,
                 onTap: () {
@@ -198,6 +208,7 @@ class AddProductView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
+                controller: productDescCtrl,
                 style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w500),
                 hasBorder: true,
                 title: 'Product Description',
@@ -210,7 +221,10 @@ class AddProductView extends ConsumerWidget {
                 isLoading: addProductNotifier.state.isLoading,
                 text: 'Save Product',
                 fontSize: 16,
-                backgroundColor: AppColors.primaryColor,
+                backgroundColor: productDescCtrl.text.isEmpty && productNameCtrl.text.isEmpty
+                && productSpecificsCtrl.text.isEmpty && maxPriceCtrl.text.isEmpty && minPriceCtrl.text.isEmpty
+                ? AppColors.grey6:
+                AppColors.primaryColor,
                 onPressed: () async {
                   addProductNotifier.addProduct(storeId: store.id);
                   await ref

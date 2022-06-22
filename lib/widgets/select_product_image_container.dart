@@ -86,7 +86,7 @@ class SelectProductImageContainer extends ConsumerWidget {
                 borderType: BorderType.RRect,
                 radius: const Radius.circular(5),
                 dashPattern: const [5, 2],
-                color: AppColors.primaryColor,
+                color: AppColors.grey7,
                 strokeWidth: 1,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
