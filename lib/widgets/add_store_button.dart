@@ -28,6 +28,8 @@ class AddStoreContainer extends ConsumerWidget {
             height: 160,
             width: (MediaQuery.of(context).size.width - 74) / 2,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: const <Widget>[
                 Spacing.largeHeight(),
                 Spacing.largeHeight(),

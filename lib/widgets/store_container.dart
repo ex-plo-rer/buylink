@@ -27,9 +27,13 @@ class StoreContainer extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
+          child:
+
+      Container(
         //margin: EdgeInsets.all(10),
-        height: 160,
+        height: 162,
         // width: 164,
         decoration: BoxDecoration(
           color: AppColors.grey,
@@ -74,7 +78,7 @@ class StoreContainer extends ConsumerWidget {
             const Spacing.largeHeight(),
           ],
         ),
-      ),
+      )),
     );
   }
 }

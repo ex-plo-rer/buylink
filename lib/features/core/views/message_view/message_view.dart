@@ -72,7 +72,7 @@ class MessageView extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 70,
+          toolbarHeight: 90,
           title: ListTile(
             contentPadding: EdgeInsets.zero,
             title: Text(
@@ -87,6 +87,8 @@ class MessageView extends ConsumerWidget {
                   : CachedNetworkImageProvider(args.imageUrl!),
               radius: 40,
             ),
+
+
 /*
             subtitle: const Text(
               "Online 3hr ago",
@@ -244,7 +246,7 @@ class MessageView extends ConsumerWidget {
                                 child: const Icon(
                                   Icons.attachment,
                                   color: AppColors.grey5,
-                                  size: 18,
+                                  size: 24,
                                 ),
                               ),
                               onPressed: () async {

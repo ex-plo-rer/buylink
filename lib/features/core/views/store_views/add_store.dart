@@ -101,7 +101,7 @@ class AddStoreView extends ConsumerWidget {
                               textAlign: TextAlign.start,
                             ),
                           ),
-                          Spacing.height(12),
+                          Spacing.height(2),
                           AppTextField(
                             style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                             title: '',

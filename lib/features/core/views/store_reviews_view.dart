@@ -167,16 +167,18 @@ class StoreReviewsView extends ConsumerWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
-                child: Row(
+                child:  GestureDetector(
+                  onTap: () =>
+                      ref.read(navigationServiceProvider).navigateToNamed(
+                        Routes.addReview,
+                        arguments: store.id,
+                      ),
+
+               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () =>
-                          ref.read(navigationServiceProvider).navigateToNamed(
-                                Routes.addReview,
-                                arguments: store.id,
-                              ),
-                      child: Row(
+
+                     Row(
                         mainAxisSize: MainAxisSize.min,
                         children: const [
                           Icon(
@@ -193,75 +195,81 @@ class StoreReviewsView extends ConsumerWidget {
                           ),
                         ],
                       ),
-                    ),
+
                     const Icon(
                       Icons.arrow_forward_ios_outlined,
                       size: 12,
                     ),
-                  ],
+                  ]
                 ),
-              ),
+              )),
               const Divider(thickness: 2),
               const Spacing.mediumHeight(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const IconNTextContainer(
+                   IconNTextContainer(
                     text: 'All',
                     containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
+                    icon:  SvgPicture.asset(
+                      AppSvgs.starFilled,
+                      width: 8,
+                      height: 8,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                  IconNTextContainer(
                     text: '5',
                     containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
+                    icon:  SvgPicture.asset(
+                      AppSvgs.starFilled,
+                      width: 8,
+                      height: 8,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                   IconNTextContainer(
                     text: '4',
                     containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
+                    icon:  SvgPicture.asset(
+                      AppSvgs.starFilled,
+                      width: 6,
+                      height: 6,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                   IconNTextContainer(
                     text: '3',
                     containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
+                    icon:  SvgPicture.asset(
+                      AppSvgs.starFilled,
+                      width: 8,
+                      height: 8,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                  IconNTextContainer(
                     text: '2',
                     containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
+                    icon: SvgPicture.asset(
+                      AppSvgs.starFilled,
+                      width: 8,
+                      height: 8,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                  IconNTextContainer(
                     text: '1',
                     containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
+                    icon: SvgPicture.asset(
+                      AppSvgs.starFilled,
+                      width: 8,
+                      height: 8,
                     ),
                     radius: 6,
                     fontSize: 14,
@@ -305,9 +313,10 @@ class StoreReviewsView extends ConsumerWidget {
                                           children: [
                                             CircleAvatar(
                                               radius: 16,
-                                              child: Text('Ayodeji'.initials()),
+                                              child: Text( storeReviewNotifier
+                                                  .reviews[index].name.initials()),
                                             ),
-                                            const Spacing.tinyWidth(),
+                                            const Spacing.smallWidth(),
                                             Text(
                                               storeReviewNotifier
                                                       .reviews[index].name ??
