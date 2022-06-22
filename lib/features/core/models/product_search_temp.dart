@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/routes.dart';
+import '../notifiers/store_notifier/product_search_notifier.dart';
 
 typedef OnSearchChanged = Future<List<String>> Function(String);
 
@@ -18,6 +19,7 @@ class ProductSearch extends SearchDelegate<String> {
   final List<ProductModel> allProducts;
   final List<ProductModel> productsSuggestion;
   final WidgetRef ref;
+
   ProductSearch({
     required this.allProducts,
     required this.productsSuggestion,
@@ -93,7 +95,8 @@ class ProductSearch extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     //TODO: Move the calls here out of the homeNotifierProver...
     return FutureBuilder(
-      future: ref.read(homeNotifierProvider('')).autoComplete(query: query),
+      future:
+          ref.read(productSearchNotifierProvider).autoCompleteM(query: query),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           _oldFilters = snapshot.data as List<String>;
@@ -137,7 +140,8 @@ class ProductSearch extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     return FutureBuilder(
-      future: ref.read(homeNotifierProvider('')).autoComplete(query: query),
+      future:
+          ref.read(productSearchNotifierProvider).autoCompleteM(query: query),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           _oldFilters = snapshot.data as List<String>;

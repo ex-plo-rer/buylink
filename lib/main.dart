@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:buy_link/features/core/views/store_views/input_search_location.dart';
+import 'package:buy_link/features/core/views/store_views/product_search_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:buy_link/features/startup/views/startup_view.dart';

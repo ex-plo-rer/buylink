@@ -1,5 +1,6 @@
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/models/analytics_model.dart';
+import 'package:buy_link/features/core/models/auto_complete_model.dart';
 import 'package:buy_link/features/core/models/category_model.dart';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
@@ -431,36 +432,31 @@ class CoreRepository {
     // await getProductCount(type: 'saved', storeId: storeId);
   }
 
-  Future<List<String>> autoComplete({
+  Future<AutoCompleteModel> autoComplete({
     required String query,
   }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
     final body = {
+      'id': id,
       'search_term': query,
       'domain': 'front',
     };
     print('Auto complete body sent to server $body');
     var response = await networkService.post(
-      'users/auto-complete/4',
+      'users/auto-complete/4?no=5',
       body: body,
       headers: headers,
     );
 
     print('Auto complete response $response');
 
-    List<String> _autoComplete = [];
-    for (var text in response) {
-      _autoComplete.add(text);
-    }
-
-    print('Auto complete response $response');
-    return _autoComplete;
-    return [
-      '_autoComplete',
-      '_autoComplete2',
-      '_autoComplete3',
-      '_autoComplete4',
-      '_autoComplete',
-    ];
+    // List<String> _autoComplete = [];
+    // for (var text in response) {
+    //   _autoComplete.add(text);
+    // }
+    //
+    // print('Auto complete response $response');
+    return AutoCompleteModel.fromJson(response);
   }
 
   Future<void> saveSession({

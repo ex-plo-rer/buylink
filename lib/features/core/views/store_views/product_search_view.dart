@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:buy_link/core/utilities/alertify.dart';
+import 'package:buy_link/core/utilities/loader.dart';
+import 'package:buy_link/features/core/models/search_result_arg_model.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_search_dialog.dart';
-import 'package:buy_link/widgets/app_text_field.dart';
+import 'package:buy_link/widgets/map_search_term_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,22 +14,24 @@ import 'package:flutter_map_dragmarker/dragmarker.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes.dart';
-import '../../../../services/navigation_service.dart';
+import '../../../../core/utilities/map/circle.dart';
 import '../../../../widgets/app_button.dart';
-import '../../notifiers/store_notifier/input_search_location_notifier.dart';
-import '../../notifiers/store_notifier/store_direction_notifier.dart';
+import '../../notifiers/store_notifier/product_search_notifier.dart';
 
-class InputSearchLocation extends ConsumerStatefulWidget {
-  const InputSearchLocation({Key? key}) : super(key: key);
+class ProductSearchView extends ConsumerStatefulWidget {
+  const ProductSearchView({
+    Key? key,
+    required this.searchTerm,
+  }) : super(key: key);
+  final String searchTerm;
 
   @override
-  _InputSearchLocationState createState() => _InputSearchLocationState();
+  ConsumerState<ProductSearchView> createState() => _ProductSearchViewState();
 }
 
-class _InputSearchLocationState extends ConsumerState {
+class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
   final searchFocus = FocusNode();
   final searchController = TextEditingController();
   late CenterOnLocationUpdate _centerOnLocationUpdate;
@@ -36,7 +42,7 @@ class _InputSearchLocationState extends ConsumerState {
   void initState() {
     super.initState();
     // ref.read(storeDirectionNotifierProvider).initLocation();
-    ref.read(inputSearchLocationNotifierProvider).initLocation();
+    ref.read(productSearchNotifierProvider).initLocation();
     _centerOnLocationUpdate = CenterOnLocationUpdate.always;
     _centerCurrentLocationStreamController = StreamController<double>();
     // init();
@@ -50,7 +56,7 @@ class _InputSearchLocationState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
-    final inputSearchNotifier = ref.watch(inputSearchLocationNotifierProvider);
+    final productSearchNotifier = ref.watch(productSearchNotifierProvider);
 
     return Scaffold(
       bottomSheet: BottomSheet(
@@ -63,7 +69,35 @@ class _InputSearchLocationState extends ConsumerState {
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(15),
                 color: AppColors.light),
-            child: SearchProductBottomSheet(),
+            child: SearchProductBottomSheet(
+              onConfirmPressed: () async {
+                Loader(context).showLoader(text: 'Loading');
+                await productSearchNotifier.fetchProductSearch(
+                  searchTerm: widget.searchTerm,
+                );
+                if (productSearchNotifier.searchResult!.result.isEmpty) {
+                  Alertify(
+                          title:
+                              'The searched product is not available in this area.')
+                      .error();
+                  Loader(context).hideLoader();
+                } else {
+                  Loader(context).hideLoader();
+                  ref.read(navigationServiceProvider).navigateToNamed(
+                        Routes.productSearchResult,
+                        arguments: SearchResultArgModel(
+                          filterPosition: LatLng(
+                            productSearchNotifier.filterLat,
+                            productSearchNotifier.filterLon,
+                          ),
+                          radius: productSearchNotifier.sliderValue,
+                          searchResult: productSearchNotifier.searchResult!,
+                          searchTerm: widget.searchTerm,
+                        ),
+                      );
+                }
+              },
+            ),
           );
           //   SingleChildScrollView(
           //   child: Container(
@@ -107,7 +141,7 @@ class _InputSearchLocationState extends ConsumerState {
               plugins: [
                 DragMarkerPlugin(),
               ],
-              zoom: 13,
+              zoom: 11.5,
               onPositionChanged: (MapPosition position, bool hasGesture) {
                 if (hasGesture) {
                   setState(
@@ -117,8 +151,8 @@ class _InputSearchLocationState extends ConsumerState {
                 }
               },
               center: LatLng(
-                inputSearchNotifier.filterLat,
-                inputSearchNotifier.filterLon,
+                productSearchNotifier.filterLat,
+                productSearchNotifier.filterLon,
               ),
               // bounds: LatLngBounds(LatLng(58.8, 6.1), LatLng(59, 6.2)),
               boundsOptions:
@@ -189,19 +223,19 @@ class _InputSearchLocationState extends ConsumerState {
                 markers: [
                   DragMarker(
                     point: LatLng(
-                      inputSearchNotifier.filterLat,
-                      inputSearchNotifier.filterLon,
+                      productSearchNotifier.filterLat,
+                      productSearchNotifier.filterLon,
                     ),
                     width: 80.0,
                     height: 80.0,
-                    builder: (ctx) => Icon(
+                    builder: (ctx) => const Icon(
                       Icons.location_on,
                       size: 50,
                       color: Color(0xffCD261F),
                     ),
                     onDragEnd: (details, point) {
                       print('Finished Drag $details $point');
-                      inputSearchNotifier.setFilterPosition(
+                      productSearchNotifier.setFilterPosition(
                           lat: point.latitude, lon: point.longitude);
                     },
                     updateMapNearEdge: false,
@@ -209,6 +243,17 @@ class _InputSearchLocationState extends ConsumerState {
                   )
                 ],
               ),
+              // CircleRegion(
+              //   LatLng(
+              //     productSearchNotifier.filterLat,
+              //     productSearchNotifier.filterLon,
+              //   ),
+              //   productSearchNotifier.searchResult != null
+              //       ? productSearchNotifier.searchResult!.range.toDouble()
+              //       : 10,
+              // ).toDrawable(
+              //   fillColor: AppColors.primaryColor.withOpacity(0.5),
+              // ),
             ],
           ),
           // Positioned(
@@ -231,68 +276,50 @@ class _InputSearchLocationState extends ConsumerState {
           //     ),
           //   ),
           // ),
-          Container(
-            height: 60,
-            margin: const EdgeInsets.fromLTRB(10, 40, 10, 0),
-            padding: const EdgeInsets.fromLTRB(4, 10, 13, 10),
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(15),
-              color: AppColors.light,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios_outlined,
-                    size: 12,
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                const Spacing.smallWidth(),
-                // const SizedBox(
-                //   width: 210,
-                //   child: TextField(
-                //     decoration: InputDecoration(
-                //       border: InputBorder.none,
-                //       hintText: 'Searching item',
-                //     ),
-                //   ),
-                // ),
-                const Expanded(child: Text('Black Shirt')),
-                const Spacing.mediumWidth(),
-                Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: AppColors.shade1,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AppSearchDialog(
-                            onClearFilter: () {},
-                            onMinChanged: inputSearchNotifier.onMinPriceChanged,
-                            onMaxChanged: inputSearchNotifier.onMaxPriceChanged,
-                            onSliderChanged: (newValue) =>
-                                inputSearchNotifier.onSliderChanged(newValue),
-                            value: inputSearchNotifier.sliderValue,
-                            sliderLabel: '',
-                          );
-                        },
-                      );
-                    },
-                    child: Image.asset("assets/images/filter.png"),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          MapSearchTermContainer(
+              searchTerm: widget.searchTerm,
+              onMinChanged: productSearchNotifier.onMinPriceChanged,
+              onMaxChanged: productSearchNotifier.onMaxPriceChanged,
+              onSliderChanged: (newValue) =>
+                  productSearchNotifier.onSliderChanged(newValue),
+              sliderValue: productSearchNotifier.sliderValue,
+              onApplyPressed: () async {
+                if (productSearchNotifier.minPrice! >=
+                    productSearchNotifier.maxPrice!) {
+                  Alertify(
+                          title:
+                              'Minimum price should not be greater than maximum price.')
+                      .error();
+                } else {
+                  Loader(context).showLoader(text: 'Loading');
+                  await productSearchNotifier.fetchProductSearch(
+                    searchTerm: widget.searchTerm,
+                    isConfirmButton: false,
+                  );
+                  if (productSearchNotifier.searchResult!.result.isEmpty) {
+                    Alertify(
+                            title:
+                                'The searched product is not available in this area.')
+                        .error();
+                    Loader(context).hideLoader();
+                    ref.read(navigationServiceProvider).navigateBack();
+                  } else {
+                    Loader(context).hideLoader();
+                    ref.read(navigationServiceProvider).navigateToNamed(
+                          Routes.productSearchResult,
+                          arguments: SearchResultArgModel(
+                            filterPosition: LatLng(
+                              productSearchNotifier.filterLat,
+                              productSearchNotifier.filterLon,
+                            ),
+                            radius: productSearchNotifier.sliderValue,
+                            searchResult: productSearchNotifier.searchResult!,
+                            searchTerm: widget.searchTerm,
+                          ),
+                        );
+                  }
+                }
+              }),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -313,7 +340,10 @@ class _InputSearchLocationState extends ConsumerState {
 class SearchProductBottomSheet extends StatelessWidget {
   const SearchProductBottomSheet({
     Key? key,
+    required this.onConfirmPressed,
   }) : super(key: key);
+
+  final void Function()? onConfirmPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -326,9 +356,10 @@ class SearchProductBottomSheet extends StatelessWidget {
         color: AppColors.light,
       ),
       // height: 200,
-      child: const AppButton(
+      child: AppButton(
         text: 'Confirm Location',
         backgroundColor: AppColors.primaryColor,
+        onPressed: onConfirmPressed,
       ),
     );
   }

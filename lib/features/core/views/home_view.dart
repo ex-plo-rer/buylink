@@ -5,6 +5,7 @@ import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/compare_arg_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/features/core/notifiers/store_notifier/product_search_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/services/location_service.dart';
@@ -50,23 +51,25 @@ class HomeView extends ConsumerWidget {
                 hintText: 'What would you like to buy ?',
                 onTap: () async {
                   searchFN.unfocus();
-                  ref
-                      .read(navigationServiceProvider)
-                      .navigateToNamed(Routes.inputSearchLocation);
-/*
+                  // ref
+                  //     .read(navigationServiceProvider)
+                  //     .navigateToNamed(Routes.inputSearchLocation);
                   final searchText = await showSearch(
                     context: context,
                     delegate: ProductSearch(
                       productsSuggestion: homeNotifier.products,
                       allProducts: homeNotifier.products,
-                      onSearchChanged: homeNotifier.getRecentSearchesLike,
+                      onSearchChanged: ref
+                          .read(productSearchNotifierProvider)
+                          .getRecentSearchesLike,
                       ref: ref,
                     ),
                   );
                   if (searchText != null) {
-                    await homeNotifier.saveToRecentSearches(searchText);
+                    await ref
+                        .read(productSearchNotifierProvider)
+                        .saveToRecentSearches(searchText);
                   }
-*/
                 },
                 prefixIcon: const Icon(Icons.search_outlined),
                 hasBorder: false,

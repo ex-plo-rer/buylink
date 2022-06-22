@@ -11,7 +11,7 @@ import '../../../../widgets/app_search_dialog.dart';
 import '../../../../widgets/circular_progress.dart';
 import '../../../../widgets/spacing.dart';
 import '../../notifiers/home_notifier.dart';
-import '../../notifiers/store_notifier/input_search_location_notifier.dart';
+import '../../notifiers/store_notifier/product_search_notifier.dart';
 import '../../notifiers/store_notifier/product_searched_result_notifier.dart';
 
 class ProductSearchedResultView extends ConsumerStatefulWidget {
@@ -27,8 +27,7 @@ class _ProductSearchedResultViewState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
-    final productSearchNotifier =
-        ref.watch(inputSearchLocationNotifierProvider);
+    final productSearchNotifier = ref.watch(productSearchNotifierProvider);
 
     return Scaffold(
         body: Stack(children: <Widget>[
@@ -153,12 +152,11 @@ class _ProductSearchedResultViewState extends ConsumerState {
                         context: context,
                         builder: (BuildContext context) {
                           return AppSearchDialog(
-                            onClearFilter: () {},
                             onMinChanged: (String) {},
                             onSliderChanged: (double) {},
                             value: 2,
                             onMaxChanged: (String) {},
-                            sliderLabel: '',
+                            onApplyPressed: () {},
                           );
                         });
                   },

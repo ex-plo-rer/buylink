@@ -129,20 +129,6 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
                   );
                 },
               ),
-              // CircleLayerOptions(
-              //   circles: [
-              //     CircleMarker(
-              //       point:
-              //           // LatLng(8.17, 4.26),
-              //           LatLng(
-              //         storeDirNotifier.lat ?? 8.17,
-              //         storeDirNotifier.lon ?? 4.26,
-              //       ),
-              //       color: AppColors.primaryColor.withOpacity(0.5),
-              //       radius: 100,
-              //     ),
-              //   ],
-              // ),
               CircleRegion(
                       LatLng(storeDirNotifier.userLat ?? 8.17,
                           storeDirNotifier.userLon ?? 4.26),
