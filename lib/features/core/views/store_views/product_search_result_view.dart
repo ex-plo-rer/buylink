@@ -14,10 +14,13 @@ import 'package:flutter_map_dragmarker/dragmarker.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utilities/map/circle.dart';
 import '../../../../widgets/app_button.dart';
+import '../../../../widgets/map_price_marker.dart';
 import '../../../../widgets/map_search_term_container.dart';
+import '../../../../widgets/product_container_search_horizontal.dart';
 import '../../models/search_result_arg_model.dart';
 import '../../notifiers/store_notifier/product_search_notifier.dart';
 import '../../notifiers/store_notifier/product_search_result_notifier.dart';
@@ -42,15 +45,23 @@ class _ProductSearchResultViewState
 
   late StreamController<double> _centerCurrentLocationStreamController;
 
+  late ItemScrollController itemScrollController;
+  late ItemPositionsListener itemPositionsListener;
+
   @override
   void initState() {
     super.initState();
     // ref.read(storeDirectionNotifierProvider).initLocation();
-    ref.read(productSearchNotifierProvider).initLocation();
-    _centerOnLocationUpdate = CenterOnLocationUpdate.always;
-    _centerCurrentLocationStreamController = StreamController<double>();
-    ref.read(productSearchNotifierProvider).initLocation();
-    // init();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      ref.read(productSearchNotifierProvider).initLocation();
+      _centerOnLocationUpdate = CenterOnLocationUpdate.always;
+      _centerCurrentLocationStreamController = StreamController<double>();
+      ref
+          .watch(productSearchResultNotifierProvider)
+          .initColors(length: widget.args.searchResult.result.length);
+      itemScrollController = ItemScrollController();
+      itemPositionsListener = ItemPositionsListener.create();
+    });
   }
 
   @override
@@ -65,61 +76,14 @@ class _ProductSearchResultViewState
         ref.watch(productSearchResultNotifierProvider);
 
     return Scaffold(
-      // bottomSheet: BottomSheet(
-      //   onClosing: () {},
-      //   builder: (context) {
-      //     return Container(
-      //       // height: 90,
-      //       padding: const EdgeInsets.all(20),
-      //       decoration: BoxDecoration(
-      //           shape: BoxShape.rectangle,
-      //           borderRadius: BorderRadius.circular(15),
-      //           color: AppColors.light),
-      //       child: SearchProductBottomSheet(
-      //         products: widget.args.searchResult.result,
-      //       ),
-      //     );
-      //     //   SingleChildScrollView(
-      //     //   child: Container(
-      //     //     height: 90,
-      //     //     padding: const EdgeInsets.all(20),
-      //     //     decoration: BoxDecoration(
-      //     //         shape: BoxShape.rectangle,
-      //     //         borderRadius: BorderRadius.circular(15),
-      //     //         color: AppColors.light),
-      //     //     child: AppButton(
-      //     //       text: 'Confirm Location',
-      //     //       textColor: AppColors.light,
-      //     //       backgroundColor: AppColors.primaryColor,
-      //     //       onPressed: () async {
-      //     //         ref
-      //     //             .read(navigationServiceProvider)
-      //     //             .navigateToNamed(Routes.productSearchedResult);
-      //     //
-      //     //         await productSearch.fetchProductSearch(
-      //     //             search_term: "apple",
-      //     //             lon: 3.71,
-      //     //             lat: 3.406,
-      //     //             range: 5,
-      //     //             min_price: 0,
-      //     //             max_price: 10000000000);
-      //     //         ref
-      //     //             .read(navigationServiceProvider)
-      //     //             .navigateToNamed(Routes.productSearchedResult);
-      //     //       },
-      //     //       height: 50,
-      //     //     ),
-      //     //   ),
-      //     // );
-      //   },
-      // ),
       body: Stack(
         children: [
           LayoutBuilder(
             builder: (context, constraints) {
               return SizedBox(
-                height:
-                    (constraints.maxHeight / 2) + (constraints.maxHeight / 4),
+                height: productSearchResultNotifier.isHorizontal
+                    ? constraints.maxHeight
+                    : (constraints.maxHeight / 2) + (constraints.maxHeight / 4),
                 child: FlutterMap(
                   options: MapOptions(
                     zoom: 11.5,
@@ -139,10 +103,14 @@ class _ProductSearchResultViewState
                   children: [
                     TileLayerWidget(
                       options: TileLayerOptions(
+                        tileProvider: NetworkTileProvider(),
                         urlTemplate:
-                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        subdomains: ['a', 'b', 'c'],
-                        maxZoom: 19,
+                            "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+                        // "http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}",
+                        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                        // attributionBuilder: (_) {
+                        //   return const Text("Got more work to do...");
+                        // },
                       ),
                     ),
                     LocationMarkerLayerWidget(
@@ -174,9 +142,11 @@ class _ProductSearchResultViewState
                   ],
                   layers: [
                     TileLayerOptions(
+                      tileProvider: NetworkTileProvider(),
                       urlTemplate:
-                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      subdomains: ['a', 'b', 'c'],
+                          "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+                      // "http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}",
+                      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
                       // attributionBuilder: (_) {
                       //   return const Text("Got more work to do...");
                       // },
@@ -189,6 +159,44 @@ class _ProductSearchResultViewState
                     ),
                     MarkerLayerOptions(
                       markers: [
+                        ...widget.args.searchResult.result.map((product) {
+                          final index = widget.args.searchResult.result
+                              .indexWhere((pdct) => pdct.id == product.id);
+                          return Marker(
+                            width: 80,
+                            height: 54,
+                            point: LatLng(
+                              product.store.lat,
+                              product.store.lon,
+                            ),
+                            builder: (ctx) => MapPriceMarker(
+                              onMarkerTapped: () {
+                                if (!productSearchResultNotifier.isHorizontal) {
+                                  productSearchResultNotifier
+                                      .changeViewToHorizontal();
+                                }
+                                if (itemScrollController.isAttached) {
+                                  productSearchResultNotifier.changeColor(
+                                      index: index);
+                                  productSearchResultNotifier.changeTextColor(
+                                      index: index);
+                                  print(
+                                      'Scroll controller attached ${itemScrollController.isAttached}');
+                                  itemScrollController.scrollTo(
+                                    index: index,
+                                    duration: const Duration(seconds: 2),
+                                    curve: Curves.easeInOutCubic,
+                                  );
+                                }
+                              },
+                              price: product.price,
+                              containerColor: productSearchResultNotifier
+                                  .markerColors[index],
+                              textColor: productSearchResultNotifier
+                                  .markerTextColors[index],
+                            ),
+                          );
+                        }).toList(),
                         Marker(
                           width: 80,
                           height: 80,
@@ -199,23 +207,6 @@ class _ProductSearchResultViewState
                             color: Color(0xffCD261F),
                           ),
                         ),
-                        ...widget.args.searchResult.result
-                            .map(
-                              (product) => Marker(
-                                width: 80,
-                                height: 80,
-                                point: LatLng(
-                                  product.store.lat,
-                                  product.store.lon,
-                                ),
-                                builder: (ctx) => const Icon(
-                                  Icons.chat,
-                                  size: 50,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
-                            )
-                            .toList(),
                       ],
                     ),
                   ],
@@ -239,76 +230,118 @@ class _ProductSearchResultViewState
             },
             hideFilter: true,
           ),
-          DraggableScrollableSheet(
-              initialChildSize: 0.25,
-              minChildSize: 0.25,
-              builder: (context, scrollController) {
-                return Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+          if (!productSearchResultNotifier.isHorizontal)
+            DraggableScrollableSheet(
+                initialChildSize: 0.25,
+                minChildSize: 0.25,
+                builder: (context, scrollController) {
+                  return Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                      color: AppColors.light,
                     ),
-                    color: AppColors.light,
-                  ),
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 12,
-                  ),
-                  child: Expanded(
-                    child: Column(
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: AppColors.grey7,
-                          ),
-                          height: 4,
-                          width: 28,
-                          // color: AppColors.grey7,
-                        ),
-                        const Spacing.mediumHeight(),
-                        Text(
-                          '${widget.args.searchResult.result.length} stores found',
-                          style: const TextStyle(
-                            color: AppColors.grey1,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        // const Spacing.mediumHeight(),
-                        Expanded(
-                          child: ListView.separated(
-                            controller: scrollController,
-                            itemCount: widget.args.searchResult.result.length,
-                            itemBuilder: (context, index) {
-                              final product =
-                                  widget.args.searchResult.result[index];
-                              //TODO: Just return the product and fill the details inside ProductContainerSearch
-                              return ProductContainerSearch(
-                                url: product.image.first,
-                                storeName: product.store.name,
-                                productName: product.name,
-                                productPrice: product.price,
-                                distance: '4.3',
-                                isFavorite: product.isFav!,
-                                product: product,
-                                activeIndex:
-                                    productSearchResultNotifier.activeIndex,
-                                onPageChanged:
-                                    productSearchResultNotifier.nextPage,
-                              );
-                            },
-                            separatorBuilder: (_, __) =>
-                                const Spacing.smallHeight(),
-                          ),
-                        ),
-                      ],
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 12,
                     ),
-                  ),
-                );
-              }),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                        color: AppColors.light,
+                      ),
+                      child: Expanded(
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                color: AppColors.grey7,
+                              ),
+                              height: 4,
+                              width: 28,
+                              // color: AppColors.grey7,
+                            ),
+                            const Spacing.mediumHeight(),
+                            Text(
+                              '${widget.args.searchResult.result.length} stores found',
+                              style: const TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            // const Spacing.mediumHeight(),
+                            Expanded(
+                              child: ListView.separated(
+                                controller: scrollController,
+                                itemCount:
+                                    widget.args.searchResult.result.length,
+                                itemBuilder: (context, index) {
+                                  final product =
+                                      widget.args.searchResult.result[index];
+                                  //TODO: Just return the product and fill the details inside ProductContainerSearch
+                                  return ProductContainerSearch(
+                                    url: product.image.first,
+                                    storeName: product.store.name,
+                                    productName: product.name,
+                                    productPrice: product.price,
+                                    distance: '4.3',
+                                    isFavorite: product.isFav!,
+                                    product: product,
+                                    activeIndex:
+                                        productSearchResultNotifier.activeIndex,
+                                    onPageChanged:
+                                        productSearchResultNotifier.nextPage,
+                                  );
+                                },
+                                separatorBuilder: (_, __) =>
+                                    const Spacing.smallHeight(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          if (productSearchResultNotifier.isHorizontal)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 120,
+                color: AppColors.transparent,
+                margin: const EdgeInsets.only(bottom: 32),
+                child: ScrollablePositionedList.separated(
+                  // controller: scrollController,
+                  // shrinkWrap: true,
+                  itemScrollController: itemScrollController,
+                  itemPositionsListener: itemPositionsListener,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.args.searchResult.result.length,
+                  itemBuilder: (context, index) {
+                    final product = widget.args.searchResult.result[index];
+                    //TODO: Just return the product and fill the details inside ProductContainerSearch
+                    return ProductContainerSearchHorizontal(
+                      url: product.image.first,
+                      storeName: product.store.name,
+                      productName: product.name,
+                      productPrice: product.price,
+                      distance: '4.3',
+                      isFavorite: product.isFav!,
+                    );
+                  },
+                  separatorBuilder: (_, __) => const Spacing.smallWidth(),
+                ),
+              ),
+            ),
         ],
       ),
       // floatingActionButton: FloatingActionButton(
