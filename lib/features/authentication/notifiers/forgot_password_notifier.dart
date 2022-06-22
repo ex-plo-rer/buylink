@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/services/local_storage_service.dart';
@@ -15,13 +17,54 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   ForgotPasswordNotifier(this._reader);
+
   int _currentPage = 1;
+
   int get currentPage => _currentPage;
 
   int _totalPage = 3;
+
   int get totalPage => _totalPage;
 
+  String _minutes = '00';
+  String _seconds = '00';
+
+  String get minutes => _minutes;
+
+  String get seconds => _seconds;
+
+  Timer? timer;
+  Duration _duration = Duration(seconds: 30);
+
+  Duration get duration => _duration;
+
+  bool _canResendOTP = false;
+
+  bool get canResendOTP => _canResendOTP;
+
+  void startTimer() async {
+    await Future.delayed(const Duration(seconds: 2));
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      final sec = _duration.inSeconds - 1;
+      if (_duration.inSeconds > 0) {
+        _duration = Duration(seconds: sec);
+      } else {
+        _canResendOTP = true;
+      }
+      print(_duration.inSeconds);
+      twoDig();
+    });
+  }
+
+  void twoDig() {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    _minutes = twoDigits(_duration.inMinutes.remainder(60));
+    _seconds = twoDigits(_duration.inSeconds.remainder(60));
+    notifyListeners();
+  }
+
   bool _passwordVisible = false;
+
   bool get passwordVisible => _passwordVisible;
 
   void moveBackward() {
@@ -77,9 +120,9 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      // Alertify(title: e.error!).error();
     } finally {
-      setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 

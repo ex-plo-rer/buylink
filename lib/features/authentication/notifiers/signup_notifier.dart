@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,17 +19,63 @@ class SignupNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   SignupNotifier(this._reader);
+
   int _currentPage = 1;
+
   int get currentPage => _currentPage;
 
   int _totalPage = 4;
+
   int get totalPage => _totalPage;
 
   bool _passwordVisible = false;
+
   bool get passwordVisible => _passwordVisible;
 
   String _name = '';
+
   String get name => _name;
+
+  // // static const maxSeconds = 60;
+  // int _seconds = 30;
+  // int get seconds => _seconds;
+
+  String _minutes = '00';
+  String _seconds = '00';
+
+  String get minutes => _minutes;
+
+  String get seconds => _seconds;
+
+  Timer? timer;
+  Duration _duration = Duration(seconds: 30);
+
+  Duration get duration => _duration;
+
+  bool _canResendOTP = false;
+
+  bool get canResendOTP => _canResendOTP;
+
+  void startTimer() async {
+    await Future.delayed(const Duration(seconds: 2));
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      final sec = _duration.inSeconds - 1;
+      if (_duration.inSeconds > 0) {
+        _duration = Duration(seconds: sec);
+      } else {
+        _canResendOTP = true;
+      }
+      print(_duration.inSeconds);
+      twoDig();
+    });
+  }
+
+  void twoDig() {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    _minutes = twoDigits(_duration.inMinutes.remainder(60));
+    _seconds = twoDigits(_duration.inSeconds.remainder(60));
+    notifyListeners();
+  }
 
   void moveBackward() {
     if (_currentPage > 1) {
@@ -119,9 +167,9 @@ class SignupNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      // Alertify(title: e.error!).error();
     } finally {
-      setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 }
