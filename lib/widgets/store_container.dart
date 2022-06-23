@@ -30,7 +30,7 @@ class StoreContainer extends ConsumerWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-          padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child:
 
       Container(
@@ -62,7 +62,7 @@ class StoreContainer extends ConsumerWidget {
                   ),
                   Spacing.tinyWidth(),
                   Text(
-                    starRate.toString(),
+                    starRate.toStringAsFixed(1),
                     style:
                         const TextStyle(color: AppColors.light, fontSize: 16),
                   )

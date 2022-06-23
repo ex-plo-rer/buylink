@@ -50,6 +50,7 @@ class AppRatingBar extends ConsumerWidget {
       itemBuilder: (context, _) => SvgPicture.asset(
         AppSvgs.star,
         color: Colors.amber,
+      //  width: ,
       ),
       onRatingUpdate: onRatingUpdate,
     );

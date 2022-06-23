@@ -100,6 +100,7 @@ class LoginView extends ConsumerWidget {
                       ),
                       onPressed: () => loginNotifier.togglePassword(),
                     ),
+
                   ),
                   const Spacing.mediumHeight(),
                   Spacing.smallHeight(),
@@ -117,10 +118,10 @@ class LoginView extends ConsumerWidget {
                   AppButton(
                       isLoading: loginNotifier.state.isLoading,
                       text: AppStrings.login,
-                      backgroundColor: _passwordController.text.isNotEmpty &&
-                          _emailAddressController.text.isNotEmpty ?
-                      AppColors.primaryColor
-                      : AppColors.grey6,
+                      backgroundColor: _passwordController.text.isEmpty &&
+                          _emailAddressController.text.isEmpty ?
+                      AppColors.grey6
+                      :  AppColors.primaryColor,
                       onPressed: () async {
                         // ref
                         //     .read(navigationServiceProvider)

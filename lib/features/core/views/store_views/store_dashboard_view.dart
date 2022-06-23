@@ -19,6 +19,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../../widgets/favorite_container.dart';
 import '../../../../widgets/iconNtext_container2.dart';
 import '../../models/product_model.dart';
+import '../../notifiers/message_notifier/message_list_notifier.dart';
 import '../../notifiers/store_notifier/store_dashboard_notifier.dart';
 
 // TODO: Make the product image scrollable and work on the see all reviews widget and also the app bar actions.
@@ -54,6 +55,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
   @override
   Widget build(BuildContext context) {
     final storeDashboardNotifier = ref.watch(storeDashboardNotifierProvider);
+    final messageListNotifier = ref.watch(messageListNotifierProvider);
     return Scaffold(
       // backgroundColor: AppColors.grey6,
       appBar: AppBar(
@@ -61,7 +63,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
             color: AppColors.dark, //change your color here
           ),
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () { ref.read(navigationServiceProvider).navigateBack();},
             icon: const Icon(
               Icons.arrow_back_ios_outlined,
               size: 12,
@@ -93,10 +95,31 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                       ),
                       // borderRadius: BorderRadius.all(),
                     ),
-                    child: GestureDetector(child: Icon(
-                      Icons.mail_outline_outlined, color: AppColors.primaryColor,
-                      size: 20,
-                    ),onTap: (){
+                    child: GestureDetector(child:
+                    Stack(
+                    children: <Widget>[
+                    new Icon(Icons.mail_outline_outlined, size: 20, color: AppColors.primaryColor),
+            Positioned(
+              right: 0,
+              top:1,
+              child: Container(
+                padding: EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  color: messageListNotifier.chats.length == 0? AppColors.grey4:
+                  AppColors.red,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                constraints: BoxConstraints(
+                  minWidth: 6,
+                  minHeight: 6,
+                ),
+
+              ),
+            )
+          ],
+      ),
+
+                        onTap: (){
 
                       ref.read(navigationServiceProvider).navigateToNamed(
                         Routes.storeMessages,
@@ -341,7 +364,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                       onTap: () => ref
                           .read(navigationServiceProvider)
                           .navigateToNamed(
-                        Routes.storeReviews,
+                        Routes.storeDashReview,
                         arguments: widget.store,
                       ),
                       child: Container(
@@ -414,13 +437,13 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                 IconNTextContainer2(
                                   text: storeDashboardNotifier
                                       .mostSearchedNCount!.storeGrade
-                                      .toString(),
+                                      .toStringAsFixed(1),
                                   textColor: const Color(0xff5C6475),
-                                  fontSize: 16,
+                                  fontSize: 13,
                                   icon: SvgPicture.asset(
                                     AppSvgs.starFilled,
-                                    width: 15,
-                                    height: 15,
+                                    width: 12,
+                                    height: 12,
                                   ),
                                 ),
                               ],

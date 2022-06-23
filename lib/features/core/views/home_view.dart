@@ -99,7 +99,7 @@ class HomeView extends ConsumerWidget {
               ),
               const Spacing.height(12),
               const Text(
-                'Based on your interest',
+                'Latest products around you',
                 style: TextStyle(
                   color: AppColors.grey1,
                   fontSize: 12,
@@ -197,7 +197,16 @@ class HomeView extends ConsumerWidget {
                                               homeNotifier.products[index],
                                         );
                                   },
-                                  onDistanceTapped: () {},
+                                  onDistanceTapped: () {
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateToNamed(
+                                      Routes.storeDirection,
+                                      arguments:
+                                      homeNotifier.products[index].store,
+                                    );
+
+                                  },
                                   onFlipTapped: () {
                                     ref
                                         .read(navigationServiceProvider)
@@ -209,6 +218,7 @@ class HomeView extends ConsumerWidget {
                                         );
                                   },
                                   onFavoriteTapped: () async {
+
                                     homeNotifier.products[index].isFav!
                                         ? await wishlistNotifier
                                             .removeFromWishlist(
@@ -219,8 +229,8 @@ class HomeView extends ConsumerWidget {
                                             productId:
                                                 homeNotifier.products[index].id,
                                           );
-                                    ref.refresh(homeNotifierProvider(null));
-                                  },
+                                   ref.refresh(homeNotifierProvider(null));
+                                  }
                                 );
                               }
                             },

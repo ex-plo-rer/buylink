@@ -29,26 +29,30 @@ class ChatTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-      title: Text(
+      visualDensity: VisualDensity(horizontal: 0, vertical: -2),
+      title: Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          child: Text(
         title,
         style: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.bold,
         ),
-      ),
+      )),
       leading: CircleAvatar(
         backgroundColor: AppColors.shade1,
         child: imageUrl == null ? Text(title.initials()) : null,
         backgroundImage:
             imageUrl == null ? null : CachedNetworkImageProvider(imageUrl!),
-        radius: 24,
+        radius: 26,
       ),
-      subtitle: Text(
+      subtitle: Padding(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
+        child:Text(
         subtitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-      ),
+      )),
       trailing: unreadCount < 1
           ? const Spacing.empty()
           : Column(

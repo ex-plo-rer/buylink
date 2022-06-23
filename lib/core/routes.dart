@@ -8,6 +8,7 @@ import 'package:buy_link/features/core/views/message_view/user_profile_view.dart
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
 import 'package:buy_link/features/core/views/settings_view/term_of_use.dart';
+import 'package:buy_link/features/core/views/store_dashboard_review.dart';
 import 'package:buy_link/features/core/views/store_views/delete_store_validation.dart';
 import 'package:buy_link/features/core/views/settings_view/change_email.dart';
 import 'package:buy_link/features/core/views/settings_view/change_name.dart';
@@ -98,6 +99,7 @@ class Routes {
   static const productSearch = 'product-search';
   static const termOfUse = 'term-of-use';
   static const userProfile = 'user-profile';
+  static const storeDashReview = 'store-dash-review';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -243,6 +245,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => TermOfUse());
       case userProfile:
         return MaterialPageRoute(builder: (_) => UserProfile());
+      case storeDashReview:
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(builder: (_) => StoreDashReviews(store: store));
 
 
 

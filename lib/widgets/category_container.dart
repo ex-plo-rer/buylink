@@ -28,6 +28,7 @@ class CategoryContainer extends StatelessWidget {
           image: DecorationImage(
             image: CachedNetworkImageProvider(categoryImage),
             fit: BoxFit.fill,
+            opacity: 0.67
           ),
           color: AppColors.red,
         ),

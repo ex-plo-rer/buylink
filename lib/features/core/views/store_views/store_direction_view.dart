@@ -6,6 +6,7 @@ import 'package:buy_link/features/core/notifiers/store_notifier/store_direction_
 import 'package:buy_link/features/core/views/store_views/store_messages.dart';
 import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/widgets/back_arrow.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -34,6 +35,7 @@ class StoreDirectionView extends ConsumerStatefulWidget {
 
 class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
   MapController? mapController;
+
 
   @override
   void initState() {
@@ -65,15 +67,15 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
         controller: ModalScrollController.of(context),
         child: StoreDirectionBottomSheet(
           distance: ref.read(locationService).getDist(
-                startLat: ref.watch(storeDirectionNotifierProvider).userLat!,
-                startLon: ref.watch(storeDirectionNotifierProvider).userLon!,
-                endLat: widget.store.lat,
-                endLon: widget.store.lon,
-              ),
+            startLat: ref.watch(storeDirectionNotifierProvider).userLat!,
+            startLon: ref.watch(storeDirectionNotifierProvider).userLon!,
+            endLat: widget.store.lat,
+            endLon: widget.store.lon,
+          ),
           normalDistance: ref.read(locationService).getDistance(
-                endLat: widget.store.lat,
-                endLon: widget.store.lon,
-              ),
+            endLat: widget.store.lat,
+            endLon: widget.store.lon,
+          ),
           storeRating: widget.store.star,
           storeName: widget.store.name,
         ),
@@ -237,7 +239,7 @@ class StoreDirectionBottomSheet extends StatelessWidget {
             horizontalTitleGap: 8,
             dense: false,
             contentPadding:
-                const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
             leading: const CircleAvatar(radius: 30),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),

@@ -319,12 +319,12 @@ class StoreReviewsView extends ConsumerWidget {
                                             CircleAvatar(
                                               radius: 16,
                                               child: Text( storeReviewNotifier
-                                                  .reviews[index].name.initials()),
+                                                  .reviews[index].name?.initials() ?? "?"),
                                             ),
                                             const Spacing.smallWidth(),
                                             Text(
                                               storeReviewNotifier
-                                                      .reviews[index].name ??
+                                                      .reviews[index]!.name ??
                                                   'Ayodeji',
                                               style: const TextStyle(
                                                 color: AppColors.grey1,
@@ -342,7 +342,7 @@ class StoreReviewsView extends ConsumerWidget {
                                           children: [
                                             Text(
                                               storeReviewNotifier
-                                                  .reviews[index].time,
+                                                  .reviews[index]! .time ?? "0:00",
                                               style: const TextStyle(
                                                 color: AppColors.grey5,
                                                 fontSize: 12,

@@ -142,9 +142,9 @@ class ProductContainer extends ConsumerWidget {
                 productName,
                 overflow: isDetails ? null : TextOverflow.ellipsis,
                 style: const TextStyle(
-                  color: AppColors.grey1,
+                  color: AppColors.grey2,
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               Text(
