@@ -7,16 +7,43 @@ import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../services/base/network_exception.dart';
+import '../../../../services/location_service.dart';
 
 class AddStoreNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   AddStoreNotifier(this._reader);
+
   int _currentPage = 1;
+
   int get currentPage => _currentPage;
 
   int _totalPage = 4;
+
   int get totalPage => _totalPage;
+
+  double _storeLat = 0;
+  double _storeLon = 0;
+
+  double get storeLat => _storeLat;
+
+  double get storeLon => _storeLon;
+
+  void initLocation() {
+    // // Uses the initial location of when the app was lauched first.
+    _storeLat = _reader(locationService).lat!;
+    _storeLon = _reader(locationService).lon!;
+    notifyListeners();
+  }
+
+  void setStorePosition({
+    required double lat,
+    required double lon,
+  }) {
+    _storeLat = lat;
+    _storeLon = lon;
+    notifyListeners();
+  }
 
   void moveBackward() {
     if (_currentPage > 1) {
@@ -72,8 +99,8 @@ class AddStoreNotifier extends BaseChangeNotifier {
       await _reader(storeRepository).createStore(
         storeName: storeName,
         storeDescription: storeDescription,
-        lon: lon,
-        lat: lat,
+        lon: _storeLon,
+        lat: _storeLat,
         storeLogo: storeLogo,
         storeImage: storeImage,
       );

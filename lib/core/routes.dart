@@ -36,6 +36,7 @@ import '../features/core/views/product_list_view.dart';
 import '../features/core/views/store_views/delete_store_view.dart';
 import '../features/core/views/store_views/product_saved_view.dart';
 import '../features/core/views/store_views/product_search_result_view.dart';
+import '../features/core/views/store_views/store_location_picker_view.dart';
 import '../features/core/views/store_views/store_messages.dart';
 import '../features/startup/views/onboarding_view.dart';
 import '../features/authentication/views/signup_view.dart';
@@ -71,6 +72,7 @@ class Routes {
   static const storeDirection = '/store-direction';
   static const noproductView = '/noproduct';
   static const addstoreView = '/addstore';
+  static const storeLocationPickerView = '/store-location-picker';
   static const emptystoreView = '/emptystore';
   static const messageView = '/message';
   static const addProduct = '/addproduct';
@@ -203,6 +205,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => NoProductView());
       case addstoreView:
         return MaterialPageRoute(builder: (_) => AddStoreView());
+      case storeLocationPickerView:
+        return MaterialPageRoute(builder: (_) => StoreLocationPicker());
       case messageView:
         MessageModel args = settings.arguments as MessageModel;
         return MaterialPageRoute(builder: (_) => MessageView(args: args));

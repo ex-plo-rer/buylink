@@ -58,7 +58,7 @@ class SignupNotifier extends BaseChangeNotifier {
 
   void startTimer() async {
     await Future.delayed(const Duration(seconds: 2));
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final sec = _duration.inSeconds - 1;
       if (_duration.inSeconds > 0) {
         _duration = Duration(seconds: sec);
@@ -125,6 +125,7 @@ class SignupNotifier extends BaseChangeNotifier {
         password: password,
       );
 
+      timer?.cancel();
       Alertify(
         title: 'Wellcome to Buylink',
       ).success();

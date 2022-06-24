@@ -20,8 +20,14 @@ import '../../../../widgets/spacing.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/store_notifier/add_store_notifier.dart';
 
-class AddStoreView extends ConsumerWidget {
-  AddStoreView({Key? key}) : super(key: key);
+class AddStoreView extends ConsumerStatefulWidget {
+  const AddStoreView({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<AddStoreView> createState() => _AddStoreViewState();
+}
+
+class _AddStoreViewState extends ConsumerState<AddStoreView> {
   final PageController _pageController = PageController();
   final _nameFN = FocusNode();
   final _storeDescriptionFN = FocusNode();
@@ -30,7 +36,14 @@ class AddStoreView extends ConsumerWidget {
   final _storeDescriptionController = TextEditingController();
 
   @override
-  Widget build(BuildContext context, ref) {
+  void initState() {
+    // TODO: implement initState
+    ref.read(addStoreNotifierProvider).initLocation();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final addStoreNotifier = ref.watch(addStoreNotifierProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -88,20 +101,20 @@ class AddStoreView extends ConsumerWidget {
                     children: [
                       Column(
                         children: [
-                          TextWithRich(
+                          const TextWithRich(
                             firstText: 'What\'s the name your',
                             secondText: 'store?',
                             fontSize: 24,
                             secondColor: AppColors.primaryColor,
                           ),
-                          Align(
+                          const Align(
                             alignment: Alignment.topLeft,
                             child: Text(
                               "This helps your customer identify your store",
                               textAlign: TextAlign.start,
                             ),
                           ),
-                          Spacing.height(12),
+                          const Spacing.height(12),
                           AppTextField(
                             title: '',
                             hintText: 'Store name',
@@ -128,13 +141,13 @@ class AddStoreView extends ConsumerWidget {
                       ),
                       Column(
                         children: [
-                          TextWithRich(
+                          const TextWithRich(
                             firstText: 'Describe your Store',
                             secondText: '',
                             fontSize: 24,
                             secondColor: AppColors.primaryColor,
                           ),
-                          Spacing.height(12),
+                          const Spacing.height(12),
                           // TextField(),
                           AppTextField(
                             hintText: 'Tell us about your store',
@@ -183,6 +196,19 @@ class AddStoreView extends ConsumerWidget {
                               textAlign: TextAlign.center,
                             ),
                           ),
+/*
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AppButton(
+                                width: MediaQuery.of(context).size.width - 100,
+                                text: 'Locate Store',
+                                fontSize: 16,
+                                backgroundColor: AppColors.primaryColor,
+                              ),
+                            ],
+                          )
+*/
                         ],
                       ),
                       Column(
@@ -253,7 +279,9 @@ class AddStoreView extends ConsumerWidget {
                       text: addStoreNotifier.currentPage ==
                               addStoreNotifier.totalPage
                           ? 'Create store'
-                          : AppStrings.next,
+                          : addStoreNotifier.currentPage == 3
+                              ? 'Locate Store'
+                              : AppStrings.next,
                       backgroundColor: addStoreNotifier.currentPage == 1 &&
                               _nameController.text.isEmpty
                           ? AppColors.grey6
@@ -276,13 +304,28 @@ class AddStoreView extends ConsumerWidget {
                                           addStoreNotifier.logoFile == null)
                                   ? null
                                   : () async {
-                                      if (addStoreNotifier.currentPage == 4) {
+                                      if (addStoreNotifier.currentPage == 3) {
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateToNamed(
+                                              Routes.storeLocationPickerView,
+                                            );
+                                        addStoreNotifier.moveForward();
+                                        _pageController.animateToPage(
+                                          // array starts at 0 (lol)
+                                          addStoreNotifier.currentPage - 1,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          curve: Curves.easeIn,
+                                        );
+                                      } else if (addStoreNotifier.currentPage ==
+                                          4) {
                                         await addStoreNotifier.createStore(
                                           storeName: _nameController.text,
                                           storeDescription:
                                               _storeDescriptionController.text,
-                                          lon: 4.3,
-                                          lat: 3.1,
+                                          lon: addStoreNotifier.storeLon,
+                                          lat: addStoreNotifier.storeLat,
                                           storeLogo: addStoreNotifier.logoFile!,
                                           storeImage:
                                               addStoreNotifier.imageFile!,
@@ -305,18 +348,6 @@ class AddStoreView extends ConsumerWidget {
                                       } else {
                                         addStoreNotifier.moveForward();
                                         print(addStoreNotifier.currentPage);
-                                        // addStoreNotifier.currentPage >
-                                        //     addStoreNotifier.totalPage
-                                        //     ?
-                                        // ref
-                                        //     .read(navigationServiceProvider)
-                                        //     .navigateBack()
-                                        // ref
-                                        //     .read(
-                                        //     navigationServiceProvider)
-                                        //     .navigateToNamed(
-                                        //     Routes.dashboard)
-                                        //     :
                                         _pageController.animateToPage(
                                           // array starts at 0 (lol)
                                           addStoreNotifier.currentPage - 1,

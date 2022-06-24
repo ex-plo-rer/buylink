@@ -44,7 +44,7 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
 
   void startTimer() async {
     await Future.delayed(const Duration(seconds: 2));
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final sec = _duration.inSeconds - 1;
       if (_duration.inSeconds > 0) {
         _duration = Duration(seconds: sec);
@@ -137,6 +137,8 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
         email: email,
         password: password,
       );
+
+      timer?.cancel();
 
       Alertify(title: 'Password changed successfully').success();
       _reader(localStorageService).deleteSecureData(AppStrings.otpEmailKey);
