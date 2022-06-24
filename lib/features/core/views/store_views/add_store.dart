@@ -255,6 +255,7 @@ class AddStoreView extends ConsumerWidget {
                       text: addStoreNotifier.currentPage ==
                               addStoreNotifier.totalPage
                           ? 'Create store'
+                      : addStoreNotifier.currentPage == 3? "locate Store"
                           : AppStrings.next,
                       backgroundColor: addStoreNotifier.currentPage == 1 &&
                               _nameController.text.isEmpty
@@ -273,11 +274,15 @@ class AddStoreView extends ConsumerWidget {
                           : addStoreNotifier.currentPage == 2 &&
                                   _storeDescriptionController.text.isEmpty
                               ? null
+
+
                               : addStoreNotifier.currentPage == 4 &&
                                       (addStoreNotifier.imageFile == null ||
                                           addStoreNotifier.logoFile == null)
                                   ? null
-                                  : () async {
+
+
+                         : () async {
                                       if (addStoreNotifier.currentPage == 4) {
                                         await addStoreNotifier.createStore(
                                           storeName: _nameController.text,
@@ -304,7 +309,11 @@ class AddStoreView extends ConsumerWidget {
                                               const Duration(milliseconds: 500),
                                           curve: Curves.easeIn,
                                         );
-                                      } else {
+                                      }
+                                      else if (addStoreNotifier.currentPage == 3){
+                                        
+                                      }
+                                      else {
                                         addStoreNotifier.moveForward();
                                         print(addStoreNotifier.currentPage);
                                         // addStoreNotifier.currentPage >

@@ -124,12 +124,18 @@ class ProductAlertScreen extends ConsumerWidget {
                   : notificationNotifier.notifications.length,
               itemBuilder: (context, int index) =>
                   notificationNotifier.notifications.isEmpty
-                      ? const Center(
-                          child: AppEmptyStates(
+                      ? Column(
+                          children: <Widget>[
+
+                            Spacing.largeHeight(),
+                            Spacing.largeHeight(),
+                            Spacing.largeHeight(),
+                            Spacing.largeHeight(),
+                            AppEmptyStates(
                               imageString: "assets/images/no_messages.png",
                               message1String: "No messages yet",
                               buttonString: ""),
-                        )
+                        ])
                       : Column(
                           children: <Widget>[
                             ListTile(
@@ -203,10 +209,22 @@ class MessageScreen extends ConsumerWidget {
                   ? 1
                   : messageListNotifier.chats.length,
               itemBuilder: (context, index) => messageListNotifier.chats.isEmpty
-                  ?  AppEmptyStates(
+                  ? Column (
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                 // mainAxisAlignment: MainAxisAlignment.center,
+
+                  children: <Widget>[
+
+                    Spacing.largeHeight(),
+                    Spacing.largeHeight(),
+                    Spacing.largeHeight(),
+                    Spacing.largeHeight(),
+                    AppEmptyStates(
                   imageString: "assets/images/no_notifications.png",
                   message1String: "No notifications yet",
-                  buttonString: "")
+                  buttonString: ""),
+
+              ])
                  // hasButton: false
 
                   //onButtonPressed: void Function()?{}

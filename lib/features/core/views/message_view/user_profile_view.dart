@@ -5,16 +5,21 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../core/routes.dart';
 import '../../../../services/navigation_service.dart';
 import '../../../../widgets/app_dialog.dart';
 import '../../../../widgets/app_dialog_2.dart';
+import '../../models/message_model.dart';
 import '../../notifiers/message_notifier/user_profile.dart';
 
 class UserProfile extends ConsumerWidget {
-  UserProfile ({Key? key}) : super(key: key);
+  UserProfile ( {Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context, ref) {
+
+    final MessageModel args;
     final userNotifier = ref.watch(userProfileNotifierProvider);
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -48,7 +53,7 @@ class UserProfile extends ConsumerWidget {
                   Row (
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text ("Atinuke Stores"),
+                        Text ("Atinuke Store"),
                         SizedBox(width: 4),
                         Icon(
                             Icons.star,
@@ -72,7 +77,9 @@ class UserProfile extends ConsumerWidget {
                       child:
                       TextButton (
                         //style: ButtonStyle( backgroundColor: Colors.),
-                          onPressed: () {  },
+                          onPressed: () {
+    ref
+        .read(navigationServiceProvider).navigateToNamed(Routes.storeDetails);},
                           child: Text(
                               "View Store"
                           )
