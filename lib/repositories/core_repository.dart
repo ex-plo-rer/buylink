@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants/strings.dart';
 import '../features/core/models/most_searched_count_model.dart';
 import '../features/core/models/most_searched_model.dart';
+import '../features/core/models/search_result_model.dart';
 import '../features/core/models/user_model.dart';
 import '../services/local_storage_service.dart';
 import '../services/network/network_service.dart';
@@ -504,6 +505,105 @@ class CoreRepository {
 
     print('Get session response $response');
     return _sessions;
+  }
+
+  Future<SearchResultModel> fetchProductSearch({
+    required String searchTerm,
+    required double lon,
+    required double lat,
+    required double distanceRange,
+    required double minPrice,
+    required double maxPrice,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'search_term': searchTerm,
+      'lon': lon,
+      'lat': lat,
+      'range': distanceRange,
+      'min_price': minPrice,
+      'max_price': maxPrice
+    };
+    print('Fetch search result params sent to server $body');
+    var response = await networkService.post(
+      'users/load-results',
+      body: body,
+      headers: headers,
+    );
+    print('search products response $response');
+    return SearchResultModel.fromJson(response);
+  }
+
+  Future<List<ProductModel>> fetchCompareSearch({
+    required String searchTerm,
+    required double lon,
+    required double lat,
+    required double distanceRange,
+    required double minPrice,
+    required double maxPrice,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'search_term': searchTerm,
+      'lon': lon,
+      'lat': lat,
+      'range': distanceRange,
+      'min_price': minPrice,
+      'max_price': maxPrice
+    };
+    print('Fetch compare search result params sent to server $body');
+    var response = await networkService.post(
+      'users/cmp-search',
+      body: body,
+      headers: headers,
+    );
+    print('compare search products response 1 $response');
+    List<ProductModel> _products = [];
+    for (var product in response) {
+      _products.add(ProductModel.fromJson(product));
+    }
+    print('compare search products response 2 $response');
+    return _products;
+  }
+
+  Future<List<ProductModel>> fetchItemsToCompare() async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+    };
+    print('Fetch items to compare params sent to server $body');
+    var response = await networkService.post(
+      'users/compare',
+      body: body,
+      headers: headers,
+    );
+    print('items to compare response 1 $response');
+    List<ProductModel> _products = [];
+    for (var product in response) {
+      _products.add(ProductModel.fromJson(product));
+    }
+    print('items to compare response 2 $response');
+    return _products;
+  }
+
+  Future<bool> addItemToCompare({
+    required int productId,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'product_id': productId,
+    };
+    print('Add items to compare params sent to server $body');
+    var response = await networkService.post(
+      'users/add-compare',
+      body: body,
+      headers: headers,
+    );
+    print('Add items to compare response $response');
+    return response['success'];
   }
 }
 

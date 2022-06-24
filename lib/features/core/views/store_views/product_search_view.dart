@@ -4,7 +4,7 @@ import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/search_result_arg_model.dart';
 import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/app_search_dialog.dart';
+import 'package:buy_link/widgets/map_search_dialog.dart';
 import 'package:buy_link/widgets/map_search_term_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';

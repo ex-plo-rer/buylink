@@ -4,6 +4,7 @@ import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/compare_arg_model.dart';
+import 'package:buy_link/features/core/notifiers/flip_notifier.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/product_search_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
@@ -197,15 +198,24 @@ class HomeView extends ConsumerWidget {
                                         );
                                   },
                                   onDistanceTapped: () {},
-                                  onFlipTapped: () {
-                                    ref
-                                        .read(navigationServiceProvider)
-                                        .navigateToNamed(
-                                          Routes.compare,
-                                          arguments: CompareArgModel(
-                                              product:
-                                                  homeNotifier.products[index]),
-                                        );
+                                  onFlipTapped: () async {
+                                    await ref
+                                        .read(flipNotifierProvider)
+                                        .addItemToCompare(
+                                            productId: homeNotifier
+                                                .products[index].id);
+                                    if (ref
+                                        .read(flipNotifierProvider)
+                                        .successfullyAdded) {
+                                      ref
+                                          .read(navigationServiceProvider)
+                                          .navigateToNamed(
+                                            Routes.compare,
+                                            // arguments: CompareArgModel(
+                                            //     product:
+                                            //         homeNotifier.products[index]),
+                                          );
+                                    }
                                   },
                                   onFavoriteTapped: () async {
                                     homeNotifier.products[index].isFav!

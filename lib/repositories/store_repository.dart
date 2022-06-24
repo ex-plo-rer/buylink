@@ -218,34 +218,6 @@ class StoreRepository {
     print('Delete store response $response');
     return response['success'];
   }
-
-  Future<SearchResultModel> fetchProductSearch({
-    required String searchTerm,
-    required double lon,
-    required double lat,
-    required double distanceRange,
-    required double minPrice,
-    required double maxPrice,
-  }) async {
-    var id = _reader(userProvider).currentUser?.id ?? 0;
-    final body = {
-      'id': id,
-      'search_term': searchTerm,
-      'lon': lon,
-      'lat': lat,
-      'range': distanceRange,
-      'min_price': minPrice,
-      'max_price': maxPrice
-    };
-    print('Fetch search result params sent to server $body');
-    var response = await networkService.post(
-      'users/load-results',
-      body: body,
-      headers: headers,
-    );
-    print('search products response $response');
-    return SearchResultModel.fromJson(response);
-  }
 }
 
 final storeRepository = Provider(

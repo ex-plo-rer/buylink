@@ -11,53 +11,38 @@ import '../../../services/base/network_exception.dart';
 import '../../../services/local_storage_service.dart';
 import '../../../services/navigation_service.dart';
 
-class CompareNotifier extends BaseChangeNotifier {
+class FlipNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  CompareNotifier(this._reader) {
-    // saveProduct(product: product);
-  }
+  FlipNotifier(this._reader);
 
-  int _activeIndex = 0;
-  int get activeIndex => _activeIndex;
+  bool _addingToCompare = false;
 
-  ProductModel? _product1;
-  ProductModel? get product1 => _product1;
+  bool get addingToCompare => _addingToCompare;
+  bool _successfullyAdded = false;
 
-  ProductModel? _product2;
-  ProductModel? get product2 => _product2;
+  bool get successfullyAdded => _successfullyAdded;
 
-  void nextPage(index, reason) {
-    _activeIndex = index;
-    print('$_activeIndex $index');
-    notifyListeners();
-  }
-
-  Future<void> saveProduct({
-    required ProductModel product,
+  Future<void> addItemToCompare({
+    required int productId,
   }) async {
-    print('Product1: $product1');
-    print('Product2: $product2');
-    if (product1 == null) {
-      print('product1 == null: ${product1 == null}');
-      _product1 = product;
-    } else {
-      // _product2 = product;
-      if (_product1!.id != _product2?.id) {
-        print('product1!.id , product2?.id: ${product1!.id}, ${product2?.id}');
-        print('product1!.id != product2?.id: ${product1!.id != product2?.id}');
-        _product2 = product;
-      }
-      // else {
-      //   _product2 = product;
-      // }
+    try {
+      _addingToCompare = true;
+      setState(state: ViewState.loading);
+      _successfullyAdded =
+          await _reader(coreRepository).addItemToCompare(productId: productId);
+      _addingToCompare = false;
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      _addingToCompare = false;
+      setState(state: ViewState.error);
+      // Alertify(title: e.error!).error();
+    } finally {
+      //Do something...
     }
-    print('Product1: $product1');
-    print('Product2: $product2');
-    notifyListeners();
   }
 }
 
-final compareNotifierProvider = ChangeNotifierProvider<CompareNotifier>(
-  (ref) => CompareNotifier(ref.read),
+final flipNotifierProvider = Provider<FlipNotifier>(
+  (ref) => FlipNotifier(ref.read),
 );

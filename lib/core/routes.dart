@@ -2,6 +2,7 @@ import 'package:buy_link/features/core/models/search_result_arg_model.dart';
 import 'package:buy_link/features/core/views/add_product_view.dart';
 import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/categories_view.dart';
+import 'package:buy_link/features/core/views/compare_products_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
@@ -59,6 +60,7 @@ class Routes {
   static const productList = '/product-list';
   static const categories = '/categories';
   static const compare = '/compare';
+  static const compareProducts = '/compare-products';
   static const productDetails = '/product-details';
   static const productDetailsMore = '/product-details-more';
   static const storeDetails = '/shop-details';
@@ -123,12 +125,16 @@ class Routes {
       case categories:
         return MaterialPageRoute(builder: (_) => const CategoriesView());
       case compare:
-        var arguments = settings.arguments as CompareArgModel;
+        // var arguments = settings.arguments as CompareArgModel;
         return MaterialPageRoute(
           builder: (_) => CompareView(
-            arguments: arguments,
-          ),
+              // arguments: arguments,
+              ),
         );
+      case compareProducts:
+        String searchTerm = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => CompareProductsView(searchTerm: searchTerm));
       case productDetails:
         var product = settings.arguments as ProductModel;
         return MaterialPageRoute(

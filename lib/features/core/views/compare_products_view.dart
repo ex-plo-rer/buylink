@@ -21,212 +21,188 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/constants/strings.dart';
+import '../../../core/utilities/alertify.dart';
+import '../../../core/utilities/loader.dart';
 import '../../../widgets/circular_progress.dart';
+import '../../../widgets/compare_search_term_container.dart';
+import '../../../widgets/map_search_term_container.dart';
 import '../models/product_search.dart';
 import '../notifiers/category_notifier.dart';
+import '../notifiers/flip_notifier.dart';
+import '../notifiers/store_notifier/compare_search_notifier.dart';
 
-class HomeView extends ConsumerWidget {
-  HomeView({Key? key}) : super(key: key);
+class CompareProductsView extends ConsumerStatefulWidget {
+  CompareProductsView({
+    Key? key,
+    required this.searchTerm,
+  }) : super(key: key);
+  final String searchTerm;
 
+  @override
+  ConsumerState<CompareProductsView> createState() =>
+      _CompareProductsViewState();
+}
+
+class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
   final searchFN = FocusNode();
 
   @override
-  Widget build(BuildContext context, ref) {
-    final homeNotifier = ref.watch(homeNotifierProvider(null));
-    final wishlistNotifier = ref.watch(wishlistNotifierProvider);
-    final categoryNotifier = ref.watch(categoryNotifierProvider);
-    // ref.watch(locationService).getCurrentLocation();
+  void initState() {
+    // TODO: implement initState
+    ref.read(compareSearchNotifierProvider).initLocation();
+    ref
+        .read(compareSearchNotifierProvider)
+        .fetchCompareSearch(searchTerm: widget.searchTerm);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // final wishlistNotifier = ref.watch(wishlistNotifierProvider);
+    // final categoryNotifier = ref.watch(categoryNotifierProvider);
+    final compareSearchNotifier = ref.watch(compareSearchNotifierProvider);
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 24,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: AppColors.dark, //change your color here
+        ),
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.arrow_back_ios_outlined,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppTextField(
-                hintText: 'What would you like to buy ?',
-                onTap: () async {
-                  searchFN.unfocus();
-                  // ref
-                  //     .read(navigationServiceProvider)
-                  //     .navigateToNamed(Routes.inputSearchLocation);
-                  final searchText = await showSearch(
-                    context: context,
-                    delegate: ProductSearch(
-                      productsSuggestion: homeNotifier.products,
-                      allProducts: homeNotifier.products,
-                      onSearchChanged: ref
-                          .read(productSearchNotifierProvider)
-                          .getRecentSearchesLike,
-                      ref: ref,
-                    ),
-                  );
-                  if (searchText != null) {
-                    await ref
-                        .read(productSearchNotifierProvider)
-                        .saveToRecentSearches(searchText);
+        ),
+        elevation: 0,
+        backgroundColor: AppColors.transparent,
+        title: const Text(
+          AppStrings.compare,
+          style: TextStyle(
+            color: AppColors.dark,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CompareSearchTermContainer(
+                marginTop: 0,
+                horizontalMargin: 0,
+                containerColor: AppColors.grey10,
+                searchTerm: widget.searchTerm,
+                onMinChanged: compareSearchNotifier.onMinPriceChanged,
+                onMaxChanged: compareSearchNotifier.onMaxPriceChanged,
+                onSliderChanged: (newValue) =>
+                    compareSearchNotifier.onSliderChanged(newValue),
+                sliderValue: compareSearchNotifier.sliderValue,
+                onApplyPressed: () {
+                  if (compareSearchNotifier.minPrice! >=
+                      compareSearchNotifier.maxPrice!) {
+                    Alertify(
+                            title:
+                                'Minimum price should not be greater than maximum price.')
+                        .error();
+                  } else {
+                    ref.read(navigationServiceProvider).navigateBack();
+                    // Loader(context).showLoader(text: 'Loading');
+                    compareSearchNotifier.fetchCompareSearch(
+                      searchTerm: widget.searchTerm,
+                      isInitialLoading: false,
+                    );
+                    // Loader(context).hideLoader();
                   }
-                },
-                prefixIcon: const Icon(Icons.search_outlined),
-                hasBorder: false,
-                isSearch: true,
-                fillColor: AppColors.grey8,
-                focusNode: searchFN,
-              ),
-              //   ),
-              // ),
-              const Spacing.height(12),
-              Visibility(
-                visible: ref.watch(userProvider).currentUser == null,
-                child: AppButton(
-                  text: 'Log in to personalize your Buylink experience',
-                  textColor: AppColors.primaryColor,
-                  fontSize: 14,
-                  backgroundColor: AppColors.shade1,
-                  hasIcon: true,
-                  icon: SvgPicture.asset(AppSvgs.login),
-                  onPressed: () {
-                    ref.read(navigationServiceProvider).navigateOffAllNamed(
-                          Routes.login,
-                          (p0) => false,
-                        );
-                  },
-                ),
-              ),
-              const Spacing.height(12),
-              const Text(
-                'Based on your interest',
-                style: TextStyle(
-                  color: AppColors.grey1,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const Spacing.smallHeight(),
-              Expanded(
-                child: homeNotifier.state.isLoading
-                    ? const CircularProgress()
-                    : homeNotifier.products.isEmpty
-                        ? AppEmptyStates(
-                            imageString: AppImages.bag,
-                            message1String:
-                                'No Product... Kindly Reload or check back',
-                            buttonString: 'Reload',
-                            hasButton: true,
-                            hasIcon: false,
-                            onButtonPressed: () =>
-                                homeNotifier.fetchProducts(category: 'all'))
-                        : MasonryGridView.count(
-                            itemCount: homeNotifier.products.length,
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
-                            itemBuilder: (context, index) {
-                              if (index == 3) {
-                                return Container(
-                                  height: 182,
-                                  color: AppColors.transparent,
-                                  child: categoryNotifier.state.isLoading
-                                      ? const CircularProgress()
-                                      : Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            CategoryContainer(
-                                              categoryName: categoryNotifier
-                                                  .categories[0].name,
-                                              categoryImage: categoryNotifier
-                                                  .categories[0].image,
-                                              onTap: () =>
-                                                  homeNotifier.fetchProducts(
-                                                      category: categoryNotifier
-                                                          .categories[0].name),
-                                            ),
-                                            CategoryContainer(
-                                              categoryName: categoryNotifier
-                                                  .categories[1].name,
-                                              categoryImage: categoryNotifier
-                                                  .categories[1].image,
-                                              onTap: () =>
-                                                  homeNotifier.fetchProducts(
-                                                      category: categoryNotifier
-                                                          .categories[1].name),
-                                            ),
-                                            CategoryContainer(
-                                              categoryName: categoryNotifier
-                                                  .categories[2].name,
-                                              categoryImage: categoryNotifier
-                                                  .categories[2].image,
-                                              onTap: () =>
-                                                  homeNotifier.fetchProducts(
-                                                      category: categoryNotifier
-                                                          .categories[2].name),
-                                            ),
-                                          ],
-                                        ),
-                                );
-                              } else {
-                                return ProductContainer(
-                                  url: homeNotifier.products[index].image[0],
-                                  storeName:
-                                      homeNotifier.products[index].store.name,
-                                  productName:
-                                      homeNotifier.products[index].name,
-                                  productPrice:
-                                      homeNotifier.products[index].price,
-                                  distance: ref
-                                      .watch(locationService)
-                                      .getDistance(
-                                        endLat:
-                                            homeNotifier.products[index].lat,
-                                        endLon:
-                                            homeNotifier.products[index].lon,
-                                      ),
-                                  isFavorite:
-                                      homeNotifier.products[index].isFav!,
-                                  onProductTapped: () {
-                                    ref
-                                        .read(navigationServiceProvider)
-                                        .navigateToNamed(
-                                          Routes.productDetails,
-                                          arguments:
-                                              homeNotifier.products[index],
-                                        );
-                                  },
-                                  onDistanceTapped: () {},
-                                  onFlipTapped: () {
-                                    ref
-                                        .read(navigationServiceProvider)
-                                        .navigateToNamed(
-                                          Routes.compare,
-                                          arguments: CompareArgModel(
-                                              product:
-                                                  homeNotifier.products[index]),
-                                        );
-                                  },
-                                  onFavoriteTapped: () async {
-                                    homeNotifier.products[index].isFav!
-                                        ? await wishlistNotifier
-                                            .removeFromWishlist(
-                                            productId:
-                                                homeNotifier.products[index].id,
-                                          )
-                                        : await wishlistNotifier.addToWishlist(
-                                            productId:
-                                                homeNotifier.products[index].id,
-                                          );
-                                    ref.refresh(homeNotifierProvider(null));
-                                  },
-                                );
-                              }
-                            },
-                          ),
-              ),
-            ],
-          ),
+                }),
+            const Spacing.smallHeight(),
+            Expanded(
+              child: compareSearchNotifier.productsLoading
+                  ? const CircularProgress()
+                  : compareSearchNotifier.products.isEmpty
+                      ? AppEmptyStates(
+                          imageString: AppImages.bag,
+                          message1String:
+                              'No Product... Kindly Reload or check back',
+                          buttonString: 'Reload',
+                          hasButton: false,
+                          hasIcon: false,
+                          onButtonPressed: () => () {})
+                      : MasonryGridView.count(
+                          itemCount: compareSearchNotifier.products.length,
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 15,
+                          itemBuilder: (context, index) {
+                            return ProductContainer(
+                              url: compareSearchNotifier
+                                  .products[index].image[0],
+                              storeName: compareSearchNotifier
+                                  .products[index].store.name,
+                              productName:
+                                  compareSearchNotifier.products[index].name,
+                              productPrice:
+                                  compareSearchNotifier.products[index].price,
+                              distance: ref.watch(locationService).getDistance(
+                                    endLat: compareSearchNotifier
+                                        .products[index].lat,
+                                    endLon: compareSearchNotifier
+                                        .products[index].lon,
+                                  ),
+                              isFavorite: false,
+                              onProductTapped: () async {
+                                await ref
+                                    .read(flipNotifierProvider)
+                                    .addItemToCompare(
+                                        productId: compareSearchNotifier
+                                            .products[index].id);
+                                if (ref
+                                    .read(flipNotifierProvider)
+                                    .successfullyAdded) {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateBack();
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateOffNamed(
+                                        Routes.compare,
+                                        // arguments: CompareArgModel(
+                                        //     product:
+                                        //         homeNotifier.products[index]),
+                                      );
+                                }
+                              },
+                              onDistanceTapped: () {},
+                              onFlipTapped: () {
+                                // ref
+                                //     .read(navigationServiceProvider)
+                                //     .navigateToNamed(
+                                //       Routes.compare,
+                                //       arguments: CompareArgModel(
+                                //           product: compareSearchNotifier
+                                //               .products[index]),
+                                //     );
+                              },
+                              onFavoriteTapped: () async {
+                                // compareSearchNotifier.products[index].isFav!
+                                //     ? await wishlistNotifier
+                                //         .removeFromWishlist(
+                                //         productId: compareSearchNotifier
+                                //             .products[index].id,
+                                //       )
+                                //     : await wishlistNotifier.addToWishlist(
+                                //         productId: compareSearchNotifier
+                                //             .products[index].id,
+                                //       );
+                                // ref.refresh(
+                                //     compareSearchNotifierProvider(null));
+                              },
+                            );
+                          }),
+            ),
+          ],
         ),
       ),
     );

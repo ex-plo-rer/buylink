@@ -2,10 +2,11 @@ import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/colors.dart';
+import 'compare_search_dialog.dart';
 import 'map_search_dialog.dart';
 
-class MapSearchTermContainer extends StatelessWidget {
-  const MapSearchTermContainer({
+class CompareSearchTermContainer extends StatelessWidget {
+  const CompareSearchTermContainer({
     Key? key,
     required this.searchTerm,
     required this.onMinChanged,
@@ -69,7 +70,7 @@ class MapSearchTermContainer extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return MapSearchDialog(
+                          return CompareSearchDialog(
                             onMinChanged: onMinChanged,
                             onMaxChanged: onMaxChanged,
                             onSliderChanged: onSliderChanged,
