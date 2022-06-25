@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:buy_link/features/authentication/views/forgot_password_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_search_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -11,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'core/constants/strings.dart';
 import 'core/routes.dart';
 import 'core/theme.dart';
+import 'features/authentication/views/signup_view.dart';
 import 'features/core/views/add_product_specifics_view.dart';
 import 'features/core/views/add_product_view.dart';
 import 'features/core/views/store_views/product_searched_result_view.dart';

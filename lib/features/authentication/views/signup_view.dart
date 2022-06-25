@@ -167,7 +167,7 @@ class SignupView extends ConsumerWidget {
                           ],
                         ),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const TextWithRich(
                               firstText: 'Check',
@@ -190,7 +190,33 @@ class SignupView extends ConsumerWidget {
                                 _otp = val;
                               },
                             ),
-
+                            Text(
+                              '${signupNotifier.minutes}:${signupNotifier.seconds}',
+                              style: const TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (signupNotifier.canResendOTP) {
+                                  //Resend OTP;
+                                } else {
+                                  Alertify(title: 'Please wait...').error();
+                                }
+                              },
+                              child: Text(
+                                'Resend OTP',
+                                style: TextStyle(
+                                  color: signupNotifier.canResendOTP
+                                      ? AppColors.primaryColor
+                                      : AppColors.grey6,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         Column(
@@ -305,6 +331,7 @@ class SignupView extends ConsumerWidget {
                                                 milliseconds: 500),
                                             curve: Curves.easeIn,
                                           );
+                                          signupNotifier.startTimer();
                                         } else if (signupNotifier.currentPage ==
                                             3) {
                                           String? otp = await ref
