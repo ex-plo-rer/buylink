@@ -6,7 +6,7 @@ import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/message_notifier/message_list_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
-import 'package:buy_link/features/core/views/message_view/user_profile_view.dart';
+import 'package:buy_link/features/core/views/message_view/receiver_profile_view.dart';
 import 'package:buy_link/features/core/views/settings_view/change_name.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -73,8 +73,10 @@ class MessageView extends ConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 70,
+          titleSpacing: 0,
           title: ListTile(
             contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 9,
             title: Text(
               args.name,
               style: const TextStyle(color: Colors.white),
@@ -85,7 +87,7 @@ class MessageView extends ConsumerWidget {
               backgroundImage: args.imageUrl == null
                   ? null
                   : CachedNetworkImageProvider(args.imageUrl!),
-              radius: 40,
+              radius: 20,
             ),
 /*
             subtitle: const Text(
@@ -102,12 +104,9 @@ class MessageView extends ConsumerWidget {
               icon: const Icon(Icons.info_outline),
               tooltip: 'Setting Icon',
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserProfile(),
-                  ),
-                );
+                ref.read(navigationServiceProvider).navigateToNamed(
+                    Routes.receiverProfileView,
+                    arguments: args);
               },
             ), //IconButton
           ],
@@ -120,7 +119,7 @@ class MessageView extends ConsumerWidget {
               size: 16,
             ),
             tooltip: 'Back arrow',
-            onPressed: () {},
+            onPressed: () => ref.read(navigationServiceProvider).navigateBack(),
           ),
           //IconButton
         ),

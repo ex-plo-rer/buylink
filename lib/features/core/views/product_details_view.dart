@@ -110,7 +110,7 @@ class ProductDetailsView extends ConsumerWidget {
                     onTap: () =>
                         ref.read(navigationServiceProvider).navigateToNamed(
                               Routes.storeDetails,
-                              arguments: product.store,
+                              arguments: product.store.id,
                             ),
                     leading: CircleAvatar(
                       backgroundColor: AppColors.grey1,

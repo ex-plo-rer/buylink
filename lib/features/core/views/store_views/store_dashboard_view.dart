@@ -18,6 +18,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../widgets/favorite_container.dart';
 import '../../models/product_model.dart';
+import '../../models/store_review_arg_model.dart';
 import '../../notifiers/store_notifier/store_dashboard_notifier.dart';
 
 // TODO: Make the product image scrollable and work on the see all reviews widget and also the app bar actions.
@@ -333,7 +334,10 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                     .read(navigationServiceProvider)
                                     .navigateToNamed(
                                       Routes.storeReviews,
-                                      arguments: widget.store,
+                                      arguments: StoreReviewArgModel(
+                                        storeName: widget.store.name,
+                                        storeId: widget.store.id,
+                                      ),
                                     ),
                                 child: Container(
                                   padding: const EdgeInsets.all(12),

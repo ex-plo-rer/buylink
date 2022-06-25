@@ -1,6 +1,7 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/extensions/strings.dart';
+import 'package:buy_link/features/core/models/store_review_arg_model.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_rating_bar.dart';
@@ -17,14 +18,14 @@ import '../notifiers/store_notifier/store_review_notifier.dart';
 class StoreReviewsView extends ConsumerWidget {
   const StoreReviewsView({
     Key? key,
-    required this.store,
+    required this.storeReviewsArgs,
   }) : super(key: key);
-  final Store store;
+  final StoreReviewArgModel storeReviewsArgs;
 
   @override
   Widget build(BuildContext context, ref) {
     final storeReviewNotifier =
-        ref.watch(storeReviewNotifierProvider(store.id));
+        ref.watch(storeReviewNotifierProvider(storeReviewsArgs.storeId));
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -40,7 +41,7 @@ class StoreReviewsView extends ConsumerWidget {
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: Text(
-          store.name,
+          storeReviewsArgs.storeName,
           style: const TextStyle(
             color: AppColors.dark,
             fontSize: 14,
@@ -171,7 +172,7 @@ class StoreReviewsView extends ConsumerWidget {
                       onTap: () =>
                           ref.read(navigationServiceProvider).navigateToNamed(
                                 Routes.addReview,
-                                arguments: store.id,
+                                arguments: storeReviewsArgs.storeId,
                               ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
