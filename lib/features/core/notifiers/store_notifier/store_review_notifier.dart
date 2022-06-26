@@ -1,5 +1,4 @@
 import 'package:buy_link/core/utilities/alertify.dart';
-import 'package:buy_link/features/core/models/rating_button_model.dart';
 import 'package:buy_link/features/core/models/reviews_model.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/services/base/network_exception.dart';
