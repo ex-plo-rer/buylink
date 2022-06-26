@@ -1,37 +1,14 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/constants/images.dart';
-import 'package:buy_link/core/constants/strings.dart';
-import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/store_dashboard_notifier.dart';
-import 'package:buy_link/features/core/views/single_rating.dart';
-import 'package:buy_link/widgets/app_button.dart';
-import 'package:buy_link/widgets/app_dropdown_field.dart';
-import 'package:buy_link/widgets/app_progress_bar.dart';
-import 'package:buy_link/widgets/app_rating_bar.dart';
-import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
-import 'package:buy_link/widgets/compare_texts.dart';
-import 'package:buy_link/widgets/compare_texts_2.dart';
-import 'package:buy_link/widgets/custmised_text.dart';
-import 'package:buy_link/widgets/iconNtext_container.dart';
-import 'package:buy_link/widgets/product_container.dart';
-import 'package:buy_link/widgets/product_image_container.dart';
 import 'package:buy_link/widgets/product_no_of_searches.dart';
-import 'package:buy_link/widgets/review_text_field.dart';
 import 'package:buy_link/widgets/spacing.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../../../services/navigation_service.dart';
 import '../../../../widgets/favorite_container.dart';
 import '../../../../widgets/weekly_widget.dart';
 import '../../models/chart_data_model.dart';
@@ -40,6 +17,7 @@ import '../../notifiers/product_searched_notifier.dart';
 
 class ProductSearchedView extends ConsumerStatefulWidget {
   final Store store;
+
   const ProductSearchedView({
     Key? key,
     required this.store,

@@ -1,4 +1,5 @@
 import 'package:buy_link/widgets/spacing.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/colors.dart';
@@ -9,7 +10,8 @@ class ProductCount extends StatelessWidget {
     Key? key,
     required this.productImage,
     required this.productName,
-    required this.productNum, required this.type,
+    required this.productNum,
+    required this.type,
   }) : super(key: key);
   final String productImage;
   final String productName;
@@ -19,28 +21,29 @@ class ProductCount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            Image.asset(
-              productImage,
-              height: 40,
-              width: 40,
-            ),
-            const Spacing.smallWidth(),
-            Text(
-              productName,
-              style: const TextStyle(
-                color: AppColors.grey4,
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-              ),
-            ),
-          ],
+        CachedNetworkImage(
+          imageUrl: productImage,
+          height: 40,
+          width: 40,
         ),
+        const Spacing.smallWidth(),
+        Expanded(
+          child: Text(
+            productName,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: AppColors.grey4,
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+            ),
+          ),
+        ),
+        const Spacing.smallWidth(),
         Text(
-          '$productNum ${type.toLowerCase() == 'searches' ? 'Searches' : type.toLowerCase() == 'visits' ? 'Visits': 'Saves'}',
+          '${productNum.substring(0, productNum.characters.firstWhere((element) => element.contains('-')).length)} ${type.toLowerCase() == 'searches' ? 'Searches' : type.toLowerCase() == 'visits' ? 'Visits' : 'Saves'}',
           style: const TextStyle(
             color: AppColors.grey4,
             fontWeight: FontWeight.w700,
