@@ -131,8 +131,8 @@ class _ProductSearchedViewState extends ConsumerState<ProductSearchedView> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    subtitle: const Text(
-                      '2,500',
+                    subtitle: Text(
+                      '${ref.watch(storeDashboardNotifierProvider).searchAnalytics?.total ?? 0}',
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontSize: 16,

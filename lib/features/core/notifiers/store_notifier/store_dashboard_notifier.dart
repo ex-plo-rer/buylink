@@ -15,6 +15,7 @@ import '../../../../services/base/network_exception.dart';
 import '../../models/most_searched_count_model.dart';
 import '../../models/product_model.dart';
 
+//TODO: Save this week products and have another copy that can be modified...
 class StoreDashboardNotifier extends BaseChangeNotifier {
   final Reader _reader;
 

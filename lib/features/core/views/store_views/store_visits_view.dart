@@ -66,7 +66,7 @@ class _StoreVisitsViewState extends ConsumerState<StoreVisitsView> {
         backgroundColor: AppColors.transparent,
         title: Text(
           widget.store.name,
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.dark,
             fontSize: 14,
             fontWeight: FontWeight.w500,
@@ -137,9 +137,9 @@ class _StoreVisitsViewState extends ConsumerState<StoreVisitsView> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    subtitle: const Text(
-                      '2,500',
-                      style: TextStyle(
+                    subtitle: Text(
+                      '${ref.watch(storeDashboardNotifierProvider).visitAnalytics?.total ?? 0}',
+                      style: const TextStyle(
                         color: AppColors.primaryColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
