@@ -1,4 +1,5 @@
 import 'package:buy_link/core/constants/colors.dart';
+import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/features/core/models/store_review_arg_model.dart';
@@ -9,6 +10,7 @@ import 'package:buy_link/widgets/iconNtext_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../widgets/circular_progress.dart';
@@ -77,9 +79,9 @@ class StoreReviewsView extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      '4.6',
-                                      style: TextStyle(
+                                    Text(
+                                      '${storeReviewNotifier.average}',
+                                      style: const TextStyle(
                                         fontSize: 44,
                                         color: AppColors.grey1,
                                         fontWeight: FontWeight.w600,
@@ -204,63 +206,99 @@ class StoreReviewsView extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const IconNTextContainer(
+                  IconNTextContainer(
+                    onTap: () {
+                      storeReviewNotifier.starTapped(star: 0);
+                    },
                     text: 'All',
-                    containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
-                    ),
+                    textColor: storeReviewNotifier.textColor0,
+                    containerColor: storeReviewNotifier.containerColor0,
+                    icon: storeReviewNotifier.is0Selected
+                        ? SvgPicture.asset(AppSvgs.starFilled)
+                        : const Icon(
+                            Icons.star_outline,
+                            size: 12,
+                          ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                  IconNTextContainer(
+                    onTap: () {
+                      storeReviewNotifier.starTapped(star: 5);
+                    },
                     text: '5',
-                    containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
-                    ),
+                    textColor: storeReviewNotifier.textColor5,
+                    containerColor: storeReviewNotifier.containerColor5,
+                    icon: storeReviewNotifier.is5Selected
+                        ? SvgPicture.asset(AppSvgs.starFilled)
+                        : const Icon(
+                            Icons.star_outline,
+                            size: 12,
+                          ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                  IconNTextContainer(
+                    onTap: () {
+                      storeReviewNotifier.starTapped(star: 4);
+                    },
                     text: '4',
-                    containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
-                    ),
+                    textColor: storeReviewNotifier.textColor4,
+                    containerColor: storeReviewNotifier.containerColor4,
+                    icon: storeReviewNotifier.is4Selected
+                        ? SvgPicture.asset(AppSvgs.starFilled)
+                        : const Icon(
+                            Icons.star_outline,
+                            size: 12,
+                          ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                  IconNTextContainer(
+                    onTap: () {
+                      storeReviewNotifier.starTapped(star: 3);
+                    },
                     text: '3',
-                    containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
-                    ),
+                    textColor: storeReviewNotifier.textColor3,
+                    containerColor: storeReviewNotifier.containerColor3,
+                    icon: storeReviewNotifier.is3Selected
+                        ? SvgPicture.asset(AppSvgs.starFilled)
+                        : const Icon(
+                            Icons.star_outline,
+                            size: 12,
+                          ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                  IconNTextContainer(
+                    onTap: () {
+                      storeReviewNotifier.starTapped(star: 2);
+                    },
                     text: '2',
-                    containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
-                    ),
+                    textColor: storeReviewNotifier.textColor2,
+                    containerColor: storeReviewNotifier.containerColor2,
+                    icon: storeReviewNotifier.is2Selected
+                        ? SvgPicture.asset(AppSvgs.starFilled)
+                        : const Icon(
+                            Icons.star_outline,
+                            size: 12,
+                          ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  const IconNTextContainer(
+                  IconNTextContainer(
+                    onTap: () {
+                      storeReviewNotifier.starTapped(star: 1);
+                    },
                     text: '1',
-                    containerColor: AppColors.shade1,
-                    icon: Icon(
-                      Icons.star_outline,
-                      size: 12,
-                    ),
+                    textColor: storeReviewNotifier.textColor1,
+                    containerColor: storeReviewNotifier.containerColor1,
+                    icon: storeReviewNotifier.is1Selected
+                        ? SvgPicture.asset(AppSvgs.starFilled)
+                        : const Icon(
+                            Icons.star_outline,
+                            size: 12,
+                          ),
                     radius: 6,
                     fontSize: 14,
                   ),
@@ -273,7 +311,9 @@ class StoreReviewsView extends ConsumerWidget {
                   shrinkWrap: true,
                   itemCount: storeReviewNotifier.reviewsLoading
                       ? 4
-                      : storeReviewNotifier.reviews.length,
+                      : storeReviewNotifier.reviews.isEmpty
+                          ? 1
+                          : storeReviewNotifier.reviews.length,
                   separatorBuilder: (context, index) =>
                       const Spacing.bigHeight(),
                   itemBuilder: (context, index) => storeReviewNotifier
@@ -422,7 +462,7 @@ class StoreReviewsView extends ConsumerWidget {
                               ),
                             ),
                 ),
-              )
+              ),
             ],
           ),
         ),

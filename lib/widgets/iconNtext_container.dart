@@ -7,7 +7,7 @@ import '../core/constants/svgs.dart';
 class IconNTextContainer extends StatelessWidget {
   const IconNTextContainer(
       {Key? key,
-      this.onDistanceTapped,
+      this.onTap,
       required this.text,
       this.containerColor = AppColors.light,
       this.textColor = AppColors.grey1,
@@ -16,7 +16,7 @@ class IconNTextContainer extends StatelessWidget {
       this.fontSize = 10,
       this.padding = 8})
       : super(key: key);
-  final void Function()? onDistanceTapped;
+  final void Function()? onTap;
   final String text;
   final Color? containerColor;
   final Color? textColor;
@@ -28,7 +28,7 @@ class IconNTextContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onDistanceTapped,
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(padding),
         decoration: BoxDecoration(
