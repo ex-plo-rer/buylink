@@ -108,7 +108,7 @@ class HomeView extends ConsumerWidget {
               ),
               const Spacing.smallHeight(),
               Expanded(
-                child: homeNotifier.state.isLoading
+                child: homeNotifier.productLoading
                     ? const CircularProgress()
                     : homeNotifier.products.isEmpty
                         ? AppEmptyStates(

@@ -29,13 +29,13 @@ class HomeNotifier extends BaseChangeNotifier {
     );
   }
 
+  bool _productLoading = false;
+
+  bool get productLoading => _productLoading;
+
   List<ProductModel> _products = [];
 
   List<ProductModel> get products => _products;
-
-  ProductAttrModel? _productAttr;
-
-  ProductAttrModel get productAttr => _productAttr!;
 
   Position? position;
 
@@ -48,6 +48,7 @@ class HomeNotifier extends BaseChangeNotifier {
     required String? category,
   }) async {
     try {
+      _productLoading = true;
       setState(state: ViewState.loading);
       // serviceEnabled = await Geolocator.isLocationServiceEnabled();
       // if (serviceEnabled) {
@@ -62,29 +63,14 @@ class HomeNotifier extends BaseChangeNotifier {
       );
       // }
       // Alertify(title: 'User logged in').success();
+      _productLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
+      _productLoading = false;
       setState(state: ViewState.error);
       Alertify(title: e.error).error();
     } finally {
-      setState(state: ViewState.idle);
-    }
-  }
-
-  Future<void> fetchProductAttr({
-    required int productId,
-  }) async {
-    try {
-      setState(state: ViewState.loading);
-      _productAttr =
-          await _reader(coreRepository).fetchProductAttr(productId: productId);
-      // Alertify(title: 'User logged in').success();
-      setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      setState(state: ViewState.error);
-      Alertify(title: e.error).error();
-    } finally {
-      setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 

@@ -28,15 +28,33 @@ import '../notifiers/wishlist_notifier.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 
-class ProductDetailsView extends ConsumerWidget {
-  ProductDetailsView({
+class ProductDetailsView extends ConsumerStatefulWidget {
+  const ProductDetailsView({
     Key? key,
     required this.product,
   }) : super(key: key);
-
   final ProductModel product;
 
+  @override
+  ConsumerState<ProductDetailsView> createState() => _ProductDetailsViewState();
+}
+
+class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
   late String symb;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ref
+          .watch(productDetailsNotifierProvider)
+          .setFavorite(widget.product.isFav!);
+      ref
+          .watch(productDetailsNotifierProvider)
+          .fetchSimilarProducts(productId: widget.product.id);
+    });
+  }
 
   void symbol(context) {
     Locale locale = Localizations.localeOf(context);
@@ -50,11 +68,10 @@ class ProductDetailsView extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context) {
     symbol(context);
-    final productDetailsNotifier =
-        ref.watch(productDetailsNotifierProvider(product.id));
-    final homeNotifier = ref.watch(homeNotifierProvider(''));
+    final productDetailsNotifier = ref.watch(productDetailsNotifierProvider);
+    // final homeNotifier = ref.watch(homeNotifierProvider(''));
     final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     return Scaffold(
       body: SafeArea(
@@ -72,7 +89,7 @@ class ProductDetailsView extends ConsumerWidget {
                       color: AppColors.grey1,
                     ),
                     child: CarouselSlider.builder(
-                      itemCount: product.image.length,
+                      itemCount: widget.product.image.length,
                       options: CarouselOptions(
                         height: 447,
                         autoPlay: true,
@@ -82,7 +99,7 @@ class ProductDetailsView extends ConsumerWidget {
                         onPageChanged: productDetailsNotifier.nextPage,
                       ),
                       itemBuilder: (context, index, realIndex) {
-                        final urlImage = product.image[index];
+                        final urlImage = widget.product.image[index];
                         return Container(
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.vertical(
@@ -99,7 +116,7 @@ class ProductDetailsView extends ConsumerWidget {
                   ),
                   const Spacing.smallHeight(),
                   AnimatedSmoothIndicator(
-                    count: product.image.length,
+                    count: widget.product.image.length,
                     activeIndex: productDetailsNotifier.activeIndex,
                     effect: const WormEffect(
                       dotHeight: 4,
@@ -110,15 +127,15 @@ class ProductDetailsView extends ConsumerWidget {
                     onTap: () =>
                         ref.read(navigationServiceProvider).navigateToNamed(
                               Routes.storeDetails,
-                              arguments: product.store.id,
+                              arguments: widget.product.store.id,
                             ),
                     leading: CircleAvatar(
                       backgroundColor: AppColors.grey1,
                       backgroundImage:
-                          CachedNetworkImageProvider(product.store.logo),
+                          CachedNetworkImageProvider(widget.product.store.logo),
                     ),
                     title: Text(
-                      product.store.name,
+                      widget.product.store.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
@@ -127,7 +144,7 @@ class ProductDetailsView extends ConsumerWidget {
                     ),
                     subtitle: IconNTextContainer(
                       text: '4.6',
-                      // text: product.store.rating,
+                      // text: widget.product.store.rating,
                       padding: 0,
                       icon: SvgPicture.asset(
                         AppSvgs.favoriteFilled,
@@ -138,17 +155,17 @@ class ProductDetailsView extends ConsumerWidget {
                     ),
                     trailing: DistanceContainer(
                       distance: ref.watch(locationService).getDistance(
-                            endLat: product.lat,
-                            endLon: product.lon,
+                            endLat: widget.product.lat,
+                            endLon: widget.product.lon,
                           ),
-                      // distance: product.store.distance,
+                      // distance: widget.product.store.distance,
                       containerColor: AppColors.grey2,
                       textColor: AppColors.light,
                       iconColor: AppColors.light,
                     ),
                   ),
                   Text(
-                    product.name,
+                    widget.product.name,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -159,7 +176,7 @@ class ProductDetailsView extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '#${product.price} ',
+                        '#${widget.product.price} ',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -167,9 +184,9 @@ class ProductDetailsView extends ConsumerWidget {
                         ),
                       ),
                       Visibility(
-                        visible: product.oldPrice > 0,
+                        visible: widget.product.oldPrice > 0,
                         child: Text(
-                          '${product.oldPrice}',
+                          '${widget.product.oldPrice}',
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -185,7 +202,7 @@ class ProductDetailsView extends ConsumerWidget {
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
                       'A super-comfortable denim legging,built to contour curves, lengthen legs and celebrate your form. Made with an innovative tummy-sliming',
-                      //product.description,
+                      //widget.product.description,
                       // textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 14,
@@ -212,7 +229,7 @@ class ProductDetailsView extends ConsumerWidget {
                                 .read(navigationServiceProvider)
                                 .navigateToNamed(
                                   Routes.storeDirection,
-                                  arguments: product.store,
+                                  arguments: widget.product.store,
                                 ),
                           ),
                         ),
@@ -222,7 +239,8 @@ class ProductDetailsView extends ConsumerWidget {
                             height: 56,
                             width: 56,
                             favIcon: SvgPicture.asset(
-                              product.isFav!
+                              productDetailsNotifier.isFavorite
+                                  // widget.product.isFav!
                                   ? AppSvgs.favoriteFilled
                                   : AppSvgs.favorite,
                             ),
@@ -230,12 +248,12 @@ class ProductDetailsView extends ConsumerWidget {
                             radius: 10,
                             padding: 18,
                             onFavoriteTapped: () async {
-                              product.isFav!
-                                  ? await wishlistNotifier.removeFromWishlist(
-                                      productId: product.id)
-                                  : await wishlistNotifier.addToWishlist(
-                                      productId: product.id);
-                              ref.refresh(homeNotifierProvider(''));
+                              await productDetailsNotifier.onFavTapped(
+                                  productId: widget.product.id);
+                              // TODO: Should pass category here...
+                              ref
+                                  .refresh(homeNotifierProvider(null))
+                                  .fetchProducts(category: 'all');
                             },
                           ),
                         ),
@@ -246,7 +264,8 @@ class ProductDetailsView extends ConsumerWidget {
                   const Divider(thickness: 2),
                   GestureDetector(
                     onTap: () {
-                      homeNotifier.fetchProductAttr(productId: product.id);
+                      productDetailsNotifier.fetchProductAttr(
+                          productId: widget.product.id);
                       ref
                           .read(navigationServiceProvider)
                           .navigateToNamed(Routes.productDetailsMore);
@@ -367,9 +386,7 @@ class ProductDetailsView extends ConsumerWidget {
                                                         .similarProducts[index]
                                                         .id,
                                               );
-                                        ref.refresh(
-                                            productDetailsNotifierProvider(
-                                                product.id));
+                                        ref.refresh(homeNotifierProvider(''));
                                       },
                                     );
                                   },
