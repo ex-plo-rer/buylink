@@ -8,8 +8,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/constants/colors.dart';
 
-class AppSearchDialog extends ConsumerWidget {
-  AppSearchDialog({
+class MapSearchDialog extends ConsumerWidget {
+  MapSearchDialog({
     Key? key,
     required this.value,
     required this.onSliderChanged,
@@ -86,6 +86,7 @@ class AppSearchDialog extends ConsumerWidget {
                       ),
                       child: Slider(
                         onChanged: onSliderChanged,
+                        // onChanged: (newValue)=> productSearchNotifier.onSliderChanged(newValue),
                         value: productSearchNotifier.sliderValue,
                         min: 1,
                         max: 10,

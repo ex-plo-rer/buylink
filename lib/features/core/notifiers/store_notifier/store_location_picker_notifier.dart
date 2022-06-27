@@ -92,7 +92,7 @@ class StoreLocationPickerNotifier extends BaseChangeNotifier {
   }) async {
     try {
       setState(state: ViewState.loading);
-      _searchResult = await _reader(storeRepository).fetchProductSearch(
+      _searchResult = await _reader(coreRepository).fetchProductSearch(
         searchTerm: searchTerm,
         lon: _filterLon,
         lat: _filterLat,

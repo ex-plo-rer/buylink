@@ -6,6 +6,7 @@ import 'package:buy_link/features/core/models/search_result_arg_model.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/add_store_notifier.dart';
 import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/services/navigation_service.dart';
+import 'package:buy_link/widgets/map_search_dialog.dart';
 import 'package:buy_link/widgets/map_search_term_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';

@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/constants/colors.dart';
+import '../features/core/notifiers/store_notifier/compare_search_notifier.dart';
 
-class MapSearchDialog extends ConsumerWidget {
-  MapSearchDialog({
+class CompareSearchDialog extends ConsumerWidget {
+  CompareSearchDialog({
     Key? key,
     required this.value,
     required this.onSliderChanged,
@@ -27,7 +28,7 @@ class MapSearchDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final productSearchNotifier = ref.watch(productSearchNotifierProvider);
+    final compareSearchNotifier = ref.watch(compareSearchNotifierProvider);
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Stack(
@@ -85,12 +86,13 @@ class MapSearchDialog extends ConsumerWidget {
                         valueIndicatorColor: AppColors.primaryColor,
                       ),
                       child: Slider(
-                        onChanged: onSliderChanged,
-                        value: productSearchNotifier.sliderValue,
+                        onChanged: (newValue) =>
+                            compareSearchNotifier.onSliderChanged(newValue),
+                        value: compareSearchNotifier.sliderValue,
                         min: 1,
                         max: 10,
                         divisions: 9,
-                        label: '${productSearchNotifier.sliderValue} km',
+                        label: '${compareSearchNotifier.sliderValue} km',
                       ),
                     ),
                     const Spacing.smallHeight(),
@@ -114,7 +116,7 @@ class MapSearchDialog extends ConsumerWidget {
                             tit: 'Min Price',
                             sub: '# ',
                             keyboardType: TextInputType.number,
-                            onChanged: productSearchNotifier.onMinPriceChanged,
+                            onChanged: compareSearchNotifier.onMinPriceChanged,
                             controller: minPriceController,
                           ),
                         ),
@@ -125,7 +127,7 @@ class MapSearchDialog extends ConsumerWidget {
                             tit: 'Max Price',
                             sub: '# ',
                             keyboardType: TextInputType.number,
-                            onChanged: productSearchNotifier.onMaxPriceChanged,
+                            onChanged: compareSearchNotifier.onMaxPriceChanged,
                             controller: maxPriceController,
                           ),
                         ),
@@ -139,7 +141,7 @@ class MapSearchDialog extends ConsumerWidget {
                         onTap: () {
                           minPriceController.clear();
                           maxPriceController.clear();
-                          productSearchNotifier.clearFilter();
+                          compareSearchNotifier.clearFilter();
                         },
                         child: const Text(
                           'Clear Filter',
@@ -153,12 +155,12 @@ class MapSearchDialog extends ConsumerWidget {
                     const Spacing.largeHeight(),
                     AppButton(
                       text: 'Apply',
-                      backgroundColor: productSearchNotifier.minPrice == null ||
-                              productSearchNotifier.maxPrice == null
+                      backgroundColor: compareSearchNotifier.minPrice == null ||
+                              compareSearchNotifier.maxPrice == null
                           ? AppColors.grey6
                           : AppColors.primaryColor,
-                      onPressed: productSearchNotifier.minPrice == null ||
-                              productSearchNotifier.maxPrice == null
+                      onPressed: compareSearchNotifier.minPrice == null ||
+                              compareSearchNotifier.maxPrice == null
                           ? null
                           : onApplyPressed,
                     ),

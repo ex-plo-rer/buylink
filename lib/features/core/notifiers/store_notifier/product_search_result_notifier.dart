@@ -129,7 +129,7 @@ class ProductSearchResultNotifier extends BaseChangeNotifier {
   }) async {
     try {
       setState(state: ViewState.loading);
-      _searchResult = await _reader(storeRepository).fetchProductSearch(
+      _searchResult = await _reader(coreRepository).fetchProductSearch(
         searchTerm: 'a',
         lon: _filterLon,
         lat: _filterLat,

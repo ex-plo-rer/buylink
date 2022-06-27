@@ -14,6 +14,9 @@ class MapSearchTermContainer extends StatelessWidget {
     required this.sliderValue,
     required this.onApplyPressed,
     this.hideFilter = false,
+    this.marginTop = 40,
+    this.horizontalMargin = 10,
+    this.containerColor = AppColors.shade1,
   }) : super(key: key);
   final String searchTerm;
   final void Function(String)? onMinChanged;
@@ -22,17 +25,21 @@ class MapSearchTermContainer extends StatelessWidget {
   final double sliderValue;
   final void Function()? onApplyPressed;
   final bool hideFilter;
+  final double marginTop;
+  final double horizontalMargin;
+  final Color? containerColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 60,
-      margin: const EdgeInsets.fromLTRB(10, 40, 10, 0),
+      margin:
+          EdgeInsets.fromLTRB(horizontalMargin, marginTop, horizontalMargin, 0),
       padding: const EdgeInsets.fromLTRB(4, 10, 13, 10),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(15),
-        color: AppColors.light,
+        color: containerColor,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -62,7 +69,7 @@ class MapSearchTermContainer extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AppSearchDialog(
+                          return MapSearchDialog(
                             onMinChanged: onMinChanged,
                             onMaxChanged: onMaxChanged,
                             onSliderChanged: onSliderChanged,

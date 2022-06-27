@@ -3,6 +3,7 @@ import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
+import 'package:buy_link/features/core/notifiers/product_details_notifier.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
@@ -26,7 +27,7 @@ class ProductDetailsMoreView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final homeNotifier = ref.watch(homeNotifierProvider(''));
+    final productDetailsNotifier = ref.watch(productDetailsNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -61,7 +62,7 @@ class ProductDetailsMoreView extends ConsumerWidget {
               // vertical: 16,
               horizontal: 20,
             ),
-            child: homeNotifier.state.isLoading
+            child: productDetailsNotifier.state.isLoading
                 ? const CircularProgress()
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,21 +71,21 @@ class ProductDetailsMoreView extends ConsumerWidget {
                       Spacing.smallHeight(),
                       CompareTexts(
                         title: 'Brand:',
-                        subTitle: homeNotifier.productAttr.brand,
+                        subTitle: productDetailsNotifier.productAttr.brand,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
                       ),
                       const Spacing.height(12),
                       CompareTexts(
                         title: 'Model:',
-                        subTitle: homeNotifier.productAttr.model,
+                        subTitle: productDetailsNotifier.productAttr.model,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
                       ),
                       const Spacing.height(12),
                       CompareTexts(
                         title: 'Color:',
-                        subTitle: homeNotifier.productAttr.color,
+                        subTitle: productDetailsNotifier.productAttr.color,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
                       ),
@@ -98,14 +99,14 @@ class ProductDetailsMoreView extends ConsumerWidget {
                       const Spacing.height(12),
                       CompareTexts(
                         title: 'Material:',
-                        subTitle: homeNotifier.productAttr.material,
+                        subTitle: productDetailsNotifier.productAttr.material,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
                       ),
                       const Spacing.height(12),
                       CompareTexts(
                         title: 'Care:',
-                        subTitle: homeNotifier.productAttr.care,
+                        subTitle: productDetailsNotifier.productAttr.care,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
                       ),

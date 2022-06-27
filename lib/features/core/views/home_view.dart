@@ -4,6 +4,7 @@ import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/compare_arg_model.dart';
+import 'package:buy_link/features/core/notifiers/flip_notifier.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/product_search_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
@@ -47,7 +48,6 @@ class HomeView extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppTextField(
-                style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w500),
                 hintText: 'What would you like to buy ?',
                 onTap: () async {
                   searchFN.unfocus();
@@ -79,7 +79,7 @@ class HomeView extends ConsumerWidget {
               ),
               //   ),
               // ),
-              const Spacing.height(8),
+              const Spacing.height(12),
               Visibility(
                 visible: ref.watch(userProvider).currentUser == null,
                 child: AppButton(
@@ -99,7 +99,7 @@ class HomeView extends ConsumerWidget {
               ),
               const Spacing.height(12),
               const Text(
-                'Latest products around you',
+                'Based on your interest',
                 style: TextStyle(
                   color: AppColors.grey1,
                   fontSize: 12,
@@ -108,7 +108,7 @@ class HomeView extends ConsumerWidget {
               ),
               const Spacing.smallHeight(),
               Expanded(
-                child: homeNotifier.state.isLoading
+                child: homeNotifier.productLoading
                     ? const CircularProgress()
                     : homeNotifier.products.isEmpty
                         ? AppEmptyStates(
@@ -197,28 +197,27 @@ class HomeView extends ConsumerWidget {
                                               homeNotifier.products[index],
                                         );
                                   },
-                                  onDistanceTapped: () {
-                                    ref
-                                        .read(navigationServiceProvider)
-                                        .navigateToNamed(
-                                      Routes.storeDirection,
-                                      arguments:
-                                      homeNotifier.products[index].store,
-                                    );
-
-                                  },
-                                  onFlipTapped: () {
-                                    ref
-                                        .read(navigationServiceProvider)
-                                        .navigateToNamed(
-                                          Routes.compare,
-                                          arguments: CompareArgModel(
-                                              product:
-                                                  homeNotifier.products[index]),
-                                        );
+                                  onDistanceTapped: () {},
+                                  onFlipTapped: () async {
+                                    await ref
+                                        .read(flipNotifierProvider)
+                                        .addItemToCompare(
+                                            productId: homeNotifier
+                                                .products[index].id);
+                                    if (ref
+                                        .read(flipNotifierProvider)
+                                        .successfullyAdded) {
+                                      ref
+                                          .read(navigationServiceProvider)
+                                          .navigateToNamed(
+                                            Routes.compare,
+                                            // arguments: CompareArgModel(
+                                            //     product:
+                                            //         homeNotifier.products[index]),
+                                          );
+                                    }
                                   },
                                   onFavoriteTapped: () async {
-
                                     homeNotifier.products[index].isFav!
                                         ? await wishlistNotifier
                                             .removeFromWishlist(
@@ -229,8 +228,8 @@ class HomeView extends ConsumerWidget {
                                             productId:
                                                 homeNotifier.products[index].id,
                                           );
-                                   ref.refresh(homeNotifierProvider(null));
-                                  }
+                                    ref.refresh(homeNotifierProvider(null));
+                                  },
                                 );
                               }
                             },

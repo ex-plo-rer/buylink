@@ -6,7 +6,7 @@ import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/message_notifier/message_list_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
-import 'package:buy_link/features/core/views/message_view/user_profile_view.dart';
+import 'package:buy_link/features/core/views/message_view/receiver_profile_view.dart';
 import 'package:buy_link/features/core/views/settings_view/change_name.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -72,11 +72,11 @@ class MessageView extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 90,
+          toolbarHeight: 70,
+          titleSpacing: 0,
           title: ListTile(
-            contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-          //  contentPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 9,
             title: Text(
               args.name,
               style: const TextStyle(color: Colors.white),
@@ -87,10 +87,8 @@ class MessageView extends ConsumerWidget {
               backgroundImage: args.imageUrl == null
                   ? null
                   : CachedNetworkImageProvider(args.imageUrl!),
-              radius: 40,
+              radius: 20,
             ),
-
-
 /*
             subtitle: const Text(
               "Online 3hr ago",
@@ -106,9 +104,9 @@ class MessageView extends ConsumerWidget {
               icon: const Icon(Icons.info_outline),
               tooltip: 'Setting Icon',
               onPressed: () {
-                ref
-                    .read(navigationServiceProvider)
-                    .navigateToNamed(Routes.userProfile);
+                ref.read(navigationServiceProvider).navigateToNamed(
+                    Routes.receiverProfileView,
+                    arguments: args);
               },
             ), //IconButton
           ],
@@ -121,11 +119,7 @@ class MessageView extends ConsumerWidget {
               size: 16,
             ),
             tooltip: 'Back arrow',
-            onPressed: () {
-              ref
-                  .read(navigationServiceProvider)
-                  .navigateBack();
-            },
+            onPressed: () => ref.read(navigationServiceProvider).navigateBack(),
           ),
           //IconButton
         ),
@@ -208,9 +202,8 @@ class MessageView extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 14),
+                      padding: const EdgeInsets.only(bottom: 10),
                       child: AppTextField(
-                        style: TextStyle(color: AppColors.grey3, fontSize: 12, fontWeight: FontWeight.w500),
                         hintText: 'Type something...',
                         controller: messageTextController,
                         fillColor: AppColors.grey10,
@@ -221,7 +214,7 @@ class MessageView extends ConsumerWidget {
                           return null;
                         },
                         hasBorder: false,
-                        contentPadding: 19,
+                        contentPadding: 15,
                         borderRadius: 8,
                         suffixIcon: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -249,7 +242,7 @@ class MessageView extends ConsumerWidget {
                                 child: const Icon(
                                   Icons.attachment,
                                   color: AppColors.grey5,
-                                  size: 24,
+                                  size: 18,
                                 ),
                               ),
                               onPressed: () async {
@@ -352,9 +345,8 @@ class MessageView extends ConsumerWidget {
                       messageTextController.clear();
                     },
                     child: Container(
-                      height: 52,
-                      width: 49,
-                      margin: EdgeInsets.fromLTRB(0, 0,0, 7),
+                      height: 48,
+                      width: 48,
                       decoration: const BoxDecoration(
                         color: AppColors.primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),

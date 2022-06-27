@@ -1,6 +1,7 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/extensions/strings.dart';
+import 'package:buy_link/features/core/models/store_review_arg_model.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_rating_bar.dart';
@@ -8,10 +9,8 @@ import 'package:buy_link/widgets/iconNtext_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../core/constants/svgs.dart';
 import '../../../widgets/circular_progress.dart';
 import '../models/product_model.dart';
 import '../notifiers/store_notifier/store_review_notifier.dart';
@@ -19,14 +18,14 @@ import '../notifiers/store_notifier/store_review_notifier.dart';
 class StoreReviewsView extends ConsumerWidget {
   const StoreReviewsView({
     Key? key,
-    required this.store,
+    required this.storeReviewsArgs,
   }) : super(key: key);
-  final Store store;
+  final StoreReviewArgModel storeReviewsArgs;
 
   @override
   Widget build(BuildContext context, ref) {
     final storeReviewNotifier =
-        ref.watch(storeReviewNotifierProvider(store.id));
+        ref.watch(storeReviewNotifierProvider(storeReviewsArgs.storeId));
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -42,7 +41,7 @@ class StoreReviewsView extends ConsumerWidget {
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: Text(
-          store.name,
+          storeReviewsArgs.storeName,
           style: const TextStyle(
             color: AppColors.dark,
             fontSize: 14,
@@ -78,9 +77,8 @@ class StoreReviewsView extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                     Text(
-                                      //'4.6',
-                                storeReviewNotifier.reviewStats!.total.toString(),
+                                    const Text(
+                                      '4.6',
                                       style: TextStyle(
                                         fontSize: 44,
                                         color: AppColors.grey1,
@@ -106,10 +104,9 @@ class StoreReviewsView extends ConsumerWidget {
                                       itemCount: 5,
                                       itemPadding: const EdgeInsets.symmetric(
                                           horizontal: 0.0),
-                                      itemBuilder: (context, _) => SvgPicture.asset(
-                                        AppSvgs.starFilled,
-                                        width: 6,
-                                        height: 6,
+                                      itemBuilder: (context, _) => const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
                                       ),
                                       onRatingUpdate: (rating) {
                                         print(rating);
@@ -165,30 +162,25 @@ class StoreReviewsView extends ConsumerWidget {
               ),
               const Spacing.bigHeight(),
               const Divider(thickness: 2),
-              Spacing.tinyHeight(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
-                child:  GestureDetector(
-                  onTap: () =>
-                      ref.read(navigationServiceProvider).navigateToNamed(
-                        Routes.addReview,
-                        arguments: store.id,
-                      ),
-
-               child: Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
-                     Row(
+                    GestureDetector(
+                      onTap: () =>
+                          ref.read(navigationServiceProvider).navigateToNamed(
+                                Routes.addReview,
+                                arguments: storeReviewsArgs.storeId,
+                              ),
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children:[
-                          SvgPicture.asset(
-                            AppSvgs.addReviewIcon,
-                            width: 12,
-                            height: 12,
+                        children: const [
+                          Icon(
+                            Icons.chat,
+                            size: 16,
                           ),
-                          Spacing.tinyWidth(),
                           Text(
                             ' Add Review',
                             style: TextStyle(
@@ -199,82 +191,75 @@ class StoreReviewsView extends ConsumerWidget {
                           ),
                         ],
                       ),
-
+                    ),
                     const Icon(
                       Icons.arrow_forward_ios_outlined,
                       size: 12,
                     ),
-                  ]
+                  ],
                 ),
-              )),
-              Spacing.tinyHeight(),
+              ),
               const Divider(thickness: 2),
               const Spacing.mediumHeight(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   IconNTextContainer(
+                  const IconNTextContainer(
                     text: 'All',
                     containerColor: AppColors.shade1,
-                    icon:  SvgPicture.asset(
-                      AppSvgs.starFilled,
-                      width: 12,
-                      height: 12,
+                    icon: Icon(
+                      Icons.star_outline,
+                      size: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  IconNTextContainer(
+                  const IconNTextContainer(
                     text: '5',
                     containerColor: AppColors.shade1,
-                    icon:  SvgPicture.asset(
-                      AppSvgs.starFilled,
-                      width: 12,
-                      height: 12,
+                    icon: Icon(
+                      Icons.star_outline,
+                      size: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                   IconNTextContainer(
+                  const IconNTextContainer(
                     text: '4',
                     containerColor: AppColors.shade1,
-                    icon:  SvgPicture.asset(
-                      AppSvgs.starFilled,
-                      width: 12,
-                      height: 12,
+                    icon: Icon(
+                      Icons.star_outline,
+                      size: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                   IconNTextContainer(
+                  const IconNTextContainer(
                     text: '3',
                     containerColor: AppColors.shade1,
-                    icon:  SvgPicture.asset(
-                      AppSvgs.starFilled,
-                      width: 12,
-                      height: 12,
+                    icon: Icon(
+                      Icons.star_outline,
+                      size: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  IconNTextContainer(
+                  const IconNTextContainer(
                     text: '2',
                     containerColor: AppColors.shade1,
-                    icon: SvgPicture.asset(
-                      AppSvgs.starFilled,
-                      width: 12,
-                      height: 12,
+                    icon: Icon(
+                      Icons.star_outline,
+                      size: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
                   ),
-                  IconNTextContainer(
+                  const IconNTextContainer(
                     text: '1',
                     containerColor: AppColors.shade1,
-                    icon: SvgPicture.asset(
-                      AppSvgs.starFilled,
-                      width: 12,
-                      height: 12,
+                    icon: Icon(
+                      Icons.star_outline,
+                      size: 12,
                     ),
                     radius: 6,
                     fontSize: 14,
@@ -318,13 +303,12 @@ class StoreReviewsView extends ConsumerWidget {
                                           children: [
                                             CircleAvatar(
                                               radius: 16,
-                                              child: Text( storeReviewNotifier
-                                                  .reviews[index].name?.initials() ?? "?"),
+                                              child: Text('Ayodeji'.initials()),
                                             ),
-                                            const Spacing.smallWidth(),
+                                            const Spacing.tinyWidth(),
                                             Text(
                                               storeReviewNotifier
-                                                      .reviews[index]!.name ??
+                                                      .reviews[index].name ??
                                                   'Ayodeji',
                                               style: const TextStyle(
                                                 color: AppColors.grey1,
@@ -342,7 +326,7 @@ class StoreReviewsView extends ConsumerWidget {
                                           children: [
                                             Text(
                                               storeReviewNotifier
-                                                  .reviews[index]! .time ?? "0:00",
+                                                  .reviews[index].time,
                                               style: const TextStyle(
                                                 color: AppColors.grey5,
                                                 fontSize: 12,

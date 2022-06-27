@@ -12,15 +12,22 @@ import '../../../../repositories/store_repository.dart';
 import '../../../../services/base/network_exception.dart';
 import '../../../../services/location_service.dart';
 import '../../../../services/navigation_service.dart';
+import '../../models/product_model.dart';
 
-class ProductSearchNotifier extends BaseChangeNotifier {
+class CompareSearchNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  ProductSearchNotifier(this._reader);
+  CompareSearchNotifier(this._reader);
 
-  SearchResultModel? _searchResult;
+  List<ProductModel> get products => _products;
+  List<ProductModel> _products = [];
 
-  SearchResultModel? get searchResult => _searchResult;
+  List<ProductModel> get itemsToCompare => _itemsToCompare;
+  List<ProductModel> _itemsToCompare = [];
+
+  bool _haveProductToCompare = false;
+
+  bool get haveProductToCompare => _haveProductToCompare;
 
   double _filterLat = 0;
   double _filterLon = 0;
@@ -28,6 +35,11 @@ class ProductSearchNotifier extends BaseChangeNotifier {
   double get filterLat => _filterLat;
 
   double get filterLon => _filterLon;
+
+  // void haveToComp() {
+  //   _haveProductToCompare = _itemsToCompare.length > 1;
+  //   notifyListeners();
+  // }
 
   void initLocation() {
     // // Uses the initial location of when the app was lauched first.
@@ -54,6 +66,24 @@ class ProductSearchNotifier extends BaseChangeNotifier {
   bool _searchLoading = false;
 
   bool get searchLoading => _searchLoading;
+
+  bool _productsLoading = false;
+
+  bool get productsLoading => _productsLoading;
+
+  bool _itemsToCompareLoading = false;
+
+  bool get itemsToCompareLoading => _itemsToCompareLoading;
+
+  int _activeIndex = 0;
+
+  int get activeIndex => _activeIndex;
+
+  void nextPage(index, reason) {
+    _activeIndex = index;
+    print('$_activeIndex $index');
+    notifyListeners();
+  }
 
   void setFilterPosition({
     required double lat,
@@ -86,22 +116,42 @@ class ProductSearchNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchProductSearch({
+  Future<void> fetchCompareSearch({
     required String searchTerm,
-    bool isConfirmButton = true,
+    bool isInitialLoading = true,
   }) async {
     try {
+      _productsLoading = true;
       setState(state: ViewState.loading);
-      _searchResult = await _reader(storeRepository).fetchProductSearch(
+      _products = await _reader(coreRepository).fetchCompareSearch(
         searchTerm: searchTerm,
         lon: _filterLon,
         lat: _filterLat,
-        distanceRange: isConfirmButton ? 10 : _sliderValue,
-        minPrice: isConfirmButton ? 0 : _minPrice ?? 0,
-        maxPrice: isConfirmButton ? 10000000000 : _maxPrice ?? 10000000000,
+        distanceRange: isInitialLoading ? 10 : _sliderValue,
+        minPrice: isInitialLoading ? 0 : _minPrice ?? 0,
+        maxPrice: isInitialLoading ? 10000000000 : _maxPrice ?? 10000000000,
       );
+      _productsLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
+      _productsLoading = false;
+      setState(state: ViewState.error);
+      // Alertify(title: e.error!).error();
+    } finally {
+      //Do something...
+    }
+  }
+
+  Future<void> fetchItemsToCompare() async {
+    try {
+      _itemsToCompareLoading = true;
+      setState(state: ViewState.loading);
+      _itemsToCompare = await _reader(coreRepository).fetchItemsToCompare();
+      _haveProductToCompare = _itemsToCompare.length > 1;
+      _itemsToCompareLoading = false;
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      _itemsToCompareLoading = false;
       setState(state: ViewState.error);
       // Alertify(title: e.error!).error();
     } finally {
@@ -126,27 +176,8 @@ class ProductSearchNotifier extends BaseChangeNotifier {
       _searchLoading = false;
     }
   }
-
-  // TODO: Modify this code and separate the shared preference to the local storage service
-  Future<List<String>> getRecentSearchesLike(String query) async {
-    final pref = await SharedPreferences.getInstance();
-    final allSearches = pref.getStringList(AppStrings.recentSearchKey);
-    return allSearches!.where((search) => search.startsWith(query)).toList();
-  }
-
-  Future<void> saveToRecentSearches(String searchText) async {
-    final pref = await SharedPreferences.getInstance();
-
-    //Use `Set` to avoid duplication of recentSearches
-    Set<String> allSearches =
-        pref.getStringList(AppStrings.recentSearchKey)?.toSet() ?? {};
-
-    //Place it at first in the set
-    allSearches = {searchText, ...allSearches};
-    pref.setStringList(AppStrings.recentSearchKey, allSearches.toList());
-  }
 }
 
-final productSearchNotifierProvider =
-ChangeNotifierProvider<ProductSearchNotifier>(
-        (ref) => ProductSearchNotifier(ref.read));
+final compareSearchNotifierProvider =
+    ChangeNotifierProvider<CompareSearchNotifier>(
+        (ref) => CompareSearchNotifier(ref.read));

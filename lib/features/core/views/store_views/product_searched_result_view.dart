@@ -7,8 +7,8 @@ import 'package:flutter_map_dragmarker/dragmarker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../../core/constants/colors.dart';
-import '../../../../widgets/circular_progress.dart';
 import '../../../../widgets/map_search_dialog.dart';
+import '../../../../widgets/circular_progress.dart';
 import '../../../../widgets/spacing.dart';
 import '../../notifiers/home_notifier.dart';
 import '../../notifiers/store_notifier/product_search_notifier.dart';
@@ -151,7 +151,7 @@ class _ProductSearchedResultViewState extends ConsumerState {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AppSearchDialog(
+                          return MapSearchDialog(
                             onMinChanged: (String) {},
                             onSliderChanged: (double) {},
                             value: 2,

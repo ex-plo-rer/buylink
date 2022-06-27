@@ -41,7 +41,7 @@ class ProductModel {
   int oldPrice;
   bool? isFav;
   String desc;
-  String color;
+  String? color;
   String age;
   String weight;
   String size;
@@ -49,6 +49,7 @@ class ProductModel {
   String material;
   String care;
   Store store;
+
   // String category;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(

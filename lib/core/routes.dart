@@ -2,6 +2,7 @@ import 'package:buy_link/features/core/models/search_result_arg_model.dart';
 import 'package:buy_link/features/core/views/add_product_view.dart';
 import 'package:buy_link/features/core/views/add_review_view.dart';
 import 'package:buy_link/features/core/views/categories_view.dart';
+import 'package:buy_link/features/core/views/compare_products_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/message_view/user_profile_view.dart';
@@ -30,9 +31,11 @@ import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/compare_arg_model.dart';
 import '../features/core/models/message_model.dart';
 import '../features/core/models/product_model.dart';
+import '../features/core/models/store_review_arg_model.dart';
 import '../features/core/models/user_model.dart';
 import '../features/core/views/add_product_desc.dart';
 import '../features/core/views/message_view/camera_screen.dart';
+import '../features/core/views/message_view/receiver_profile_view.dart';
 import '../features/core/views/settings_view/about_buylink.dart';
 import '../features/core/views/add_product_specifics_view.dart';
 import '../features/core/views/product_list_view.dart';
@@ -62,6 +65,7 @@ class Routes {
   static const productList = '/product-list';
   static const categories = '/categories';
   static const compare = '/compare';
+  static const compareProducts = '/compare-products';
   static const productDetails = '/product-details';
   static const productDetailsMore = '/product-details-more';
   static const storeDetails = '/shop-details';
@@ -78,6 +82,7 @@ class Routes {
   static const storeLocationPickerView = '/store-location-picker';
   static const emptystoreView = '/emptystore';
   static const messageView = '/message';
+  static const receiverProfileView = '/receiver-profile-view';
   static const addProduct = '/addproduct';
   static const deleteStore = '/delete-store';
   static const deleteStoreVal = '/delete-store-val';
@@ -129,12 +134,16 @@ class Routes {
       case categories:
         return MaterialPageRoute(builder: (_) => const CategoriesView());
       case compare:
-        var arguments = settings.arguments as CompareArgModel;
+        // var arguments = settings.arguments as CompareArgModel;
         return MaterialPageRoute(
           builder: (_) => CompareView(
-            arguments: arguments,
-          ),
+              // arguments: arguments,
+              ),
         );
+      case compareProducts:
+        String searchTerm = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => CompareProductsView(searchTerm: searchTerm));
       case productDetails:
         var product = settings.arguments as ProductModel;
         return MaterialPageRoute(
@@ -145,17 +154,20 @@ class Routes {
       case productDetailsMore:
         return MaterialPageRoute(builder: (_) => ProductDetailsMoreView());
       case storeDetails:
-        Store store = settings.arguments as Store;
+        // Store store = settings.arguments as Store;
+        int storeId = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => StoreDetailsView(
-            store: store,
+            storeId: storeId,
           ),
         );
       case storeReviews:
-        Store store = settings.arguments as Store;
+        // Store store = settings.arguments as Store;
+        StoreReviewArgModel storeReviewsArgs =
+            settings.arguments as StoreReviewArgModel;
         return MaterialPageRoute(
           builder: (_) => StoreReviewsView(
-            store: store,
+            storeReviewsArgs: storeReviewsArgs,
           ),
         );
       case addReview:
@@ -216,6 +228,10 @@ class Routes {
       case messageView:
         MessageModel args = settings.arguments as MessageModel;
         return MaterialPageRoute(builder: (_) => MessageView(args: args));
+      case receiverProfileView:
+        MessageModel args = settings.arguments as MessageModel;
+        return MaterialPageRoute(
+            builder: (_) => ReceiverProfileView(args: args));
 
       case addProduct:
         Store store = settings.arguments as Store;
