@@ -16,7 +16,6 @@ import 'package:buy_link/features/core/views/settings_view/change_password.dart'
 import 'package:buy_link/features/core/views/settings_view/delete_user.dart';
 import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
 import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
-import 'package:buy_link/features/core/views/store_views/locate_store_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_search_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_result_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
@@ -103,7 +102,6 @@ class Routes {
   static const termOfUse = 'term-of-use';
   static const userProfile = 'user-profile';
   static const storeDashReview = 'store-dash-review';
-  static const locateStore = 'locate-store';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -255,8 +253,6 @@ class Routes {
       case storeDashReview:
         Store store = settings.arguments as Store;
         return MaterialPageRoute(builder: (_) => StoreDashReviews(store: store));
-      case locateStore:
-        return MaterialPageRoute(builder: (_) => LocateStoreView());
 
 
 

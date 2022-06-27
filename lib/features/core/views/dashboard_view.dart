@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/notifiers/notification_notifier/notification_notifier.dart';
 import 'package:buy_link/features/core/views/notification_view/notification_view.dart';
 import 'package:buy_link/features/core/views/home_view.dart';
 import 'package:buy_link/features/core/views/settings_view/setting_view.dart';
@@ -21,6 +22,7 @@ class DashboardView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final notificationList = ref.watch (notificationNotifierProvider);
     final dashboardNotifier = ref.watch(dashboardChangeNotifier);
     return WillPopScope(
       onWillPop: () async {
@@ -79,11 +81,13 @@ class DashboardView extends ConsumerWidget {
               label: 'My Stores',
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                dashboardNotifier.selectedIndex == 3
-                    ? AppSvgs.bellFilled
-                    : AppSvgs.bell,
-              ),
+              icon:
+                  SvgPicture.asset(
+                    dashboardNotifier.selectedIndex == 3
+                        ? AppSvgs.bellFilled
+                        : AppSvgs.bell,
+                  ),
+
               label: 'Notifications',
             ),
             BottomNavigationBarItem(

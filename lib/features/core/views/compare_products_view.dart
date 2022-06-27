@@ -74,7 +74,7 @@ class HomeView extends ConsumerWidget {
                 hasBorder: false,
                 isSearch: true,
                 fillColor: AppColors.grey8,
-                focusNode: searchFN,
+                focusNode: searchFN, style: TextStyle(),
               ),
               //   ),
               // ),

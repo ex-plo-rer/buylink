@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:buy_link/widgets/app_search_dialog.dart';
 import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/product_container_search.dart';
 import 'package:buy_link/widgets/spacing.dart';

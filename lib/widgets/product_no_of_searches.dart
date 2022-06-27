@@ -1,4 +1,6 @@
 import 'package:buy_link/widgets/spacing.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/colors.dart';
@@ -21,24 +23,32 @@ class ProductCount extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
+Container (
+        width: 210,
+       child: Row(
           children: [
-            Image.asset(
-              productImage,
-              height: 40,
-              width: 40,
+
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image(
+                image: NetworkImage(
+                    productImage), height: 40, width: 40,
+              ),
             ),
             const Spacing.smallWidth(),
-            Text(
+            Expanded(
+
+            child: Text(
               productName,
               style: const TextStyle(
                 color: AppColors.grey4,
                 fontWeight: FontWeight.w600,
                 fontSize: 12,
               ),
-            ),
+            ))
+
           ],
-        ),
+        )),
         Text(
           '$productNum ${type.toLowerCase() == 'searches' ? 'Searches' : type.toLowerCase() == 'visits' ? 'Visits': 'Saves'}',
           style: const TextStyle(
