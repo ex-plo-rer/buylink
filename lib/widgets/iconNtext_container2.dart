@@ -8,14 +8,14 @@ import '../core/constants/svgs.dart';
 class IconNTextContainer2 extends StatelessWidget {
   const IconNTextContainer2(
       {Key? key,
-      this.onDistanceTapped,
-      required this.text,
-      this.containerColor = AppColors.light,
-      this.textColor = AppColors.grey1,
-      required this.icon,
-      this.radius = 50,
-      this.fontSize = 10,
-      this.padding = 8})
+        this.onDistanceTapped,
+        required this.text,
+        this.containerColor = AppColors.light,
+        this.textColor = AppColors.grey1,
+        required this.icon,
+        this.radius = 50,
+        this.fontSize = 10,
+        this.padding = 8})
       : super(key: key);
   final void Function()? onDistanceTapped;
   final String text;

@@ -35,21 +35,21 @@ class ChangeEmail extends ConsumerWidget {
         leading: changeEmailNotifier.currentPage == 1
             ? null
             : IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: AppColors.dark,
-                ),
-                onPressed: () {
-                  changeEmailNotifier.moveBackward();
-                  print(changeEmailNotifier.currentPage);
-                  _pageController.animateToPage(
-                    // array starts at 0 (lol)
-                    changeEmailNotifier.currentPage - 1,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn,
-                  );
-                },
-              ),
+          icon: const Icon(
+            Icons.arrow_back_ios_outlined,
+            color: AppColors.dark,
+          ),
+          onPressed: () {
+            changeEmailNotifier.moveBackward();
+            print(changeEmailNotifier.currentPage);
+            _pageController.animateToPage(
+              // array starts at 0 (lol)
+              changeEmailNotifier.currentPage - 1,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
+          },
+        ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: Text(
@@ -104,17 +104,17 @@ class ChangeEmail extends ConsumerWidget {
                               suffixIcon: _newEmailController.text.isEmpty
                                   ? null
                                   : GestureDetector(
-                                      onTap: () {},
-                                      child: const CircleAvatar(
-                                        backgroundColor: AppColors.grey7,
-                                        radius: 10,
-                                        child: Icon(
-                                          Icons.clear_rounded,
-                                          color: AppColors.light,
-                                          size: 15,
-                                        ),
-                                      ),
-                                    ),
+                                onTap: () {},
+                                child: const CircleAvatar(
+                                  backgroundColor: AppColors.grey7,
+                                  radius: 10,
+                                  child: Icon(
+                                    Icons.clear_rounded,
+                                    color: AppColors.light,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
                               hasBorder: false,
                             ),
                           ],
@@ -153,58 +153,58 @@ class ChangeEmail extends ConsumerWidget {
                       AppButton(
                         isLoading: changeEmailNotifier.state.isLoading,
                         text: changeEmailNotifier.currentPage ==
-                                changeEmailNotifier.totalPage
+                            changeEmailNotifier.totalPage
                             ? AppStrings.changeEmail
                             : AppStrings.next,
                         backgroundColor: changeEmailNotifier.currentPage == 1 &&
-                                _newEmailController.text.isEmpty
+                            _newEmailController.text.isEmpty
                             ? AppColors.grey6
                             : AppColors.primaryColor,
                         // onPressed: changeEmailNotifier.currentPage == 1 ?_nameController.text.isEmpty: changeEmailNotifier.currentPage == 2? _emailAddressController.text.isEmpty: changeEmailNotifier.currentPage == 4? _passwordController.text.isEmpty
                         onPressed: changeEmailNotifier.currentPage == 1 &&
-                                _newEmailController.text.isEmpty
+                            _newEmailController.text.isEmpty
                             ? null
                             : () async {
-                                if (changeEmailNotifier.currentPage == 1) {
-                                  await changeEmailNotifier.checkEmail(
-                                    reason: 'change email',
-                                    email: _newEmailController.text,
-                                  );
-                                  changeEmailNotifier.moveForward();
-                                  _pageController.animateToPage(
-                                    // array starts at 0 (lol)
-                                    changeEmailNotifier.currentPage - 1,
-                                    duration: const Duration(milliseconds: 500),
-                                    curve: Curves.easeIn,
-                                  );
-                                } else if (changeEmailNotifier.currentPage ==
-                                    2) {
-                                  String? otp = await ref
-                                      .read(localStorageService)
-                                      .readSecureData(AppStrings.otpEmailKey);
-                                  if (_otp == null) {
-                                    ref.read(snackbarService).showErrorSnackBar(
-                                          'Kindly enter otp.',
-                                        );
-                                    return;
-                                  } else if (_otp!.length != 4) {
-                                    ref.read(snackbarService).showErrorSnackBar(
-                                          'Kindly make sure the OTP is complete.',
-                                        );
-                                    return;
-                                  } else if (otp != _otp) {
-                                    Alertify(title: 'Incorrect OTP entered')
-                                        .error();
-                                    return;
-                                  } else {
-                                    await changeEmailNotifier.changeEmail(
-                                      email: _newEmailController.text,
-                                    );
-                                    Alertify(title: 'New email saved')
-                                        .success();
-                                  }
-                                }
-                              },
+                          if (changeEmailNotifier.currentPage == 1) {
+                            await changeEmailNotifier.checkEmail(
+                              reason: 'change email',
+                              email: _newEmailController.text,
+                            );
+                            changeEmailNotifier.moveForward();
+                            _pageController.animateToPage(
+                              // array starts at 0 (lol)
+                              changeEmailNotifier.currentPage - 1,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeIn,
+                            );
+                          } else if (changeEmailNotifier.currentPage ==
+                              2) {
+                            String? otp = await ref
+                                .read(localStorageService)
+                                .readSecureData(AppStrings.otpEmailKey);
+                            if (_otp == null) {
+                              ref.read(snackbarService).showErrorSnackBar(
+                                'Kindly enter otp.',
+                              );
+                              return;
+                            } else if (_otp!.length != 4) {
+                              ref.read(snackbarService).showErrorSnackBar(
+                                'Kindly make sure the OTP is complete.',
+                              );
+                              return;
+                            } else if (otp != _otp) {
+                              Alertify(title: 'Incorrect OTP entered')
+                                  .error();
+                              return;
+                            } else {
+                              await changeEmailNotifier.changeEmail(
+                                email: _newEmailController.text,
+                              );
+                              Alertify(title: 'New email saved')
+                                  .success();
+                            }
+                          }
+                        },
                       ),
                     ],
                   ),

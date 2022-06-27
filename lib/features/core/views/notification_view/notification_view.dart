@@ -46,7 +46,7 @@ class _NotificationState extends ConsumerState<NotificationView>
     _tabController.index == 0
         ? ref.read(notificationNotifierProvider).fetchNotifications()
         : ref.read(messageListNotifierProvider).getChatList(
-            sessionId: '${ref.read(userProvider).currentUser!.id}u');
+        sessionId: '${ref.read(userProvider).currentUser!.id}u');
   }
 
   // TODO: Make the third product fill the screen's width
@@ -84,11 +84,11 @@ class _NotificationState extends ConsumerState<NotificationView>
                 ],
                 onTap: (index) => index == 0
                     ? ref
-                        .read(notificationNotifierProvider)
-                        .fetchNotifications()
+                    .read(notificationNotifierProvider)
+                    .fetchNotifications()
                     : ref.read(messageListNotifierProvider).getChatList(
-                        sessionId:
-                            '${ref.read(userProvider).currentUser!.id}u'),
+                    sessionId:
+                    '${ref.read(userProvider).currentUser!.id}u'),
               ),
               Expanded(
                 child: TabBarView(
@@ -117,78 +117,69 @@ class ProductAlertScreen extends ConsumerWidget {
       body: notificationNotifier.notificationsLoading
           ? const CircularProgress()
           : ListView.builder(
-             // physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemCount: notificationNotifier.notifications.isEmpty
-                  ? 1
-                  : notificationNotifier.notifications.length,
-              itemBuilder: (context, int index) =>
-                  notificationNotifier.notifications.isEmpty
-                      ? Column(
-                          children: <Widget>[
-
-                            Spacing.largeHeight(),
-                            Spacing.largeHeight(),
-                            Spacing.largeHeight(),
-                            Spacing.largeHeight(),
-                            AppEmptyStates(
-                              imageString: "assets/images/no_messages.png",
-                              message1String: "No messages yet",
-                              buttonString: ""),
-                        ])
-                      : Column(
-                          children: <Widget>[
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                              title: RichText(
-                                //textAlign: TextAlign.,
-                                text: TextSpan(
-                                  style: const TextStyle(
-                                    fontSize: 12.0,
-                                    color: Colors.black,
-                                  ),
-                                  children: <TextSpan>[
-                                    const TextSpan(
-                                      text: "A ", style: TextStyle(
-                                      fontWeight: FontWeight.w500, fontSize: 12,color: AppColors.grey5),
-                                    ),
-                                    TextSpan(
-                                      text: notificationNotifier
-                                          .notifications[index].product,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600, fontSize: 12,),
-                                    ),
-                                    const TextSpan(
-                                      text:
-                                          " store is around your present location", style: TextStyle(
-                                        fontWeight: FontWeight.w500, fontSize: 12,color: AppColors.grey5)
-                                    )
-                                  ],
-                                ),
-                              ),
-                              leading: CircleAvatar(
-                                backgroundColor: AppColors.shade3,
-                                child:  notificationNotifier
-                                    .notifications[index].image == null ? Icon(Icons.person) : null,
-                                backgroundImage: notificationNotifier
-                                    .notifications[index].image == null
-                                    ? null
-                                    : CachedNetworkImageProvider(notificationNotifier
-                                    .notifications[index].image!),
-                                radius: 26,
-                              ),
-                              trailing: Text(
-                                DateFormat.jm()
-                                    .format(notificationNotifier
-                                        .notifications[index].dateTime)
-                                    .toString(),
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            ),
-                            Spacing.smallHeight(),
-                          ],
-                        ),
+        // physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        itemCount: notificationNotifier.notifications.isEmpty
+            ? 1
+            : notificationNotifier.notifications.length,
+        itemBuilder: (context, int index) =>
+        notificationNotifier.notifications.isEmpty
+            ? const Center(
+          child: const Text('Empty'),
+        )
+            : Column(
+          children: <Widget>[
+            ListTile(
+              contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+              title: RichText(
+                //textAlign: TextAlign.,
+                text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.black,
+                  ),
+                  children: <TextSpan>[
+                    const TextSpan(
+                      text: "A ", style: TextStyle(
+                        fontWeight: FontWeight.w500, fontSize: 12,color: AppColors.grey5),
+                    ),
+                    TextSpan(
+                      text: notificationNotifier
+                          .notifications[index].product,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 12,),
+                    ),
+                    const TextSpan(
+                        text:
+                        " store is around your present location", style: TextStyle(
+                        fontWeight: FontWeight.w500, fontSize: 12,color: AppColors.grey5)
+                    )
+                  ],
+                ),
+              ),
+              leading: CircleAvatar(
+                backgroundColor: AppColors.shade3,
+                child:  notificationNotifier
+                    .notifications[index].image == null ? Icon(Icons.person) : null,
+                backgroundImage: notificationNotifier
+                    .notifications[index].image == null
+                    ? null
+                    : CachedNetworkImageProvider(notificationNotifier
+                    .notifications[index].image!),
+                radius: 26,
+              ),
+              trailing: Text(
+                DateFormat.jm()
+                    .format(notificationNotifier
+                    .notifications[index].dateTime)
+                    .toString(),
+                style: const TextStyle(fontSize: 12),
+              ),
             ),
+            Spacing.smallHeight(),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -203,56 +194,36 @@ class MessageScreen extends ConsumerWidget {
       body: messageListNotifier.state.isLoading
           ? const CircularProgress()
           : ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemCount: messageListNotifier.chats.isEmpty
-                  ? 1
-                  : messageListNotifier.chats.length,
-              itemBuilder: (context, index) => messageListNotifier.chats.isEmpty
-                  ? Column (
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                 // mainAxisAlignment: MainAxisAlignment.center,
-
-                  children: <Widget>[
-
-                    Spacing.largeHeight(),
-                    Spacing.largeHeight(),
-                    Spacing.largeHeight(),
-                    Spacing.largeHeight(),
-                    AppEmptyStates(
-                  imageString: "assets/images/no_notifications.png",
-                  message1String: "No notifications yet",
-                  buttonString: ""),
-
-              ])
-                 // hasButton: false
-
-                  //onButtonPressed: void Function()?{}
-
-
-                  : ChatTile(
-                      title: messageListNotifier.chats[index].name,
-                      subtitle: messageListNotifier.chats[index].msg,
-                      unreadCount: messageListNotifier.chats[index].unreadCount,
-                      time: messageListNotifier.chats[index].parsedTime,
-                      imageUrl: messageListNotifier.chats[index].image,
-                      onTap: () {
-                        ref.read(navigationServiceProvider).navigateToNamed(
-                              Routes.messageView,
-                              arguments: MessageModel(
-                                // This should be the id of this specific index in this listview
-                                id: '${messageListNotifier.chats[index].storeId}s',
-                                storeId: null,
-                                name: messageListNotifier.chats[index].name,
-                                imageUrl:
-                                    messageListNotifier.chats[index].image,
-                                from: 'notification',
-                              ),
-                            );
-                      },
-                    ),
-              //separatorBuilder: (__, _) => const Spacing.tinyHeight(),
-            ),
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        itemCount: messageListNotifier.chats.isEmpty
+            ? 1
+            : messageListNotifier.chats.length,
+        itemBuilder: (context, index) => messageListNotifier.chats.isEmpty
+            ? const Center(child: Text('Empty'))
+            : ChatTile(
+          title: messageListNotifier.chats[index].name,
+          subtitle: messageListNotifier.chats[index].msg,
+          unreadCount: messageListNotifier.chats[index].unreadCount,
+          time: messageListNotifier.chats[index].parsedTime,
+          imageUrl: messageListNotifier.chats[index].image,
+          onTap: () {
+            ref.read(navigationServiceProvider).navigateToNamed(
+              Routes.messageView,
+              arguments: MessageModel(
+                // This should be the id of this specific index in this listview
+                id: '${messageListNotifier.chats[index].storeId}s',
+                storeId: null,
+                name: messageListNotifier.chats[index].name,
+                imageUrl:
+                messageListNotifier.chats[index].image,
+                from: 'notification',
+              ),
+            );
+          },
+        ),
+        //separatorBuilder: (__, _) => const Spacing.tinyHeight(),
+      ),
     );
   }
 }

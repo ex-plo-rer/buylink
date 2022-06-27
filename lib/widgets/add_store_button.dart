@@ -17,16 +17,16 @@ class AddStoreContainer extends ConsumerWidget {
     return GestureDetector(
       onTap: onTapped,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
         child: DottedBorder(
           borderType: BorderType.RRect,
-          radius: const Radius.circular(16),
+          radius: const Radius.circular(20),
           dashPattern: const [18, 10],
           color: AppColors.primaryColor,
           strokeWidth: 2,
           child: SizedBox(
             height: 155,
-            width: (MediaQuery.of(context).size.width - 80) / 2,
+            width: (MediaQuery.of(context).size.width - 74) / 2,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,7 +44,7 @@ class AddStoreContainer extends ConsumerWidget {
                 ),
                 Text("Add a new store",
                     style:
-                        TextStyle(color: AppColors.primaryColor, fontSize: 16))
+                    TextStyle(color: AppColors.primaryColor, fontSize: 16))
               ],
             ),
           ),

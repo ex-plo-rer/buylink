@@ -22,7 +22,6 @@ class DashboardView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final notificationList = ref.watch (notificationNotifierProvider);
     final dashboardNotifier = ref.watch(dashboardChangeNotifier);
     return WillPopScope(
       onWillPop: () async {
@@ -81,13 +80,11 @@ class DashboardView extends ConsumerWidget {
               label: 'My Stores',
             ),
             BottomNavigationBarItem(
-              icon:
-                  SvgPicture.asset(
-                    dashboardNotifier.selectedIndex == 3
-                        ? AppSvgs.bellFilled
-                        : AppSvgs.bell,
-                  ),
-
+              icon: SvgPicture.asset(
+                dashboardNotifier.selectedIndex == 3
+                    ? AppSvgs.bellFilled
+                    : AppSvgs.bell,
+              ),
               label: 'Notifications',
             ),
             BottomNavigationBarItem(

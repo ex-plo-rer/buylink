@@ -97,20 +97,20 @@ class EditStoreName extends ConsumerWidget {
                   onPressed: _nameController.text.isEmpty
                       ? null
                       : () async {
-                          if (_formKey.currentState!.validate()) {
-                            await storeSettingsNotifier.editStore(
-                              storeId: 23,
-                              attribute: 'name',
-                              newValue: _nameController.text,
-                            );
-                            await ref
-                                .refresh(storeNotifierProvider)
-                                .fetchMyStores();
-                            ref.read(navigationServiceProvider).navigateBack();
-                            Alertify(title: 'Store name changed successfully')
-                                .success();
-                          }
-                        },
+                    if (_formKey.currentState!.validate()) {
+                      await storeSettingsNotifier.editStore(
+                        storeId: 23,
+                        attribute: 'name',
+                        newValue: _nameController.text,
+                      );
+                      await ref
+                          .refresh(storeNotifierProvider)
+                          .fetchMyStores();
+                      ref.read(navigationServiceProvider).navigateBack();
+                      Alertify(title: 'Store name changed successfully')
+                          .success();
+                    }
+                  },
                 ),
               ],
             ),

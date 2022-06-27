@@ -12,7 +12,7 @@ class SettingNotificationNotifier extends BaseChangeNotifier {
 
   SettingNotificationNotifier(this._reader){fetchNotifications();}
 
-   FetchNotificationModel? notifications;
+  FetchNotificationModel? notifications;
 
   Future<void> fetchNotifications() async {
     try {
@@ -32,7 +32,7 @@ class SettingNotificationNotifier extends BaseChangeNotifier {
 
   Future<void> setNotification({required String text, required bool fetchState}) async {
     try {
-     // setState(state: ViewState.loading);
+      // setState(state: ViewState.loading);
       await _reader(settingRepository).setNotification(
           type: text,
           state: fetchState

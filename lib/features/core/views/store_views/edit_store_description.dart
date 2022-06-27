@@ -64,7 +64,7 @@ class EditStoreDesc extends ConsumerWidget {
                   style: TextStyle(color: AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w500),
                   title: '',
                   hintText:
-                      'We sell all fashion wears, shoes, bags, slides all at affordable rates',
+                  'We sell all fashion wears, shoes, bags, slides all at affordable rates',
                   focusNode: _descriptionFN,
                   controller: _descriptionController,
                   maxLines: 5,
@@ -87,22 +87,22 @@ class EditStoreDesc extends ConsumerWidget {
                   onPressed: _descriptionController.text.isEmpty
                       ? null
                       : () async {
-                          if (_formKey.currentState!.validate()) {
-                            await storeSettingsNotifier.editStore(
-                              storeId: 23,
-                              attribute: 'desc',
-                              newValue: _descriptionController.text,
-                            );
-                            await ref
-                                .refresh(storeNotifierProvider)
-                                .fetchMyStores();
-                            ref.read(navigationServiceProvider).navigateBack();
-                            Alertify(
-                                    title:
-                                        'Store description changed successfully')
-                                .success();
-                          }
-                        },
+                    if (_formKey.currentState!.validate()) {
+                      await storeSettingsNotifier.editStore(
+                        storeId: 23,
+                        attribute: 'desc',
+                        newValue: _descriptionController.text,
+                      );
+                      await ref
+                          .refresh(storeNotifierProvider)
+                          .fetchMyStores();
+                      ref.read(navigationServiceProvider).navigateBack();
+                      Alertify(
+                          title:
+                          'Store description changed successfully')
+                          .success();
+                    }
+                  },
                 ),
               ],
             ),

@@ -36,6 +36,7 @@ class AppEmptyStates extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(imageString),
+              Spacing.smallHeight(),
               Text(
                 message1String,
                 style: const TextStyle(

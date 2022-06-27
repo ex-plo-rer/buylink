@@ -64,9 +64,9 @@ class OnboardingNotifier extends BaseChangeNotifier {
         .writeSecureData(AppStrings.onboardedKey, 'true');
     toSignUp
         ? _reader(navigationServiceProvider)
-            .navigateOffAllNamed(Routes.signup, (p0) => false)
+        .navigateOffAllNamed(Routes.signup, (p0) => false)
         : _reader(navigationServiceProvider)
-            .navigateOffAllNamed(Routes.login, (p0) => false);
+        .navigateOffAllNamed(Routes.login, (p0) => false);
   }
 
   List<OnBoardContent> onBoardingProvContents = [
@@ -80,4 +80,4 @@ class OnboardingNotifier extends BaseChangeNotifier {
 }
 
 final onboardProv =
-    ChangeNotifierProvider((ref) => OnboardingNotifier(ref.read));
+ChangeNotifierProvider((ref) => OnboardingNotifier(ref.read));

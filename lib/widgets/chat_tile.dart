@@ -29,49 +29,45 @@ class ChatTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-      visualDensity: VisualDensity(horizontal: 0, vertical: -2),
-      title: Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-          child: Text(
+      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+      title: Text(
         title,
         style: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.bold,
         ),
-      )),
+      ),
       leading: CircleAvatar(
         backgroundColor: AppColors.shade1,
         child: imageUrl == null ? Text(title.initials()) : null,
         backgroundImage:
-            imageUrl == null ? null : CachedNetworkImageProvider(imageUrl!),
-        radius: 26,
+        imageUrl == null ? null : CachedNetworkImageProvider(imageUrl!),
+        radius: 24,
       ),
-      subtitle: Padding(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
-        child:Text(
+      subtitle: Text(
         subtitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-      )),
+      ),
       trailing: unreadCount < 1
           ? const Spacing.empty()
           : Column(
-              children: <Widget>[
-                const SizedBox(height: 6),
-                CircleAvatar(
-                  backgroundColor: AppColors.primaryColor,
-                  child: Text(
-                    unreadCount.toString(),
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  radius: 10,
-                ),
-                Text(
-                  time,
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ],
+        children: <Widget>[
+          const SizedBox(height: 6),
+          CircleAvatar(
+            backgroundColor: AppColors.primaryColor,
+            child: Text(
+              unreadCount.toString(),
+              style: const TextStyle(fontSize: 12),
             ),
+            radius: 10,
+          ),
+          Text(
+            time,
+            style: const TextStyle(fontSize: 12),
+          ),
+        ],
+      ),
       onTap: onTap,
     );
   }

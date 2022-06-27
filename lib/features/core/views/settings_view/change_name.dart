@@ -96,12 +96,12 @@ class EditUserName extends ConsumerWidget {
                   onPressed: _nameController.text.isEmpty
                       ? null
                       : () async {
-                          if (_formKey.currentState!.validate()) {
-                            await editUserNameNotifier.changeName();
-                            Alertify(title: 'Name changed successfully')
-                                .success();
-                          }
-                        },
+                    if (_formKey.currentState!.validate()) {
+                      await editUserNameNotifier.changeName();
+                      Alertify(title: 'Name changed successfully')
+                          .success();
+                    }
+                  },
                 ),
               ],
             ),

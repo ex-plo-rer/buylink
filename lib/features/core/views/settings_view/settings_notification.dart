@@ -90,4 +90,3 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
 
 }
 
-

@@ -7,8 +7,8 @@ class SnackbarService {
   final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSuccessSnackBar(
-    String text,
-  ) {
+      String text,
+      ) {
     return scaffoldMessengerKey.currentState!.showSnackBar(
       SnackBar(
         backgroundColor: AppColors.primaryColor,
@@ -18,8 +18,8 @@ class SnackbarService {
   }
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackBar(
-    String text,
-  ) {
+      String text,
+      ) {
     return scaffoldMessengerKey.currentState!.showSnackBar(
       SnackBar(
         backgroundColor: Colors.red,

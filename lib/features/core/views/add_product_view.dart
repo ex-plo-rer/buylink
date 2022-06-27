@@ -92,7 +92,7 @@ class AddProductView extends ConsumerWidget {
                 onDottedContainerTapped: () async {
                   print('Pick file Clicked');
                   FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
+                  await FilePicker.platform.pickFiles(
                     type: FileType.image,
                     withData: true,
                     allowMultiple: true,
@@ -149,18 +149,18 @@ class AddProductView extends ConsumerWidget {
                     .categories
                     .map(
                       (category) => DropdownMenuItem(
-                        child: Text(category.name),
-                        value: category.name,
-                      ),
-                    )
+                    child: Text(category.name),
+                    value: category.name,
+                  ),
+                )
                     .toList(),
                 onChanged: addProductNotifier.categories.isEmpty
                     ? null
                     : (newCategory) {
-                        // _subCatKey.currentState?.reset();
-                        addProductNotifier.onCategoryChanged(
-                            newCategory: newCategory.toString());
-                      },
+                  // _subCatKey.currentState?.reset();
+                  addProductNotifier.onCategoryChanged(
+                      newCategory: newCategory.toString());
+                },
               ),
               // const Spacing.mediumHeight(),
               // AppDropdownField(
@@ -222,8 +222,8 @@ class AddProductView extends ConsumerWidget {
                 text: 'Save Product',
                 fontSize: 16,
                 backgroundColor: productDescCtrl.text.isEmpty && productNameCtrl.text.isEmpty
-                && productSpecificsCtrl.text.isEmpty && maxPriceCtrl.text.isEmpty && minPriceCtrl.text.isEmpty
-                ? AppColors.grey6:
+                    && productSpecificsCtrl.text.isEmpty && maxPriceCtrl.text.isEmpty && minPriceCtrl.text.isEmpty
+                    ? AppColors.grey6:
                 AppColors.primaryColor,
                 onPressed: () async {
                   addProductNotifier.addProduct(storeId: store.id);

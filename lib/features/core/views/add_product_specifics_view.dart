@@ -141,18 +141,18 @@ class AddProductSpecificsView extends ConsumerWidget {
                 items: addProductNotifier.sizes
                     .map(
                       (size) => DropdownMenuItem(
-                        child: Text(size),
-                        value: size,
-                      ),
-                    )
+                    child: Text(size),
+                    value: size,
+                  ),
+                )
                     .toList(),
                 onChanged: addProductNotifier.categories.isEmpty
                     ? null
                     : (newSize) {
-                        // _subCatKey.currentState?.reset();
-                        addProductNotifier.onSizeChanged(
-                            newSize: newSize.toString());
-                      },
+                  // _subCatKey.currentState?.reset();
+                  addProductNotifier.onSizeChanged(
+                      newSize: newSize.toString());
+                },
               ),
               const Spacing.mediumHeight(),
               AppTextField(

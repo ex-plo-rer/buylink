@@ -42,9 +42,9 @@ class LoginView extends ConsumerWidget {
           padding: EdgeInsets.zero,
           constraints: BoxConstraints(),
           onPressed: (){
-          ref
-              .read(navigationServiceProvider).navigateToNamed(Routes.onboarding);
-        }, icon: Icon(Icons.arrow_back_ios_outlined, size: 14, color: AppColors.grey2,),),
+            ref
+                .read(navigationServiceProvider).navigateToNamed(Routes.onboarding);
+          }, icon: Icon(Icons.arrow_back_ios_outlined, size: 14, color: AppColors.grey2,),),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -100,7 +100,6 @@ class LoginView extends ConsumerWidget {
                       ),
                       onPressed: () => loginNotifier.togglePassword(),
                     ),
-
                   ),
                   const Spacing.mediumHeight(),
                   Spacing.smallHeight(),
@@ -118,10 +117,10 @@ class LoginView extends ConsumerWidget {
                   AppButton(
                       isLoading: loginNotifier.state.isLoading,
                       text: AppStrings.login,
-                      backgroundColor: _passwordController.text.isEmpty &&
-                          _emailAddressController.text.isEmpty ?
-                      AppColors.grey6
-                      :  AppColors.primaryColor,
+                      backgroundColor: _passwordController.text.isNotEmpty &&
+                          _emailAddressController.text.isNotEmpty ?
+                      AppColors.primaryColor
+                          : AppColors.grey6,
                       onPressed: () async {
                         // ref
                         //     .read(navigationServiceProvider)

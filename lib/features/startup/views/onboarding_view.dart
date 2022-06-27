@@ -44,26 +44,26 @@ class OnboardingView extends ConsumerWidget {
                   ),
                   //const Spacing.empty(),
                   Expanded(
-                  child: Container (margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                    child:
-                  Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Text(
-                        onboardnotifier
-                            .onBoardingProvContents[index].description,
-                        style: const TextStyle(
-                          color: AppColors.grey1,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 24,
-                        ),
-                        textAlign: TextAlign.center,
-                      )))),
+                      child: Container (margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                          child:
+                          Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Text(
+                                onboardnotifier
+                                    .onBoardingProvContents[index].description,
+                                style: const TextStyle(
+                                  color: AppColors.grey1,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24,
+                                ),
+                                textAlign: TextAlign.center,
+                              )))),
                 ],
               ),
               onPageChanged: onboardnotifier.changePage,
             ),
           ),
-         Spacing.smallHeight(),
+          Spacing.smallHeight(),
           DotsIndicator(
             controller: _pageController,
             itemCount: onboardnotifier.onBoardingProvContents.length,
@@ -90,10 +90,10 @@ class OnboardingView extends ConsumerWidget {
                 onboardnotifier.currentPage > 2
                     ? onboardnotifier.exitOnboard(toSignUp: true)
                     : _pageController.animateToPage(
-                        onboardnotifier.currentPage,
-                        duration: _kDuration,
-                        curve: _kCurve,
-                      );
+                  onboardnotifier.currentPage,
+                  duration: _kDuration,
+                  curve: _kCurve,
+                );
               },
             ),
           ),
@@ -110,13 +110,13 @@ class OnboardingView extends ConsumerWidget {
           ),
 
           Visibility(
-            visible: onboardnotifier.currentPage == 0,
-            child: Spacing.mediumHeight()
+              visible: onboardnotifier.currentPage == 0,
+              child: Spacing.mediumHeight()
           ),
 
           Visibility(
-            visible: onboardnotifier.currentPage == 1,
-            child: Spacing.mediumHeight()
+              visible: onboardnotifier.currentPage == 1,
+              child: Spacing.mediumHeight()
           ),
           const Spacing.largeHeight(),
         ],
