@@ -1,5 +1,4 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/features/core/models/store_review_arg_model.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/constants/svgs.dart';
 import '../../../widgets/circular_progress.dart';
 import '../models/product_model.dart';
 import '../notifiers/store_notifier/store_review_notifier.dart';
@@ -164,6 +164,7 @@ class StoreReviewsView extends ConsumerWidget {
               ),
               const Spacing.bigHeight(),
               const Divider(thickness: 2),
+              Spacing.tinyHeight(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
@@ -201,6 +202,7 @@ class StoreReviewsView extends ConsumerWidget {
                   ],
                 ),
               ),
+              Spacing.tinyHeight(),
               const Divider(thickness: 2),
               const Spacing.mediumHeight(),
               Row(
@@ -462,7 +464,7 @@ class StoreReviewsView extends ConsumerWidget {
                               ),
                             ),
                 ),
-              ),
+              )
             ],
           ),
         ),

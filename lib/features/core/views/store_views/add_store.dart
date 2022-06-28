@@ -20,14 +20,8 @@ import '../../../../widgets/spacing.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/store_notifier/add_store_notifier.dart';
 
-class AddStoreView extends ConsumerStatefulWidget {
-  const AddStoreView({Key? key}) : super(key: key);
-
-  @override
-  ConsumerState<AddStoreView> createState() => _AddStoreViewState();
-}
-
-class _AddStoreViewState extends ConsumerState<AddStoreView> {
+class AddStoreView extends ConsumerWidget {
+  AddStoreView({Key? key}) : super(key: key);
   final PageController _pageController = PageController();
   final _nameFN = FocusNode();
   final _storeDescriptionFN = FocusNode();
@@ -36,14 +30,7 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
   final _storeDescriptionController = TextEditingController();
 
   @override
-  void initState() {
-    // TODO: implement initState
-    ref.read(addStoreNotifierProvider).initLocation();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final addStoreNotifier = ref.watch(addStoreNotifierProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -51,21 +38,21 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
         leading: addStoreNotifier.currentPage == 1
             ? null
             : IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: AppColors.dark,
-                ),
-                onPressed: () {
-                  addStoreNotifier.moveBackward();
-                  print(addStoreNotifier.currentPage);
-                  _pageController.animateToPage(
-                    // array starts at 0 (lol)
-                    addStoreNotifier.currentPage - 1,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn,
-                  );
-                },
-              ),
+          icon: const Icon(
+            Icons.arrow_back_ios_outlined,
+            color: AppColors.dark,
+          ),
+          onPressed: () {
+            addStoreNotifier.moveBackward();
+            print(addStoreNotifier.currentPage);
+            _pageController.animateToPage(
+              // array starts at 0 (lol)
+              addStoreNotifier.currentPage - 1,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
+          },
+        ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
@@ -90,7 +77,7 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                   current: addStoreNotifier.currentPage,
                   total: addStoreNotifier.totalPage,
                   value:
-                      addStoreNotifier.currentPage / addStoreNotifier.totalPage,
+                  addStoreNotifier.currentPage / addStoreNotifier.totalPage,
                 ),
                 const Spacing.mediumHeight(),
                 SizedBox(
@@ -101,21 +88,22 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                     children: [
                       Column(
                         children: [
-                          const TextWithRich(
+                          TextWithRich(
                             firstText: 'What\'s the name your',
                             secondText: 'store?',
                             fontSize: 24,
                             secondColor: AppColors.primaryColor,
                           ),
-                          const Align(
+                          Align(
                             alignment: Alignment.topLeft,
                             child: Text(
                               "This helps your customer identify your store",
                               textAlign: TextAlign.start,
                             ),
                           ),
-                          const Spacing.height(12),
+                          Spacing.height(2),
                           AppTextField(
+                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                             title: '',
                             hintText: 'Store name',
                             hasBorder: false,
@@ -125,31 +113,32 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                             suffixIcon: _nameController.text.isEmpty
                                 ? null
                                 : GestureDetector(
-                                    onTap: () => _nameController.clear(),
-                                    child: const CircleAvatar(
-                                      backgroundColor: AppColors.grey7,
-                                      radius: 10,
-                                      child: Icon(
-                                        Icons.clear_rounded,
-                                        color: AppColors.light,
-                                        size: 15,
-                                      ),
-                                    ),
-                                  ),
+                              onTap: () => _nameController.clear(),
+                              child: const CircleAvatar(
+                                backgroundColor: AppColors.grey7,
+                                radius: 10,
+                                child: Icon(
+                                  Icons.clear_rounded,
+                                  color: AppColors.light,
+                                  size: 15,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
                       Column(
                         children: [
-                          const TextWithRich(
+                          TextWithRich(
                             firstText: 'Describe your Store',
                             secondText: '',
                             fontSize: 24,
                             secondColor: AppColors.primaryColor,
                           ),
-                          const Spacing.height(12),
+                          Spacing.height(12),
                           // TextField(),
                           AppTextField(
+                            style: TextStyle(color: AppColors.grey1, fontSize: 14, fontWeight: FontWeight.w500),
                             hintText: 'Tell us about your store',
                             maxLines: 5,
                             focusNode: _storeDescriptionFN,
@@ -158,17 +147,17 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                             suffixIcon: _storeDescriptionController.text.isEmpty
                                 ? null
                                 : GestureDetector(
-                                    onTap: () {},
-                                    child: const CircleAvatar(
-                                      backgroundColor: AppColors.grey7,
-                                      radius: 10,
-                                      child: Icon(
-                                        Icons.clear_rounded,
-                                        color: AppColors.light,
-                                        size: 15,
-                                      ),
-                                    ),
-                                  ),
+                              onTap: () {},
+                              child: const CircleAvatar(
+                                backgroundColor: AppColors.grey7,
+                                radius: 10,
+                                child: Icon(
+                                  Icons.clear_rounded,
+                                  color: AppColors.light,
+                                  size: 15,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -196,19 +185,6 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                               textAlign: TextAlign.center,
                             ),
                           ),
-/*
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              AppButton(
-                                width: MediaQuery.of(context).size.width - 100,
-                                text: 'Locate Store',
-                                fontSize: 16,
-                                backgroundColor: AppColors.primaryColor,
-                              ),
-                            ],
-                          )
-*/
                         ],
                       ),
                       Column(
@@ -219,14 +195,14 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                             onTapped: () async {
                               print('Pick file Clicked');
                               FilePickerResult? result =
-                                  await FilePicker.platform.pickFiles(
+                              await FilePicker.platform.pickFiles(
                                 type: FileType.image,
                                 withData: true,
                               );
 
                               if (result != null) {
                                 File imageFile =
-                                    File((result.files.single.path) as String);
+                                File((result.files.single.path) as String);
                                 print('File @@@@@@@@@@ : $imageFile');
                                 print('imageFile.path: ${imageFile.path}');
                                 addStoreNotifier.setImageFile(
@@ -246,14 +222,14 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                             onTapped: () async {
                               print('Pick file Clicked');
                               FilePickerResult? result =
-                                  await FilePicker.platform.pickFiles(
+                              await FilePicker.platform.pickFiles(
                                 type: FileType.image,
                                 withData: true,
                               );
 
                               if (result != null) {
                                 File imageFile =
-                                    File((result.files.single.path) as String);
+                                File((result.files.single.path) as String);
                                 print('File @@@@@@@@@@ : $imageFile');
                                 print('imageFile.path: ${imageFile.path}');
                                 addStoreNotifier.setImageFile(
@@ -277,86 +253,81 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                     AppButton(
                       isLoading: addStoreNotifier.state.isLoading,
                       text: addStoreNotifier.currentPage ==
-                              addStoreNotifier.totalPage
+                          addStoreNotifier.totalPage
                           ? 'Create store'
-                          : addStoreNotifier.currentPage == 3
-                              ? 'Locate Store'
-                              : AppStrings.next,
+                          : AppStrings.next,
                       backgroundColor: addStoreNotifier.currentPage == 1 &&
-                              _nameController.text.isEmpty
+                          _nameController.text.isEmpty
                           ? AppColors.grey6
                           : addStoreNotifier.currentPage == 2 &&
-                                  _storeDescriptionController.text.isEmpty
-                              ? AppColors.grey6
-                              : addStoreNotifier.currentPage == 4 &&
-                                      (addStoreNotifier.imageFile == null ||
-                                          addStoreNotifier.logoFile == null)
-                                  ? AppColors.grey6
-                                  : AppColors.primaryColor,
+                          _storeDescriptionController.text.isEmpty
+                          ? AppColors.grey6
+                          : addStoreNotifier.currentPage == 4 &&
+                          (addStoreNotifier.imageFile == null ||
+                              addStoreNotifier.logoFile == null)
+                          ? AppColors.grey6
+                          : AppColors.primaryColor,
                       onPressed: addStoreNotifier.currentPage == 1 &&
-                              _nameController.text.isEmpty
+                          _nameController.text.isEmpty
                           ? null
                           : addStoreNotifier.currentPage == 2 &&
-                                  _storeDescriptionController.text.isEmpty
-                              ? null
-                              : addStoreNotifier.currentPage == 4 &&
-                                      (addStoreNotifier.imageFile == null ||
-                                          addStoreNotifier.logoFile == null)
-                                  ? null
-                                  : () async {
-                                      if (addStoreNotifier.currentPage == 3) {
-                                        ref
-                                            .read(navigationServiceProvider)
-                                            .navigateToNamed(
-                                              Routes.storeLocationPickerView,
-                                            );
-                                        addStoreNotifier.moveForward();
-                                        _pageController.animateToPage(
-                                          // array starts at 0 (lol)
-                                          addStoreNotifier.currentPage - 1,
-                                          duration:
-                                              const Duration(milliseconds: 500),
-                                          curve: Curves.easeIn,
-                                        );
-                                      } else if (addStoreNotifier.currentPage ==
-                                          4) {
-                                        await addStoreNotifier.createStore(
-                                          storeName: _nameController.text,
-                                          storeDescription:
-                                              _storeDescriptionController.text,
-                                          lon: addStoreNotifier.storeLon,
-                                          lat: addStoreNotifier.storeLat,
-                                          storeLogo: addStoreNotifier.logoFile!,
-                                          storeImage:
-                                              addStoreNotifier.imageFile!,
-                                        );
-                                        await ref
-                                            .refresh(storeNotifierProvider)
-                                            .fetchMyStores();
-                                        ref
-                                            .read(navigationServiceProvider)
-                                            .navigateBack();
-                                        addStoreNotifier.moveForward();
-                                        print(addStoreNotifier.currentPage);
-                                        _pageController.animateToPage(
-                                          // array starts at 0 (lol)
-                                          addStoreNotifier.currentPage - 1,
-                                          duration:
-                                              const Duration(milliseconds: 500),
-                                          curve: Curves.easeIn,
-                                        );
-                                      } else {
-                                        addStoreNotifier.moveForward();
-                                        print(addStoreNotifier.currentPage);
-                                        _pageController.animateToPage(
-                                          // array starts at 0 (lol)
-                                          addStoreNotifier.currentPage - 1,
-                                          duration:
-                                              const Duration(milliseconds: 500),
-                                          curve: Curves.easeIn,
-                                        );
-                                      }
-                                    },
+                          _storeDescriptionController.text.isEmpty
+                          ? null
+                          : addStoreNotifier.currentPage == 4 &&
+                          (addStoreNotifier.imageFile == null ||
+                              addStoreNotifier.logoFile == null)
+                          ? null
+                          : () async {
+                        if (addStoreNotifier.currentPage == 4) {
+                          await addStoreNotifier.createStore(
+                            storeName: _nameController.text,
+                            storeDescription:
+                            _storeDescriptionController.text,
+                            lon: 4.3,
+                            lat: 3.1,
+                            storeLogo: addStoreNotifier.logoFile!,
+                            storeImage:
+                            addStoreNotifier.imageFile!,
+                          );
+                          await ref
+                              .refresh(storeNotifierProvider)
+                              .fetchMyStores();
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateBack();
+                          addStoreNotifier.moveForward();
+                          print(addStoreNotifier.currentPage);
+                          _pageController.animateToPage(
+                            // array starts at 0 (lol)
+                            addStoreNotifier.currentPage - 1,
+                            duration:
+                            const Duration(milliseconds: 500),
+                            curve: Curves.easeIn,
+                          );
+                        } else {
+                          addStoreNotifier.moveForward();
+                          print(addStoreNotifier.currentPage);
+                          // addStoreNotifier.currentPage >
+                          //     addStoreNotifier.totalPage
+                          //     ?
+                          // ref
+                          //     .read(navigationServiceProvider)
+                          //     .navigateBack()
+                          // ref
+                          //     .read(
+                          //     navigationServiceProvider)
+                          //     .navigateToNamed(
+                          //     Routes.dashboard)
+                          //     :
+                          _pageController.animateToPage(
+                            // array starts at 0 (lol)
+                            addStoreNotifier.currentPage - 1,
+                            duration:
+                            const Duration(milliseconds: 500),
+                            curve: Curves.easeIn,
+                          );
+                        }
+                      },
                     ),
                     const Spacing.mediumHeight(),
                   ],

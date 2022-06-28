@@ -22,6 +22,7 @@ class AppTextField extends StatelessWidget {
   final bool? enabled;
   final void Function()? onTap;
   final double contentPadding;
+  final TextStyle style;
 
   const AppTextField({
     Key? key,
@@ -44,12 +45,13 @@ class AppTextField extends StatelessWidget {
     this.enabled,
     this.onTap,
     this.contentPadding = 0,
+    required this.style,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 5.0),
+      padding: const EdgeInsets.only(top: 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -65,6 +67,7 @@ class AppTextField extends StatelessWidget {
           ),
           const Spacing.tinyHeight(),
           TextFormField(
+            style: style,
             controller: controller,
             focusNode: focusNode,
             keyboardType: keyboardType,
@@ -82,53 +85,53 @@ class AppTextField extends StatelessWidget {
                 hasBorder
                     ? 16
                     : isSearch
-                        ? 16
-                        : contentPadding,
+                    ? 16
+                    : contentPadding,
               ),
               hintText: hintText,
               hintStyle: const TextStyle(fontSize: 14),
               suffixIcon: suffixIcon != null
                   ? UnconstrainedBox(
-                      child: suffixIcon,
-                      alignment:
-                          hasBorder ? Alignment.center : Alignment.topRight,
-                    )
+                child: suffixIcon,
+                alignment:
+                hasBorder ? Alignment.center : Alignment.topRight,
+              )
                   : null,
               prefixIcon: prefixIcon != null
                   ? UnconstrainedBox(
-                      child: prefixIcon,
-                      alignment: hasBorder
-                          ? Alignment.center
-                          : isSearch
-                              ? Alignment.center
-                              : Alignment.topCenter,
-                    )
+                child: prefixIcon,
+                alignment: hasBorder
+                    ? Alignment.center
+                    : isSearch
+                    ? Alignment.center
+                    : Alignment.topCenter,
+              )
                   : null,
               border: hasBorder
                   ? OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(borderRadius),
-                      borderSide: const BorderSide(),
-                    )
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: const BorderSide(),
+              )
                   : isSearch
-                      ? OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(borderRadius),
-                          borderSide: BorderSide.none,
-                        )
-                      : OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(borderRadius),
-                          borderSide: BorderSide.none,
-                        ),
+                  ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide.none,
+              )
+                  : OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide.none,
+              ),
               errorBorder: hasBorder
                   ? OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(borderRadius),
-                      borderSide: const BorderSide(color: AppColors.red),
-                    )
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: const BorderSide(color: AppColors.red),
+              )
                   : isSearch
-                      ? OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(borderRadius),
-                          borderSide: BorderSide.none,
-                        )
-                      : InputBorder.none,
+                  ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide.none,
+              )
+                  : InputBorder.none,
             ),
             onChanged: onChanged,
           ),

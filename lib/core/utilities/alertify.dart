@@ -1,6 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/colors.dart';
+
 class Alertify {
   final String? title;
 
@@ -19,7 +21,7 @@ class Alertify {
     // if (this.icon == null) {
     //   this.icon = Icons.check;
     // }
-    botToast(Colors.greenAccent);
+    botToast(AppColors.primaryColor);
   }
 
   void warning() {

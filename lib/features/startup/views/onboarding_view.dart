@@ -15,7 +15,8 @@ class OnboardingView extends ConsumerWidget {
   OnboardingView({Key? key}) : super(key: key);
   int currentIndex = 0;
 
-  static const _kCurve = Curves.ease;
+
+  static const _kCurve = Curves.easeIn;
   final PageController _pageController = PageController(initialPage: 0);
   static const _kDuration = Duration(milliseconds: 10);
 
@@ -25,7 +26,7 @@ class OnboardingView extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        //mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Spacing.largeHeight(),
@@ -36,27 +37,33 @@ class OnboardingView extends ConsumerWidget {
               itemBuilder: (context, index) => Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+
                   Image.asset(
                     onboardnotifier.onBoardingProvContents[index].imgString,
+                    height: 380,
                   ),
-                  const Spacing.empty(),
-                  Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Text(
-                        onboardnotifier
-                            .onBoardingProvContents[index].description,
-                        style: const TextStyle(
-                          color: AppColors.grey1,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
+                  //const Spacing.empty(),
+                  Expanded(
+                      child: Container (margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                          child:
+                          Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Text(
+                                onboardnotifier
+                                    .onBoardingProvContents[index].description,
+                                style: const TextStyle(
+                                  color: AppColors.grey1,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24,
+                                ),
+                                textAlign: TextAlign.center,
+                              )))),
                 ],
               ),
               onPageChanged: onboardnotifier.changePage,
             ),
           ),
+          Spacing.smallHeight(),
           DotsIndicator(
             controller: _pageController,
             itemCount: onboardnotifier.onBoardingProvContents.length,
@@ -70,6 +77,7 @@ class OnboardingView extends ConsumerWidget {
               );
             },
           ),
+          Spacing.largeHeight(),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: AppButton(
@@ -82,10 +90,10 @@ class OnboardingView extends ConsumerWidget {
                 onboardnotifier.currentPage > 2
                     ? onboardnotifier.exitOnboard(toSignUp: true)
                     : _pageController.animateToPage(
-                        onboardnotifier.currentPage,
-                        duration: _kDuration,
-                        curve: _kCurve,
-                      );
+                  onboardnotifier.currentPage,
+                  duration: _kDuration,
+                  curve: _kCurve,
+                );
               },
             ),
           ),
@@ -99,6 +107,16 @@ class OnboardingView extends ConsumerWidget {
               onTapText: () => onboardnotifier.exitOnboard(toSignUp: false),
               fontSize: 14,
             ),
+          ),
+
+          Visibility(
+              visible: onboardnotifier.currentPage == 0,
+              child: Spacing.mediumHeight()
+          ),
+
+          Visibility(
+              visible: onboardnotifier.currentPage == 1,
+              child: Spacing.mediumHeight()
           ),
           const Spacing.largeHeight(),
         ],

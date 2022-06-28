@@ -62,7 +62,11 @@ class ProductImageContainer extends ConsumerWidget {
                 count: product.image.length,
                 // activeIndex: compareNotifier.activeIndex,
                 activeIndex: activeIndex,
-                effect: const WormEffect(
+                effect: const ExpandingDotsEffect(
+                  spacing: 3,
+                  expansionFactor: 4,
+                  activeDotColor: AppColors.light,
+                  dotColor: AppColors.light,
                   dotHeight: 4,
                   dotWidth: 4,
                 ),

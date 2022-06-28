@@ -47,9 +47,10 @@ class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
           color: AppColors.dark, //change your color here
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {ref.read(navigationServiceProvider).navigateBack();},
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
+            size: 12,
           ),
         ),
         elevation: 0,
@@ -68,7 +69,7 @@ class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
           ? const CircularProgress()
           : ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.fromLTRB(20, 4, 20, 2),
               itemCount: messageListNotifier.chats.isEmpty
                   ? 1
                   : messageListNotifier.chats.length,

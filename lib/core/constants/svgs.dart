@@ -20,4 +20,7 @@ class AppSvgs {
   static const addProduct = 'assets/svgs/add_product.svg';
   static const locate = 'assets/svgs/locate.svg';
   static const locateOutlined = 'assets/svgs/locate_outlined.svg';
+  static const addReviewStar = 'assets/svgs/add_review_star.svg';
+  static const addReviewIcon = 'assets/svgs/add_review.svg';
+  static const setting2 = 'assets/svgs/setting_2.svg';
 }

@@ -30,7 +30,7 @@ class NotificationNotifier extends BaseChangeNotifier {
       _notificationsLoading = true;
       setState(state: ViewState.loading);
       _notifications =
-          await _reader(notificationRepository).fetchNotifications();
+      await _reader(notificationRepository).fetchNotifications();
       _notificationsLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
@@ -62,5 +62,5 @@ class NotificationNotifier extends BaseChangeNotifier {
 }
 
 final notificationNotifierProvider =
-    ChangeNotifierProvider<NotificationNotifier>(
+ChangeNotifierProvider<NotificationNotifier>(
         (ref) => NotificationNotifier(ref.read));

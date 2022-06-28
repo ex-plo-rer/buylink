@@ -60,6 +60,7 @@ class EditUserName extends ConsumerWidget {
                 ),
                 const Spacing.smallHeight(),
                 AppTextField(
+                  style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                   title: '',
                   hintText: 'Deji',
                   focusNode: _nameFN,
@@ -95,12 +96,12 @@ class EditUserName extends ConsumerWidget {
                   onPressed: _nameController.text.isEmpty
                       ? null
                       : () async {
-                          if (_formKey.currentState!.validate()) {
-                            await editUserNameNotifier.changeName();
-                            Alertify(title: 'Name changed successfully')
-                                .success();
-                          }
-                        },
+                    if (_formKey.currentState!.validate()) {
+                      await editUserNameNotifier.changeName();
+                      Alertify(title: 'Name changed successfully')
+                          .success();
+                    }
+                  },
                 ),
               ],
             ),

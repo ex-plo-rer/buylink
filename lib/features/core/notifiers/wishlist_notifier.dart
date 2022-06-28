@@ -42,7 +42,7 @@ class WishlistNotifier extends BaseChangeNotifier {
     required int productId,
   }) async {
     try {
-      setState(state: ViewState.loading);
+      // setState(state: ViewState.loading);
       await _reader(coreRepository).addToWishList(
         productId: productId,
       );
@@ -76,7 +76,7 @@ class WishlistNotifier extends BaseChangeNotifier {
 }
 
 final wishlistNotifierProvider = ChangeNotifierProvider<WishlistNotifier>(
-  (ref) => WishlistNotifier(ref.read),
+      (ref) => WishlistNotifier(ref.read),
 );
 // final wishlistNotifierProvider =
 //     ChangeNotifierProvider.family<WishlistNotifier, String>(

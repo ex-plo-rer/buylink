@@ -28,6 +28,8 @@ class ChatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
       title: Text(
         title,
         style: const TextStyle(
@@ -39,7 +41,7 @@ class ChatTile extends StatelessWidget {
         backgroundColor: AppColors.shade1,
         child: imageUrl == null ? Text(title.initials()) : null,
         backgroundImage:
-            imageUrl == null ? null : CachedNetworkImageProvider(imageUrl!),
+        imageUrl == null ? null : CachedNetworkImageProvider(imageUrl!),
         radius: 24,
       ),
       subtitle: Text(
@@ -50,22 +52,22 @@ class ChatTile extends StatelessWidget {
       trailing: unreadCount < 1
           ? const Spacing.empty()
           : Column(
-              children: <Widget>[
-                const SizedBox(height: 6),
-                CircleAvatar(
-                  backgroundColor: AppColors.primaryColor,
-                  child: Text(
-                    unreadCount.toString(),
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  radius: 10,
-                ),
-                Text(
-                  time,
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ],
+        children: <Widget>[
+          const SizedBox(height: 6),
+          CircleAvatar(
+            backgroundColor: AppColors.primaryColor,
+            child: Text(
+              unreadCount.toString(),
+              style: const TextStyle(fontSize: 12),
             ),
+            radius: 10,
+          ),
+          Text(
+            time,
+            style: const TextStyle(fontSize: 12),
+          ),
+        ],
+      ),
       onTap: onTap,
     );
   }

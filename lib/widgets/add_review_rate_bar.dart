@@ -11,8 +11,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AppRatingBar extends ConsumerWidget {
-  const AppRatingBar({
+class AppReviewRatingBar extends ConsumerWidget {
+  const AppReviewRatingBar({
     Key? key,
     this.itemSize = 20,
     this.initialRating = 3,
@@ -48,9 +48,8 @@ class AppRatingBar extends ConsumerWidget {
       unratedColor: AppColors.grey7,
       itemPadding: EdgeInsets.symmetric(horizontal: itemPadding),
       itemBuilder: (context, _) => SvgPicture.asset(
-        AppSvgs.star,
+        AppSvgs.addReviewStar,
         color: Colors.amber,
-      //  width: ,
       ),
       onRatingUpdate: onRatingUpdate,
     );

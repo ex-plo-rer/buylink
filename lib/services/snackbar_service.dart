@@ -7,19 +7,19 @@ class SnackbarService {
   final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSuccessSnackBar(
-    String text,
-  ) {
+      String text,
+      ) {
     return scaffoldMessengerKey.currentState!.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.greenAccent,
+        backgroundColor: AppColors.primaryColor,
         content: Text(text),
       ),
     );
   }
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackBar(
-    String text,
-  ) {
+      String text,
+      ) {
     return scaffoldMessengerKey.currentState!.showSnackBar(
       SnackBar(
         backgroundColor: Colors.red,

@@ -28,38 +28,20 @@ import '../notifiers/wishlist_notifier.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 
-class ProductDetailsView extends ConsumerStatefulWidget {
-  const ProductDetailsView({
+class ProductDetailsView extends ConsumerWidget {
+  ProductDetailsView({
     Key? key,
     required this.product,
   }) : super(key: key);
+
   final ProductModel product;
 
-  @override
-  ConsumerState<ProductDetailsView> createState() => _ProductDetailsViewState();
-}
-
-class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
   late String symb;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ref
-          .watch(productDetailsNotifierProvider)
-          .setFavorite(widget.product.isFav!);
-      ref
-          .watch(productDetailsNotifierProvider)
-          .fetchSimilarProducts(productId: widget.product.id);
-    });
-  }
 
   void symbol(context) {
     Locale locale = Localizations.localeOf(context);
     var format =
-        NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
+    NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
     symb = format.currencySymbol;
     print("CURRENCY SYMBOL ${symb}"); // $
     print("CURRENCY NAME ${format.currencyName}"); // USD
@@ -68,10 +50,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     symbol(context);
-    final productDetailsNotifier = ref.watch(productDetailsNotifierProvider);
-    // final homeNotifier = ref.watch(homeNotifierProvider(''));
+    final productDetailsNotifier =
+    ref.watch(productDetailsNotifierProvider);
+    final homeNotifier = ref.watch(homeNotifierProvider(''));
     final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     return Scaffold(
       body: SafeArea(
@@ -89,7 +72,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       color: AppColors.grey1,
                     ),
                     child: CarouselSlider.builder(
-                      itemCount: widget.product.image.length,
+                      itemCount: product.image.length,
                       options: CarouselOptions(
                         height: 447,
                         autoPlay: true,
@@ -99,7 +82,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                         onPageChanged: productDetailsNotifier.nextPage,
                       ),
                       itemBuilder: (context, index, realIndex) {
-                        final urlImage = widget.product.image[index];
+                        final urlImage = product.image[index];
                         return Container(
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.vertical(
@@ -116,9 +99,13 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   ),
                   const Spacing.smallHeight(),
                   AnimatedSmoothIndicator(
-                    count: widget.product.image.length,
+                    count: product.image.length,
                     activeIndex: productDetailsNotifier.activeIndex,
-                    effect: const WormEffect(
+                    effect: const ExpandingDotsEffect(
+                      spacing: 3,
+                      expansionFactor: 5,
+                      activeDotColor: AppColors.primaryColor,
+                      dotColor: AppColors.primaryColor,
                       dotHeight: 4,
                       dotWidth: 4,
                     ),
@@ -126,16 +113,16 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   ListTile(
                     onTap: () =>
                         ref.read(navigationServiceProvider).navigateToNamed(
-                              Routes.storeDetails,
-                              arguments: widget.product.store.id,
-                            ),
+                          Routes.storeDetails,
+                          arguments: product.store,
+                        ),
                     leading: CircleAvatar(
                       backgroundColor: AppColors.grey1,
                       backgroundImage:
-                          CachedNetworkImageProvider(widget.product.store.logo),
+                      CachedNetworkImageProvider(product.store.logo),
                     ),
                     title: Text(
-                      widget.product.store.name,
+                      product.store.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
@@ -144,28 +131,29 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     ),
                     subtitle: IconNTextContainer(
                       text: '4.6',
-                      // text: widget.product.store.rating,
+                      // text: product.store.rating,
                       padding: 0,
                       icon: SvgPicture.asset(
-                        AppSvgs.favoriteFilled,
+                        AppSvgs.star,
                         width: 12,
                         height: 12,
+                        color: AppColors.yellow,
                       ),
                       containerColor: AppColors.transparent,
                     ),
                     trailing: DistanceContainer(
                       distance: ref.watch(locationService).getDistance(
-                            endLat: widget.product.lat,
-                            endLon: widget.product.lon,
-                          ),
-                      // distance: widget.product.store.distance,
+                        endLat: product.lat,
+                        endLon: product.lon,
+                      ),
+                      // distance: product.store.distance,
                       containerColor: AppColors.grey2,
                       textColor: AppColors.light,
                       iconColor: AppColors.light,
                     ),
                   ),
                   Text(
-                    widget.product.name,
+                    product.name,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -176,7 +164,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '#${widget.product.price} ',
+                        '#${product.price} ',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -184,9 +172,9 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                         ),
                       ),
                       Visibility(
-                        visible: widget.product.oldPrice > 0,
+                        visible: product.oldPrice > 0,
                         child: Text(
-                          '${widget.product.oldPrice}',
+                          '${product.oldPrice}',
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -202,7 +190,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
                       'A super-comfortable denim legging,built to contour curves, lengthen legs and celebrate your form. Made with an innovative tummy-sliming',
-                      //widget.product.description,
+                      //product.description,
                       // textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 14,
@@ -228,9 +216,9 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                             onPressed: () => ref
                                 .read(navigationServiceProvider)
                                 .navigateToNamed(
-                                  Routes.storeDirection,
-                                  arguments: widget.product.store,
-                                ),
+                              Routes.storeDirection,
+                              arguments: product.store,
+                            ),
                           ),
                         ),
                         const Spacing.smallWidth(),
@@ -239,8 +227,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                             height: 56,
                             width: 56,
                             favIcon: SvgPicture.asset(
-                              productDetailsNotifier.isFavorite
-                                  // widget.product.isFav!
+                              product.isFav!
                                   ? AppSvgs.favoriteFilled
                                   : AppSvgs.favorite,
                             ),
@@ -248,12 +235,12 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                             radius: 10,
                             padding: 18,
                             onFavoriteTapped: () async {
-                              await productDetailsNotifier.onFavTapped(
-                                  productId: widget.product.id);
-                              // TODO: Should pass category here...
-                              ref
-                                  .refresh(homeNotifierProvider(null))
-                                  .fetchProducts(category: 'all');
+                              product.isFav!
+                                  ? await wishlistNotifier.removeFromWishlist(
+                                  productId: product.id)
+                                  : await wishlistNotifier.addToWishlist(
+                                  productId: product.id);
+                              ref.refresh(homeNotifierProvider(''));
                             },
                           ),
                         ),
@@ -264,8 +251,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   const Divider(thickness: 2),
                   GestureDetector(
                     onTap: () {
-                      productDetailsNotifier.fetchProductAttr(
-                          productId: widget.product.id);
+                      homeNotifier.fetchProductAttr(productId: product.id);
                       ref
                           .read(navigationServiceProvider)
                           .navigateToNamed(Routes.productDetailsMore);
@@ -318,79 +304,80 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       child: productDetailsNotifier.state.isLoading
                           ? const CircularProgress()
                           : productDetailsNotifier.similarProducts.isEmpty
-                              ? const Center(
-                                  child: Text('No similar product'),
-                                )
-                              : MasonryGridView.count(
-                                  itemCount: productDetailsNotifier
-                                      .similarProducts.length,
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 15,
-                                  itemBuilder: (context, index) {
-                                    return ProductContainer(
-                                      url: productDetailsNotifier
-                                          .similarProducts[index].image[0],
-                                      storeName: productDetailsNotifier
-                                          .similarProducts[index].store.name,
-                                      productName: productDetailsNotifier
-                                          .similarProducts[index].name,
-                                      productPrice: productDetailsNotifier
-                                          .similarProducts[index].price,
-                                      distance: ref
-                                          .watch(locationService)
-                                          .getDistance(
-                                            endLat: productDetailsNotifier
-                                                .similarProducts[index].lat,
-                                            endLon: productDetailsNotifier
-                                                .similarProducts[index].lon,
-                                          ),
-                                      isFavorite: productDetailsNotifier
-                                          .similarProducts[index].isFav!,
-                                      isDetails: true,
-                                      onProductTapped: () {
-                                        ref
-                                            .read(navigationServiceProvider)
-                                            .navigateToNamed(
-                                              Routes.productDetails,
-                                              arguments: productDetailsNotifier
-                                                  .similarProducts[index],
-                                            );
-                                      },
-                                      onDistanceTapped: () {},
-                                      onFlipTapped: () {
-                                        ref
-                                            .read(navigationServiceProvider)
-                                            .navigateToNamed(
-                                              Routes.compare,
-                                              arguments: CompareArgModel(
-                                                product: productDetailsNotifier
-                                                    .similarProducts[index],
-                                              ),
-                                            );
-                                      },
-                                      onFavoriteTapped: () async {
-                                        productDetailsNotifier
-                                                .similarProducts[index].isFav!
-                                            ? await wishlistNotifier
-                                                .removeFromWishlist(
-                                                productId:
-                                                    productDetailsNotifier
-                                                        .similarProducts[index]
-                                                        .id,
-                                              )
-                                            : await wishlistNotifier
-                                                .addToWishlist(
-                                                productId:
-                                                    productDetailsNotifier
-                                                        .similarProducts[index]
-                                                        .id,
-                                              );
-                                        ref.refresh(homeNotifierProvider(''));
-                                      },
-                                    );
-                                  },
+                          ? const Center(
+                        child: Text('No similar product'),
+                      )
+                          : MasonryGridView.count(
+                        itemCount: productDetailsNotifier
+                            .similarProducts.length,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 15,
+                        itemBuilder: (context, index) {
+                          return ProductContainer(
+                            url: productDetailsNotifier
+                                .similarProducts[index].image[0],
+                            storeName: productDetailsNotifier
+                                .similarProducts[index].store.name,
+                            productName: productDetailsNotifier
+                                .similarProducts[index].name,
+                            productPrice: productDetailsNotifier
+                                .similarProducts[index].price,
+                            distance: ref
+                                .watch(locationService)
+                                .getDistance(
+                              endLat: productDetailsNotifier
+                                  .similarProducts[index].lat,
+                              endLon: productDetailsNotifier
+                                  .similarProducts[index].lon,
+                            ),
+                            isFavorite: productDetailsNotifier
+                                .similarProducts[index].isFav!,
+                            isDetails: true,
+                            onProductTapped: () {
+                              ref
+                                  .read(navigationServiceProvider)
+                                  .navigateToNamed(
+                                Routes.productDetails,
+                                arguments: productDetailsNotifier
+                                    .similarProducts[index],
+                              );
+                            },
+                            onDistanceTapped: () {},
+                            onFlipTapped: () {
+                              ref
+                                  .read(navigationServiceProvider)
+                                  .navigateToNamed(
+                                Routes.compare,
+                                arguments: CompareArgModel(
+                                  product: productDetailsNotifier
+                                      .similarProducts[index],
                                 ),
+                              );
+                            },
+                            onFavoriteTapped: () async {
+                              productDetailsNotifier
+                                  .similarProducts[index].isFav!
+                                  ? await wishlistNotifier
+                                  .removeFromWishlist(
+                                productId:
+                                productDetailsNotifier
+                                    .similarProducts[index]
+                                    .id,
+                              )
+                                  : await wishlistNotifier
+                                  .addToWishlist(
+                                productId:
+                                productDetailsNotifier
+                                    .similarProducts[index]
+                                    .id,
+                              );
+                              ref.refresh(
+                                  productDetailsNotifierProvider);
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

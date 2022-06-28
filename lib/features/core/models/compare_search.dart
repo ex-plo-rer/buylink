@@ -95,13 +95,13 @@ class CompareSearch extends SearchDelegate<String> {
                             compareSearchNotifier.autoComplete!.result.length,
                         itemBuilder: (context, index) => GestureDetector(
                           onTap: () {
-                            ref
-                                .read(navigationServiceProvider)
-                                .navigateOffNamed(
-                                  Routes.compareProducts,
-                                  arguments: compareSearchNotifier
-                                      .autoComplete!.result[index],
-                                );
+                            // ref
+                            //     .read(navigationServiceProvider)
+                            //     .navigateOffNamed(
+                            //       Routes.compareProducts,
+                            //       arguments: compareSearchNotifier
+                            //           .autoComplete!.result[index],
+                            //     );
                           },
                           child: Row(
                             children: [
@@ -190,13 +190,13 @@ class CompareSearch extends SearchDelegate<String> {
                                   ? const Text('Popular Searches')
                                   : GestureDetector(
                                       onTap: () {
-                                        ref
-                                            .read(navigationServiceProvider)
-                                            .navigateOffNamed(
-                                                Routes.compareProducts,
-                                                arguments: productSearchNotifier
-                                                    .autoComplete!
-                                                    .result[index - 1]);
+                                        // ref
+                                        //     .read(navigationServiceProvider)
+                                        //     .navigateOffNamed(
+                                        //         Routes.compareProducts,
+                                        //         arguments: productSearchNotifier
+                                        //             .autoComplete!
+                                        //             .result[index - 1]);
                                       },
                                       child: Row(
                                         children: [
@@ -231,10 +231,10 @@ class CompareSearch extends SearchDelegate<String> {
                           productSearchNotifier.autoComplete!.result.length,
                       itemBuilder: (context, index) => GestureDetector(
                         onTap: () {
-                          ref.read(navigationServiceProvider).navigateOffNamed(
-                              Routes.compareProducts,
-                              arguments: productSearchNotifier
-                                  .autoComplete!.result[index]);
+                          // ref.read(navigationServiceProvider).navigateOffNamed(
+                          //     Routes.compareProducts,
+                          //     arguments: productSearchNotifier
+                          //         .autoComplete!.result[index]);
                         },
                         child: Row(
                           children: [

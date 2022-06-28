@@ -44,21 +44,22 @@ class SignupView extends ConsumerWidget {
         leading: signupNotifier.currentPage == 1
             ? null
             : IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: AppColors.dark,
-                ),
-                onPressed: () {
-                  signupNotifier.moveBackward();
-                  print(signupNotifier.currentPage);
-                  _pageController.animateToPage(
-                    // array starts at 0 (lol)
-                    signupNotifier.currentPage - 1,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn,
-                  );
-                },
-              ),
+          icon: const Icon(
+            Icons.arrow_back_ios_outlined,
+            size: 15,
+            color: AppColors.grey2,
+          ),
+          onPressed: () {
+            signupNotifier.moveBackward();
+            print(signupNotifier.currentPage);
+            _pageController.animateToPage(
+              // array starts at 0 (lol)
+              signupNotifier.currentPage - 1,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
+          },
+        ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
@@ -101,9 +102,10 @@ class SignupView extends ConsumerWidget {
                               fontSize: 24,
                               secondColor: AppColors.primaryColor,
                             ),
-                            const Spacing.height(12),
+                            const Spacing.height(4),
                             AppTextField(
                               title: '',
+                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                               hintText: 'Steve Jobs',
                               focusNode: _nameFN,
                               controller: _nameController,
@@ -136,6 +138,7 @@ class SignupView extends ConsumerWidget {
                             ),
                             const Spacing.height(12),
                             AppTextField(
+                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                               title: '',
                               hintText: 'Example@gmail.com',
                               keyboardType: TextInputType.emailAddress,
@@ -145,23 +148,26 @@ class SignupView extends ConsumerWidget {
                               suffixIcon: _emailAddressController.text.isEmpty
                                   ? null
                                   : GestureDetector(
-                                      onTap: () {},
-                                      child: const CircleAvatar(
-                                        backgroundColor: AppColors.grey7,
-                                        radius: 10,
-                                        child: Icon(
-                                          Icons.clear_rounded,
-                                          color: AppColors.light,
-                                          size: 15,
-                                        ),
-                                      ),
-                                    ),
+                                onTap: () {
+                                  _emailAddressController.clear();
+
+                                },
+                                child: const CircleAvatar(
+                                  backgroundColor: AppColors.grey7,
+                                  radius: 10,
+                                  child: Icon(
+                                    Icons.clear_rounded,
+                                    color: AppColors.light,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
                               hasBorder: false,
                             ),
                           ],
                         ),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const TextWithRich(
                               firstText: 'Check',
@@ -223,6 +229,7 @@ class SignupView extends ConsumerWidget {
                             ),
                             const Spacing.height(12),
                             AppTextField(
+                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                               title: '',
                               hintText: 'Example123',
                               obscureText: !signupNotifier.passwordVisible,
@@ -408,17 +415,56 @@ class SignupView extends ConsumerWidget {
                           style: TextStyle(color: AppColors.grey5),
                         ),
                       ),
-                      const Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Terms of Use and Privacy Policy',
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                            decoration: TextDecoration.underline,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                      Align(
+                          alignment: Alignment.center,
+                          child: Row (
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                GestureDetector(
+                                    onTap:(){
+
+                                      ref
+                                          .read(navigationServiceProvider).navigateToNamed(Routes.termOfUse);
+                                    },
+                                    child:
+                                    Text(
+                                      'Terms of Use',
+                                      style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        decoration: TextDecoration.underline,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+
+
+                                    )),
+                                SizedBox(width: 4),
+
+                                Text(
+                                  'and',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),),
+                                SizedBox(width: 4),
+
+                                GestureDetector(
+                                    onTap:(){
+                                      ref
+                                          .read(navigationServiceProvider).navigateToNamed(Routes.privacyPolicy);
+
+                                    },
+                                    child: Text(
+                                      'Privacy Policy',
+                                      style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        decoration: TextDecoration.underline,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),)),
+                              ]
+                          )
                       ),
                     ],
                   ),

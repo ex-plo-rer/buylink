@@ -10,6 +10,7 @@ import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../widgets/add_review_rate_bar.dart';
 import '../../../widgets/app_rating_bar.dart';
 import '../notifiers/add_review_notifier.dart';
 
@@ -64,7 +65,11 @@ class AddReviewView extends ConsumerWidget {
             color: AppColors.dark, //change your color here
           ),
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              ref
+                  .read(navigationServiceProvider)
+                  .navigateBack();
+            },
             icon: const Icon(
               Icons.arrow_back_ios_outlined,
               size: 12,
@@ -83,7 +88,7 @@ class AddReviewView extends ConsumerWidget {
           centerTitle: true,
         ),
         body: SafeArea(
-          child: Padding(
+          child: SingleChildScrollView(child:Padding(
             padding: const EdgeInsets.symmetric(
               // vertical: 16,
               horizontal: 20,
@@ -101,7 +106,7 @@ class AddReviewView extends ConsumerWidget {
                     ),
                   ),
                   const Spacing.bigHeight(),
-                  const Divider(thickness: 2),
+                  const Divider(thickness: 2, color: AppColors.grey8,),
                   const Text(
                     'Your overall rating of the store',
                     style: TextStyle(
@@ -116,8 +121,9 @@ class AddReviewView extends ConsumerWidget {
                     itemSize: 30,
                     onRatingUpdate: addReviewNotifier.onRatingUpdate,
                   ),
-                  const Divider(thickness: 2),
-                  const Spacing.bigHeight(),
+                  const Divider(thickness: 2, color: AppColors.grey8,),
+                  Spacing.smallHeight(),
+
                   ReviewTextField(
                     hintText: 'Sumarize your review',
                     focusNode: reviewTitleFN,
@@ -130,7 +136,7 @@ class AddReviewView extends ConsumerWidget {
                   const Spacing.height(20),
                   ReviewTextField(
                     hintText:
-                        'Describe your experience shopping at the store(optional)',
+                    'Describe your experience shopping at the store(optional)',
                     focusNode: reviewCommentFN,
                     controller: reviewCommentController,
                     title: 'How was your experience? (optional)',
@@ -167,6 +173,7 @@ class AddReviewView extends ConsumerWidget {
                 ],
               ),
             ),
+          ),
           ),
         ),
       ),

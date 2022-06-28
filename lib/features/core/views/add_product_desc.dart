@@ -47,27 +47,30 @@ class AddProductDescView extends ConsumerWidget {
                           "all the fields are optional, so fill the field that applies to"
                           " your product"),
 
-                      Text ("Brand"),
+                      Text ("Brand", style: TextStyle(color: AppColors.grey2, fontSize: 12, fontWeight: FontWeight.w500),),
 
                       AppTextField(
+                        style: TextStyle(color: AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w600),
                         hintText: "Levi",
                       ),
 
-                      Text ("Colors (seperate the colors by a comma(,))"),
+                      Text ("Colors (seperate the colors by a comma(,))", style: TextStyle(color: AppColors.grey2, fontSize: 12, fontWeight: FontWeight.w500),),
 
                       AppTextField(
-                        hintText: "Blue,Black",
+                        hintText: "Blue,Black", style: TextStyle(color: AppColors.primaryColor,
+                          fontSize: 14, fontWeight: FontWeight.w600),
                       ),
-                      Text ("Size of the product (separate the colors by a comma(,))"),
+                      Text ("Size of the product (separate the colors by a comma(,))", style: TextStyle(color: AppColors.grey2, fontSize: 12, fontWeight: FontWeight.w500),),
 
                       AppTextField(
-                        hintText: "M,XL,L",
+                        hintText: "M,XL,L", style: TextStyle(color: AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w600),
                       ),
 
-                      Text ("Model"),
+                      Text ("Model",
+                        style: TextStyle(color: AppColors.grey2, fontSize: 12, fontWeight: FontWeight.w500),),
 
                       AppTextField(
-                        hintText: "Highwaist",
+                        hintText: "Highwaist", style: TextStyle(color: AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       Text ("Highwaist"),
 

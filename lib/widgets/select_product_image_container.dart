@@ -37,81 +37,81 @@ class SelectProductImageContainer extends ConsumerWidget {
       // Check if at least there is one image to display
       child: addProductNotifier.imageList.isNotEmpty
           ? Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: AddProductImageContainer(
-                        imagePath: addProductNotifier.imageList[0],
-                        index: 0,
-                      ),
-                    ),
-                    const Spacing.tinyWidth(),
-                    Expanded(
-                      child: AddProductImageContainer(
-                        imagePath: addProductNotifier.imageList.length >= 2
-                            ? addProductNotifier.imageList[1]
-                            : null,
-                        index: 1,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacing.tinyHeight(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: AddProductImageContainer(
-                        imagePath: addProductNotifier.imageList.length >= 3
-                            ? addProductNotifier.imageList[2]
-                            : null,
-                        index: 2,
-                      ),
-                    ),
-                    const Spacing.tinyWidth(),
-                    Expanded(
-                        child: AddProductImageContainer(
-                      imagePath: addProductNotifier.imageList.length >= 4
-                          ? addProductNotifier.imageList[3]
-                          : null,
-                      index: 3,
-                    )),
-                  ],
-                ),
-              ],
-            )
-          : GestureDetector(
-              onTap: onDottedContainerTapped,
-              child: DottedBorder(
-                borderType: BorderType.RRect,
-                radius: const Radius.circular(5),
-                dashPattern: const [5, 2],
-                color: AppColors.primaryColor,
-                strokeWidth: 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.image_outlined,
-                        size: 20,
-                      ),
-                    ),
-                    Text(
-                      'You can only add upto 4 pictures of the product',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                        color: AppColors.grey5,
-                      ),
-                    ),
-                  ],
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: AddProductImageContainer(
+                  imagePath: addProductNotifier.imageList[0],
+                  index: 0,
                 ),
               ),
-            ),
+              const Spacing.tinyWidth(),
+              Expanded(
+                child: AddProductImageContainer(
+                  imagePath: addProductNotifier.imageList.length >= 2
+                      ? addProductNotifier.imageList[1]
+                      : null,
+                  index: 1,
+                ),
+              ),
+            ],
+          ),
+          const Spacing.tinyHeight(),
+          Row(
+            children: [
+              Expanded(
+                child: AddProductImageContainer(
+                  imagePath: addProductNotifier.imageList.length >= 3
+                      ? addProductNotifier.imageList[2]
+                      : null,
+                  index: 2,
+                ),
+              ),
+              const Spacing.tinyWidth(),
+              Expanded(
+                  child: AddProductImageContainer(
+                    imagePath: addProductNotifier.imageList.length >= 4
+                        ? addProductNotifier.imageList[3]
+                        : null,
+                    index: 3,
+                  )),
+            ],
+          ),
+        ],
+      )
+          : GestureDetector(
+        onTap: onDottedContainerTapped,
+        child: DottedBorder(
+          borderType: BorderType.RRect,
+          radius: const Radius.circular(5),
+          dashPattern: const [5, 2],
+          color: AppColors.grey7,
+          strokeWidth: 1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.image_outlined,
+                  size: 20,
+                ),
+              ),
+              Text(
+                'You can only add upto 4 pictures of the product',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  color: AppColors.grey5,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

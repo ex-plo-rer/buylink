@@ -61,6 +61,7 @@ class EditStoreName extends ConsumerWidget {
                 ),
                 const Spacing.smallHeight(),
                 AppTextField(
+                  style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
                   title: '',
                   hintText: 'Atinuke Stores',
                   focusNode: _nameFN,
@@ -96,20 +97,20 @@ class EditStoreName extends ConsumerWidget {
                   onPressed: _nameController.text.isEmpty
                       ? null
                       : () async {
-                          if (_formKey.currentState!.validate()) {
-                            await storeSettingsNotifier.editStore(
-                              storeId: 23,
-                              attribute: 'name',
-                              newValue: _nameController.text,
-                            );
-                            await ref
-                                .refresh(storeNotifierProvider)
-                                .fetchMyStores();
-                            ref.read(navigationServiceProvider).navigateBack();
-                            Alertify(title: 'Store name changed successfully')
-                                .success();
-                          }
-                        },
+                    if (_formKey.currentState!.validate()) {
+                      await storeSettingsNotifier.editStore(
+                        storeId: 23,
+                        attribute: 'name',
+                        newValue: _nameController.text,
+                      );
+                      await ref
+                          .refresh(storeNotifierProvider)
+                          .fetchMyStores();
+                      ref.read(navigationServiceProvider).navigateBack();
+                      Alertify(title: 'Store name changed successfully')
+                          .success();
+                    }
+                  },
                 ),
               ],
             ),

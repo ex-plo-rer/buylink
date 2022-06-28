@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/notifiers/notification_notifier/notification_notifier.dart';
 import 'package:buy_link/features/core/views/notification_view/notification_view.dart';
 import 'package:buy_link/features/core/views/home_view.dart';
 import 'package:buy_link/features/core/views/settings_view/setting_view.dart';

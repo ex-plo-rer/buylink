@@ -25,12 +25,14 @@ class AddStoreContainer extends ConsumerWidget {
           color: AppColors.primaryColor,
           strokeWidth: 2,
           child: SizedBox(
-            height: 160,
+            height: 155,
             width: (MediaQuery.of(context).size.width - 74) / 2,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: const <Widget>[
-                Spacing.largeHeight(),
-                Spacing.largeHeight(),
+                //Spacing.largeHeight(),
+                //Spacing.largeHeight(),
                 CircleAvatar(
                   backgroundColor: AppColors.primaryColor,
                   radius: 16,
@@ -42,7 +44,7 @@ class AddStoreContainer extends ConsumerWidget {
                 ),
                 Text("Add a new store",
                     style:
-                        TextStyle(color: AppColors.primaryColor, fontSize: 16))
+                    TextStyle(color: AppColors.primaryColor, fontSize: 16))
               ],
             ),
           ),
