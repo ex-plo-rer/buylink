@@ -62,7 +62,7 @@ class StoreContainer extends ConsumerWidget {
                       ),
                       Spacing.tinyWidth(),
                       Text(
-                        starRate.toString(),
+                        starRate.toStringAsFixed(1),
                         style:
                         const TextStyle(color: AppColors.light, fontSize: 16),
                       )

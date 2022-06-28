@@ -54,4 +54,4 @@ class LoginNotifier extends BaseChangeNotifier {
 }
 
 final loginNotifierProvider =
-    ChangeNotifierProvider<LoginNotifier>((ref) => LoginNotifier(ref.read));
+ChangeNotifierProvider<LoginNotifier>((ref) => LoginNotifier(ref.read));

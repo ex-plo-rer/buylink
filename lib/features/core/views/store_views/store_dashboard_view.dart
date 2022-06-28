@@ -414,14 +414,14 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                 ),
                                 IconNTextContainer2(
                                   text: storeDashboardNotifier
-                                      .mostSearchedNCount!.storeGrade
-                                      .toString(),
+                                      .mostSearchedNCount!.storeGrade.
+                                    toStringAsFixed(1).toString(),
                                   textColor: const Color(0xff5C6475),
-                                  fontSize: 16,
+                                  fontSize: 12,
                                   icon: SvgPicture.asset(
                                     AppSvgs.starFilled,
-                                    width: 15,
-                                    height: 15,
+                                    width: 12,
+                                    height: 12,
                                   ),
                                 ),
                               ],
@@ -685,7 +685,6 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                               Row(
                                 children: [
                                   CustomisedText(
-
                                     text: storeDashboardNotifier
                                         .mostSearchedNCount!
                                         .storeProductCount
