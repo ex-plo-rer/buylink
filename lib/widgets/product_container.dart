@@ -131,7 +131,8 @@ class ProductContainer extends ConsumerWidget {
             children: [
               Text(
                 storeName,
-                overflow: isDetails ? null : TextOverflow.ellipsis,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
                 style: const TextStyle(
                   color: AppColors.grey3,
                   fontSize: 14,
@@ -140,7 +141,8 @@ class ProductContainer extends ConsumerWidget {
               ),
               Text(
                 productName,
-                overflow: isDetails ? null : TextOverflow.ellipsis,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   color: AppColors.grey2,
                   fontSize: 14,
@@ -149,7 +151,8 @@ class ProductContainer extends ConsumerWidget {
               ),
               Text(
                 '#$productPrice',
-                overflow: isDetails ? null : TextOverflow.ellipsis,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
                 style: const TextStyle(
                   color: AppColors.grey1,
                   fontSize: 14,

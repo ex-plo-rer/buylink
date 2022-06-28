@@ -26,6 +26,11 @@ class DashboardNotifier extends BaseChangeNotifier {
     _navigationQueue.removeLast();
     notifyListeners();
   }
+
+  void resetIndex() {
+    _selectedIndex = 0;
+    notifyListeners();
+  }
 }
 
 final dashboardChangeNotifier = ChangeNotifierProvider<DashboardNotifier>(

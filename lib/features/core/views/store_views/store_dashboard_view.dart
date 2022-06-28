@@ -451,9 +451,9 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                             const Spacing.smallWidth(),
                             Expanded(
                               child: GestureDetector(
-                                onTap: () => ref
-                                    .read(navigationServiceProvider)
-                                    .navigateToNamed(Routes.savedProducts),
+                                // onTap: () => ref
+                                //     .read(navigationServiceProvider)
+                                //     .navigateToNamed(Routes.savedProducts),
                                 child: Container(
                                   padding: const EdgeInsets.all(12),
                                   height: 154,
@@ -529,7 +529,8 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                       ),
                                       const Spacing.smallHeight(),
                                       const Text(
-                                        'See all saved products',
+                                        // 'See all saved products',
+                                        '',
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w600,
