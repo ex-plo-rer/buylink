@@ -56,6 +56,10 @@ class SignupNotifier extends BaseChangeNotifier {
 
   bool get canResendOTP => _canResendOTP;
 
+  bool _emailUnique = false;
+
+  bool get emailUnique => _emailUnique;
+
   void startTimer() async {
     await Future.delayed(const Duration(seconds: 2));
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -156,19 +160,32 @@ class SignupNotifier extends BaseChangeNotifier {
   }) async {
     try {
       setState(state: ViewState.loading);
-
       await _reader(authenticationRepository).checkEmail(
         reason: reason,
         email: email,
       );
-
-      // _reader(snackbarService).showSuccessSnackBar('Success');
-      // _reader(navigationServiceProvider)
-      //     .navigateOffAllNamed(Routes.dashboard, (p0) => false);
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      // Alertify(title: e.error!).error();
+      Alertify(title: e.error!).error();
+    } finally {
+      // setState(state: ViewState.idle);
+    }
+  }
+
+  Future<void> checkEmailUniqueness({
+    required String email,
+  }) async {
+    try {
+      setState(state: ViewState.loading);
+      _emailUnique =
+          await _reader(authenticationRepository).checkEmailUniqueness(
+        email: email,
+      );
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify(title: e.error!).error();
     } finally {
       // setState(state: ViewState.idle);
     }

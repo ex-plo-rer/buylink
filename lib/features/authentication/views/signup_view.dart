@@ -312,6 +312,12 @@ class SignupView extends ConsumerWidget {
                                     ? null
                                     : () async {
                                         if (signupNotifier.currentPage == 2) {
+                                          // await signupNotifier
+                                          //     .checkEmailUniqueness(
+                                          //   email: _emailAddressController.text,
+                                          // );
+
+                                          // if (signupNotifier.emailUnique) {
                                           await signupNotifier.checkEmail(
                                             reason: 'signup',
                                             email: _emailAddressController.text,
@@ -325,6 +331,7 @@ class SignupView extends ConsumerWidget {
                                             curve: Curves.easeIn,
                                           );
                                           signupNotifier.startTimer();
+                                          // }
                                         } else if (signupNotifier.currentPage ==
                                             3) {
                                           String? otp = await ref

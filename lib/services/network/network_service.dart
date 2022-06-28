@@ -17,12 +17,22 @@ class NetworkService {
     if (response.statusCode != 200 && response.statusCode != 201) {
       print('response.body ${response.body}');
       print('response.statusCode ${response.statusCode}');
-      throw NetworkException(
-        jsonDecode(response.body)['message'],
-        error: jsonDecode(response.body)['data'],
-        // errors: jsonDecode(response.body)['data'],
-        statusCode: response.statusCode,
-      );
+      if (response.statusCode == 500 || response.statusCode == 404) {
+        throw NetworkException(
+          'An error occurred',
+          error: 'An error occurred',
+          statusCode: response.statusCode,
+        );
+      } else {
+        print(
+            'jsonDecode(response.body)[error][0] ${jsonDecode(response.body)['error'][0]}');
+        throw NetworkException(
+          'An error occurred',
+          error: jsonDecode(response.body)['error'][0],
+          // errors: jsonDecode(response.body)['data'],
+          statusCode: response.statusCode,
+        );
+      }
     }
   }
 
@@ -37,7 +47,7 @@ class NetworkService {
           .timeout(Duration(minutes: 2));
 
       throwExceptionOnFail(response);
-      return jsonDecode(response.body);
+      return jsonDecode(response.body)['response'];
     } on TimeoutException {
       print('Request timeout');
       throw NetworkException('Request timeout');
@@ -69,7 +79,7 @@ class NetworkService {
       print(Uri.parse('${AppStrings.API_BASE_URL}/$url'));
 
       throwExceptionOnFail(response);
-      return jsonDecode(response.body);
+      return jsonDecode(response.body)['response'];
     } on TimeoutException {
       print('Request timeout');
       throw NetworkException('Request timeout');
@@ -101,7 +111,7 @@ class NetworkService {
       print(Uri.parse('${AppStrings.API_BASE_URL}/$url'));
 
       throwExceptionOnFail(response);
-      return jsonDecode(response.body);
+      return jsonDecode(response.body)['response'];
     } on TimeoutException {
       print('Request timeout');
       throw NetworkException('Request timeout');
@@ -159,7 +169,7 @@ class NetworkService {
           .timeout(Duration(minutes: 2));
 
       throwExceptionOnFail(response);
-      return jsonDecode(response.body);
+      return jsonDecode(response.body)['response'];
     } on TimeoutException {
       print('Request timeout');
       throw NetworkException('Request timeout');
@@ -189,7 +199,7 @@ class NetworkService {
           .timeout(Duration(minutes: 2));
 
       throwExceptionOnFail(response);
-      return jsonDecode(response.body);
+      return jsonDecode(response.body)['response'];
     } on TimeoutException {
       print('Request timeout');
       throw NetworkException('Request timeout');

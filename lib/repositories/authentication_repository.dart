@@ -80,6 +80,24 @@ class AuthenticationRepository {
     return response['code'];
   }
 
+  Future<bool> checkEmailUniqueness({
+    required String email,
+  }) async {
+    final body = {
+      'email': email,
+    };
+    print('Check email uniqueness params sent to server $body');
+
+    var response = await networkService.post(
+      'users/check-email',
+      body: body,
+      headers: headers,
+    );
+
+    print('Check email uniqueness response $response');
+    return response['unique'];
+  }
+
   Future<bool> changePassword({
     required String email,
     required String password,
@@ -126,70 +144,70 @@ class AuthenticationRepository {
     return UserModel.fromJson(response);
   }
 
-  // Future<String?> verifyOTP({
-  //   required String email,
-  //   required String otp,
-  // }) async {
-  //   final body = {
-  //     'email': email,
-  //     'otp': otp,
-  //   };
-  //   print('Verify otp params sent to server $body');
-  //
-  //   var response = await networkService.post(
-  //     'otp/verify',
-  //     body: body,
-  //     headers: headers,
-  //   );
-  //
-  //   print('Verify otp response $response');
-  //
-  //   return response['message'] ?? 'eeeeeeeeeeeeeee';
-  // }
+// Future<String?> verifyOTP({
+//   required String email,
+//   required String otp,
+// }) async {
+//   final body = {
+//     'email': email,
+//     'otp': otp,
+//   };
+//   print('Verify otp params sent to server $body');
+//
+//   var response = await networkService.post(
+//     'otp/verify',
+//     body: body,
+//     headers: headers,
+//   );
+//
+//   print('Verify otp response $response');
+//
+//   return response['message'] ?? 'eeeeeeeeeeeeeee';
+// }
 
-  // Future<void> logout() async {
-  //   print('_reader(userProvider).token: ${_reader(userProvider).token}');
-  //   await networkService.get('user/logout',
-  //       headers: {'Authorization': _reader(userProvider).token!, ...headers});
-  //
-  //   storageService.deleteSecureData(AppStrings.userKey);
-  //   storageService.deleteSecureData(AppStrings.tokenKey);
-  //   storageService.deleteSecureData(AppStrings.lastPlaceKey);
-  // }
+// Future<void> logout() async {
+//   print('_reader(userProvider).token: ${_reader(userProvider).token}');
+//   await networkService.get('user/logout',
+//       headers: {'Authorization': _reader(userProvider).token!, ...headers});
+//
+//   storageService.deleteSecureData(AppStrings.userKey);
+//   storageService.deleteSecureData(AppStrings.tokenKey);
+//   storageService.deleteSecureData(AppStrings.lastPlaceKey);
+// }
 
-  // Future<String> forgotPassword({
-  //   required String email,
-  // }) async {
-  //   var body = {'email': email};
-  //   print('Body sent to server: $body');
-  //   var response = await networkService.post(
-  //     'user/password/forgot',
-  //     body: body,
-  //     headers: headers,
-  //   );
-  //   print('Response received: $response');
-  //   return response['message'];
-  // }
+// Future<String> forgotPassword({
+//   required String email,
+// }) async {
+//   var body = {'email': email};
+//   print('Body sent to server: $body');
+//   var response = await networkService.post(
+//     'user/password/forgot',
+//     body: body,
+//     headers: headers,
+//   );
+//   print('Response received: $response');
+//   return response['message'];
+// }
 
-  // Future<String> createPassword({
-  //   required String email,
-  //   required String password,
-  //   required String passwordConfirm,
-  // }) async {
-  //   var body = {
-  //     'email': email,
-  //     'password': password,
-  //     'password_confirmation': passwordConfirm,
-  //   };
-  //   print('Body sent to server: $body');
-  //   var response = await networkService.put(
-  //     'user/password/reset',
-  //     body: body,
-  //     headers: headers,
-  //   );
-  //   print('Response received: $response');
-  //   return response['message'];
-  // }
+// Future<String> createPassword({
+//   required String email,
+//   required String password,
+//   required String passwordConfirm,
+// }) async {
+//   var body = {
+//     'email': email,
+//     'password': password,
+//     'password_confirmation': passwordConfirm,
+//   };
+//   print('Body sent to server: $body');
+//   var response = await networkService.put(
+//     'user/password/reset',
+//     body: body,
+//     headers: headers,
+//   );
+//   print('Response received: $response');
+//   return response['message'];
+// }
 }
 
 final authenticationRepository = Provider(
