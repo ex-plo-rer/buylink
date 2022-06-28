@@ -17,7 +17,16 @@ class LoginNotifier extends BaseChangeNotifier {
   LoginNotifier(this._reader);
 
   bool _passwordVisible = false;
+
   bool get passwordVisible => _passwordVisible;
+
+  void onEmailChanged(String text) {
+    notifyListeners();
+  }
+
+  void onPasswordChanged(String text) {
+    notifyListeners();
+  }
 
   void togglePassword() {
     _passwordVisible = !_passwordVisible;

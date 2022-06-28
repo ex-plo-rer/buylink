@@ -31,9 +31,7 @@ class StoreContainer extends ConsumerWidget {
       onTap: onTap,
       child: Padding(
           padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
-          child:
-
-          Container(
+          child: Container(
             //margin: EdgeInsets.all(10),
             width: (MediaQuery.of(context).size.width - 74) / 2,
             height: 163,
@@ -62,9 +60,9 @@ class StoreContainer extends ConsumerWidget {
                       ),
                       Spacing.tinyWidth(),
                       Text(
-                        starRate.toString(),
-                        style:
-                        const TextStyle(color: AppColors.light, fontSize: 16),
+                        starRate.toStringAsFixed(1),
+                        style: const TextStyle(
+                            color: AppColors.light, fontSize: 16),
                       )
                     ],
                   ),

@@ -44,22 +44,22 @@ class SignupView extends ConsumerWidget {
         leading: signupNotifier.currentPage == 1
             ? null
             : IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            size: 15,
-            color: AppColors.grey2,
-          ),
-          onPressed: () {
-            signupNotifier.moveBackward();
-            print(signupNotifier.currentPage);
-            _pageController.animateToPage(
-              // array starts at 0 (lol)
-              signupNotifier.currentPage - 1,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-            );
-          },
-        ),
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  size: 15,
+                  color: AppColors.grey2,
+                ),
+                onPressed: () {
+                  signupNotifier.moveBackward();
+                  print(signupNotifier.currentPage);
+                  _pageController.animateToPage(
+                    // array starts at 0 (lol)
+                    signupNotifier.currentPage - 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+              ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
@@ -105,7 +105,10 @@ class SignupView extends ConsumerWidget {
                             const Spacing.height(4),
                             AppTextField(
                               title: '',
-                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                              style: const TextStyle(
+                                  color: AppColors.grey1,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500),
                               hintText: 'Steve Jobs',
                               focusNode: _nameFN,
                               controller: _nameController,
@@ -138,7 +141,10 @@ class SignupView extends ConsumerWidget {
                             ),
                             const Spacing.height(12),
                             AppTextField(
-                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                              style: const TextStyle(
+                                  color: AppColors.grey1,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500),
                               title: '',
                               hintText: 'Example@gmail.com',
                               keyboardType: TextInputType.emailAddress,
@@ -148,20 +154,19 @@ class SignupView extends ConsumerWidget {
                               suffixIcon: _emailAddressController.text.isEmpty
                                   ? null
                                   : GestureDetector(
-                                onTap: () {
-                                  _emailAddressController.clear();
-
-                                },
-                                child: const CircleAvatar(
-                                  backgroundColor: AppColors.grey7,
-                                  radius: 10,
-                                  child: Icon(
-                                    Icons.clear_rounded,
-                                    color: AppColors.light,
-                                    size: 15,
-                                  ),
-                                ),
-                              ),
+                                      onTap: () {
+                                        _emailAddressController.clear();
+                                      },
+                                      child: const CircleAvatar(
+                                        backgroundColor: AppColors.grey7,
+                                        radius: 10,
+                                        child: Icon(
+                                          Icons.clear_rounded,
+                                          color: AppColors.light,
+                                          size: 15,
+                                        ),
+                                      ),
+                                    ),
                               hasBorder: false,
                             ),
                           ],
@@ -229,7 +234,10 @@ class SignupView extends ConsumerWidget {
                             ),
                             const Spacing.height(12),
                             AppTextField(
-                              style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                              style: const TextStyle(
+                                  color: AppColors.grey1,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500),
                               title: '',
                               hintText: 'Example123',
                               obscureText: !signupNotifier.passwordVisible,
@@ -319,26 +327,27 @@ class SignupView extends ConsumerWidget {
                                     ? null
                                     : () async {
                                         if (signupNotifier.currentPage == 2) {
-                                          // await signupNotifier
-                                          //     .checkEmailUniqueness(
-                                          //   email: _emailAddressController.text,
-                                          // );
-
-                                          // if (signupNotifier.emailUnique) {
-                                          await signupNotifier.checkEmail(
-                                            reason: 'signup',
+                                          await signupNotifier
+                                              .checkEmailUniqueness(
                                             email: _emailAddressController.text,
                                           );
-                                          signupNotifier.moveForward();
-                                          _pageController.animateToPage(
-                                            // array starts at 0 (lol)
-                                            signupNotifier.currentPage - 1,
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            curve: Curves.easeIn,
-                                          );
-                                          signupNotifier.startTimer();
-                                          // }
+
+                                          if (signupNotifier.emailUnique) {
+                                            await signupNotifier.checkEmail(
+                                              reason: 'signup',
+                                              email:
+                                                  _emailAddressController.text,
+                                            );
+                                            signupNotifier.moveForward();
+                                            _pageController.animateToPage(
+                                              // array starts at 0 (lol)
+                                              signupNotifier.currentPage - 1,
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              curve: Curves.easeIn,
+                                            );
+                                            signupNotifier.startTimer();
+                                          }
                                         } else if (signupNotifier.currentPage ==
                                             3) {
                                           String? otp = await ref
@@ -417,17 +426,16 @@ class SignupView extends ConsumerWidget {
                       ),
                       Align(
                           alignment: Alignment.center,
-                          child: Row (
+                          child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 GestureDetector(
-                                    onTap:(){
-
+                                    onTap: () {
                                       ref
-                                          .read(navigationServiceProvider).navigateToNamed(Routes.termOfUse);
+                                          .read(navigationServiceProvider)
+                                          .navigateToNamed(Routes.termOfUse);
                                     },
-                                    child:
-                                    Text(
+                                    child: const Text(
                                       'Terms of Use',
                                       style: TextStyle(
                                         color: AppColors.primaryColor,
@@ -435,37 +443,34 @@ class SignupView extends ConsumerWidget {
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600,
                                       ),
-
-
                                     )),
-                                SizedBox(width: 4),
-
-                                Text(
+                                const SizedBox(width: 4),
+                                const Text(
                                   'and',
                                   style: TextStyle(
                                     color: AppColors.primaryColor,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
-                                  ),),
-                                SizedBox(width: 4),
-
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
                                 GestureDetector(
-                                    onTap:(){
+                                    onTap: () {
                                       ref
-                                          .read(navigationServiceProvider).navigateToNamed(Routes.privacyPolicy);
-
+                                          .read(navigationServiceProvider)
+                                          .navigateToNamed(
+                                              Routes.privacyPolicy);
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       'Privacy Policy',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: AppColors.primaryColor,
                                         decoration: TextDecoration.underline,
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600,
-                                      ),)),
-                              ]
-                          )
-                      ),
+                                      ),
+                                    )),
+                              ])),
                     ],
                   ),
                 ],

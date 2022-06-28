@@ -41,10 +41,17 @@ class LoginView extends ConsumerWidget {
         leading: IconButton(
           padding: EdgeInsets.zero,
           constraints: BoxConstraints(),
-          onPressed: (){
+          onPressed: () {
             ref
-                .read(navigationServiceProvider).navigateToNamed(Routes.onboarding);
-          }, icon: Icon(Icons.arrow_back_ios_outlined, size: 14, color: AppColors.grey2,),),
+                .read(navigationServiceProvider)
+                .navigateToNamed(Routes.onboarding);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_outlined,
+            size: 14,
+            color: AppColors.grey2,
+          ),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -74,21 +81,41 @@ class LoginView extends ConsumerWidget {
                   ),
                   const Spacing.largeHeight(),
                   AppTextField(
-                    style: TextStyle(color: AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
                     title: 'Email Address',
                     hintText: 'example@email.com',
                     focusNode: _emailFN,
                     controller: _emailAddressController,
+                    onChanged: loginNotifier.onEmailChanged,
                     keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
                   ),
                   const Spacing.mediumHeight(),
                   Spacing.smallHeight(),
                   AppTextField(
-                    style: TextStyle(color: AppColors.grey5, fontSize: 14, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        color: AppColors.grey5,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
                     title: 'Password',
                     hintText: 'Enter your password',
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
                     focusNode: _passwordFN,
                     controller: _passwordController,
+                    onChanged: loginNotifier.onPasswordChanged,
                     obscureText: !loginNotifier.passwordVisible,
                     keyboardType: TextInputType.visiblePassword,
                     suffixIcon: IconButton(
@@ -106,8 +133,13 @@ class LoginView extends ConsumerWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      child: const Text("Forgotten your password?",
-                        style: TextStyle(color: AppColors.grey4, fontSize: 14, fontWeight: FontWeight.w500),),
+                      child: const Text(
+                        "Forgotten your password?",
+                        style: TextStyle(
+                            color: AppColors.grey4,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
                       onPressed: () => ref
                           .read(navigationServiceProvider)
                           .navigateToNamed(Routes.forgotPassword),
@@ -118,8 +150,8 @@ class LoginView extends ConsumerWidget {
                       isLoading: loginNotifier.state.isLoading,
                       text: AppStrings.login,
                       backgroundColor: _passwordController.text.isNotEmpty &&
-                          _emailAddressController.text.isNotEmpty ?
-                      AppColors.primaryColor
+                              _emailAddressController.text.isNotEmpty
+                          ? AppColors.primaryColor
                           : AppColors.grey6,
                       onPressed: () async {
                         // ref

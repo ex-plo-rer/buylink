@@ -103,7 +103,6 @@ class Routes {
   static const termOfUse = 'term-of-use';
   static const userProfile = 'user-profile';
 
-
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case signup:
@@ -153,10 +152,11 @@ class Routes {
           ),
         );
       case storeReviews:
-        Store store = settings.arguments as Store;
+        StoreReviewArgModel storeReviewsArgs =
+            settings.arguments as StoreReviewArgModel;
         return MaterialPageRoute(
           builder: (_) => StoreReviewsView(
-            store: store,
+            storeReviewsArgs: storeReviewsArgs,
           ),
         );
       case addReview:
@@ -220,8 +220,8 @@ class Routes {
         Store store = settings.arguments as Store;
         return MaterialPageRoute(
             builder: (_) => AddProductView(
-              store: store,
-            ));
+                  store: store,
+                ));
       case addProductSpecifics:
         return MaterialPageRoute(
             builder: (_) => const AddProductSpecificsView());
@@ -263,11 +263,11 @@ class Routes {
           builder: (_) => const ProductSearchedResultView(),
         );
 
-    // case otpVerification:
-    // case otpVerification:
-    //   var fromRegister = settings.arguments as bool;
-    // return MaterialPageRoute(
-    //       builder: (_) => OTPView(fromRegister: fromRegister));
+      // case otpVerification:
+      // case otpVerification:
+      //   var fromRegister = settings.arguments as bool;
+      // return MaterialPageRoute(
+      //       builder: (_) => OTPView(fromRegister: fromRegister));
 
       default:
         return MaterialPageRoute(

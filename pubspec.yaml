@@ -57,7 +57,7 @@ dependencies:
   geolocator: ^8.2.1
   intl: ^0.17.0
   permission_handler: ^9.2.0
-  location: ^4.4.0
+  location: ^4.3.0
   shared_preferences: ^2.0.15
   image_picker: 0.8.5+3
   camera: ^0.9.7+1
