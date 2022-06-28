@@ -35,11 +35,11 @@ import '../../notifiers/user_provider.dart';
 import '../../notifiers/wishlist_notifier.dart';
 
 class StoreDetailsView extends ConsumerStatefulWidget {
-  final Store store;
+  final int storeId;
 
   const StoreDetailsView({
     Key? key,
-    required this.store,
+    required this.storeId,
   }) : super(key: key);
 
   @override
@@ -55,9 +55,9 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
     // TODO: implement initState
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       ref
-          .watch(storeDetailsNotifierProvider(widget.store.id))
+          .watch(storeDetailsNotifierProvider(widget.storeId))
           .fetchStoreProducts(
-            storeId: widget.store.id,
+            storeId: widget.storeId,
             category: 'all',
           );
       _tabController = TabController(
@@ -76,8 +76,8 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
   }
 
   void _handleTabChange() {
-    ref.read(storeDetailsNotifierProvider(widget.store.id)).fetchStoreProducts(
-        storeId: widget.store.id,
+    ref.read(storeDetailsNotifierProvider(widget.storeId)).fetchStoreProducts(
+        storeId: widget.storeId,
         category: ref
             .watch(categoryNotifierProvider)
             .mCategories[_tabController.index]
@@ -87,7 +87,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
   @override
   Widget build(BuildContext context) {
     final storeDetailsNotifier =
-        ref.watch(storeDetailsNotifierProvider(widget.store.id));
+        ref.watch(storeDetailsNotifierProvider(widget.storeId));
     final categoryNotifier = ref.watch(categoryNotifierProvider);
     return Scaffold(
       body: SafeArea(
@@ -190,8 +190,10 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                             .navigateToNamed(
                                               Routes.storeReviews,
                                               arguments: StoreReviewArgModel(
-                                                  storeName: widget.store.name,
-                                                  storeId: widget.store.id),
+                                                  storeName:
+                                                      storeDetailsNotifier
+                                                          .storeDetails.name,
+                                                  storeId: widget.storeId),
                                             ),
                                       ),
                                     ],
@@ -296,7 +298,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               onTap: (index) {
                                 print('index $index');
                                 storeDetailsNotifier.fetchStoreProducts(
-                                    storeId: widget.store.id,
+                                    storeId: widget.storeId,
                                     category: categoryNotifier
                                         .categories[index].name);
                               },

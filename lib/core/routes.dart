@@ -7,8 +7,6 @@ import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
-import 'package:buy_link/features/core/views/settings_view/term_of_use.dart';
-import 'package:buy_link/features/core/views/store_dashboard_review.dart';
 import 'package:buy_link/features/core/views/store_views/delete_store_validation.dart';
 import 'package:buy_link/features/core/views/settings_view/change_email.dart';
 import 'package:buy_link/features/core/views/settings_view/change_name.dart';
@@ -38,6 +36,7 @@ import '../features/core/views/message_view/receiver_profile_view.dart';
 import '../features/core/views/settings_view/about_buylink.dart';
 import '../features/core/views/add_product_specifics_view.dart';
 import '../features/core/views/product_list_view.dart';
+import '../features/core/views/settings_view/term_of_use.dart';
 import '../features/core/views/store_views/delete_store_view.dart';
 import '../features/core/views/store_views/product_saved_view.dart';
 import '../features/core/views/store_views/product_search_result_view.dart';
@@ -64,6 +63,7 @@ class Routes {
   static const productList = '/product-list';
   static const categories = '/categories';
   static const compare = '/compare';
+  static const compareProducts = '/compare-products';
   static const productDetails = '/product-details';
   static const productDetailsMore = '/product-details-more';
   static const storeDetails = '/shop-details';
@@ -77,8 +77,10 @@ class Routes {
   static const storeDirection = '/store-direction';
   static const noproductView = '/noproduct';
   static const addstoreView = '/addstore';
+  static const storeLocationPickerView = '/store-location-picker';
   static const emptystoreView = '/emptystore';
   static const messageView = '/message';
+  static const receiverProfileView = '/receiver-profile-view';
   static const addProduct = '/addproduct';
   static const deleteStore = '/delete-store';
   static const deleteStoreVal = '/delete-store-val';
@@ -101,7 +103,6 @@ class Routes {
   static const productSearchedResult = 'product-searched-result';
   static const productSearch = 'product-search';
   static const termOfUse = 'term-of-use';
-  static const userProfile = 'user-profile';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -129,12 +130,16 @@ class Routes {
       case categories:
         return MaterialPageRoute(builder: (_) => const CategoriesView());
       case compare:
-        var arguments = settings.arguments as CompareArgModel;
+        // var arguments = settings.arguments as CompareArgModel;
         return MaterialPageRoute(
           builder: (_) => CompareView(
-            arguments: arguments,
-          ),
+              // arguments: arguments,
+              ),
         );
+      case compareProducts:
+        String searchTerm = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => CompareProductsView(searchTerm: searchTerm));
       case productDetails:
         var product = settings.arguments as ProductModel;
         return MaterialPageRoute(
@@ -145,13 +150,15 @@ class Routes {
       case productDetailsMore:
         return MaterialPageRoute(builder: (_) => ProductDetailsMoreView());
       case storeDetails:
-        Store store = settings.arguments as Store;
+        // Store store = settings.arguments as Store;
+        int storeId = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => StoreDetailsView(
-            store: store,
+            storeId: storeId,
           ),
         );
       case storeReviews:
+        // Store store = settings.arguments as Store;
         StoreReviewArgModel storeReviewsArgs =
             settings.arguments as StoreReviewArgModel;
         return MaterialPageRoute(
@@ -212,9 +219,15 @@ class Routes {
         return MaterialPageRoute(builder: (_) => NoProductView());
       case addstoreView:
         return MaterialPageRoute(builder: (_) => AddStoreView());
+      case storeLocationPickerView:
+        return MaterialPageRoute(builder: (_) => StoreLocationPicker());
       case messageView:
         MessageModel args = settings.arguments as MessageModel;
         return MaterialPageRoute(builder: (_) => MessageView(args: args));
+      case receiverProfileView:
+        MessageModel args = settings.arguments as MessageModel;
+        return MaterialPageRoute(
+            builder: (_) => ReceiverProfileView(args: args));
 
       case addProduct:
         Store store = settings.arguments as Store;
@@ -225,7 +238,6 @@ class Routes {
       case addProductSpecifics:
         return MaterialPageRoute(
             builder: (_) => const AddProductSpecificsView());
-
       case addProductDesc:
         return MaterialPageRoute(builder: (_) => const AddProductDescView());
       case deleteUser:
@@ -245,8 +257,7 @@ class Routes {
         return MaterialPageRoute(builder: (_) => About());
       case cameraScreen:
         return MaterialPageRoute(builder: (_) => CameraScreen());
-      case termOfUse:
-        return MaterialPageRoute(builder: (_) => TermOfUse());
+
       case productSearch:
         String searchTerm = settings.arguments as String;
         return MaterialPageRoute(
@@ -262,6 +273,8 @@ class Routes {
         return MaterialPageRoute(
           builder: (_) => const ProductSearchedResultView(),
         );
+      case termOfUse:
+        return MaterialPageRoute(builder: (_) => TermOfUse());
 
       // case otpVerification:
       // case otpVerification:

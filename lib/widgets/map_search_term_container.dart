@@ -16,7 +16,7 @@ class MapSearchTermContainer extends StatelessWidget {
     this.hideFilter = false,
     this.marginTop = 40,
     this.horizontalMargin = 10,
-    this.containerColor = AppColors.shade1,
+    this.containerColor = AppColors.light,
   }) : super(key: key);
   final String searchTerm;
   final void Function(String)? onMinChanged;
