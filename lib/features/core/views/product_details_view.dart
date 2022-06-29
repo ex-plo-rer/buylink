@@ -163,17 +163,39 @@ class ProductDetailsView extends ConsumerWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        '#${product.price} ',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.grey1,
+
+                      RichText(
+                        // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
+                        text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                              style: TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              child: SvgPicture.asset(
+                                AppSvgs.naira, height: 15, width: 15,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${product.price}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.grey1,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      Spacing.tinyWidth(),
                       Visibility(
                         visible: product.oldPrice > 0,
-                        child: Text(
+                        child:
+
+
+                        Text(
                           '${product.oldPrice}',
                           style: const TextStyle(
                             fontSize: 12,

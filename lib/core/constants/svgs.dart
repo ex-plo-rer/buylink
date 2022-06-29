@@ -23,4 +23,5 @@ class AppSvgs {
   static const addReviewStar = 'assets/svgs/add_review_star.svg';
   static const addReviewIcon = 'assets/svgs/add_review.svg';
   static const setting2 = 'assets/svgs/setting_2.svg';
+  static const naira = 'assets/svgs/naira.svg';
 }

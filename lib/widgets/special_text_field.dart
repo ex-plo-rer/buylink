@@ -2,6 +2,9 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+
+import '../core/constants/svgs.dart';
 
 class SpecialTextField extends StatelessWidget {
   final double height;
@@ -103,14 +106,13 @@ class SpecialTextField extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              '$sub  ',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff4267B2),
-                              ),
+                            SvgPicture.asset(
+                              AppSvgs.naira, height: 13, width: 13,color:
+                          //  controller!.text.isEmpty?
+                            AppColors.grey5
+                            //AppColors.primaryColor,
                             ),
+                            Spacing.tinyWidth(),
                             Container(
                               height: 25,
                               width: 2,
