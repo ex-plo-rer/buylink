@@ -74,7 +74,15 @@ class NetworkService {
             body: jsonEncode(body),
             headers: headers,
           )
-          .timeout(Duration(minutes: 5));
+          .timeout(
+            const Duration(minutes: 3),
+            //     onTimeout: () async {
+            //   print('Timed out');
+            //   // print(http.Response);
+            //   // throwExceptionOnFail(http.Response as Response);
+            //   return http.Response as Response;
+            // }
+          );
 
       print(Uri.parse('${AppStrings.API_BASE_URL}/$url'));
 
@@ -84,10 +92,13 @@ class NetworkService {
       print('Request timeout');
       throw NetworkException('Request timeout');
     } on SocketException {
+      print('Socket Exception');
       throw NetworkException('There is no internet');
     } on HttpException {
+      print('HTTP Exception');
       throw NetworkException('There is an http exception');
     } on FormatException {
+      print('Format Exception');
       throw NetworkException('There is a format exception');
     } catch (e) {
       rethrow;

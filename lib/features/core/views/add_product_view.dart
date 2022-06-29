@@ -16,6 +16,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/routes.dart';
+import '../../../core/utilities/alertify.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
 import '../models/product_model.dart';
@@ -23,6 +24,7 @@ import '../notifiers/store_notifier/store_dashboard_notifier.dart';
 
 class AddProductView extends ConsumerWidget {
   final Store store;
+
   AddProductView({
     Key? key,
     required this.store,
@@ -36,7 +38,7 @@ class AddProductView extends ConsumerWidget {
 
   final productNameCtrl = TextEditingController();
   final minPriceCtrl = TextEditingController();
-  final maxPriceCtrl =TextEditingController();
+  final maxPriceCtrl = TextEditingController();
   final productSpecificsCtrl = TextEditingController();
   final productDescCtrl = TextEditingController();
 
@@ -50,9 +52,7 @@ class AddProductView extends ConsumerWidget {
         ),
         leading: IconButton(
           onPressed: () {
-            ref
-                .read(navigationServiceProvider)
-                .navigateBack();
+            ref.read(navigationServiceProvider).navigateBack();
           },
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
@@ -92,7 +92,7 @@ class AddProductView extends ConsumerWidget {
                 onDottedContainerTapped: () async {
                   print('Pick file Clicked');
                   FilePickerResult? result =
-                  await FilePicker.platform.pickFiles(
+                      await FilePicker.platform.pickFiles(
                     type: FileType.image,
                     withData: true,
                     allowMultiple: true,
@@ -107,7 +107,10 @@ class AddProductView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    color: AppColors.grey2,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600),
                 hasBorder: true,
                 controller: productNameCtrl,
                 title: 'Product Name',
@@ -120,7 +123,7 @@ class AddProductView extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: SpecialTextField(
-                      controller: minPriceCtrl ,
+                      controller: minPriceCtrl,
                       height: 56,
                       title: 'Price',
                       tit: 'Min Price',
@@ -149,18 +152,18 @@ class AddProductView extends ConsumerWidget {
                     .categories
                     .map(
                       (category) => DropdownMenuItem(
-                    child: Text(category.name),
-                    value: category.name,
-                  ),
-                )
+                        child: Text(category.name),
+                        value: category.name,
+                      ),
+                    )
                     .toList(),
                 onChanged: addProductNotifier.categories.isEmpty
                     ? null
                     : (newCategory) {
-                  // _subCatKey.currentState?.reset();
-                  addProductNotifier.onCategoryChanged(
-                      newCategory: newCategory.toString());
-                },
+                        // _subCatKey.currentState?.reset();
+                        addProductNotifier.onCategoryChanged(
+                            newCategory: newCategory.toString());
+                      },
               ),
               // const Spacing.mediumHeight(),
               // AppDropdownField(
@@ -184,7 +187,10 @@ class AddProductView extends ConsumerWidget {
               // ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    color: AppColors.grey2,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
                 hasBorder: true,
                 title: 'Product Specifics',
                 hintText: 'Brand, Size, Color, Material, Mobile',
@@ -209,7 +215,10 @@ class AddProductView extends ConsumerWidget {
               const Spacing.mediumHeight(),
               AppTextField(
                 controller: productDescCtrl,
-                style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    color: AppColors.grey2,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
                 hasBorder: true,
                 title: 'Product Description',
                 hintText: 'Describe your product',
@@ -221,15 +230,20 @@ class AddProductView extends ConsumerWidget {
                 isLoading: addProductNotifier.state.isLoading,
                 text: 'Save Product',
                 fontSize: 16,
-                backgroundColor: productDescCtrl.text.isEmpty && productNameCtrl.text.isEmpty
-                    && productSpecificsCtrl.text.isEmpty && maxPriceCtrl.text.isEmpty && minPriceCtrl.text.isEmpty
-                    ? AppColors.grey6:
-                AppColors.primaryColor,
+                backgroundColor: productDescCtrl.text.isEmpty &&
+                        productNameCtrl.text.isEmpty &&
+                        productSpecificsCtrl.text.isEmpty &&
+                        maxPriceCtrl.text.isEmpty &&
+                        minPriceCtrl.text.isEmpty
+                    ? AppColors.grey6
+                    : AppColors.primaryColor,
                 onPressed: () async {
-                  addProductNotifier.addProduct(storeId: store.id);
+                  await addProductNotifier.addProduct(storeId: store.id);
                   await ref
                       .read(storeDashboardNotifierProvider)
                       .initFetch(storeId: store.id);
+                  Alertify(title: 'Your product has been added').success();
+                  ref.read(navigationServiceProvider).navigateBack();
                 },
               ),
               const Spacing.height(54),

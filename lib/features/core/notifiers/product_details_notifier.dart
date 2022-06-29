@@ -15,6 +15,7 @@ import '../models/product_attribute_model.dart';
 
 class ProductDetailsNotifier extends BaseChangeNotifier {
   final Reader _reader;
+
   // final int productId;
 
   ProductDetailsNotifier(
@@ -35,12 +36,15 @@ class ProductDetailsNotifier extends BaseChangeNotifier {
   List<ProductModel> get similarProducts => _products;
 
   ProductAttrModel? _productAttr;
+
   ProductAttrModel get productAttr => _productAttr!;
 
   bool _isFavorite = false;
+
   bool get isFavorite => _isFavorite;
 
   bool _addingToFav = false;
+
   bool get addingToFav => _addingToFav;
 
   void setFavorite(bool value) {
@@ -51,13 +55,15 @@ class ProductDetailsNotifier extends BaseChangeNotifier {
   Future<void> onFavTapped({required int productId}) async {
     _addingToFav = true;
     if (_isFavorite) {
+      _isFavorite = false;
       await _reader(wishlistNotifierProvider)
           .removeFromWishlist(productId: productId);
-      _isFavorite = false;
+      // _isFavorite = false;
     } else {
+      _isFavorite = true;
       await _reader(wishlistNotifierProvider)
           .addToWishlist(productId: productId);
-      _isFavorite = true;
+      // _isFavorite = true;
     }
     _addingToFav = false;
     notifyListeners();
