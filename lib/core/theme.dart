@@ -14,7 +14,7 @@ class AppTheme {
 
   static _themeData(ColorScheme colorScheme) => ThemeData(
         colorScheme: colorScheme,
-        textTheme: GoogleFonts.openSansTextTheme(
+        textTheme: GoogleFonts.urbanistTextTheme(
           _textTheme(colorScheme),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -60,6 +60,4 @@ class AppTheme {
           color: colorScheme.onPrimary,
         ),
       );
-
-
 }
