@@ -281,7 +281,7 @@ class StoreReviewNotifier extends BaseChangeNotifier {
       Alertify(title: e.error!).error();
     } finally {
       _reviewStatsLoading = false;
-      setState(state: ViewState.idle);
+     // setState(state: ViewState.idle);
     }
   }
 

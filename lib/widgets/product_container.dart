@@ -149,16 +149,41 @@ class ProductContainer extends ConsumerWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Text(
-                '#$productPrice',
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: const TextStyle(
-                  color: AppColors.grey1,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+
+              RichText(
+               // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
+                text: TextSpan(
+                  children: [
+                    WidgetSpan(
+                      style: TextStyle(
+                        color: AppColors.grey1,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      child: SvgPicture.asset(
+                           AppSvgs.naira, height: 15, width: 15,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '$productPrice',
+                      style: TextStyle(
+                        color: AppColors.grey1,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              // Text(
+              //   '#$productPrice',
+              //   overflow: isDetails ? null : TextOverflow.ellipsis,
+              //   style: const TextStyle(
+              //     color: AppColors.grey1,
+              //     fontSize: 14,
+              //     fontWeight: FontWeight.w600,
+              //   ),
+              // ),
             ],
           ),
         ],

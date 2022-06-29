@@ -59,7 +59,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
   void symbol(context) {
     Locale locale = Localizations.localeOf(context);
     var format =
-        NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
+    NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
     symb = format.currencySymbol;
     print("CURRENCY SYMBOL ${symb}"); // $
     print("CURRENCY NAME ${format.currencyName}"); // USD
@@ -150,6 +150,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                         AppSvgs.favoriteFilled,
                         width: 12,
                         height: 12,
+                        color: AppColors.yellow,
                       ),
                       containerColor: AppColors.transparent,
                     ),
@@ -175,14 +176,33 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        '#${widget.product.price} ',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.grey1,
+
+                      RichText(
+                        // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
+                        text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                              style: TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              child: SvgPicture.asset(
+                                AppSvgs.naira, height: 15, width: 15,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${widget.product.price}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.grey1,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      Spacing.tinyWidth(),
                       Visibility(
                         visible: widget.product.oldPrice > 0,
                         child: Text(
@@ -202,7 +222,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
                       'A super-comfortable denim legging,built to contour curves, lengthen legs and celebrate your form. Made with an innovative tummy-sliming',
-                      //widget.product.description,
+                      //product.description,
                       // textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 14,

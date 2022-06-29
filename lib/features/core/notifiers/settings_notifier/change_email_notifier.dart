@@ -59,7 +59,7 @@ class EditUserEmailNotifier extends BaseChangeNotifier {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
     } finally {
-      setState(state: ViewState.idle);
+     // setState(state: ViewState.idle);
     }
   }
 
@@ -84,7 +84,7 @@ class EditUserEmailNotifier extends BaseChangeNotifier {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
     } finally {
-      setState(state: ViewState.idle);
+      //setState(state: ViewState.idle);
     }
   }
 }
