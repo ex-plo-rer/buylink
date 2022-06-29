@@ -13,23 +13,30 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
   EditUserPasswordNotifier(this._reader) {}
 
   int _currentPage = 1;
+
   int get currentPage => _currentPage;
   int _totalPage = 2;
+
   int get totalPage => _totalPage;
 
   bool _oldPasswordVisible = false;
+
   bool get oldPasswordVisible => _oldPasswordVisible;
 
   bool _newPasswordVisible = false;
+
   bool get newPasswordVisible => _newPasswordVisible;
 
   String _newpassword = '';
+
   String get newpassword => _newpassword;
 
   String _oldpassword = '';
+
   String get oldpassword => _oldpassword;
 
   late bool _oldPasswordCorrect;
+
   bool get oldPasswordCorrect => _oldPasswordCorrect;
 
   void toggleOldPassword() {
@@ -79,12 +86,13 @@ class EditUserPasswordNotifier extends BaseChangeNotifier {
         password: newPassword,
       );
       _reader(navigationServiceProvider).navigateBack();
+      _reader(navigationServiceProvider).navigateBack();
       Alertify(title: 'Password changed successfully').success();
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
     } finally {
-    //  setState(state: ViewState.idle);
+      //  setState(state: ViewState.idle);
     }
   }
 

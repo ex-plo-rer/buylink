@@ -17,6 +17,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/routes.dart';
 import '../../../core/utilities/alertify.dart';
+import '../../../core/utilities/loader.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
 import '../models/product_model.dart';
@@ -227,7 +228,7 @@ class AddProductView extends ConsumerWidget {
               ),
               const Spacing.height(40),
               AppButton(
-                isLoading: addProductNotifier.state.isLoading,
+                // isLoading: addProductNotifier.state.isLoading,
                 text: 'Save Product',
                 fontSize: 16,
                 backgroundColor: productDescCtrl.text.isEmpty &&
@@ -238,10 +239,12 @@ class AddProductView extends ConsumerWidget {
                     ? AppColors.grey6
                     : AppColors.primaryColor,
                 onPressed: () async {
+                  Loader(context).showLoader(text: '');
                   await addProductNotifier.addProduct(storeId: store.id);
                   await ref
                       .read(storeDashboardNotifierProvider)
                       .initFetch(storeId: store.id);
+                  Loader(context).hideLoader();
                   Alertify(title: 'Your product has been added').success();
                   ref.read(navigationServiceProvider).navigateBack();
                 },

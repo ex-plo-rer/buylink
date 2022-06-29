@@ -300,7 +300,7 @@ class SignupView extends ConsumerWidget {
                   Column(
                     children: [
                       AppButton(
-                        isLoading: signupNotifier.state.isLoading,
+                        // isLoading: signupNotifier.state.isLoading,
                         text: signupNotifier.currentPage ==
                                 signupNotifier.totalPage
                             ? AppStrings.signup
@@ -327,6 +327,7 @@ class SignupView extends ConsumerWidget {
                                     ? null
                                     : () async {
                                         if (signupNotifier.currentPage == 2) {
+                                          Loader(context).showLoader(text: '');
                                           await signupNotifier
                                               .checkEmailUniqueness(
                                             email: _emailAddressController.text,
@@ -338,6 +339,7 @@ class SignupView extends ConsumerWidget {
                                               email:
                                                   _emailAddressController.text,
                                             );
+                                            Loader(context).hideLoader();
                                             signupNotifier.moveForward();
                                             _pageController.animateToPage(
                                               // array starts at 0 (lol)
@@ -348,6 +350,7 @@ class SignupView extends ConsumerWidget {
                                             );
                                             signupNotifier.startTimer();
                                           }
+                                          Loader(context).hideLoader();
                                         } else if (signupNotifier.currentPage ==
                                             3) {
                                           String? otp = await ref
@@ -382,11 +385,13 @@ class SignupView extends ConsumerWidget {
                                           }
                                         } else if (signupNotifier.currentPage ==
                                             4) {
+                                          Loader(context).showLoader(text: '');
                                           await signupNotifier.signUp(
                                             name: _nameController.text,
                                             email: _emailAddressController.text,
                                             password: _passwordController.text,
                                           );
+                                          Loader(context).hideLoader();
                                           signupNotifier.moveForward();
                                           _pageController.animateToPage(
                                             // array starts at 0 (lol)

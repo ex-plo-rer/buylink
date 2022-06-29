@@ -31,9 +31,7 @@ class AddProductSpecificsView extends ConsumerWidget {
         ),
         leading: IconButton(
           onPressed: () {
-            ref
-                .read(navigationServiceProvider)
-                .navigateBack();
+            ref.read(navigationServiceProvider).navigateBack();
           },
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
@@ -70,16 +68,20 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.height(20),
               AppTextField(
-                style: TextStyle(color: AppColors.primaryColor, fontSize: 14, fontWeight:
-                FontWeight.w600),
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Brand',
                 hintText: 'Brand of the product',
                 onChanged: addProductNotifier.onBrandChanged,
               ),
               AppTextField(
-                style: TextStyle(color:
-                AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Colors',
                 hintText: 'Colors of the product',
@@ -141,23 +143,25 @@ class AddProductSpecificsView extends ConsumerWidget {
                 items: addProductNotifier.sizes
                     .map(
                       (size) => DropdownMenuItem(
-                    child: Text(size),
-                    value: size,
-                  ),
-                )
+                        child: Text(size),
+                        value: size,
+                      ),
+                    )
                     .toList(),
                 onChanged: addProductNotifier.categories.isEmpty
                     ? null
                     : (newSize) {
-                  // _subCatKey.currentState?.reset();
-                  addProductNotifier.onSizeChanged(
-                      newSize: newSize.toString());
-                },
+                        // _subCatKey.currentState?.reset();
+                        addProductNotifier.onSizeChanged(
+                            newSize: newSize.toString());
+                      },
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(color:
-                AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Model',
                 hintText: 'Model',
@@ -165,8 +169,10 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(color:
-                AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Material',
                 hintText: 'Material of the product',
@@ -175,7 +181,9 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(color: AppColors.primaryColor, fontSize: 14,
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600),
                 hasBorder: true,
                 title: 'Care',
@@ -186,7 +194,7 @@ class AddProductSpecificsView extends ConsumerWidget {
               const Spacing.mediumHeight(),
               const Spacing.height(40),
               AppButton(
-                isLoading: addProductNotifier.state.isLoading,
+                // isLoading: addProductNotifier.state.isLoading,
                 text: 'Continue',
                 fontSize: 16,
                 backgroundColor: AppColors.primaryColor,

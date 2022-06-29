@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utilities/alertify.dart';
+import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/text_with_rich.dart';
@@ -61,10 +62,13 @@ class EditStoreDesc extends ConsumerWidget {
                 ),
                 const Spacing.smallHeight(),
                 AppTextField(
-                  style: TextStyle(color: AppColors.primaryColor, fontSize: 14, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500),
                   title: '',
                   hintText:
-                  'We sell all fashion wears, shoes, bags, slides all at affordable rates',
+                      'We sell all fashion wears, shoes, bags, slides all at affordable rates',
                   focusNode: _descriptionFN,
                   controller: _descriptionController,
                   maxLines: 5,
@@ -79,7 +83,7 @@ class EditStoreDesc extends ConsumerWidget {
                 const Spacing.largeHeight(),
                 const Spacing.largeHeight(),
                 AppButton(
-                  isLoading: storeSettingsNotifier.state.isLoading,
+                  // isLoading: storeSettingsNotifier.state.isLoading,
                   text: "Save",
                   backgroundColor: _descriptionController.text.isEmpty
                       ? AppColors.grey6
@@ -87,22 +91,24 @@ class EditStoreDesc extends ConsumerWidget {
                   onPressed: _descriptionController.text.isEmpty
                       ? null
                       : () async {
-                    if (_formKey.currentState!.validate()) {
-                      await storeSettingsNotifier.editStore(
-                        storeId: 23,
-                        attribute: 'desc',
-                        newValue: _descriptionController.text,
-                      );
-                      await ref
-                          .refresh(storeNotifierProvider)
-                          .fetchMyStores();
-                      ref.read(navigationServiceProvider).navigateBack();
-                      Alertify(
-                          title:
-                          'Store description changed successfully')
-                          .success();
-                    }
-                  },
+                          if (_formKey.currentState!.validate()) {
+                            Loader(context).showLoader(text: '');
+                            await storeSettingsNotifier.editStore(
+                              storeId: 23,
+                              attribute: 'desc',
+                              newValue: _descriptionController.text,
+                            );
+                            await ref
+                                .refresh(storeNotifierProvider)
+                                .fetchMyStores();
+                            Loader(context).hideLoader();
+                            ref.read(navigationServiceProvider).navigateBack();
+                            Alertify(
+                                    title:
+                                        'Store description changed successfully')
+                                .success();
+                          }
+                        },
                 ),
               ],
             ),

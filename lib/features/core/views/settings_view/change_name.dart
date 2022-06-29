@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utilities/alertify.dart';
+import '../../../../core/utilities/loader.dart';
 import '../../../../services/navigation_service.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text_field.dart';
@@ -60,7 +61,10 @@ class EditUserName extends ConsumerWidget {
                 ),
                 const Spacing.smallHeight(),
                 AppTextField(
-                  style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      color: AppColors.grey1,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500),
                   title: '',
                   hintText: 'Deji',
                   focusNode: _nameFN,
@@ -88,7 +92,7 @@ class EditUserName extends ConsumerWidget {
                 const Spacing.largeHeight(),
                 const Spacing.largeHeight(),
                 AppButton(
-                  isLoading: editUserNameNotifier.state.isLoading,
+                  // isLoading: editUserNameNotifier.state.isLoading,
                   text: "Save",
                   backgroundColor: _nameController.text.isEmpty
                       ? AppColors.grey6
@@ -96,12 +100,13 @@ class EditUserName extends ConsumerWidget {
                   onPressed: _nameController.text.isEmpty
                       ? null
                       : () async {
-                    if (_formKey.currentState!.validate()) {
-                      await editUserNameNotifier.changeName();
-                      Alertify(title: 'Name changed successfully')
-                          .success();
-                    }
-                  },
+                          if (_formKey.currentState!.validate()) {
+                            Loader(context).showLoader(text: '');
+                            await editUserNameNotifier.changeName();
+                            Alertify(title: 'Name changed successfully')
+                                .success();
+                          }
+                        },
                 ),
               ],
             ),
