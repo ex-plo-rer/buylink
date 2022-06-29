@@ -41,13 +41,13 @@ class LoginView extends ConsumerWidget {
         ),
         leading: IconButton(
           padding: EdgeInsets.zero,
-          constraints: BoxConstraints(),
+          constraints: const BoxConstraints(),
           onPressed: () {
             ref
                 .read(navigationServiceProvider)
                 .navigateToNamed(Routes.onboarding);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_outlined,
             size: 14,
             color: AppColors.grey2,
@@ -65,7 +65,7 @@ class LoginView extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Spacing.smallHeight(),
+                  const Spacing.smallHeight(),
                   const TextWithRich(
                     firstText: 'Welcome',
                     secondText: 'Back!',
@@ -82,7 +82,7 @@ class LoginView extends ConsumerWidget {
                   ),
                   const Spacing.largeHeight(),
                   AppTextField(
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: AppColors.primaryColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w600),
@@ -100,9 +100,9 @@ class LoginView extends ConsumerWidget {
                     },
                   ),
                   const Spacing.mediumHeight(),
-                  Spacing.smallHeight(),
+                  const Spacing.smallHeight(),
                   AppTextField(
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: AppColors.grey5,
                         fontSize: 14,
                         fontWeight: FontWeight.w600),
@@ -130,7 +130,7 @@ class LoginView extends ConsumerWidget {
                     ),
                   ),
                   const Spacing.mediumHeight(),
-                  Spacing.smallHeight(),
+                  const Spacing.smallHeight(),
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
