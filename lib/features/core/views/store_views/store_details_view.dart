@@ -31,6 +31,7 @@ import '../../models/compare_arg_model.dart';
 import '../../models/message_model.dart';
 import '../../models/product_model.dart';
 import '../../notifiers/category_notifier.dart';
+import '../../notifiers/flip_notifier.dart';
 import '../../notifiers/user_provider.dart';
 import '../../notifiers/wishlist_notifier.dart';
 
@@ -350,18 +351,23 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                   );
                                             },
                                             onDistanceTapped: () {},
-                                            onFlipTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.compare,
-                                                    arguments: CompareArgModel(
-                                                      product:
+                                            onFlipTapped: () async {
+                                              await ref
+                                                  .read(flipNotifierProvider)
+                                                  .addItemToCompare(
+                                                      productId:
                                                           storeDetailsNotifier
-                                                              .products[index],
-                                                    ),
-                                                  );
+                                                              .products[index]
+                                                              .id);
+                                              if (ref
+                                                  .read(flipNotifierProvider)
+                                                  .successfullyAdded) {
+                                                ref
+                                                    .read(
+                                                        navigationServiceProvider)
+                                                    .navigateToNamed(
+                                                        Routes.compare);
+                                              }
                                             },
                                             onFavoriteTapped: () async {
                                               storeDetailsNotifier

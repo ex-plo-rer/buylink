@@ -23,6 +23,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/compare_arg_model.dart';
 import '../models/product_model.dart';
 import '../notifiers/category_notifier.dart';
+import '../notifiers/flip_notifier.dart';
 import '../notifiers/product_list_notifier.dart';
 
 class ProductListView extends ConsumerStatefulWidget {
@@ -151,16 +152,19 @@ class _WishlistState extends ConsumerState<ProductListView>
                                       );
                                 },
                                 onDistanceTapped: () {},
-                                onFlipTapped: () {
-                                  ref
-                                      .read(navigationServiceProvider)
-                                      .navigateToNamed(
-                                        Routes.compare,
-                                        arguments: CompareArgModel(
-                                          product: productListNotifier
-                                              .products[index],
-                                        ),
-                                      );
+                                onFlipTapped: () async {
+                                  await ref
+                                      .read(flipNotifierProvider)
+                                      .addItemToCompare(
+                                          productId: productListNotifier
+                                              .products[index].id);
+                                  if (ref
+                                      .read(flipNotifierProvider)
+                                      .successfullyAdded) {
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateToNamed(Routes.compare);
+                                  }
                                 },
                                 onFavoriteTapped: () async {
                                   productListNotifier.products[index].isFav!

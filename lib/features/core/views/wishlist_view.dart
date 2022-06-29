@@ -22,6 +22,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../models/compare_arg_model.dart';
 import '../notifiers/category_notifier.dart';
+import '../notifiers/flip_notifier.dart';
 
 class WishlistView extends ConsumerStatefulWidget {
   const WishlistView({Key? key}) : super(key: key);
@@ -143,16 +144,19 @@ class _WishlistState extends ConsumerState<WishlistView>
                                           );
                                     },
                                     onDistanceTapped: () {},
-                                    onFlipTapped: () {
-                                      ref
-                                          .read(navigationServiceProvider)
-                                          .navigateToNamed(
-                                            Routes.compare,
-                                            arguments: CompareArgModel(
-                                              product: wishlistNotifier
-                                                  .products[index],
-                                            ),
-                                          );
+                                    onFlipTapped: () async {
+                                      await ref
+                                          .read(flipNotifierProvider)
+                                          .addItemToCompare(
+                                              productId: wishlistNotifier
+                                                  .products[index].id);
+                                      if (ref
+                                          .read(flipNotifierProvider)
+                                          .successfullyAdded) {
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateToNamed(Routes.compare);
+                                      }
                                     },
                                     onFavoriteTapped: () async {
                                       wishlistNotifier.products[index].isFav!

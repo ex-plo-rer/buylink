@@ -151,7 +151,7 @@ class ProductContainer extends ConsumerWidget {
               ),
 
               RichText(
-               // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
+                // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
                 text: TextSpan(
                   children: [
                     WidgetSpan(
@@ -161,7 +161,9 @@ class ProductContainer extends ConsumerWidget {
                         fontWeight: FontWeight.w600,
                       ),
                       child: SvgPicture.asset(
-                           AppSvgs.naira, height: 15, width: 15,
+                        AppSvgs.naira,
+                        height: 15,
+                        width: 15,
                       ),
                     ),
                     TextSpan(

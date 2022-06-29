@@ -23,6 +23,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../services/location_service.dart';
+import '../notifiers/flip_notifier.dart';
 import '../notifiers/product_details_notifier.dart';
 import '../notifiers/wishlist_notifier.dart';
 import 'package:intl/intl.dart';
@@ -59,7 +60,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
   void symbol(context) {
     Locale locale = Localizations.localeOf(context);
     var format =
-    NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
+        NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
     symb = format.currencySymbol;
     print("CURRENCY SYMBOL ${symb}"); // $
     print("CURRENCY NAME ${format.currencyName}"); // USD
@@ -176,7 +177,6 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-
                       RichText(
                         // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
                         text: TextSpan(
@@ -188,7 +188,9 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                                 fontWeight: FontWeight.w600,
                               ),
                               child: SvgPicture.asset(
-                                AppSvgs.naira, height: 15, width: 15,
+                                AppSvgs.naira,
+                                height: 15,
+                                width: 15,
                               ),
                             ),
                             TextSpan(
@@ -378,16 +380,21 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                                             );
                                       },
                                       onDistanceTapped: () {},
-                                      onFlipTapped: () {
-                                        ref
-                                            .read(navigationServiceProvider)
-                                            .navigateToNamed(
-                                              Routes.compare,
-                                              arguments: CompareArgModel(
-                                                product: productDetailsNotifier
-                                                    .similarProducts[index],
-                                              ),
-                                            );
+                                      onFlipTapped: () async {
+                                        await ref
+                                            .read(flipNotifierProvider)
+                                            .addItemToCompare(
+                                                productId:
+                                                    productDetailsNotifier
+                                                        .similarProducts[index]
+                                                        .id);
+                                        if (ref
+                                            .read(flipNotifierProvider)
+                                            .successfullyAdded) {
+                                          ref
+                                              .read(navigationServiceProvider)
+                                              .navigateToNamed(Routes.compare);
+                                        }
                                       },
                                       onFavoriteTapped: () async {
                                         productDetailsNotifier
