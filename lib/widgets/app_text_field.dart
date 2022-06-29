@@ -94,7 +94,7 @@ class AppTextField extends StatelessWidget {
                   ? UnconstrainedBox(
                       child: suffixIcon,
                       alignment:
-                          hasBorder ? Alignment.center : Alignment.topRight,
+                          hasBorder ? Alignment.center : Alignment.center,
                     )
                   : null,
               prefixIcon: prefixIcon != null

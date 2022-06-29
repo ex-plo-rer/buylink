@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/notifiers/dashboard_notifier.dart';
 import 'package:buy_link/services/local_storage_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constants/strings.dart';
@@ -22,6 +23,7 @@ class SettingNotifier extends BaseChangeNotifier {
     _reader(localStorageService).deleteSecureData(AppStrings.userKey);
     _reader(localStorageService).deleteSecureData(AppStrings.otpEmailKey);
     _reader(localStorageService).deleteSecureData(AppStrings.recentSearchKey);
+    _reader(dashboardChangeNotifier).resetIndex();
     _reader(navigationServiceProvider)
         .navigateOffAllNamed(Routes.login, (p0) => false);
   }

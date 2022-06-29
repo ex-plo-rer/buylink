@@ -72,11 +72,11 @@ class MessageView extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 90,
+          toolbarHeight: 70,
+          titleSpacing: 0,
           title: ListTile(
-            contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-            visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-            //  contentPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 9,
             title: Text(
               args.name,
               style: const TextStyle(color: Colors.white),
@@ -87,9 +87,8 @@ class MessageView extends ConsumerWidget {
               backgroundImage: args.imageUrl == null
                   ? null
                   : CachedNetworkImageProvider(args.imageUrl!),
-              radius: 40,
+              radius: 20,
             ),
-
 /*
             subtitle: const Text(
               "Online 3hr ago",
@@ -120,9 +119,7 @@ class MessageView extends ConsumerWidget {
               size: 16,
             ),
             tooltip: 'Back arrow',
-            onPressed: () {
-              ref.read(navigationServiceProvider).navigateBack();
-            },
+            onPressed: () => ref.read(navigationServiceProvider).navigateBack(),
           ),
           //IconButton
         ),
