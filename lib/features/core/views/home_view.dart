@@ -98,14 +98,16 @@ class HomeView extends ConsumerWidget {
                 ),
               ),
               const Spacing.height(12),
-              const Text(
-                'Based on your interest',
-                style: TextStyle(
-                  color: AppColors.grey1,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+              if (!homeNotifier.productLoading ||
+                  homeNotifier.products.isNotEmpty)
+                Text(
+                  homeNotifier.initialText,
+                  style: const TextStyle(
+                    color: AppColors.grey1,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
               const Spacing.smallHeight(),
               Expanded(
                 child: homeNotifier.productLoading
@@ -132,42 +134,56 @@ class HomeView extends ConsumerWidget {
                                   color: AppColors.transparent,
                                   child: categoryNotifier.state.isLoading
                                       ? const CircularProgress()
-                                      : Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            CategoryContainer(
-                                              categoryName: categoryNotifier
-                                                  .categories[0].name,
-                                              categoryImage: categoryNotifier
-                                                  .categories[0].image,
-                                              onTap: () =>
-                                                  homeNotifier.fetchProducts(
-                                                      category: categoryNotifier
-                                                          .categories[0].name),
+                                      : categoryNotifier.categories.isEmpty
+                                          ? const Center(
+                                              child: Text('Category is empty'),
+                                            )
+                                          : Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                CategoryContainer(
+                                                  categoryName: categoryNotifier
+                                                      .categories[0].name,
+                                                  categoryImage:
+                                                      categoryNotifier
+                                                          .categories[0].image,
+                                                  onTap: () => homeNotifier
+                                                      .fetchProducts(
+                                                          category:
+                                                              categoryNotifier
+                                                                  .categories[0]
+                                                                  .name),
+                                                ),
+                                                CategoryContainer(
+                                                  categoryName: categoryNotifier
+                                                      .categories[1].name,
+                                                  categoryImage:
+                                                      categoryNotifier
+                                                          .categories[1].image,
+                                                  onTap: () => homeNotifier
+                                                      .fetchProducts(
+                                                          category:
+                                                              categoryNotifier
+                                                                  .categories[1]
+                                                                  .name),
+                                                ),
+                                                CategoryContainer(
+                                                  categoryName: categoryNotifier
+                                                      .categories[2].name,
+                                                  categoryImage:
+                                                      categoryNotifier
+                                                          .categories[2].image,
+                                                  onTap: () => homeNotifier
+                                                      .fetchProducts(
+                                                          category:
+                                                              categoryNotifier
+                                                                  .categories[2]
+                                                                  .name),
+                                                ),
+                                              ],
                                             ),
-                                            CategoryContainer(
-                                              categoryName: categoryNotifier
-                                                  .categories[1].name,
-                                              categoryImage: categoryNotifier
-                                                  .categories[1].image,
-                                              onTap: () =>
-                                                  homeNotifier.fetchProducts(
-                                                      category: categoryNotifier
-                                                          .categories[1].name),
-                                            ),
-                                            CategoryContainer(
-                                              categoryName: categoryNotifier
-                                                  .categories[2].name,
-                                              categoryImage: categoryNotifier
-                                                  .categories[2].image,
-                                              onTap: () =>
-                                                  homeNotifier.fetchProducts(
-                                                      category: categoryNotifier
-                                                          .categories[2].name),
-                                            ),
-                                          ],
-                                        ),
                                 );
                               } else {
                                 return ProductContainer(

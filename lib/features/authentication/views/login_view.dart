@@ -1,5 +1,6 @@
 import 'package:buy_link/core/constants/strings.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
@@ -132,22 +133,23 @@ class LoginView extends ConsumerWidget {
                   Spacing.smallHeight(),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: TextButton(
+                    child: GestureDetector(
+                      onTap: () => ref
+                          .read(navigationServiceProvider)
+                          .navigateToNamed(Routes.forgotPassword),
                       child: const Text(
                         "Forgotten your password?",
                         style: TextStyle(
-                            color: AppColors.grey4,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
+                          color: AppColors.grey4,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                      onPressed: () => ref
-                          .read(navigationServiceProvider)
-                          .navigateToNamed(Routes.forgotPassword),
                     ),
                   ),
                   const Spacing.height(50),
                   AppButton(
-                      isLoading: loginNotifier.state.isLoading,
+                      // isLoading: loginNotifier.state.isLoading,
                       text: AppStrings.login,
                       backgroundColor: _passwordController.text.isNotEmpty &&
                               _emailAddressController.text.isNotEmpty
@@ -159,6 +161,7 @@ class LoginView extends ConsumerWidget {
                         //     .navigateToNamed(Routes.dashboard);
                         FocusScope.of(context).unfocus();
                         if (_formKey.currentState!.validate()) {
+                          Loader(context).showLoader(text: '');
                           await loginNotifier.loginUser(
                             email: _emailAddressController.text,
                             password: _passwordController.text,

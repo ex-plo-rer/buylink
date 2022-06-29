@@ -74,7 +74,7 @@ class NetworkService {
             body: jsonEncode(body),
             headers: headers,
           )
-          .timeout(Duration(minutes: 2));
+          .timeout(Duration(minutes: 5));
 
       print(Uri.parse('${AppStrings.API_BASE_URL}/$url'));
 

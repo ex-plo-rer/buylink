@@ -39,6 +39,15 @@ class HomeNotifier extends BaseChangeNotifier {
 
   Position? position;
 
+  String _initialText = 'Latest products around you';
+  String get initialText => _initialText;
+
+  void changeText({required String category}) {
+    _initialText = category == 'all'
+        ? 'Latest products around you'
+        : 'Latest products around you with tag \'$category\'';
+  }
+
   //
   // Future<void> setLocation(context) async {
   //   position = await _reader(locationService).getCurrentLocation();
@@ -54,15 +63,14 @@ class HomeNotifier extends BaseChangeNotifier {
       // if (serviceEnabled) {
       await _reader(locationService).getCurrentLocation();
       _products = await _reader(coreRepository).fetchProducts(
-        lat: 3.4,
-        lon: 3.7,
+        // lat: 3.4,
+        // lon: 3.7,
         // TODO: the below
-        // lat: _reader(locationService).lat!,
-        // lon: _reader(locationService).lon!,
+        lat: _reader(locationService).lat!,
+        lon: _reader(locationService).lon!,
         category: category,
       );
-      // }
-      // Alertify(title: 'User logged in').success();
+      changeText(category: category ?? 'all');
       _productLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
