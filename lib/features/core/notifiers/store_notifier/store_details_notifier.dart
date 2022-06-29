@@ -47,7 +47,7 @@ class StoreDetailsNotifier extends BaseChangeNotifier {
       Alertify(title: e.error!).error();
     } finally {
       _detailsLoading = false;
-      setState(state: ViewState.idle);
+     // setState(state: ViewState.idle);
     }
   }
 
@@ -68,7 +68,7 @@ class StoreDetailsNotifier extends BaseChangeNotifier {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
     } finally {
-      setState(state: ViewState.idle);
+     // setState(state: ViewState.idle);
     }
   }
 }

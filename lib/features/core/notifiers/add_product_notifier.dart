@@ -137,7 +137,7 @@ class AddProductNotifier extends BaseChangeNotifier {
       // Alertify(title: e.error!).error();
       Alertify(title: 'There\'s a problem adding your product').error();
     } finally {
-      setState(state: ViewState.idle);
+      //setState(state: ViewState.idle);
     }
   }
 }
