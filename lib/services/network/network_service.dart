@@ -75,7 +75,7 @@ class NetworkService {
             headers: headers,
           )
           .timeout(
-            const Duration(minutes: 3),
+            const Duration(minutes: 5),
             //     onTimeout: () async {
             //   print('Timed out');
             //   // print(http.Response);

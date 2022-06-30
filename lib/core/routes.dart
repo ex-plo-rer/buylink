@@ -14,6 +14,8 @@ import 'package:buy_link/features/core/views/settings_view/change_password.dart'
 import 'package:buy_link/features/core/views/settings_view/delete_user.dart';
 import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
 import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
+import 'package:buy_link/features/core/views/store_views/edit_store_description.dart';
+import 'package:buy_link/features/core/views/store_views/edit_store_location_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_search_view.dart';
 import 'package:buy_link/features/core/views/store_views/product_searched_result_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_details_view.dart';
@@ -38,6 +40,7 @@ import '../features/core/views/add_product_specifics_view.dart';
 import '../features/core/views/product_list_view.dart';
 import '../features/core/views/settings_view/term_of_use.dart';
 import '../features/core/views/store_views/delete_store_view.dart';
+import '../features/core/views/store_views/edit_store_name.dart';
 import '../features/core/views/store_views/product_saved_view.dart';
 import '../features/core/views/store_views/product_search_result_view.dart';
 import '../features/core/views/store_views/store_location_picker_view.dart';
@@ -52,6 +55,7 @@ import '../features/core/views/store_views/add_store.dart';
 import '../features/core/views/store_views/store_settings.dart';
 import '../features/core/views/store_views/store_view.dart';
 import '../features/core/views/store_reviews_view.dart';
+import 'package:latlong2/latlong.dart';
 
 class Routes {
   static const login = '/login';
@@ -74,10 +78,13 @@ class Routes {
   static const storeVisits = '/store-visits';
   static const productSearched = '/product-searched';
   static const storeDashboard = '/store-dashboard';
+  static const editStoreName = '/edit-store-name';
+  static const editStoreDesc = '/edit-store-desc';
   static const storeDirection = '/store-direction';
   static const noproductView = '/noproduct';
   static const addstoreView = '/addstore';
   static const storeLocationPickerView = '/store-location-picker';
+  static const editStoreLocationView = '/edit-store-location';
   static const emptystoreView = '/emptystore';
   static const messageView = '/message';
   static const receiverProfileView = '/receiver-profile-view';
@@ -198,6 +205,16 @@ class Routes {
         return MaterialPageRoute(
           builder: (_) => StoreDashboardView(store: store),
         );
+      case editStoreName:
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+          builder: (_) => EditStoreName(store: store),
+        );
+      case editStoreDesc:
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+          builder: (_) => EditStoreDesc(store: store),
+        );
       case storeMessages:
         Store store = settings.arguments as Store;
         return MaterialPageRoute(
@@ -221,6 +238,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => AddStoreView());
       case storeLocationPickerView:
         return MaterialPageRoute(builder: (_) => StoreLocationPicker());
+      case editStoreLocationView:
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+            builder: (_) => EditStoreLocationView(store: store));
       case messageView:
         MessageModel args = settings.arguments as MessageModel;
         return MaterialPageRoute(builder: (_) => MessageView(args: args));
