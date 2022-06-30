@@ -19,6 +19,7 @@ import '../../notifiers/store_notifier/store_settings_notifier.dart';
 
 class DeleteStoreVal extends ConsumerWidget {
   final Store store;
+
   DeleteStoreVal({
     Key? key,
     required this.store,
@@ -75,7 +76,10 @@ class DeleteStoreVal extends ConsumerWidget {
                   textAlign: TextAlign.start,
                 ),
                 AppTextField(
-                  style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      color: AppColors.grey1,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500),
                   title: '',
                   hintText: 'Example123',
                   obscureText: !storeSettingsNotifier.passwordVisible,
@@ -85,34 +89,34 @@ class DeleteStoreVal extends ConsumerWidget {
                   suffixIcon: _passwordController.text.isEmpty
                       ? null
                       : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () =>
-                            storeSettingsNotifier.togglePassword(),
-                        child: Icon(
-                          storeSettingsNotifier.passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: AppColors.dark,
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () =>
+                                  storeSettingsNotifier.togglePassword(),
+                              child: Icon(
+                                storeSettingsNotifier.passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: AppColors.dark,
+                              ),
+                            ),
+                            const Spacing.smallWidth(),
+                            GestureDetector(
+                              onTap: () {},
+                              child: const CircleAvatar(
+                                backgroundColor: AppColors.grey7,
+                                radius: 10,
+                                child: Icon(
+                                  Icons.clear_rounded,
+                                  color: AppColors.light,
+                                  size: 15,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const Spacing.smallWidth(),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const CircleAvatar(
-                          backgroundColor: AppColors.grey7,
-                          radius: 10,
-                          child: Icon(
-                            Icons.clear_rounded,
-                            color: AppColors.light,
-                            size: 15,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   hasBorder: false,
                 ),
                 const Spacing.largeHeight(),
@@ -123,7 +127,7 @@ class DeleteStoreVal extends ConsumerWidget {
                 const Spacing.largeHeight(),
                 const Spacing.largeHeight(),
                 AppButton(
-                  isLoading: storeSettingsNotifier.state.isLoading,
+                  // isLoading: storeSettingsNotifier.state.isLoading,
                   text: 'I want to delete my store',
                   textColor: _passwordController.text.isEmpty
                       ? AppColors.light
@@ -134,64 +138,64 @@ class DeleteStoreVal extends ConsumerWidget {
                   onPressed: _passwordController.text.isEmpty
                       ? null
                       : () {
-                    if (_formKey.currentState!.validate()) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AppDialog(
-                          title:
-                          'Are you sure you want to delete your store?',
-                          text1: 'No',
-                          text2: 'Yes',
-                          onText1Pressed: () => ref
-                              .read(navigationServiceProvider)
-                              .navigateBack(),
-                          onText2Pressed: () async {
-                            Loader(context)
-                                .showLoader(text: 'Please Wait');
-                            await storeSettingsNotifier.deleteStore(
-                              storeId: store.id,
-                              password: _passwordController.text,
+                          if (_formKey.currentState!.validate()) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AppDialog(
+                                title:
+                                    'Are you sure you want to delete your store?',
+                                text1: 'No',
+                                text2: 'Yes',
+                                onText1Pressed: () => ref
+                                    .read(navigationServiceProvider)
+                                    .navigateBack(),
+                                onText2Pressed: () async {
+                                  Loader(context)
+                                      .showLoader(text: 'Please Wait');
+                                  await storeSettingsNotifier.deleteStore(
+                                    storeId: store.id,
+                                    password: _passwordController.text,
+                                  );
+                                  if (storeSettingsNotifier.deleted) {
+                                    await ref
+                                        .refresh(storeNotifierProvider)
+                                        .fetchMyStores();
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateBack();
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateBack();
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateBack();
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateBack();
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateBack();
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateBack();
+                                    Alertify(
+                                            title: 'Store deleted successfully')
+                                        .success();
+                                  } else {
+                                    Alertify(title: 'Error deleting store')
+                                        .error();
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateBack();
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateBack();
+                                  }
+                                },
+                              ),
                             );
-                            if (storeSettingsNotifier.deleted) {
-                              await ref
-                                  .refresh(storeNotifierProvider)
-                                  .fetchMyStores();
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateBack();
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateBack();
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateBack();
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateBack();
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateBack();
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateBack();
-                              Alertify(
-                                  title: 'Store deleted successfully')
-                                  .success();
-                            } else {
-                              Alertify(title: 'Error deleting store')
-                                  .error();
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateBack();
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateBack();
-                            }
-                          },
-                        ),
-                      );
-                    }
-                  },
+                          }
+                        },
                 ),
                 const Spacing.mediumHeight(),
                 if (_passwordController.text.isNotEmpty)

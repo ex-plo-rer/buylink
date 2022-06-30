@@ -1,3 +1,4 @@
+import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/widgets/otp_input.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,21 +43,22 @@ class ForgotPasswordView extends ConsumerWidget {
         leading: forgotPasswordNotifier.currentPage == 1
             ? null
             : IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined, size: 14,
-            color: AppColors.dark,
-          ),
-          onPressed: () {
-            forgotPasswordNotifier.moveBackward();
-            print(forgotPasswordNotifier.currentPage);
-            _pageController.animateToPage(
-              // array starts at 0 (lol)
-              forgotPasswordNotifier.currentPage - 1,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-            );
-          },
-        ),
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  size: 14,
+                  color: AppColors.dark,
+                ),
+                onPressed: () {
+                  forgotPasswordNotifier.moveBackward();
+                  print(forgotPasswordNotifier.currentPage);
+                  _pageController.animateToPage(
+                    // array starts at 0 (lol)
+                    forgotPasswordNotifier.currentPage - 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+              ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
@@ -107,7 +109,10 @@ class ForgotPasswordView extends ConsumerWidget {
                             ),
                           ),
                           AppTextField(
-                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
                             title: '',
                             hintText: 'Example@gmail.com',
                             keyboardType: TextInputType.emailAddress,
@@ -117,17 +122,17 @@ class ForgotPasswordView extends ConsumerWidget {
                             suffixIcon: _emailAddressController.text.isEmpty
                                 ? null
                                 : GestureDetector(
-                              onTap: () {},
-                              child: const CircleAvatar(
-                                backgroundColor: AppColors.grey7,
-                                radius: 10,
-                                child: Icon(
-                                  Icons.clear_rounded,
-                                  color: AppColors.light,
-                                  size: 15,
-                                ),
-                              ),
-                            ),
+                                    onTap: () {},
+                                    child: const CircleAvatar(
+                                      backgroundColor: AppColors.grey7,
+                                      radius: 10,
+                                      child: Icon(
+                                        Icons.clear_rounded,
+                                        color: AppColors.light,
+                                        size: 15,
+                                      ),
+                                    ),
+                                  ),
                             hasBorder: false,
                           ),
                         ],
@@ -168,45 +173,48 @@ class ForgotPasswordView extends ConsumerWidget {
                           ),
                           const Spacing.height(12),
                           AppTextField(
-                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
                             title: '',
                             hintText: 'Example123',
                             obscureText:
-                            !forgotPasswordNotifier.passwordVisible,
+                                !forgotPasswordNotifier.passwordVisible,
                             controller: _passwordController,
                             focusNode: _passwordFN,
                             onChanged: forgotPasswordNotifier.onPasswordChanged,
                             suffixIcon: _passwordController.text.isEmpty
                                 ? null
                                 : Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                GestureDetector(
-                                  onTap: () => forgotPasswordNotifier
-                                      .togglePassword(),
-                                  child: Icon(
-                                    forgotPasswordNotifier.passwordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: AppColors.dark,
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => forgotPasswordNotifier
+                                            .togglePassword(),
+                                        child: Icon(
+                                          forgotPasswordNotifier.passwordVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: AppColors.dark,
+                                        ),
+                                      ),
+                                      const Spacing.smallWidth(),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: const CircleAvatar(
+                                          backgroundColor: AppColors.grey7,
+                                          radius: 10,
+                                          child: Icon(
+                                            Icons.clear_rounded,
+                                            color: AppColors.light,
+                                            size: 15,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                const Spacing.smallWidth(),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: const CircleAvatar(
-                                    backgroundColor: AppColors.grey7,
-                                    radius: 10,
-                                    child: Icon(
-                                      Icons.clear_rounded,
-                                      color: AppColors.light,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                             hasBorder: false,
                           ),
                           const Spacing.largeHeight(),
@@ -230,89 +238,91 @@ class ForgotPasswordView extends ConsumerWidget {
                   ),
                 ),
                 AppButton(
-                  isLoading: forgotPasswordNotifier.state.isLoading,
+                  // isLoading: forgotPasswordNotifier.state.isLoading,
                   text: forgotPasswordNotifier.currentPage ==
-                      forgotPasswordNotifier.totalPage
+                          forgotPasswordNotifier.totalPage
                       ? 'Change Password'
                       : AppStrings.next,
                   backgroundColor: AppColors.primaryColor,
                   onPressed: forgotPasswordNotifier.currentPage == 1 &&
-                      _emailAddressController.text.isEmpty
+                          _emailAddressController.text.isEmpty
                       ? null
                       : forgotPasswordNotifier.currentPage == 3 &&
-                      _passwordController.text.isEmpty
-                      ? null
-                      : () async {
-                    if (forgotPasswordNotifier.currentPage == 1) {
-                      await forgotPasswordNotifier.checkEmail(
-                        reason: 'forgot password',
-                        email: _emailAddressController.text,
-                      );
-                      forgotPasswordNotifier.moveForward();
-                      _pageController.animateToPage(
-                        // array starts at 0 (lol)
-                        forgotPasswordNotifier.currentPage - 1,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeIn,
-                      );
-                    } else if (forgotPasswordNotifier.currentPage ==
-                        2) {
-                      // TODO: Delete the otp after the process is successful
-                      String? otp = await ref
-                          .read(localStorageService)
-                          .readSecureData(AppStrings.otpEmailKey);
-                      if (_otp == null) {
-                        ref.read(snackbarService).showErrorSnackBar(
-                          'Kindly enter otp.',
-                        );
-                        return;
-                      } else if (_otp!.length != 4) {
-                        ref.read(snackbarService).showErrorSnackBar(
-                          'Kindly make sure the OTP is complete.',
-                        );
-                        return;
-                      } else if (otp == _otp) {
-                        Alertify(title: 'OTP verified');
-                        await forgotPasswordNotifier.delay(sec: 2);
-                        forgotPasswordNotifier.moveForward();
-                        _pageController.animateToPage(
-                          // array starts at 0 (lol)
-                          forgotPasswordNotifier.currentPage - 1,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn,
-                        );
-                      }
-                    } else if (forgotPasswordNotifier.currentPage ==
-                        3) {
-                      await forgotPasswordNotifier.changePassword(
-                        email: _emailAddressController.text,
-                        password: _passwordController.text,
-                      );
-                      forgotPasswordNotifier.moveForward();
-                      _pageController.animateToPage(
-                        // array starts at 0 (lol)
-                        forgotPasswordNotifier.currentPage - 1,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeIn,
-                      );
-                    } else {
-                      forgotPasswordNotifier.moveForward();
-                      print(forgotPasswordNotifier.currentPage);
-                      forgotPasswordNotifier.currentPage >
-                          forgotPasswordNotifier.totalPage
-                          ? ref
-                          .read(navigationServiceProvider)
-                          .navigateOffAllNamed(
-                          Routes.login, (p0) => false)
-                          : _pageController.animateToPage(
-                        // array starts at 0 (lol)
-                        forgotPasswordNotifier.currentPage - 1,
-                        duration:
-                        const Duration(milliseconds: 500),
-                        curve: Curves.easeIn,
-                      );
-                    }
-                  },
+                              _passwordController.text.isEmpty
+                          ? null
+                          : () async {
+                              if (forgotPasswordNotifier.currentPage == 1) {
+                                Loader(context).showLoader(text: '');
+                                await forgotPasswordNotifier.checkEmail(
+                                  reason: 'forgot password',
+                                  email: _emailAddressController.text,
+                                );
+                                Loader(context).hideLoader();
+                                forgotPasswordNotifier.moveForward();
+                                _pageController.animateToPage(
+                                  // array starts at 0 (lol)
+                                  forgotPasswordNotifier.currentPage - 1,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeIn,
+                                );
+                              } else if (forgotPasswordNotifier.currentPage ==
+                                  2) {
+                                // TODO: Delete the otp after the process is successful
+                                String? otp = await ref
+                                    .read(localStorageService)
+                                    .readSecureData(AppStrings.otpEmailKey);
+                                if (_otp == null) {
+                                  ref.read(snackbarService).showErrorSnackBar(
+                                        'Kindly enter otp.',
+                                      );
+                                  return;
+                                } else if (_otp!.length != 4) {
+                                  ref.read(snackbarService).showErrorSnackBar(
+                                        'Kindly make sure the OTP is complete.',
+                                      );
+                                  return;
+                                } else if (otp == _otp) {
+                                  Alertify(title: 'OTP verified');
+                                  await forgotPasswordNotifier.delay(sec: 2);
+                                  forgotPasswordNotifier.moveForward();
+                                  _pageController.animateToPage(
+                                    // array starts at 0 (lol)
+                                    forgotPasswordNotifier.currentPage - 1,
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.easeIn,
+                                  );
+                                }
+                              } else if (forgotPasswordNotifier.currentPage ==
+                                  3) {
+                                await forgotPasswordNotifier.changePassword(
+                                  email: _emailAddressController.text,
+                                  password: _passwordController.text,
+                                );
+                                forgotPasswordNotifier.moveForward();
+                                _pageController.animateToPage(
+                                  // array starts at 0 (lol)
+                                  forgotPasswordNotifier.currentPage - 1,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeIn,
+                                );
+                              } else {
+                                forgotPasswordNotifier.moveForward();
+                                print(forgotPasswordNotifier.currentPage);
+                                forgotPasswordNotifier.currentPage >
+                                        forgotPasswordNotifier.totalPage
+                                    ? ref
+                                        .read(navigationServiceProvider)
+                                        .navigateOffAllNamed(
+                                            Routes.login, (p0) => false)
+                                    : _pageController.animateToPage(
+                                        // array starts at 0 (lol)
+                                        forgotPasswordNotifier.currentPage - 1,
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                        curve: Curves.easeIn,
+                                      );
+                              }
+                            },
                 ),
               ],
             ),

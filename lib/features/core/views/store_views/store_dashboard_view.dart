@@ -167,35 +167,38 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                       children: [
                         SizedBox(
                           height: 164,
-                          child: storeDashboardNotifier
-                                  .mostSearchedNCount!.products.isEmpty
-                              ? const Center(child: Text('No Product yet'))
-                              : ListView.separated(
-                                  itemCount: storeDashboardNotifier
-                                      .mostSearchedNCount!.products.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) =>
-                                      MostSearchedProductContainer(
-                                    productName: storeDashboardNotifier
-                                        .mostSearchedNCount!
-                                        .products[index]
-                                        .name,
-                                    productImage: storeDashboardNotifier
-                                        .mostSearchedNCount!
-                                        .products[index]
-                                        .image,
-                                    rating: storeDashboardNotifier
-                                        .mostSearchedNCount!
-                                        .products[index]
-                                        .star,
-                                    noOfSearches: storeDashboardNotifier
-                                        .mostSearchedNCount!
-                                        .products[index]
-                                        .searches,
-                                  ),
-                                  separatorBuilder: (context, index) =>
-                                      const Spacing.smallWidth(),
-                                ),
+                          child: storeDashboardNotifier.mostSearchedNCount ==
+                                  null
+                              ? const Center(child: Text('An error occurred'))
+                              : storeDashboardNotifier
+                                      .mostSearchedNCount!.products.isEmpty
+                                  ? const Center(child: Text('No Product yet'))
+                                  : ListView.separated(
+                                      itemCount: storeDashboardNotifier
+                                          .mostSearchedNCount!.products.length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) =>
+                                          MostSearchedProductContainer(
+                                        productName: storeDashboardNotifier
+                                            .mostSearchedNCount!
+                                            .products[index]
+                                            .name,
+                                        productImage: storeDashboardNotifier
+                                            .mostSearchedNCount!
+                                            .products[index]
+                                            .image,
+                                        rating: storeDashboardNotifier
+                                            .mostSearchedNCount!
+                                            .products[index]
+                                            .star,
+                                        noOfSearches: storeDashboardNotifier
+                                            .mostSearchedNCount!
+                                            .products[index]
+                                            .searches,
+                                      ),
+                                      separatorBuilder: (context, index) =>
+                                          const Spacing.smallWidth(),
+                                    ),
                         ),
                         const Spacing.mediumHeight(),
                         const Padding(
@@ -422,8 +425,10 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                           ),
                                           IconNTextContainer2(
                                             text: storeDashboardNotifier
-                                                .mostSearchedNCount!.storeGrade
-                                                .toStringAsFixed(1),
+                                                    .mostSearchedNCount
+                                                    ?.storeGrade
+                                                    .toStringAsFixed(1) ??
+                                                '00',
                                             textColor: const Color(0xff5C6475),
                                             fontSize: 12,
                                             icon: SvgPicture.asset(
@@ -507,9 +512,10 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                         children: [
                                           CustomisedText(
                                             text: storeDashboardNotifier
-                                                .mostSearchedNCount!
-                                                .storeProductsSaved
-                                                .toString(),
+                                                    .mostSearchedNCount
+                                                    ?.storeProductsSaved
+                                                    .toString() ??
+                                                '0',
                                             height: 40,
                                             verticalPadding: 5,
                                           ),
@@ -697,9 +703,10 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                           children: [
                                             CustomisedText(
                                               text: storeDashboardNotifier
-                                                  .mostSearchedNCount!
-                                                  .storeProductCount
-                                                  .toString(),
+                                                      .mostSearchedNCount
+                                                      ?.storeProductCount
+                                                      .toString() ??
+                                                  '0',
                                               fontSize: 32,
                                               verticalPadding: 5,
                                             ),

@@ -40,21 +40,21 @@ class DeleteUser extends ConsumerWidget {
         leading: deleteUserNotifier.currentPage == 1
             ? null
             : IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            color: AppColors.dark,
-          ),
-          onPressed: () {
-            deleteUserNotifier.moveBackward();
-            print(deleteUserNotifier.currentPage);
-            _pageController.animateToPage(
-              // array starts at 0 (lol)
-              deleteUserNotifier.currentPage - 1,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-            );
-          },
-        ),
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppColors.dark,
+                ),
+                onPressed: () {
+                  deleteUserNotifier.moveBackward();
+                  print(deleteUserNotifier.currentPage);
+                  _pageController.animateToPage(
+                    // array starts at 0 (lol)
+                    deleteUserNotifier.currentPage - 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+              ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
@@ -153,7 +153,10 @@ class DeleteUser extends ConsumerWidget {
                               ),
                               const Spacing.height(18),
                               AppTextField(
-                                style: TextStyle(color: AppColors.grey5, fontSize: 14, fontWeight: FontWeight.w500),
+                                style: TextStyle(
+                                    color: AppColors.grey5,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
                                 title: '',
                                 hintText: 'Steve Jobs',
                                 focusNode: _detailFN,
@@ -209,7 +212,10 @@ class DeleteUser extends ConsumerWidget {
                                 ),
                               ),
                               AppTextField(
-                                style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                                style: TextStyle(
+                                    color: AppColors.grey1,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500),
                                 title: '',
                                 hintText: 'Password123',
                                 keyboardType: TextInputType.emailAddress,
@@ -219,35 +225,35 @@ class DeleteUser extends ConsumerWidget {
                                 suffixIcon: _passwordController.text.isEmpty
                                     ? null
                                     : Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.end,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () => deleteUserNotifier
-                                          .togglePassword(),
-                                      child: Icon(
-                                        deleteUserNotifier.passwordVisible
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
-                                        color: AppColors.dark,
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () => deleteUserNotifier
+                                                .togglePassword(),
+                                            child: Icon(
+                                              deleteUserNotifier.passwordVisible
+                                                  ? Icons.visibility
+                                                  : Icons.visibility_off,
+                                              color: AppColors.dark,
+                                            ),
+                                          ),
+                                          const Spacing.smallWidth(),
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: const CircleAvatar(
+                                              backgroundColor: AppColors.grey7,
+                                              radius: 10,
+                                              child: Icon(
+                                                Icons.clear_rounded,
+                                                color: AppColors.light,
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    const Spacing.smallWidth(),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: const CircleAvatar(
-                                        backgroundColor: AppColors.grey7,
-                                        radius: 10,
-                                        child: Icon(
-                                          Icons.clear_rounded,
-                                          color: AppColors.light,
-                                          size: 15,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                                 hasBorder: false,
                               ),
                             ],
@@ -256,24 +262,24 @@ class DeleteUser extends ConsumerWidget {
                       ),
                     ),
                     AppButton(
-                      isLoading: deleteUserNotifier.state.isLoading,
+                      // isLoading: deleteUserNotifier.state.isLoading,
                       text: deleteUserNotifier.currentPage ==
-                          deleteUserNotifier.totalPage
+                              deleteUserNotifier.totalPage
                           ? AppStrings.deleteUserNote4
                           : "Continue >>",
                       backgroundColor: deleteUserNotifier.currentPage == 1 &&
-                          (!deleteUserNotifier.reason1 &&
-                              !deleteUserNotifier.reason2 &&
-                              !deleteUserNotifier.reason3 &&
-                              !deleteUserNotifier.reason4 &&
-                              !deleteUserNotifier.reason5 &&
-                              _detailController.text.isEmpty)
+                              (!deleteUserNotifier.reason1 &&
+                                  !deleteUserNotifier.reason2 &&
+                                  !deleteUserNotifier.reason3 &&
+                                  !deleteUserNotifier.reason4 &&
+                                  !deleteUserNotifier.reason5 &&
+                                  _detailController.text.isEmpty)
                           ? AppColors.grey6
                           : deleteUserNotifier.currentPage ==
-                          deleteUserNotifier.totalPage &&
-                          _passwordController.text.isNotEmpty
-                          ? Color(0xffF8EEEE)
-                          : AppColors.primaryColor,
+                                      deleteUserNotifier.totalPage &&
+                                  _passwordController.text.isNotEmpty
+                              ? Color(0xffF8EEEE)
+                              : AppColors.primaryColor,
                       textColor: _passwordController.text.isNotEmpty
                           ? AppColors.red
                           : AppColors.light,
@@ -282,76 +288,81 @@ class DeleteUser extends ConsumerWidget {
                       //     .read(navigationServiceProvider)
                       //     .navigateToNamed(Routes.homeView),
                       onPressed: deleteUserNotifier.currentPage == 1 &&
-                          (!deleteUserNotifier.reason1 &&
-                              !deleteUserNotifier.reason2 &&
-                              !deleteUserNotifier.reason3 &&
-                              !deleteUserNotifier.reason4 &&
-                              !deleteUserNotifier.reason5 &&
-                              _detailController.text.isEmpty)
+                              (!deleteUserNotifier.reason1 &&
+                                  !deleteUserNotifier.reason2 &&
+                                  !deleteUserNotifier.reason3 &&
+                                  !deleteUserNotifier.reason4 &&
+                                  !deleteUserNotifier.reason5 &&
+                                  _detailController.text.isEmpty)
                           ? null
                           : () async {
-                        if (deleteUserNotifier.currentPage == 1) {
-                          // deleteUserNotifier.deleteAccount();
+                              if (deleteUserNotifier.currentPage == 1) {
+                                // deleteUserNotifier.deleteAccount();
 
-                          //: deleteUserNotifier.currentPage == 2 ?
-                          deleteUserNotifier.moveForward();
-                          _pageController.animateToPage(
-                            // array starts at 0 (lol)
-                            deleteUserNotifier.currentPage - 1,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn,
-                          );
-                        }
-                        //else (deleteUserNotifier.currentPage == 2){
-                        else if (deleteUserNotifier.currentPage == 2) {
-                          deleteUserNotifier.moveForward();
-                          _pageController.animateToPage(
-                            // array starts at 0 (lol)
-                            deleteUserNotifier.currentPage - 1,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn,
-                          );
-                        } else if (deleteUserNotifier.currentPage == 3 &&
-                            _passwordController.text.isNotEmpty) {
-                          await deleteUserNotifier.checkPassword(
-                            password: _passwordController.text,
-                          );
-                          if (deleteUserNotifier.passwordCorrect) {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return AppDialog(
-                                  title:
-                                  'Are you sure you want to delete your account?',
-                                  text1: 'No',
-                                  text2: 'Yes',
-                                  onText2Pressed: () async {
-                                    Loader(context)
-                                        .showLoader(text: 'Please wait');
-                                    await deleteUserNotifier
-                                        .deleteAccount();
-                                    if (deleteUserNotifier
-                                        .accountDeleted) {
-                                      ref.read(settingNotifierProvider).logOut();
-                                      ref
-                                          .read(navigationServiceProvider)
-                                          .navigateOffAllNamed(
-                                          Routes.login,
-                                              (p0) => false);
-                                      Alertify(title: 'Account deleted')
-                                          .success();
-                                    } else {
-                                      Alertify(title: 'An error occurred')
-                                          .error();
-                                    }
-                                  },
+                                //: deleteUserNotifier.currentPage == 2 ?
+                                deleteUserNotifier.moveForward();
+                                _pageController.animateToPage(
+                                  // array starts at 0 (lol)
+                                  deleteUserNotifier.currentPage - 1,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeIn,
                                 );
-                              },
-                            );
-                          }
-                        }
-                      },
+                              }
+                              //else (deleteUserNotifier.currentPage == 2){
+                              else if (deleteUserNotifier.currentPage == 2) {
+                                deleteUserNotifier.moveForward();
+                                _pageController.animateToPage(
+                                  // array starts at 0 (lol)
+                                  deleteUserNotifier.currentPage - 1,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeIn,
+                                );
+                              } else if (deleteUserNotifier.currentPage == 3 &&
+                                  _passwordController.text.isNotEmpty) {
+                                Loader(context).showLoader(text: '');
+                                await deleteUserNotifier.checkPassword(
+                                  password: _passwordController.text,
+                                );
+                                if (deleteUserNotifier.passwordCorrect) {
+                                  Loader(context).hideLoader();
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      return AppDialog(
+                                        title:
+                                            'Are you sure you want to delete your account?',
+                                        text1: 'No',
+                                        text2: 'Yes',
+                                        onText2Pressed: () async {
+                                          Loader(context)
+                                              .showLoader(text: 'Please wait');
+                                          await deleteUserNotifier
+                                              .deleteAccount();
+                                          if (deleteUserNotifier
+                                              .accountDeleted) {
+                                            ref
+                                                .read(settingNotifierProvider)
+                                                .logOut();
+                                            ref
+                                                .read(navigationServiceProvider)
+                                                .navigateOffAllNamed(
+                                                    Routes.login,
+                                                    (p0) => false);
+                                            Alertify(title: 'Account deleted')
+                                                .success();
+                                          } else {
+                                            Loader(context).hideLoader();
+                                            Alertify(title: 'An error occurred')
+                                                .error();
+                                          }
+                                        },
+                                      );
+                                    },
+                                  );
+                                }
+                              }
+                            },
                     ),
                   ],
                 ),

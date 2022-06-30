@@ -1,3 +1,4 @@
+import 'package:buy_link/core/routes.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -14,17 +15,22 @@ class AddProductNotifier extends BaseChangeNotifier {
   AddProductNotifier(this._reader);
 
   String? _categoryValue;
+
   String? get categoryValue => _categoryValue;
   String? _sizeValue;
+
   String? get sizeValue => _sizeValue;
 
   List<String> _categories = ['Aaaa', 'Bbbbb', 'Ccccc'];
+
   List<String> get categories => _categories;
 
   List<String> _sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+
   List<String> get sizes => _sizes;
 
   List<String?> _imageList = [];
+
   List<String?> get imageList => _imageList;
 
   void onCategoryChanged({
@@ -78,17 +84,29 @@ class AddProductNotifier extends BaseChangeNotifier {
   }
 
   void onNameChanged(String value) => _name = value;
+
   void onMinPriceChanged(String value) => _minPrice = value;
+
   void onMaxPriceChanged(String value) => _maxPrice = value;
+
   void onDescChanged(String value) => _desc = value;
+
   void onBrandChanged(String value) => _brand = value;
+
   void onColorChanged(String value) => _color = value;
+
   void onMinAgeChanged(String value) => _minAge = value;
+
   void onMaxAgeChanged(String value) => _maxAge = value;
+
   void onMinWeightChanged(String value) => _minWeight = value;
+
   void onMaxWeightChanged(String value) => _maxWeight = value;
+
   void onModelChanged(String value) => _model = value;
+
   void onMaterialChanged(String value) => _material = value;
+
   void onCareChanged(String value) => _care = value;
 
   void setImages({
@@ -115,8 +133,8 @@ class AddProductNotifier extends BaseChangeNotifier {
         image4: _imageList.length < 4 ? null : _imageList[3],
         price: _minPrice,
         oldPrice: _maxPrice,
-        // category: _categoryValue!,
-        category: '_categoryValue!',
+        category: _categoryValue!,
+        // category: '_categoryValue!',
         description: _desc!,
         brand: _brand,
         colors: _color,
@@ -129,8 +147,8 @@ class AddProductNotifier extends BaseChangeNotifier {
         material: _material,
         care: _care,
       );
-      Alertify(title: 'Your product has been added').success();
-      _reader(navigationServiceProvider).navigateBack();
+      // _reader(navigationServiceProvider)
+      //     .navigateOffNamed(Routes.storeDashboard);
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);

@@ -13,6 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/routes.dart';
+import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_linear_progress.dart';
 import '../../../../widgets/app_text_field.dart';
@@ -275,7 +276,7 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                 Column(
                   children: [
                     AppButton(
-                      isLoading: addStoreNotifier.state.isLoading,
+                      // isLoading: addStoreNotifier.state.isLoading,
                       text: addStoreNotifier.currentPage ==
                               addStoreNotifier.totalPage
                           ? 'Create store'
@@ -320,6 +321,7 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                                         );
                                       } else if (addStoreNotifier.currentPage ==
                                           4) {
+                                        Loader(context).showLoader(text: '');
                                         await addStoreNotifier.createStore(
                                           storeName: _nameController.text,
                                           storeDescription:
@@ -333,6 +335,7 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                                         await ref
                                             .refresh(storeNotifierProvider)
                                             .fetchMyStores();
+                                        Loader(context).hideLoader();
                                         ref
                                             .read(navigationServiceProvider)
                                             .navigateBack();

@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utilities/alertify.dart';
+import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/text_with_rich.dart';
@@ -61,7 +62,10 @@ class EditStoreName extends ConsumerWidget {
                 ),
                 const Spacing.smallHeight(),
                 AppTextField(
-                  style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      color: AppColors.grey1,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500),
                   title: '',
                   hintText: 'Atinuke Stores',
                   focusNode: _nameFN,
@@ -89,7 +93,7 @@ class EditStoreName extends ConsumerWidget {
                 const Spacing.largeHeight(),
                 const Spacing.largeHeight(),
                 AppButton(
-                  isLoading: storeSettingsNotifier.state.isLoading,
+                  // isLoading: storeSettingsNotifier.state.isLoading,
                   text: "Save",
                   backgroundColor: _nameController.text.isEmpty
                       ? AppColors.grey6
@@ -97,20 +101,22 @@ class EditStoreName extends ConsumerWidget {
                   onPressed: _nameController.text.isEmpty
                       ? null
                       : () async {
-                    if (_formKey.currentState!.validate()) {
-                      await storeSettingsNotifier.editStore(
-                        storeId: 23,
-                        attribute: 'name',
-                        newValue: _nameController.text,
-                      );
-                      await ref
-                          .refresh(storeNotifierProvider)
-                          .fetchMyStores();
-                      ref.read(navigationServiceProvider).navigateBack();
-                      Alertify(title: 'Store name changed successfully')
-                          .success();
-                    }
-                  },
+                          if (_formKey.currentState!.validate()) {
+                            Loader(context).showLoader(text: '');
+                            await storeSettingsNotifier.editStore(
+                              storeId: 23,
+                              attribute: 'name',
+                              newValue: _nameController.text,
+                            );
+                            await ref
+                                .refresh(storeNotifierProvider)
+                                .fetchMyStores();
+                            Loader(context).hideLoader();
+                            ref.read(navigationServiceProvider).navigateBack();
+                            Alertify(title: 'Store name changed successfully')
+                                .success();
+                          }
+                        },
                 ),
               ],
             ),

@@ -48,7 +48,6 @@ class HomeView extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppTextField(
-                style: TextStyle(color: AppColors.grey2, fontSize: 14, fontWeight: FontWeight.w500),
                 hintText: 'What would you like to buy ?',
                 onTap: () async {
                   searchFN.unfocus();
@@ -80,7 +79,7 @@ class HomeView extends ConsumerWidget {
               ),
               //   ),
               // ),
-              const Spacing.height(8),
+              const Spacing.height(12),
               Visibility(
                 visible: ref.watch(userProvider).currentUser == null,
                 child: AppButton(
@@ -92,140 +91,160 @@ class HomeView extends ConsumerWidget {
                   icon: SvgPicture.asset(AppSvgs.login),
                   onPressed: () {
                     ref.read(navigationServiceProvider).navigateOffAllNamed(
-                      Routes.login,
+                          Routes.login,
                           (p0) => false,
-                    );
+                        );
                   },
                 ),
               ),
               const Spacing.height(12),
-              const Text(
-                'Based on your interest',
-                style: TextStyle(
-                  color: AppColors.grey1,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+              if (!homeNotifier.productLoading ||
+                  homeNotifier.products.isNotEmpty)
+                Text(
+                  homeNotifier.initialText,
+                  style: const TextStyle(
+                    color: AppColors.grey1,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
               const Spacing.smallHeight(),
               Expanded(
-                child: homeNotifier.state.isLoading
+                child: homeNotifier.productLoading
                     ? const CircularProgress()
                     : homeNotifier.products.isEmpty
-                    ? AppEmptyStates(
-                    imageString: AppImages.bag,
-                    message1String:
-                    'No Product... Kindly Reload or check back',
-                    buttonString: 'Reload',
-                    hasButton: true,
-                    hasIcon: false,
-                    onButtonPressed: () =>
-                        homeNotifier.fetchProducts(category: 'all'))
-                    : MasonryGridView.count(
-                  itemCount: homeNotifier.products.length,
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 15,
-                  itemBuilder: (context, index) {
-                    if (index == 3) {
-                      return Container(
-                        height: 182,
-                        color: AppColors.transparent,
-                        child: categoryNotifier.state.isLoading
-                            ? const CircularProgress()
-                            : Column(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: [
-                            CategoryContainer(
-                              categoryName: categoryNotifier
-                                  .categories[0].name,
-                              categoryImage: categoryNotifier
-                                  .categories[0].image,
-                              onTap: () =>
-                                  homeNotifier.fetchProducts(
-                                      category: categoryNotifier
-                                          .categories[0].name),
-                            ),
-                            CategoryContainer(
-                              categoryName: categoryNotifier
-                                  .categories[1].name,
-                              categoryImage: categoryNotifier
-                                  .categories[1].image,
-                              onTap: () =>
-                                  homeNotifier.fetchProducts(
-                                      category: categoryNotifier
-                                          .categories[1].name),
-                            ),
-                            CategoryContainer(
-                              categoryName: categoryNotifier
-                                  .categories[2].name,
-                              categoryImage: categoryNotifier
-                                  .categories[2].image,
-                              onTap: () =>
-                                  homeNotifier.fetchProducts(
-                                      category: categoryNotifier
-                                          .categories[2].name),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      return ProductContainer(
-                        url: homeNotifier.products[index].image[0],
-                        storeName:
-                        homeNotifier.products[index].store.name,
-                        productName:
-                        homeNotifier.products[index].name,
-                        productPrice:
-                        homeNotifier.products[index].price,
-                        distance: ref
-                            .watch(locationService)
-                            .getDistance(
-                          endLat:
-                          homeNotifier.products[index].lat,
-                          endLon:
-                          homeNotifier.products[index].lon,
-                        ),
-                        isFavorite:
-                        homeNotifier.products[index].isFav!,
-                        onProductTapped: () {
-                          ref
-                              .read(navigationServiceProvider)
-                              .navigateToNamed(
-                            Routes.productDetails,
-                            arguments:
-                            homeNotifier.products[index],
-                          );
-                        },
-                        onDistanceTapped: () {},
-                        onFlipTapped: () {
-                          ref
-                              .read(navigationServiceProvider)
-                              .navigateToNamed(
-                            Routes.compare,
-                            arguments: CompareArgModel(
-                                product:
-                                homeNotifier.products[index]),
-                          );
-                        },
-                        onFavoriteTapped: () async {
-                          homeNotifier.products[index].isFav!
-                              ? await wishlistNotifier
-                              .removeFromWishlist(
-                            productId:
-                            homeNotifier.products[index].id,
-                          )
-                              : await wishlistNotifier.addToWishlist(
-                            productId:
-                            homeNotifier.products[index].id,
-                          );
-                          ref.refresh(homeNotifierProvider(null));
-                        },
-                      );
-                    }
-                  },
-                ),
+                        ? AppEmptyStates(
+                            imageString: AppImages.bag,
+                            message1String:
+                                'No Product... Kindly Reload or check back',
+                            buttonString: 'Reload',
+                            hasButton: true,
+                            hasIcon: false,
+                            onButtonPressed: () =>
+                                homeNotifier.fetchProducts(category: 'all'))
+                        : MasonryGridView.count(
+                            itemCount: homeNotifier.products.length,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
+                            itemBuilder: (context, index) {
+                              if (index == 3) {
+                                return Container(
+                                  height: 182,
+                                  color: AppColors.transparent,
+                                  child: categoryNotifier.state.isLoading
+                                      ? const CircularProgress()
+                                      : categoryNotifier.categories.isEmpty
+                                          ? const Center(
+                                              child: Text('Category is empty'),
+                                            )
+                                          : Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                CategoryContainer(
+                                                  categoryName: categoryNotifier
+                                                      .categories[0].name,
+                                                  categoryImage:
+                                                      categoryNotifier
+                                                          .categories[0].image,
+                                                  onTap: () => homeNotifier
+                                                      .fetchProducts(
+                                                          category:
+                                                              categoryNotifier
+                                                                  .categories[0]
+                                                                  .name),
+                                                ),
+                                                CategoryContainer(
+                                                  categoryName: categoryNotifier
+                                                      .categories[1].name,
+                                                  categoryImage:
+                                                      categoryNotifier
+                                                          .categories[1].image,
+                                                  onTap: () => homeNotifier
+                                                      .fetchProducts(
+                                                          category:
+                                                              categoryNotifier
+                                                                  .categories[1]
+                                                                  .name),
+                                                ),
+                                                CategoryContainer(
+                                                  categoryName: categoryNotifier
+                                                      .categories[2].name,
+                                                  categoryImage:
+                                                      categoryNotifier
+                                                          .categories[2].image,
+                                                  onTap: () => homeNotifier
+                                                      .fetchProducts(
+                                                          category:
+                                                              categoryNotifier
+                                                                  .categories[2]
+                                                                  .name),
+                                                ),
+                                              ],
+                                            ),
+                                );
+                              } else {
+                                return ProductContainer(
+                                  url: homeNotifier.products[index].image[0],
+                                  storeName:
+                                      homeNotifier.products[index].store.name,
+                                  productName:
+                                      homeNotifier.products[index].name,
+                                  productPrice:
+                                      homeNotifier.products[index].price,
+                                  distance: ref
+                                      .watch(locationService)
+                                      .getDistance(
+                                        endLat:
+                                            homeNotifier.products[index].lat,
+                                        endLon:
+                                            homeNotifier.products[index].lon,
+                                      ),
+                                  isFavorite:
+                                      homeNotifier.products[index].isFav!,
+                                  onProductTapped: () {
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateToNamed(
+                                          Routes.productDetails,
+                                          arguments:
+                                              homeNotifier.products[index],
+                                        );
+                                  },
+                                  onDistanceTapped: () {},
+                                  onFlipTapped: () async {
+                                    await ref
+                                        .read(flipNotifierProvider)
+                                        .addItemToCompare(
+                                            productId: homeNotifier
+                                                .products[index].id);
+                                    if (ref
+                                        .read(flipNotifierProvider)
+                                        .successfullyAdded) {
+                                      ref
+                                          .read(navigationServiceProvider)
+                                          .navigateToNamed(Routes.compare);
+                                    }
+                                  },
+                                  onFavoriteTapped: () async {
+                                    homeNotifier.products[index].isFav!
+                                        ? await wishlistNotifier
+                                            .removeFromWishlist(
+                                            productId:
+                                                homeNotifier.products[index].id,
+                                          )
+                                        : await wishlistNotifier.addToWishlist(
+                                            productId:
+                                                homeNotifier.products[index].id,
+                                          );
+                                    ref.refresh(homeNotifierProvider(null));
+                                  },
+                                );
+                              }
+                            },
+                          ),
               ),
             ],
           ),

@@ -13,11 +13,14 @@ class AddReviewNotifier extends BaseChangeNotifier {
   AddReviewNotifier(this._reader);
 
   int _titleCharacters = 100;
+
   int get titleCharacters => _titleCharacters;
   int _commentCharacters = 300;
+
   int get commentCharacters => _commentCharacters;
 
   double _rating = 0;
+
   double get rating => _rating;
 
   void onRatingUpdate(double rating) {
@@ -51,8 +54,6 @@ class AddReviewNotifier extends BaseChangeNotifier {
         title: title,
         body: body,
       );
-      Alertify(title: 'Your review has been added').success();
-      _reader(navigationServiceProvider).navigateBack();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);

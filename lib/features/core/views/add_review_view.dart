@@ -10,6 +10,7 @@ import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/utilities/loader.dart';
 import '../../../widgets/add_review_rate_bar.dart';
 import '../../../widgets/app_rating_bar.dart';
 import '../notifiers/add_review_notifier.dart';
@@ -66,9 +67,7 @@ class AddReviewView extends ConsumerWidget {
           ),
           leading: IconButton(
             onPressed: () {
-              ref
-                  .read(navigationServiceProvider)
-                  .navigateBack();
+              ref.read(navigationServiceProvider).navigateBack();
             },
             icon: const Icon(
               Icons.arrow_back_ios_outlined,
@@ -88,92 +87,104 @@ class AddReviewView extends ConsumerWidget {
           centerTitle: true,
         ),
         body: SafeArea(
-          child: SingleChildScrollView(child:Padding(
-            padding: const EdgeInsets.symmetric(
-              // vertical: 16,
-              horizontal: 20,
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const Text(
-                    'Your reviews are public and would only include your name',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.grey2,
-                      fontSize: 12,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                // vertical: 16,
+                horizontal: 20,
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const Text(
+                      'Your reviews are public and would only include your name',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.grey2,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
-                  const Spacing.bigHeight(),
-                  const Divider(thickness: 2, color: AppColors.grey8,),
-                  const Text(
-                    'Your overall rating of the store',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.grey2,
-                      fontSize: 12,
+                    const Spacing.bigHeight(),
+                    const Divider(
+                      thickness: 2,
+                      color: AppColors.grey8,
                     ),
-                  ),
-                  const Spacing.smallHeight(),
-                  AppRatingBar(
-                    initialRating: 0,
-                    itemSize: 30,
-                    onRatingUpdate: addReviewNotifier.onRatingUpdate,
-                  ),
-                  const Divider(thickness: 2, color: AppColors.grey8,),
-                  Spacing.smallHeight(),
-
-                  ReviewTextField(
-                    hintText: 'Sumarize your review',
-                    focusNode: reviewTitleFN,
-                    controller: reviewTitleController,
-                    title: 'Title of your review (optional)',
-                    onChanged: addReviewNotifier.onTitleChanged,
-                    noOfChar: addReviewNotifier.titleCharacters,
-                    maxLength: 100,
-                  ),
-                  const Spacing.height(20),
-                  ReviewTextField(
-                    hintText:
-                    'Describe your experience shopping at the store(optional)',
-                    focusNode: reviewCommentFN,
-                    controller: reviewCommentController,
-                    title: 'How was your experience? (optional)',
-                    onChanged: addReviewNotifier.onCommentChanged,
-                    noOfChar: addReviewNotifier.commentCharacters,
-                    maxLength: 300,
-                    maxLine: 9,
-                  ),
-                  const Spacing.height(40),
-                  AppButton(
-                    isLoading: addReviewNotifier.state.isLoading,
-                    text: 'Post Review',
-                    backgroundColor: addReviewNotifier.rating < 1
-                        ? AppColors.grey6
-                        : AppColors.primaryColor,
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        if (addReviewNotifier.rating < 1) {
-                          Alertify(
-                            title: 'You must at least choose a rating',
-                          ).error();
-                          return;
+                    const Text(
+                      'Your overall rating of the store',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.grey2,
+                        fontSize: 12,
+                      ),
+                    ),
+                    const Spacing.smallHeight(),
+                    AppRatingBar(
+                      initialRating: 0,
+                      itemSize: 30,
+                      onRatingUpdate: addReviewNotifier.onRatingUpdate,
+                    ),
+                    const Divider(
+                      thickness: 2,
+                      color: AppColors.grey8,
+                    ),
+                    Spacing.smallHeight(),
+                    ReviewTextField(
+                      hintText: 'Sumarize your review',
+                      focusNode: reviewTitleFN,
+                      controller: reviewTitleController,
+                      title: 'Title of your review (optional)',
+                      onChanged: addReviewNotifier.onTitleChanged,
+                      noOfChar: addReviewNotifier.titleCharacters,
+                      maxLength: 100,
+                    ),
+                    const Spacing.height(20),
+                    ReviewTextField(
+                      hintText:
+                          'Describe your experience shopping at the store(optional)',
+                      focusNode: reviewCommentFN,
+                      controller: reviewCommentController,
+                      title: 'How was your experience? (optional)',
+                      onChanged: addReviewNotifier.onCommentChanged,
+                      noOfChar: addReviewNotifier.commentCharacters,
+                      maxLength: 300,
+                      maxLine: 9,
+                    ),
+                    const Spacing.height(40),
+                    AppButton(
+                      // isLoading: addReviewNotifier.state.isLoading,
+                      text: 'Post Review',
+                      backgroundColor: addReviewNotifier.rating < 1
+                          ? AppColors.grey6
+                          : AppColors.primaryColor,
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          if (addReviewNotifier.rating < 1) {
+                            Alertify(
+                              title: 'You must at least choose a rating',
+                            ).error();
+                            return;
+                          }
+                          Loader(context).showLoader(text: '');
+                          await addReviewNotifier.addReview(
+                            storeId: storeId,
+                            star: addReviewNotifier.rating,
+                            title: reviewTitleController.text,
+                            body: reviewCommentController.text,
+                          );
+                          await ref
+                              .refresh(storeReviewNotifierProvider(storeId));
+                          Loader(context).hideLoader();
+                          Alertify(title: 'Your review has been added')
+                              .success();
+                          ref.read(navigationServiceProvider).navigateBack();
                         }
-                        addReviewNotifier.addReview(
-                          storeId: storeId,
-                          star: addReviewNotifier.rating,
-                          title: reviewTitleController.text,
-                          body: reviewCommentController.text,
-                        );
-                        ref.refresh(storeReviewNotifierProvider(storeId));
-                      }
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
           ),
         ),
       ),

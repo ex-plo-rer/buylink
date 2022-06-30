@@ -45,8 +45,11 @@ class LoginNotifier extends BaseChangeNotifier {
       );
 
       Alertify(title: 'User logged in').success();
-      _reader(navigationServiceProvider)
-          .navigateOffAllNamed(Routes.dashboard, (p0) => false);
+      _reader(navigationServiceProvider).navigateBack();
+      _reader(navigationServiceProvider).navigateOffAllNamed(
+        Routes.dashboard,
+        (p0) => false,
+      );
 
       // Calling _reader(userProvider); helps to initialize the methods inside
       // the userProvider before we'd need them
@@ -57,7 +60,7 @@ class LoginNotifier extends BaseChangeNotifier {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
     } finally {
-     // setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 }

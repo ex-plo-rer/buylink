@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_check_box.dart';
 import '../../../../widgets/app_linear_progress.dart';
@@ -15,7 +16,6 @@ import '../../../../widgets/spacing.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/settings_notifier/change_password_notifier.dart';
 import '../../notifiers/settings_notifier/delete_user_notifier.dart';
-
 
 class ChangePassword extends ConsumerWidget {
   ChangePassword({Key? key}) : super(key: key);
@@ -36,21 +36,21 @@ class ChangePassword extends ConsumerWidget {
         leading: changePasswordNotifier.currentPage == 1
             ? null
             : IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            color: AppColors.dark,
-          ),
-          onPressed: () {
-            changePasswordNotifier.moveBackward();
-            print(changePasswordNotifier.currentPage);
-            _pageController.animateToPage(
-              // array starts at 0 (lol)
-              changePasswordNotifier.currentPage - 1,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-            );
-          },
-        ),
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppColors.dark,
+                ),
+                onPressed: () {
+                  changePasswordNotifier.moveBackward();
+                  print(changePasswordNotifier.currentPage);
+                  _pageController.animateToPage(
+                    // array starts at 0 (lol)
+                    changePasswordNotifier.currentPage - 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                },
+              ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
@@ -104,48 +104,51 @@ class ChangePassword extends ConsumerWidget {
                             ),
                           ),
                           AppTextField(
-                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
                             title: '',
                             hintText: 'Ayodeji123',
                             obscureText:
-                            !changePasswordNotifier.oldPasswordVisible,
+                                !changePasswordNotifier.oldPasswordVisible,
                             controller: _oldPasswordController,
                             focusNode: _oldPasswordFN,
                             onChanged:
-                            changePasswordNotifier.onOldPasswordChanged,
+                                changePasswordNotifier.onOldPasswordChanged,
                             suffixIcon: _oldPasswordController.text.isEmpty
                                 ? null
                                 : Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                GestureDetector(
-                                  onTap: () => changePasswordNotifier
-                                      .toggleOldPassword(),
-                                  child: Icon(
-                                    changePasswordNotifier
-                                        .oldPasswordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: AppColors.dark,
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => changePasswordNotifier
+                                            .toggleOldPassword(),
+                                        child: Icon(
+                                          changePasswordNotifier
+                                                  .oldPasswordVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: AppColors.dark,
+                                        ),
+                                      ),
+                                      const Spacing.smallWidth(),
+                                      GestureDetector(
+                                        onTap: () =>
+                                            _oldPasswordController.clear(),
+                                        child: const CircleAvatar(
+                                          backgroundColor: AppColors.grey7,
+                                          radius: 10,
+                                          child: Icon(
+                                            Icons.clear_rounded,
+                                            color: AppColors.light,
+                                            size: 15,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                const Spacing.smallWidth(),
-                                GestureDetector(
-                                  onTap: () =>
-                                      _oldPasswordController.clear(),
-                                  child: const CircleAvatar(
-                                    backgroundColor: AppColors.grey7,
-                                    radius: 10,
-                                    child: Icon(
-                                      Icons.clear_rounded,
-                                      color: AppColors.light,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                             hasBorder: false,
                           ),
                         ],
@@ -160,15 +163,18 @@ class ChangePassword extends ConsumerWidget {
                           ),
                           const Spacing.height(12),
                           AppTextField(
-                            style: TextStyle(color: AppColors.grey1, fontSize: 20, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
                             title: '',
                             controller: _newPasswordController,
                             focusNode: _newPasswordFN,
                             hintText: 'Example123',
                             onChanged:
-                            changePasswordNotifier.onNewPasswordChanged,
+                                changePasswordNotifier.onNewPasswordChanged,
                             obscureText:
-                            !changePasswordNotifier.newPasswordVisible,
+                                !changePasswordNotifier.newPasswordVisible,
                             suffixIcon: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -221,24 +227,26 @@ class ChangePassword extends ConsumerWidget {
                   ),
                 ),
                 AppButton(
-                  isLoading: changePasswordNotifier.state.isLoading,
+                  // isLoading: changePasswordNotifier.state.isLoading,
                   text: changePasswordNotifier.currentPage ==
-                      changePasswordNotifier.totalPage
+                          changePasswordNotifier.totalPage
                       ? AppStrings.changePassword
                       : AppStrings.next,
                   backgroundColor: changePasswordNotifier.currentPage == 1 &&
-                      _oldPasswordController.text.isEmpty
+                          _oldPasswordController.text.isEmpty
                       ? AppColors.grey6
                       : changePasswordNotifier.currentPage == 2 &&
-                      _newPasswordController.text.isEmpty
-                      ? AppColors.grey6
-                      : AppColors.primaryColor,
+                              _newPasswordController.text.isEmpty
+                          ? AppColors.grey6
+                          : AppColors.primaryColor,
                   onPressed: () async {
                     if (changePasswordNotifier.currentPage == 1) {
+                      Loader(context).showLoader(text: '');
                       await changePasswordNotifier.checkPassword(
                         password: _oldPasswordController.text,
                       );
                       if (changePasswordNotifier.oldPasswordCorrect) {
+                        Loader(context).hideLoader();
                         changePasswordNotifier.moveForward();
                         print(changePasswordNotifier.currentPage);
                         _pageController.animateToPage(
@@ -248,10 +256,12 @@ class ChangePassword extends ConsumerWidget {
                           curve: Curves.easeIn,
                         );
                       } else {
+                        Loader(context).hideLoader();
                         Alertify(title: 'Your old password is not correct')
                             .error();
                       }
                     } else if (changePasswordNotifier.currentPage == 2) {
+                      Loader(context).showLoader(text: '');
                       await changePasswordNotifier.changePassword(
                         newPassword: _newPasswordController.text,
                       );
