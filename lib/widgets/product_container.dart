@@ -125,7 +125,7 @@ class ProductContainer extends ConsumerWidget {
               ),
             ),
           ),
-          const Spacing.tinyHeight(),
+          //const Spacing.tinyHeight(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

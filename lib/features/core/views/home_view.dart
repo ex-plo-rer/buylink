@@ -213,7 +213,9 @@ class HomeView extends ConsumerWidget {
                                               homeNotifier.products[index],
                                         );
                                   },
-                                  onDistanceTapped: () {},
+                                  onDistanceTapped: () {
+
+                                  },
                                   onFlipTapped: () async {
                                     await ref
                                         .read(flipNotifierProvider)
