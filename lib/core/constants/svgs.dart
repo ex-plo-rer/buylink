@@ -3,6 +3,7 @@ class AppSvgs {
 
   static const flip = 'assets/svgs/flip.svg';
   static const favorite = 'assets/svgs/favorite.svg';
+  static const favorite2 = 'assets/svgs/favorite2.svg';
   static const favoriteFilled = 'assets/svgs/favorite_filled.svg';
   static const favBFilled = 'assets/svgs/fav_b_filled.svg';
   static const login = 'assets/svgs/login.svg';
@@ -24,4 +25,5 @@ class AppSvgs {
   static const addReviewIcon = 'assets/svgs/add_review.svg';
   static const setting2 = 'assets/svgs/setting_2.svg';
   static const naira = 'assets/svgs/naira.svg';
+
 }
