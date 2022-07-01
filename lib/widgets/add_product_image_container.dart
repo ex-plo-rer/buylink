@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/features/core/notifiers/add_product_notifier.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -48,9 +49,11 @@ class AddProductImageContainer extends ConsumerWidget {
                 Radius.circular(4),
               ),
               image: DecorationImage(
-                image: FileImage(
-                  File(imagePath ?? ''),
-                ),
+                image: imagePath != null && imagePath!.contains('https://')
+                    ? CachedNetworkImageProvider(imagePath!) as ImageProvider
+                    : FileImage(
+                        File(imagePath ?? ''),
+                      ),
                 fit: BoxFit.fill,
               ),
             ),

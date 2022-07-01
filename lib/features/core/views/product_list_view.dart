@@ -5,6 +5,7 @@ import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/category_model.dart';
+import 'package:buy_link/features/core/models/edit_product_arg_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/services/location_service.dart';
@@ -14,6 +15,7 @@ import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/product_container.dart';
+import 'package:buy_link/widgets/product_container_plist.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -125,7 +127,7 @@ class _WishlistState extends ConsumerState<ProductListView>
                             mainAxisSpacing: 20,
                             crossAxisSpacing: 15,
                             itemBuilder: (context, index) {
-                              return ProductContainer(
+                              return ProductContainerPList(
                                 url: productListNotifier
                                     .products[index].image[0],
                                 storeName: productListNotifier
@@ -146,10 +148,18 @@ class _WishlistState extends ConsumerState<ProductListView>
                                   ref
                                       .read(navigationServiceProvider)
                                       .navigateToNamed(
-                                        Routes.productDetails,
+                                        Routes.productDetails2,
                                         arguments:
                                             productListNotifier.products[index],
+                                        // arguments: EditProductArgModel(store: productListNotifier.products[index].store, product: productListNotifier.productEditModel),
                                       );
+                                  // ref
+                                  //     .read(navigationServiceProvider)
+                                  //     .navigateToNamed(
+                                  //       Routes.editProduct,
+                                  //       // arguments: productListNotifier.products[index],
+                                  //       // arguments: EditProductArgModel(store: productListNotifier.products[index].store, product: productListNotifier.productEditModel),
+                                  //     );
                                 },
                                 onDistanceTapped: () {},
                                 onFlipTapped: () async {

@@ -22,6 +22,7 @@ class AppTextField extends StatelessWidget {
   final bool? enabled;
   final void Function()? onTap;
   final double contentPadding;
+  final String? initialValue;
   final TextStyle style;
 
   const AppTextField({
@@ -45,6 +46,7 @@ class AppTextField extends StatelessWidget {
     this.enabled,
     this.onTap,
     this.contentPadding = 0,
+    this.initialValue,
     this.style = const TextStyle(),
   }) : super(key: key);
 
@@ -68,6 +70,7 @@ class AppTextField extends StatelessWidget {
           const Spacing.tinyHeight(),
           TextFormField(
             style: style,
+            initialValue: initialValue,
             controller: controller,
             focusNode: focusNode,
             keyboardType: keyboardType,
