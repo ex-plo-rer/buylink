@@ -11,9 +11,11 @@ import '../../models/product_model.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
 import 'edit_store_description.dart';
 import 'edit_store_name.dart';
+import 'package:latlong2/latlong.dart';
 
 class StoreSetting extends ConsumerWidget {
   final Store store;
+
   StoreSetting({
     Key? key,
     required this.store,
@@ -68,12 +70,10 @@ class StoreSetting extends ConsumerWidget {
                 color: AppColors.grey5,
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditStoreName(),
-                  ),
-                );
+                ref.read(navigationServiceProvider).navigateToNamed(
+                      Routes.editStoreName,
+                      arguments: store,
+                    );
               },
             ),
             Container(
@@ -99,12 +99,10 @@ class StoreSetting extends ConsumerWidget {
                   color: AppColors.grey5,
                 ),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditStoreDesc(),
-                    ),
-                  );
+                  ref.read(navigationServiceProvider).navigateToNamed(
+                        Routes.editStoreDesc,
+                        arguments: store,
+                      );
                 }),
             Container(
               margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -129,12 +127,18 @@ class StoreSetting extends ConsumerWidget {
                 color: AppColors.grey5,
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditStoreName(),
-                  ),
-                );
+                print(
+                    'LatLng(store.lat, store.lon): ${store.lat}: ${store.lon}');
+                ref.read(navigationServiceProvider).navigateToNamed(
+                      Routes.editStoreLocationView,
+                      arguments: store,
+                    );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => EditStoreName(),
+                //   ),
+                // );
               },
             ),
             Container(

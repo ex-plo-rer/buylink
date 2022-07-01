@@ -1,4 +1,6 @@
+import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
+import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/store_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/spacing.dart';
@@ -15,7 +17,8 @@ import '../../notifiers/store_notifier/edit_store_name_notifier.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
 
 class EditStoreName extends ConsumerWidget {
-  EditStoreName({Key? key}) : super(key: key);
+  EditStoreName({Key? key, required this.store}) : super(key: key);
+  final Store store;
   final _formKey = GlobalKey<FormState>();
 
   final _nameFN = FocusNode();
@@ -104,17 +107,10 @@ class EditStoreName extends ConsumerWidget {
                           if (_formKey.currentState!.validate()) {
                             Loader(context).showLoader(text: '');
                             await storeSettingsNotifier.editStore(
-                              storeId: 23,
+                              storeId: store.id,
                               attribute: 'name',
                               newValue: _nameController.text,
                             );
-                            await ref
-                                .refresh(storeNotifierProvider)
-                                .fetchMyStores();
-                            Loader(context).hideLoader();
-                            ref.read(navigationServiceProvider).navigateBack();
-                            Alertify(title: 'Store name changed successfully')
-                                .success();
                           }
                         },
                 ),

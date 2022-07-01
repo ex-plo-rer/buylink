@@ -1,10 +1,13 @@
+import 'package:buy_link/features/core/notifiers/store_notifier/store_notifier.dart';
 import 'package:buy_link/repositories/store_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../core/routes.dart';
 import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../services/base/network_exception.dart';
+import '../../../../services/navigation_service.dart';
 
 class StoreSettingNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -12,10 +15,35 @@ class StoreSettingNotifier extends BaseChangeNotifier {
   StoreSettingNotifier(this._reader);
 
   bool _deleted = false;
+
   bool get deleted => _deleted;
 
   bool _passwordVisible = false;
+
   bool get passwordVisible => _passwordVisible;
+
+  double _storeLat = 0;
+  double _storeLon = 0;
+
+  double get storeLat => _storeLat;
+
+  double get storeLon => _storeLon;
+
+  void initLocation(double lat, double lon) {
+    // // Uses the initial location of when the app was lauched first.
+    _storeLat = lat;
+    _storeLon = lon;
+    notifyListeners();
+  }
+
+  void setStorePosition({
+    required double lat,
+    required double lon,
+  }) {
+    _storeLat = lat;
+    _storeLon = lon;
+    notifyListeners();
+  }
 
   void togglePassword() {
     _passwordVisible = !_passwordVisible;
@@ -46,10 +74,15 @@ class StoreSettingNotifier extends BaseChangeNotifier {
         attribute: attribute,
         newValue: newValue,
       );
+      await _reader(storeNotifierProvider).fetchMyStores();
+      // _reader(navigationServiceProvider).navigateBack();
+      _reader(navigationServiceProvider)
+          .navigateOffAllNamed(Routes.dashboard, (p0) => false);
+      Alertify(title: 'Changes saved successfully').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
     } finally {}
   }
 

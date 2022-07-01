@@ -11,11 +11,13 @@ import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/text_with_rich.dart';
+import '../../models/product_model.dart';
 import '../../notifiers/store_notifier/edit_store_name_notifier.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
 
 class EditStoreDesc extends ConsumerWidget {
-  EditStoreDesc({Key? key}) : super(key: key);
+  EditStoreDesc({Key? key, required this.store}) : super(key: key);
+  final Store store;
   final _formKey = GlobalKey<FormState>();
 
   final _descriptionFN = FocusNode();
@@ -94,19 +96,10 @@ class EditStoreDesc extends ConsumerWidget {
                           if (_formKey.currentState!.validate()) {
                             Loader(context).showLoader(text: '');
                             await storeSettingsNotifier.editStore(
-                              storeId: 23,
+                              storeId: store.id,
                               attribute: 'desc',
                               newValue: _descriptionController.text,
                             );
-                            await ref
-                                .refresh(storeNotifierProvider)
-                                .fetchMyStores();
-                            Loader(context).hideLoader();
-                            ref.read(navigationServiceProvider).navigateBack();
-                            Alertify(
-                                    title:
-                                        'Store description changed successfully')
-                                .success();
                           }
                         },
                 ),
