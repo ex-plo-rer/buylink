@@ -48,7 +48,7 @@ class _WishlistState extends ConsumerState<ProductListView>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(
-        length: ref.read(categoryNotifierProvider).mCategories.length,
+        length: ref.read(categoryNotifierProvider).storeCategories.length,
         vsync: this);
     _tabController.addListener(_handleTabChange);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -71,8 +71,7 @@ class _WishlistState extends ConsumerState<ProductListView>
           storeId: widget.store.id,
           category: ref
               .watch(categoryNotifierProvider)
-              .mCategories[_tabController.index]
-              .name,
+              .storeCategories[_tabController.index],
         );
   }
 
@@ -110,15 +109,15 @@ class _WishlistState extends ConsumerState<ProductListView>
                     print('index $index');
                     productListNotifier.fetchStoreProducts(
                         storeId: widget.store.id,
-                        category: categoryNotifier.categories[index].name);
+                        category: categoryNotifier.storeCategories[index]);
                   },
-                  tabs: categoryNotifier.mCategories
-                      .map((category) => Tab(text: category.name))
+                  tabs: categoryNotifier.storeCategories
+                      .map((category) => Tab(text: category))
                       .toList()),
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: categoryNotifier.mCategories.map((category) {
+                  children: categoryNotifier.storeCategories.map((category) {
                     return productListNotifier.state.isLoading
                         ? const CircularProgress()
                         : MasonryGridView.count(

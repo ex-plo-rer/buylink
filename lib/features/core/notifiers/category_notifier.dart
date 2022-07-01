@@ -16,21 +16,47 @@ class CategoryNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   CategoryNotifier(this._reader) {
-    fetchCategories();
+    // fetchRandomCategories();
+    fetchUserCategories();
   }
 
-  List<CategoryModel> _categories = [];
-  List<CategoryModel> get categories => _categories;
+  List<String> _userCategories = [];
+
+  List<String> get userCategories => _userCategories;
+
+  List<String> _storeCategories = [];
+
+  List<String> get storeCategories => _storeCategories;
+
+  // List<String> uwserCategories = [];
+
+  // List<CategoryModel> _categories = [];
+
+  // List<CategoryModel> get userCategories => _userCategories;
   List<CategoryModel> mCategories = [];
 
-  Future<void> fetchCategories() async {
+  Future<void> fetchUserCategories() async {
     try {
       setState(state: ViewState.loading);
-      _categories = await _reader(coreRepository).fetchCategories();
-      mCategories = [
-        CategoryModel(id: 99101, name: 'All', image: ''),
-        ..._categories
-      ];
+      _userCategories = await _reader(coreRepository).fetchUserCategories();
+      // userCategories = [
+      //   CategoryModel(id: 99101, name: 'All', image: ''),
+      //   ..._userCategories
+      // ];
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify(title: e.error).error();
+    } finally {
+      //setState(state: ViewState.idle);
+    }
+  }
+
+  Future<void> fetchStoreCategories({required String storeId}) async {
+    try {
+      setState(state: ViewState.loading);
+      _storeCategories =
+          await _reader(coreRepository).fetchStoreCategories(storeId: storeId);
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);

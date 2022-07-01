@@ -22,7 +22,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../core/utilities/loader.dart';
 import '../../../services/location_service.dart';
+import '../notifiers/category_notifier.dart';
 import '../notifiers/flip_notifier.dart';
 import '../notifiers/product_details_notifier.dart';
 import '../notifiers/wishlist_notifier.dart';
@@ -125,11 +127,28 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     ),
                   ),
                   ListTile(
-                    onTap: () =>
+                    onTap: () async {
+                      if (ref
+                          .read(categoryNotifierProvider)
+                          .storeCategories
+                          .isEmpty) {
+                        Loader(context).showLoader(text: '');
+                        await ref
+                            .read(categoryNotifierProvider)
+                            .fetchStoreCategories(
+                                storeId: widget.product.store.id.toString());
                         ref.read(navigationServiceProvider).navigateToNamed(
                               Routes.storeDetails,
                               arguments: widget.product.store.id,
-                            ),
+                            );
+                        Loader(context).hideLoader();
+                      } else {
+                        ref.read(navigationServiceProvider).navigateToNamed(
+                              Routes.storeDetails,
+                              arguments: widget.product.store.id,
+                            );
+                      }
+                    },
                     leading: CircleAvatar(
                       backgroundColor: AppColors.grey1,
                       backgroundImage:

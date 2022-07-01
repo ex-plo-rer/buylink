@@ -60,21 +60,21 @@ class _EditProductSpecificsViewState
     productColorsCtrl = TextEditingController(
         text: widget.product.colors == 'null' ? '' : widget.product.colors);
     minAgeCtrl = TextEditingController(
-        text: widget.product.age.toString() == 'null'
+        text: widget.product.ageMin.toString() == 'null'
             ? ''
-            : widget.product.age.toString());
+            : widget.product.ageMin.toString());
     maxAgeCtrl = TextEditingController(
-        text: widget.product.age.toString() == 'null'
+        text: widget.product.ageMax.toString() == 'null'
             ? ''
-            : widget.product.age.toString());
+            : widget.product.ageMax.toString());
     minWeightCtrl = TextEditingController(
-        text: widget.product.weight.toString() == 'null'
+        text: widget.product.weightMin.toString() == 'null'
             ? ''
-            : widget.product.weight.toString());
+            : widget.product.weightMin.toString());
     maxWeightCtrl = TextEditingController(
-        text: widget.product.weight.toString() == 'null'
+        text: widget.product.weightMax.toString() == 'null'
             ? ''
-            : widget.product.weight.toString());
+            : widget.product.weightMax.toString());
     productModelCtrl = TextEditingController(
         text: widget.product.model == 'null' ? '' : widget.product.model);
     productMaterialCtrl = TextEditingController(
@@ -103,7 +103,7 @@ class _EditProductSpecificsViewState
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
-          'Product Specifics',
+          'Edit Product Specifics',
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,

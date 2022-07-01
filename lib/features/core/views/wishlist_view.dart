@@ -39,13 +39,19 @@ class _WishlistState extends ConsumerState<WishlistView>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(
-        length: ref.read(categoryNotifierProvider).mCategories.length,
+        length: ref.read(categoryNotifierProvider).userCategories.length,
         vsync: this);
     _tabController.addListener(_handleTabChange);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
     });
     super.initState();
+  }
+
+  init() async {
+    if (ref.read(categoryNotifierProvider).userCategories.isEmpty) {
+      await ref.read(categoryNotifierProvider).fetchUserCategories();
+    }
   }
 
   @override
@@ -59,8 +65,7 @@ class _WishlistState extends ConsumerState<WishlistView>
     ref.read(wishlistNotifierProvider).fetchWishlist(
         category: ref
             .watch(categoryNotifierProvider)
-            .mCategories[_tabController.index]
-            .name);
+            .userCategories[_tabController.index]);
   }
 
   // TODO: Make the third product fill the screen's width
@@ -96,15 +101,15 @@ class _WishlistState extends ConsumerState<WishlistView>
                   onTap: (index) {
                     print('index $index');
                     wishlistNotifier.fetchWishlist(
-                        category: categoryNotifier.categories[index].name);
+                        category: categoryNotifier.userCategories[index]);
                   },
-                  tabs: categoryNotifier.mCategories
-                      .map((category) => Tab(text: category.name))
+                  tabs: categoryNotifier.userCategories
+                      .map((category) => Tab(text: category))
                       .toList()),
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: categoryNotifier.mCategories.map((category) {
+                  children: categoryNotifier.userCategories.map((category) {
                     return wishlistNotifier.state.isLoading
                         ? const CircularProgress()
                         : wishlistNotifier.products.isEmpty

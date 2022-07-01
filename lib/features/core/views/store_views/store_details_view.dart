@@ -62,7 +62,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
             category: 'all',
           );
       _tabController = TabController(
-          length: ref.read(categoryNotifierProvider).mCategories.length,
+          length: ref.read(categoryNotifierProvider).storeCategories.length,
           vsync: this);
       _tabController.addListener(_handleTabChange);
     });
@@ -81,8 +81,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
         storeId: widget.storeId,
         category: ref
             .watch(categoryNotifierProvider)
-            .mCategories[_tabController.index]
-            .name);
+            .storeCategories[_tabController.index]);
   }
 
   @override
@@ -301,17 +300,17 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                 storeDetailsNotifier.fetchStoreProducts(
                                     storeId: widget.storeId,
                                     category: categoryNotifier
-                                        .categories[index].name);
+                                        .storeCategories[index]);
                               },
-                              tabs: categoryNotifier.mCategories
-                                  .map((category) => Tab(text: category.name))
+                              tabs: categoryNotifier.storeCategories
+                                  .map((category) => Tab(text: category))
                                   .toList()),
                           SizedBox(
                             height: 500,
                             child: TabBarView(
                               controller: _tabController,
-                              children:
-                                  categoryNotifier.mCategories.map((category) {
+                              children: categoryNotifier.storeCategories
+                                  .map((category) {
                                 return storeDetailsNotifier.state.isLoading
                                     ? const CircularProgress()
                                     : MasonryGridView.count(

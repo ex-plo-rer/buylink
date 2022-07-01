@@ -150,11 +150,11 @@ class AddProductView extends ConsumerWidget {
                 hintText: 'Select Product Category',
                 items: ref
                     .read(categoryNotifierProvider)
-                    .categories
+                    .userCategories
                     .map(
                       (category) => DropdownMenuItem(
-                        child: Text(category.name),
-                        value: category.name,
+                        child: Text(category),
+                        value: category,
                       ),
                     )
                     .toList(),

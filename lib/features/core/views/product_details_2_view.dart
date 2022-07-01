@@ -26,6 +26,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../services/location_service.dart';
+import '../../../widgets/app_dialog.dart';
 import '../notifiers/flip_notifier.dart';
 import '../notifiers/product_details_2_notifier.dart';
 import '../notifiers/product_details_notifier.dart';
@@ -126,20 +127,35 @@ class _ProductDetails2ViewState extends ConsumerState<ProductDetails2View> {
                 onTap: () {
                   WidgetsBinding.instance!
                       .addPostFrameCallback((timeStamp) async {
-                    loader.showLoader(text: '');
-                    await productDetails2Notifier.deleteProduct(
-                        productId: widget.product.id);
-                    if (productDetails2Notifier.deleted) {
-                      ref.read(navigationServiceProvider).navigateBack();
-                      await ref
-                          .read(productListNotifierProvider)
-                          .fetchStoreProducts(
-                              storeId: widget.product.store.id,
-                              category: 'all');
-                      ref.read(navigationServiceProvider).navigateBack();
-                    } else {
-                      ref.read(navigationServiceProvider).navigateBack();
-                    }
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) => AppDialog(
+                        title: 'Are you sure you want to delete the product?',
+                        text1: 'No',
+                        text2: 'Yes',
+                        onText1Pressed: () =>
+                            ref.read(navigationServiceProvider).navigateBack(),
+                        onText2Pressed: () async {
+                          ref.read(navigationServiceProvider).navigateBack();
+                          loader.showLoader(text: '');
+                          await productDetails2Notifier.deleteProduct(
+                              productId: widget.product.id);
+                          if (productDetails2Notifier.deleted) {
+                            await ref
+                                .read(productListNotifierProvider)
+                                .fetchStoreProducts(
+                                  storeId: widget.product.store.id,
+                                  category: 'all',
+                                );
+                            ref.read(navigationServiceProvider).navigateBack();
+                            ref.read(navigationServiceProvider).navigateBack();
+                          } else {
+                            ref.read(navigationServiceProvider).navigateBack();
+                          }
+                        },
+                      ),
+                    );
                   });
                 },
                 child: const Text(

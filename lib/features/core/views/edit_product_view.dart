@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:buy_link/core/utilities/view_state.dart';
@@ -60,6 +61,23 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
     ref
         .read(editProductNotifierProvider)
         .initImages(widget.args.product.images);
+    ref.read(editProductNotifierProvider).initValues(
+          name: widget.args.product.name,
+          price: widget.args.product.price.toString(),
+          oldPrice: widget.args.product.oldPrice.toString(),
+          category: widget.args.product.category,
+          description: widget.args.product.description,
+          brand: widget.args.product.brand,
+          colors: widget.args.product.colors,
+          minAge: widget.args.product.ageMin.toString(),
+          maxAge: widget.args.product.ageMax.toString(),
+          minWeight: widget.args.product.weightMin.toString(),
+          maxWeight: widget.args.product.weightMax.toString(),
+          size: widget.args.product.size,
+          model: widget.args.product.model,
+          material: widget.args.product.material,
+          care: widget.args.product.care,
+        );
     productNameCtrl = TextEditingController(
         text:
             widget.args.product.name == 'null' ? '' : widget.args.product.name);
@@ -98,7 +116,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
-          'Add Product',
+          'Edit Product',
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,
@@ -125,25 +143,16 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
               ),
               const Spacing.tinyHeight(),
               EditProductImagesContainer(
-                onDottedContainerTapped: () async {
-                  print('Pick file Clicked');
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
-                    type: FileType.image,
-                    withData: true,
-                    allowMultiple: true,
-                  );
-
-                  if (result != null) {
-                    editProductNotifier.setImages(images: result.files);
-                  } else {
-                    // User canceled the picker
-                  }
-                },
-                // image1: widget.args.product.image.first,
-                // image2: widget.args.product.image.length < 2 ? null : widget.args.product.image[1],
-                // image3: widget.args.product.image.length < 3 ? null : widget.args.product.image[2],
-                // image4: widget.args.product.image.length < 4 ? null : widget.args.product.image[3],
+                image1: widget.args.product.images.first,
+                image2: widget.args.product.images.length < 2
+                    ? null
+                    : widget.args.product.images[1],
+                image3: widget.args.product.images.length < 3
+                    ? null
+                    : widget.args.product.images[2],
+                image4: widget.args.product.images.length < 4
+                    ? null
+                    : widget.args.product.images[3],
               ),
               const Spacing.mediumHeight(),
               AppTextField(
@@ -189,11 +198,11 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                 hintText: 'Select Product Category',
                 items: ref
                     .read(categoryNotifierProvider)
-                    .categories
+                    .userCategories
                     .map(
                       (category) => DropdownMenuItem(
-                        child: Text(category.name),
-                        value: category.name,
+                        child: Text(category),
+                        value: category,
                       ),
                     )
                     .toList(),
@@ -281,7 +290,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                 onPressed: () async {
                   Loader(context).showLoader(text: '');
                   await editProductNotifier.updateProduct(
-                      storeId: widget.args.store.id);
+                      productId: widget.args.product.id);
                   await ref
                       .read(storeDashboardNotifierProvider)
                       .initFetch(storeId: widget.args.store.id);
@@ -290,8 +299,9 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                       .fetchStoreProducts(
                           storeId: widget.args.store.id, category: 'all');
                   Loader(context).hideLoader();
-                  Alertify(title: 'Product updated successfully.').success();
                   ref.read(navigationServiceProvider).navigateBack();
+                  ref.read(navigationServiceProvider).navigateBack();
+                  Alertify(title: 'Product updated successfully.').success();
                 },
               ),
               const Spacing.height(54),

@@ -21,8 +21,11 @@ class ProductEditModel {
     required this.description,
     required this.brand,
     required this.colors,
-    required this.age,
-    required this.weight,
+    required this.category,
+    required this.ageMin,
+    required this.ageMax,
+    required this.weightMin,
+    required this.weightMax,
     required this.size,
     required this.model,
     required this.material,
@@ -37,8 +40,11 @@ class ProductEditModel {
   String description;
   String brand;
   String colors;
-  String age;
-  String weight;
+  String category;
+  int ageMin;
+  int ageMax;
+  int weightMin;
+  int weightMax;
   String size;
   String model;
   String material;
@@ -54,8 +60,11 @@ class ProductEditModel {
         description: json["description"],
         brand: json["brand"],
         colors: json["colors"],
-        age: json["age"],
-        weight: json["weight"],
+        category: json["category"],
+        ageMin: json["age_min"],
+        ageMax: json["age_max"],
+        weightMin: json["w_min"],
+        weightMax: json["w_max"],
         size: json["size"],
         model: json["model"],
         material: json["material"],
@@ -71,8 +80,11 @@ class ProductEditModel {
         "description": description,
         "brand": brand,
         "colors": colors,
-        "age": age,
-        "weight": weight,
+        "category": category,
+        "age_min": ageMin,
+        "age_max": ageMax,
+        "w_min": weightMin,
+        "w_max": weightMax,
         "size": size,
         "model": model,
         "material": material,

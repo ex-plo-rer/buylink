@@ -195,14 +195,14 @@ class CoreRepository {
     return _products;
   }
 
-  Future<List<CategoryModel>> fetchCategories() async {
+  Future<List<CategoryModel>> fetchRandomCategories() async {
     print(
         '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
     var id = _reader(userProvider).currentUser?.id ?? 0;
     final body = {
       'id': id,
     };
-    print('Fetch categories params sent to server $body');
+    print('Fetch random categories params sent to server $body');
 
     var response = await networkService.post(
       'users/load-categories?no=5',
@@ -214,6 +214,55 @@ class CoreRepository {
     List<CategoryModel> _category = [];
     for (var category in response) {
       _category.add(CategoryModel.fromJson(category));
+    }
+
+    return _category;
+  }
+
+  Future<List<String>> fetchStoreCategories({required String storeId}) async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+    };
+    print('Fetch store categories params sent to server $body');
+
+    var response = await networkService.post(
+      'users/in-cats/store',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch store categories response $response');
+    List<String> _category = [];
+    for (var category in response['categories']) {
+      _category.add(category);
+    }
+
+    return _category;
+  }
+
+  Future<List<String>> fetchUserCategories() async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+    };
+    print('Fetch user categories params sent to server $body');
+
+    var response = await networkService.post(
+      'users/in-cats/wish',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch user categories response $response');
+    List<String> _category = [];
+    for (var category in response['categories']) {
+      _category.add(category);
     }
 
     return _category;
@@ -404,13 +453,8 @@ class CoreRepository {
   }
 
   Future<String> updateProduct({
-    required int storeId,
+    required int productId,
     required String name,
-    // required List<String?> images,
-    required String? image1,
-    required String? image2,
-    required String? image3,
-    required String? image4,
     required String? price,
     required String? oldPrice,
     required String? category,
@@ -430,7 +474,7 @@ class CoreRepository {
     final body = {
       'id': id,
       'name': name,
-      'store_id': storeId,
+      'product_id': productId,
       'price': price,
       'old_price': oldPrice,
       'cat': category,
@@ -446,18 +490,11 @@ class CoreRepository {
       'material': material,
       'care': care,
     };
-    final files = {
-      'image1': image1,
-      'image2': image2,
-      'image3': image3,
-      'image4': image4,
-    };
-    print('Add product params sent to server $body. Files: $files');
+    print('Add product params sent to server $body.');
 
-    var response = await networkService.postMultipart(
+    var response = await networkService.post(
       'users/update-product',
       body: body,
-      files: files,
       headers: headers,
     );
 

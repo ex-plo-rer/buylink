@@ -46,8 +46,9 @@ class LocationService extends BaseChangeNotifier {
     required double endLat,
     required double endLon,
   }) {
+    print('Get distance called');
     double distance = Geolocator.distanceBetween(_lat!, _lon!, endLat, endLon);
-
+    notifyListeners();
     return (distance / 1000).toStringAsFixed(1);
   }
 
@@ -122,19 +123,24 @@ class LocationService extends BaseChangeNotifier {
 
     _lat = position.latitude;
     _lon = position.longitude;
-    //
-    // const LocationSettings locationSettings = LocationSettings(
-    //   accuracy: LocationAccuracy.high,
-    //   distanceFilter: 0,
-    // );
-    // // StreamSubscription<Position> positionStream =
-    //     Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-    //   (Position? position) {
-    //     print(position == null
-    //         ? 'positionStream Unknown'
-    //         : 'positionStream : ${position.latitude.toString()}, ${position.longitude.toString()}');
-    //   },
-    // );
+
+    const LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 0,
+    );
+    // StreamSubscription<Position> positionStream =
+    Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+      (Position? position) {
+        print(position == null
+            ? 'positionStream Unknown'
+            : 'positionStream : ${position.latitude.toString()}, ${position.longitude.toString()}');
+
+        _lat = position?.latitude;
+        _lon = position?.longitude;
+        print('lat : $_lat, lon : $_lon.');
+        notifyListeners();
+      },
+    );
 
     print('lat : $_lat, lon : $_lon.');
     print('Get current location left...................');

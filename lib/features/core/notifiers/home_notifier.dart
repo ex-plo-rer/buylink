@@ -14,6 +14,7 @@ import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../services/base/network_exception.dart';
 import '../../../services/navigation_service.dart';
+import '../models/category_model.dart';
 import '../models/product_model.dart';
 
 class HomeNotifier extends BaseChangeNotifier {
@@ -24,14 +25,16 @@ class HomeNotifier extends BaseChangeNotifier {
     this._reader, {
     required this.category,
   }) {
-    fetchProducts(
-      category: category,
-    );
+    fetchProducts(category: category);
+    fetchRandomCategories();
   }
 
   bool _productLoading = false;
 
   bool get productLoading => _productLoading;
+  bool _categoriesLoading = false;
+
+  bool get categoriesLoading => _categoriesLoading;
 
   List<ProductModel> _products = [];
 
@@ -40,7 +43,12 @@ class HomeNotifier extends BaseChangeNotifier {
   Position? position;
 
   String _initialText = 'Latest products around you';
+
   String get initialText => _initialText;
+
+  List<CategoryModel> _categories = [];
+
+  List<CategoryModel> get categories => _categories;
 
   void changeText({required String category}) {
     _initialText = category == 'all'
@@ -48,10 +56,21 @@ class HomeNotifier extends BaseChangeNotifier {
         : 'Latest products around you with tag \'$category\'';
   }
 
-  //
-  // Future<void> setLocation(context) async {
-  //   position = await _reader(locationService).getCurrentLocation();
-  // }
+  Future<void> fetchRandomCategories() async {
+    try {
+      _categoriesLoading = true;
+      setState(state: ViewState.loading);
+      _categories = await _reader(coreRepository).fetchRandomCategories();
+      _categoriesLoading = false;
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      _categoriesLoading = false;
+      setState(state: ViewState.error);
+      Alertify(title: e.error).error();
+    } finally {
+      //setState(state: ViewState.idle);
+    }
+  }
 
   Future<void> fetchProducts({
     required String? category,

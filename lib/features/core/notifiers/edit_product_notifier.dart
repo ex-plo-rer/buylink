@@ -66,6 +66,41 @@ class EditProductNotifier extends BaseChangeNotifier {
   String? _material;
   String? _care;
 
+  void initValues({
+    required String name,
+    required String? price,
+    required String? oldPrice,
+    required String? category,
+    required String? description,
+    required String? brand,
+    required String? colors,
+    required String? minAge,
+    required String? maxAge,
+    required String? minWeight,
+    required String? maxWeight,
+    required String? size,
+    required String? model,
+    required String? material,
+    required String? care,
+  }) {
+    _name = name;
+    _minPrice = price;
+    _maxPrice = oldPrice;
+    _desc = description;
+    _brand = brand;
+    _color = colors;
+    _minAge = minAge;
+    _maxAge = maxAge;
+    _minWeight = minWeight;
+    _maxWeight = maxWeight;
+    _model = model;
+    _material = material;
+    _care = care;
+    _categoryValue = category;
+    _sizeValue = size;
+    notifyListeners();
+  }
+
   void setImageFile({
     required String imageFile,
     required int imageIndex,
@@ -125,21 +160,16 @@ class EditProductNotifier extends BaseChangeNotifier {
   }
 
   Future<void> updateProduct({
-    required storeId,
+    required productId,
   }) async {
     try {
       setState(state: ViewState.loading);
       await _reader(coreRepository).updateProduct(
-        storeId: storeId,
+        productId: productId,
         name: _name!,
-        image1: _imageList[0],
-        image2: _imageList.length < 2 ? null : _imageList[1],
-        image3: _imageList.length < 3 ? null : _imageList[2],
-        image4: _imageList.length < 4 ? null : _imageList[3],
         price: _minPrice,
         oldPrice: _maxPrice,
         category: _categoryValue!,
-        // category: '_categoryValue!',
         description: _desc!,
         brand: _brand,
         colors: _color,
