@@ -71,10 +71,7 @@ class _WishlistState extends ConsumerState<WishlistView>
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 24,
-          ),
+          padding:  const EdgeInsets.fromLTRB(18, 24, 18, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -88,9 +85,10 @@ class _WishlistState extends ConsumerState<WishlistView>
               ),
               const Spacing.mediumHeight(),
               TabBar(
-                  labelColor: AppColors.shade5,
+                indicatorColor: AppColors.primaryColor,
+                  labelColor: AppColors.primaryColor,
                   unselectedLabelColor: AppColors.grey5,
-                  padding: const EdgeInsets.only(bottom: 24),
+                  //padding: const EdgeInsets.only(bottom: 4),
                   controller: _tabController,
                   isScrollable: true,
                   onTap: (index) {

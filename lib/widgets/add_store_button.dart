@@ -23,7 +23,7 @@ class AddStoreContainer extends ConsumerWidget {
           radius: const Radius.circular(20),
           dashPattern: const [18, 10],
           color: AppColors.primaryColor,
-          strokeWidth: 2,
+          strokeWidth: 1,
           child: SizedBox(
             height: 155,
             width: (MediaQuery.of(context).size.width - 74) / 2,
@@ -42,6 +42,7 @@ class AddStoreContainer extends ConsumerWidget {
                     size: 20,
                   ),
                 ),
+                Spacing.smallHeight(),
                 Text("Add a new store",
                     style:
                     TextStyle(color: AppColors.primaryColor, fontSize: 16))

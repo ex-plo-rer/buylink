@@ -102,7 +102,7 @@ class ProductDetailsView extends ConsumerWidget {
                     count: product.image.length,
                     activeIndex: productDetailsNotifier.activeIndex,
                     effect: const ExpandingDotsEffect(
-                      spacing: 3,
+                      spacing: 9,
                       expansionFactor: 5,
                       activeDotColor: AppColors.primaryColor,
                       dotColor: AppColors.primaryColor,
@@ -208,11 +208,10 @@ class ProductDetailsView extends ConsumerWidget {
                     ],
                   ),
                   const Spacing.height(20),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
-                      'A super-comfortable denim legging,built to contour curves, lengthen legs and celebrate your form. Made with an innovative tummy-sliming',
-                      //product.description,
+                      product.desc,
                       // textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 14,
@@ -270,7 +269,7 @@ class ProductDetailsView extends ConsumerWidget {
                     ),
                   ),
                   const Spacing.bigHeight(),
-                  const Divider(thickness: 2),
+                  const Divider(thickness: 1),
                   GestureDetector(
                     onTap: () {
                       homeNotifier.fetchProductAttr(productId: product.id);
@@ -281,7 +280,7 @@ class ProductDetailsView extends ConsumerWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20.0,
-                        vertical: 5,
+                        vertical: 9,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -302,7 +301,7 @@ class ProductDetailsView extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  const Divider(thickness: 2),
+                  const Divider(thickness: 1),
                   const Spacing.bigHeight(),
                   const Align(
                     alignment: Alignment.centerLeft,
