@@ -205,8 +205,7 @@ class HomeView extends ConsumerWidget {
                                   //       endLon:
                                   //           homeNotifier.products[index].lon,
                                   //     ),
-                                  isFavorite:
-                                      homeNotifier.products[index].isFav!,
+                                  isFavorite: homeNotifier.fav[index]!,
                                   onProductTapped: () {
                                     ref
                                         .read(navigationServiceProvider)
@@ -231,19 +230,23 @@ class HomeView extends ConsumerWidget {
                                           .navigateToNamed(Routes.compare);
                                     }
                                   },
-                                  onFavoriteTapped: () async {
-                                    homeNotifier.products[index].isFav!
-                                        ? await wishlistNotifier
-                                            .removeFromWishlist(
-                                            productId:
-                                                homeNotifier.products[index].id,
-                                          )
-                                        : await wishlistNotifier.addToWishlist(
-                                            productId:
-                                                homeNotifier.products[index].id,
-                                          );
-                                    ref.refresh(homeNotifierProvider(null));
-                                  },
+                                  onFavoriteTapped: () =>
+                                      homeNotifier.toggleFav(
+                                          index: index,
+                                          id: homeNotifier.products[index].id),
+                                  // {
+                                  //   homeNotifier.products[index].isFav!
+                                  //       ? await wishlistNotifier
+                                  //           .removeFromWishlist(
+                                  //           productId:
+                                  //               homeNotifier.products[index].id,
+                                  //         )
+                                  //       : await wishlistNotifier.addToWishlist(
+                                  //           productId:
+                                  //               homeNotifier.products[index].id,
+                                  //         );
+                                  //   ref.refresh(homeNotifierProvider(null));
+                                  // },
                                 );
                               }
                             },

@@ -1,4 +1,5 @@
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
+import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/services/local_storage_service.dart';
 import 'package:buy_link/services/location_service.dart';
@@ -39,6 +40,9 @@ class HomeNotifier extends BaseChangeNotifier {
   List<ProductModel> _products = [];
 
   List<ProductModel> get products => _products;
+  List<bool?> _fav = [];
+
+  List<bool?> get fav => _fav;
 
   Position? position;
 
@@ -49,6 +53,24 @@ class HomeNotifier extends BaseChangeNotifier {
   List<CategoryModel> _categories = [];
 
   List<CategoryModel> get categories => _categories;
+
+  void setFav() {
+    for (var product in _products) {
+      _fav.add(product.isFav);
+    }
+  }
+
+  void toggleFav({required int index, required int id}) {
+    if (_fav[index]!) {
+      _fav[index] = false;
+      _reader(wishlistNotifierProvider).removeFromWishlist(productId: id);
+    } else {
+      _fav[index] = true;
+      _reader(wishlistNotifierProvider).addToWishlist(productId: id);
+    }
+    fetchProducts(category: category);
+    notifyListeners();
+  }
 
   void changeText({required String category}) {
     _initialText = category == 'all'
@@ -82,14 +104,12 @@ class HomeNotifier extends BaseChangeNotifier {
       // if (serviceEnabled) {
       await _reader(locationService).getCurrentLocation();
       _products = await _reader(coreRepository).fetchProducts(
-        // lat: 3.4,
-        // lon: 3.7,
-        // TODO: the below
         lat: _reader(locationService).lat!,
         lon: _reader(locationService).lon!,
         category: category,
       );
       changeText(category: category ?? 'all');
+      setFav();
       _productLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {

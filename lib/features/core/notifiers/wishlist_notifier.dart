@@ -19,6 +19,7 @@ class WishlistNotifier extends BaseChangeNotifier {
   }
 
   List<ProductModel> _products = [];
+
   List<ProductModel> get products => _products;
 
   Future<void> fetchWishlist({
@@ -46,13 +47,13 @@ class WishlistNotifier extends BaseChangeNotifier {
       await _reader(coreRepository).addToWishList(
         productId: productId,
       );
-      Alertify(title: 'Product Added to wishlist').success();
+      // Alertify(title: 'Product Added to wishlist').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify(title: e.error).error();
     } finally {
-     // setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 
@@ -64,19 +65,19 @@ class WishlistNotifier extends BaseChangeNotifier {
       await _reader(coreRepository).removeFromWishList(
         productId: productId,
       );
-      Alertify(title: 'Product removed from wishlist').success();
+      // Alertify(title: 'Product removed from wishlist').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify(title: e.error).error();
     } finally {
-     // setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 }
 
 final wishlistNotifierProvider = ChangeNotifierProvider<WishlistNotifier>(
-      (ref) => WishlistNotifier(ref.read),
+  (ref) => WishlistNotifier(ref.read),
 );
 // final wishlistNotifierProvider =
 //     ChangeNotifierProvider.family<WishlistNotifier, String>(
