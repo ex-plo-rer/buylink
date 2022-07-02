@@ -19,19 +19,45 @@ class WishlistNotifier extends BaseChangeNotifier {
   }
 
   List<ProductModel> _products = [];
+  List<ProductModel> _localProducts = [];
 
-  List<ProductModel> get products => _products;
+  List<ProductModel> get products => _localProducts;
+
+  final List<bool?> _fav = [];
+
+  List<bool?> get fav => _fav;
+
+  bool _favLoading = false;
+
+  bool get favLoading => _favLoading;
+
+  void setLocalProducts() {
+    // for (var product in _products) {
+    _localProducts.addAll(_products);
+    // }
+  }
+
+  void removeFromFav({required int index, required int id}) {
+    _localProducts.removeAt(index);
+    removeFromWishlist(productId: id);
+    notifyListeners();
+  }
 
   Future<void> fetchWishlist({
     required String category,
   }) async {
     try {
+      _localProducts = [];
+      _favLoading = true;
       setState(state: ViewState.loading);
       _products = await _reader(coreRepository).fetchWishList(
         category: category,
       );
+      setLocalProducts();
+      _favLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
+      _favLoading = false;
       setState(state: ViewState.error);
       Alertify(title: e.error).error();
     } finally {

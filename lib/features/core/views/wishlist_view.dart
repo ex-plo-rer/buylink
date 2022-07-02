@@ -110,12 +110,10 @@ class _WishlistState extends ConsumerState<WishlistView>
                 child: TabBarView(
                   controller: _tabController,
                   children: categoryNotifier.userCategories.map((category) {
-                    return wishlistNotifier.state.isLoading
+                    return wishlistNotifier.favLoading
                         ? const CircularProgress()
                         : wishlistNotifier.products.isEmpty
-                            ? Center(
-                                child: Text('Empty'),
-                              )
+                            ? Center(child: Text('Empty'))
                             : MasonryGridView.count(
                                 itemCount: wishlistNotifier.products.length,
                                 crossAxisCount: 2,
@@ -163,20 +161,11 @@ class _WishlistState extends ConsumerState<WishlistView>
                                             .navigateToNamed(Routes.compare);
                                       }
                                     },
-                                    onFavoriteTapped: () async {
-                                      wishlistNotifier.products[index].isFav!
-                                          ? await wishlistNotifier
-                                              .removeFromWishlist(
-                                              productId: wishlistNotifier
-                                                  .products[index].id,
-                                            )
-                                          : await wishlistNotifier
-                                              .addToWishlist(
-                                              productId: wishlistNotifier
-                                                  .products[index].id,
-                                            );
-                                      ref.refresh(wishlistNotifierProvider);
-                                    },
+                                    onFavoriteTapped: () =>
+                                        wishlistNotifier.removeFromFav(
+                                      index: index,
+                                      id: wishlistNotifier.products[index].id,
+                                    ),
                                   );
                                 },
                               );

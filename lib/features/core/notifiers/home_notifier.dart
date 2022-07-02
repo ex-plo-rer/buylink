@@ -68,7 +68,7 @@ class HomeNotifier extends BaseChangeNotifier {
       _fav[index] = true;
       _reader(wishlistNotifierProvider).addToWishlist(productId: id);
     }
-    fetchProducts(category: category);
+    // fetchProducts(category: category);
     notifyListeners();
   }
 
