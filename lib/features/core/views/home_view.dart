@@ -21,7 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
+import 'package:geolocator/geolocator.dart';
 import '../../../widgets/circular_progress.dart';
 import '../models/product_search.dart';
 import '../notifiers/category_notifier.dart';
@@ -36,11 +36,15 @@ class HomeView extends ConsumerWidget {
     final homeNotifier = ref.watch(homeNotifierProvider(null));
     final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     final categoryNotifier = ref.watch(categoryNotifierProvider);
+    print('latttttttttttttttttttttttttt${ref.watch(locationService).lat}');
     // ref.watch(locationService).getCurrentLocation();
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(18, 24, 18, 0),
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -122,16 +126,16 @@ class HomeView extends ConsumerWidget {
                         : MasonryGridView.count(
                             itemCount: homeNotifier.products.length,
                             crossAxisCount: 2,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
                             itemBuilder: (context, index) {
                               if (index == 3) {
                                 return Container(
                                   height: 182,
                                   color: AppColors.transparent,
-                                  child: categoryNotifier.state.isLoading
+                                  child: homeNotifier.categoriesLoading
                                       ? const CircularProgress()
-                                      : categoryNotifier.categories.isEmpty
+                                      : homeNotifier.categories.isEmpty
                                           ? const Center(
                                               child: Text('Category is empty'),
                                             )
@@ -141,43 +145,37 @@ class HomeView extends ConsumerWidget {
                                                       .spaceBetween,
                                               children: [
                                                 CategoryContainer(
-                                                  categoryName: categoryNotifier
+                                                  categoryName: homeNotifier
                                                       .categories[0].name,
-                                                  categoryImage:
-                                                      categoryNotifier
-                                                          .categories[0].image,
+                                                  categoryImage: homeNotifier
+                                                      .categories[0].image,
                                                   onTap: () => homeNotifier
                                                       .fetchProducts(
-                                                          category:
-                                                              categoryNotifier
-                                                                  .categories[0]
-                                                                  .name),
+                                                          category: homeNotifier
+                                                              .categories[0]
+                                                              .name),
                                                 ),
                                                 CategoryContainer(
-                                                  categoryName: categoryNotifier
+                                                  categoryName: homeNotifier
                                                       .categories[1].name,
-                                                  categoryImage:
-                                                      categoryNotifier
-                                                          .categories[1].image,
+                                                  categoryImage: homeNotifier
+                                                      .categories[1].image,
                                                   onTap: () => homeNotifier
                                                       .fetchProducts(
-                                                          category:
-                                                              categoryNotifier
-                                                                  .categories[1]
-                                                                  .name),
+                                                          category: homeNotifier
+                                                              .categories[1]
+                                                              .name),
                                                 ),
                                                 CategoryContainer(
-                                                  categoryName: categoryNotifier
+                                                  categoryName: homeNotifier
                                                       .categories[2].name,
-                                                  categoryImage:
-                                                      categoryNotifier
-                                                          .categories[2].image,
+                                                  categoryImage: homeNotifier
+                                                      .categories[2].image,
                                                   onTap: () => homeNotifier
                                                       .fetchProducts(
-                                                          category:
-                                                              categoryNotifier
-                                                                  .categories[2]
-                                                                  .name),
+                                                          category: homeNotifier
+                                                              .categories[2]
+                                                              .name),
                                                 ),
                                               ],
                                             ),
@@ -191,16 +189,23 @@ class HomeView extends ConsumerWidget {
                                       homeNotifier.products[index].name,
                                   productPrice:
                                       homeNotifier.products[index].price,
-                                  distance: ref
-                                      .watch(locationService)
-                                      .getDistance(
-                                        endLat:
-                                            homeNotifier.products[index].lat,
-                                        endLon:
-                                            homeNotifier.products[index].lon,
-                                      ),
-                                  isFavorite:
-                                      homeNotifier.products[index].isFav!,
+                                  distance: (Geolocator.distanceBetween(
+                                    ref.watch(locationService).lat ?? 0,
+                                    ref.watch(locationService).lon ?? 0,
+                                    homeNotifier.products[index].lat,
+                                    homeNotifier.products[index].lon,
+                                  )
+                                      // / 1000
+                                      ).toStringAsFixed(1),
+                                  // distance: ref
+                                  //     .watch(locationService)
+                                  //     .getDistance(
+                                  //       endLat:
+                                  //           homeNotifier.products[index].lat,
+                                  //       endLon:
+                                  //           homeNotifier.products[index].lon,
+                                  //     ),
+                                  isFavorite: homeNotifier.fav[index]!,
                                   onProductTapped: () {
                                     ref
                                         .read(navigationServiceProvider)
@@ -210,15 +215,7 @@ class HomeView extends ConsumerWidget {
                                               homeNotifier.products[index],
                                         );
                                   },
-                                  onDistanceTapped: () {
-                                    ref
-                                        .read(navigationServiceProvider)
-                                        .navigateToNamed(
-                                          Routes.storeDirection,
-                                          arguments: homeNotifier
-                                              .products[index].store,
-                                        );
-                                  },
+                                  onDistanceTapped: () {},
                                   onFlipTapped: () async {
                                     await ref
                                         .read(flipNotifierProvider)
@@ -233,21 +230,23 @@ class HomeView extends ConsumerWidget {
                                           .navigateToNamed(Routes.compare);
                                     }
                                   },
-                                  onFavoriteTapped: () async {
-                                    homeNotifier.products[index].isFav!
-                                        ? await wishlistNotifier
-                                            .removeFromWishlist(
-                                            productId:
-                                                homeNotifier.products[index].id,
-                                          )
-                                        : await wishlistNotifier.addToWishlist(
-                                            productId:
-                                                homeNotifier.products[index].id,
-                                          );
-                                    ref.refresh(homeNotifierProvider(null));
-                                  },
-                                  oldPrice:
-                                      homeNotifier.products[index].oldPrice,
+                                  onFavoriteTapped: () =>
+                                      homeNotifier.toggleFav(
+                                          index: index,
+                                          id: homeNotifier.products[index].id),
+                                  // {
+                                  //   homeNotifier.products[index].isFav!
+                                  //       ? await wishlistNotifier
+                                  //           .removeFromWishlist(
+                                  //           productId:
+                                  //               homeNotifier.products[index].id,
+                                  //         )
+                                  //       : await wishlistNotifier.addToWishlist(
+                                  //           productId:
+                                  //               homeNotifier.products[index].id,
+                                  //         );
+                                  //   ref.refresh(homeNotifierProvider(null));
+                                  // },
                                 );
                               }
                             },

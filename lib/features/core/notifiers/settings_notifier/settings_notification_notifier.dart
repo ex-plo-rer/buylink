@@ -10,15 +10,53 @@ import '../../../../services/base/network_exception.dart';
 class SettingNotificationNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  SettingNotificationNotifier(this._reader){fetchNotifications();}
+  SettingNotificationNotifier(this._reader) {
+    fetchNotifications();
+  }
 
-  FetchNotificationModel? notifications;
+  FetchNotificationModel? _notifications;
+
+  late bool _pushStatus;
+
+  bool get pushStatus => _pushStatus;
+  late bool _productStatus;
+
+  bool get productStatus => _productStatus;
+  late bool _chatStatus;
+
+  bool get chatStatus => _chatStatus;
+  late bool _emailStatus;
+
+  bool get emailStatus => _emailStatus;
+
+  toggleStatus({
+    required String text,
+    required bool status,
+  }) {
+    if (text == 'push') {
+      _pushStatus = status;
+    } else if (text == 'product') {
+      _productStatus = status;
+    } else if (text == 'chat') {
+      _chatStatus = status;
+    } else {
+      _emailStatus = status;
+    }
+    _reader(settingRepository).setNotification(
+      type: text,
+      state: status,
+    );
+    notifyListeners();
+  }
 
   Future<void> fetchNotifications() async {
     try {
       setState(state: ViewState.loading);
-      notifications = await _reader(settingRepository).fetchNotification(
-      );
+      _notifications = await _reader(settingRepository).fetchNotification();
+      _pushStatus = _notifications!.pushAlert;
+      _productStatus = _notifications!.productAlert;
+      _chatStatus = _notifications!.chatAlert;
+      _emailStatus = _notifications!.emailAlert;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
@@ -26,29 +64,9 @@ class SettingNotificationNotifier extends BaseChangeNotifier {
     } finally {
       //setState(state: ViewState.idle);
     }
-
   }
-
-
-  Future<void> setNotification({required String text, required bool fetchState}) async {
-    try {
-      // setState(state: ViewState.loading);
-      await _reader(settingRepository).setNotification(
-          type: text,
-          state: fetchState
-
-      );
-      await fetchNotifications();
-    } on NetworkException catch (e) {
-      setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
-    } finally {
-     // setState(state: ViewState.idle);
-    }
-  }
-
-
 }
 
 final settingNotificationNotifierProvider =
-ChangeNotifierProvider<SettingNotificationNotifier>((ref) => SettingNotificationNotifier(ref.read));
+    ChangeNotifierProvider<SettingNotificationNotifier>(
+        (ref) => SettingNotificationNotifier(ref.read));

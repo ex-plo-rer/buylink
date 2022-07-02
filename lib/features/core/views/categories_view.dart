@@ -61,16 +61,16 @@ class CategoriesView extends ConsumerWidget {
                 child: categoryNotifier.state.isLoading
                     ? const CircularProgress()
                     : MasonryGridView.count(
-                        itemCount: categoryNotifier.categories.length,
+                        itemCount: categoryNotifier.userCategories.length,
                         crossAxisCount: 2,
                         mainAxisSpacing: 20,
                         crossAxisSpacing: 15,
                         itemBuilder: (context, index) {
                           return CategoryContainer(
                             categoryName:
-                                categoryNotifier.categories[index].name,
+                                categoryNotifier.userCategories[index],
                             categoryImage:
-                                categoryNotifier.categories[index].image,
+                                categoryNotifier.userCategories[index],
                             onTap: () {},
                           );
                         },

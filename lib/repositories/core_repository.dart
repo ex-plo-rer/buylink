@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants/strings.dart';
 import '../features/core/models/most_searched_count_model.dart';
 import '../features/core/models/most_searched_model.dart';
+import '../features/core/models/product_edit_model.dart';
 import '../features/core/models/search_result_model.dart';
 import '../features/core/models/user_model.dart';
 import '../services/local_storage_service.dart';
@@ -119,6 +120,54 @@ class CoreRepository {
     return _products;
   }
 
+  Future<bool> deleteProduct({
+    required int productId,
+  }) async {
+    // await _reader(userProvider).setUser();
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'product_id': productId,
+    };
+    print('Delete product params sent to server $body');
+
+    var response = await networkService.post(
+      'users/del-product',
+      body: body,
+      headers: headers,
+    );
+
+    print('Delete product response $response');
+
+    return response['success'];
+  }
+
+  Future<ProductEditModel> loadEdit({
+    required int productId,
+  }) async {
+    // await _reader(userProvider).setUser();
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'product_id': productId,
+    };
+    print('Load edit params sent to server $body');
+
+    var response = await networkService.post(
+      'users/load-edit',
+      body: body,
+      headers: headers,
+    );
+
+    print('Load edit response $response');
+
+    return ProductEditModel.fromJson(response);
+  }
+
   Future<List<ProductModel>> fetchWishList({
     required String category,
   }) async {
@@ -146,14 +195,14 @@ class CoreRepository {
     return _products;
   }
 
-  Future<List<CategoryModel>> fetchCategories() async {
+  Future<List<CategoryModel>> fetchRandomCategories() async {
     print(
         '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
     var id = _reader(userProvider).currentUser?.id ?? 0;
     final body = {
       'id': id,
     };
-    print('Fetch categories params sent to server $body');
+    print('Fetch random categories params sent to server $body');
 
     var response = await networkService.post(
       'users/load-categories?no=5',
@@ -165,6 +214,55 @@ class CoreRepository {
     List<CategoryModel> _category = [];
     for (var category in response) {
       _category.add(CategoryModel.fromJson(category));
+    }
+
+    return _category;
+  }
+
+  Future<List<String>> fetchStoreCategories({required String storeId}) async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'store_id': storeId,
+    };
+    print('Fetch store categories params sent to server $body');
+
+    var response = await networkService.post(
+      'users/in-cats/store',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch store categories response $response');
+    List<String> _category = [];
+    for (var category in response['categories']) {
+      _category.add(category);
+    }
+
+    return _category;
+  }
+
+  Future<List<String>> fetchUserCategories() async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+    };
+    print('Fetch user categories params sent to server $body');
+
+    var response = await networkService.post(
+      'users/in-cats/wish',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch user categories response $response');
+    List<String> _category = [];
+    for (var category in response['categories']) {
+      _category.add(category);
     }
 
     return _category;
@@ -346,6 +444,57 @@ class CoreRepository {
       'users/add-product',
       body: body,
       files: files,
+      headers: headers,
+    );
+
+    print('Add product response $response');
+
+    return '';
+  }
+
+  Future<String> updateProduct({
+    required int productId,
+    required String name,
+    required String? price,
+    required String? oldPrice,
+    required String? category,
+    required String? description,
+    required String? brand,
+    required String? colors,
+    required String? minAge,
+    required String? maxAge,
+    required String? minWeight,
+    required String? maxWeight,
+    required String? size,
+    required String? model,
+    required String? material,
+    required String? care,
+  }) async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+      'name': name,
+      'product_id': productId,
+      'price': price,
+      'old_price': oldPrice,
+      'cat': category,
+      'desc': description,
+      'brand': brand,
+      'colors': colors,
+      'age_min': minAge,
+      'age_max': maxAge,
+      'w_min': minWeight,
+      'w_max': maxWeight,
+      'size': size,
+      'model': model,
+      'material': material,
+      'care': care,
+    };
+    print('Add product params sent to server $body.');
+
+    var response = await networkService.post(
+      'users/update-product',
+      body: body,
       headers: headers,
     );
 

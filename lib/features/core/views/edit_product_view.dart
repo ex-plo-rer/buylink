@@ -1,6 +1,8 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:buy_link/core/utilities/view_state.dart';
+import 'package:buy_link/features/core/models/product_edit_model.dart';
 import 'package:buy_link/features/core/notifiers/add_product_notifier.dart';
 import 'package:buy_link/features/core/notifiers/category_notifier.dart';
 import 'package:buy_link/features/core/views/add_product_desc.dart';
@@ -19,33 +21,84 @@ import '../../../core/routes.dart';
 import '../../../core/utilities/alertify.dart';
 import '../../../core/utilities/loader.dart';
 import '../../../widgets/app_button.dart';
+import '../../../widgets/edit_product_images_container.dart';
 import '../../../widgets/spacing.dart';
+import '../models/edit_product_arg_model.dart';
 import '../models/product_model.dart';
+import '../notifiers/edit_product_notifier.dart';
+import '../notifiers/product_list_notifier.dart';
 import '../notifiers/store_notifier/store_dashboard_notifier.dart';
 
-class AddProductView extends ConsumerWidget {
-  final Store store;
+class EditProductView extends ConsumerStatefulWidget {
+  final EditProductArgModel args;
 
-  AddProductView({
+  EditProductView({
     Key? key,
-    required this.store,
+    required this.args,
   }) : super(key: key);
 
+  @override
+  ConsumerState<EditProductView> createState() => _EditProductViewState();
+}
+
+class _EditProductViewState extends ConsumerState<EditProductView> {
   final productNameFN = FocusNode();
   final minPriceFN = FocusNode();
   final maxPriceFN = FocusNode();
   final productSpecificsFN = FocusNode();
   final productDescFN = FocusNode();
 
-  final productNameCtrl = TextEditingController();
-  final minPriceCtrl = TextEditingController();
-  final maxPriceCtrl = TextEditingController();
-  final productSpecificsCtrl = TextEditingController();
-  final productDescCtrl = TextEditingController();
+  late final TextEditingController productNameCtrl;
+  late final TextEditingController minPriceCtrl;
+  late final TextEditingController maxPriceCtrl;
+  late final TextEditingController productSpecificsCtrl;
+  late final TextEditingController productDescCtrl;
 
   @override
-  Widget build(BuildContext context, ref) {
-    final addProductNotifier = ref.watch(addProductNotifierProvider);
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ref
+        .read(editProductNotifierProvider)
+        .initImages(widget.args.product.images);
+    ref.read(editProductNotifierProvider).initValues(
+          name: widget.args.product.name,
+          price: widget.args.product.price.toString(),
+          oldPrice: widget.args.product.oldPrice.toString(),
+          category: widget.args.product.category,
+          description: widget.args.product.description,
+          brand: widget.args.product.brand,
+          colors: widget.args.product.colors,
+          minAge: widget.args.product.ageMin.toString(),
+          maxAge: widget.args.product.ageMax.toString(),
+          minWeight: widget.args.product.weightMin.toString(),
+          maxWeight: widget.args.product.weightMax.toString(),
+          size: widget.args.product.size,
+          model: widget.args.product.model,
+          material: widget.args.product.material,
+          care: widget.args.product.care,
+        );
+    productNameCtrl = TextEditingController(
+        text:
+            widget.args.product.name == 'null' ? '' : widget.args.product.name);
+    minPriceCtrl = TextEditingController(
+        text: widget.args.product.price.toString() == 'null'
+            ? ''
+            : widget.args.product.price.toString());
+    maxPriceCtrl = TextEditingController(
+        text: widget.args.product.oldPrice.toString() == 'null'
+            ? ''
+            : widget.args.product.oldPrice.toString());
+    productSpecificsCtrl = TextEditingController();
+    productDescCtrl = TextEditingController(
+        text: widget.args.product.description == 'null'
+            ? ''
+            : widget.args.product.description);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final editProductNotifier = ref.watch(editProductNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -63,7 +116,7 @@ class AddProductView extends ConsumerWidget {
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
-          'Add Product',
+          'Edit Product',
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,
@@ -82,29 +135,24 @@ class AddProductView extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Product Pictures(${addProductNotifier.imageList.length > 4 ? 4 : addProductNotifier.imageList.length}/4)',
+                'Product Pictures(${editProductNotifier.imageList.length > 4 ? 4 : editProductNotifier.imageList.length}/4)',
                 style: TextStyle(
                   color: AppColors.getColorFromHex('3A4150'),
                   fontSize: 12,
                 ),
               ),
               const Spacing.tinyHeight(),
-              SelectProductImageContainer(
-                onDottedContainerTapped: () async {
-                  print('Pick file Clicked');
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
-                    type: FileType.image,
-                    withData: true,
-                    allowMultiple: true,
-                  );
-
-                  if (result != null) {
-                    addProductNotifier.setImages(images: result.files);
-                  } else {
-                    // User canceled the picker
-                  }
-                },
+              EditProductImagesContainer(
+                image1: widget.args.product.images.first,
+                image2: widget.args.product.images.length < 2
+                    ? null
+                    : widget.args.product.images[1],
+                image3: widget.args.product.images.length < 3
+                    ? null
+                    : widget.args.product.images[2],
+                image4: widget.args.product.images.length < 4
+                    ? null
+                    : widget.args.product.images[3],
               ),
               const Spacing.mediumHeight(),
               AppTextField(
@@ -116,7 +164,7 @@ class AddProductView extends ConsumerWidget {
                 controller: productNameCtrl,
                 title: 'Product Name',
                 hintText: 'Name of the product',
-                onChanged: addProductNotifier.onNameChanged,
+                onChanged: editProductNotifier.onNameChanged,
               ),
               const Spacing.mediumHeight(),
               Row(
@@ -129,7 +177,7 @@ class AddProductView extends ConsumerWidget {
                       title: 'Price',
                       tit: 'Min Price',
                       sub: '# ',
-                      onChanged: addProductNotifier.onMinPriceChanged,
+                      onChanged: editProductNotifier.onMinPriceChanged,
                     ),
                   ),
                   Spacing.smallWidth(),
@@ -139,7 +187,7 @@ class AddProductView extends ConsumerWidget {
                       height: 56,
                       tit: 'Max Price',
                       sub: '# ',
-                      onChanged: addProductNotifier.onMaxPriceChanged,
+                      onChanged: editProductNotifier.onMaxPriceChanged,
                     ),
                   ),
                 ],
@@ -158,11 +206,11 @@ class AddProductView extends ConsumerWidget {
                       ),
                     )
                     .toList(),
-                onChanged: addProductNotifier.categories.isEmpty
+                onChanged: editProductNotifier.categories.isEmpty
                     ? null
                     : (newCategory) {
                         // _subCatKey.currentState?.reset();
-                        addProductNotifier.onCategoryChanged(
+                        editProductNotifier.onCategoryChanged(
                             newCategory: newCategory.toString());
                       },
               ),
@@ -201,9 +249,10 @@ class AddProductView extends ConsumerWidget {
                 fillColor: AppColors.grey8,
                 onTap: () {
                   productSpecificsFN.unfocus();
-                  ref
-                      .read(navigationServiceProvider)
-                      .navigateToNamed(Routes.addProductSpecifics);
+                  ref.read(navigationServiceProvider).navigateToNamed(
+                        Routes.editProductSpecifics,
+                        arguments: widget.args.product,
+                      );
                 },
                 suffixIcon: IconButton(
                   icon: const Icon(
@@ -224,7 +273,7 @@ class AddProductView extends ConsumerWidget {
                 title: 'Product Description',
                 hintText: 'Describe your product',
                 maxLines: 10,
-                onChanged: addProductNotifier.onDescChanged,
+                onChanged: editProductNotifier.onDescChanged,
               ),
               const Spacing.height(40),
               AppButton(
@@ -240,13 +289,19 @@ class AddProductView extends ConsumerWidget {
                     : AppColors.primaryColor,
                 onPressed: () async {
                   Loader(context).showLoader(text: '');
-                  await addProductNotifier.addProduct(storeId: store.id);
+                  await editProductNotifier.updateProduct(
+                      productId: widget.args.product.id);
                   await ref
                       .read(storeDashboardNotifierProvider)
-                      .initFetch(storeId: store.id);
+                      .initFetch(storeId: widget.args.store.id);
+                  await ref
+                      .read(productListNotifierProvider)
+                      .fetchStoreProducts(
+                          storeId: widget.args.store.id, category: 'all');
                   Loader(context).hideLoader();
-                  Alertify(title: 'Your product has been added').success();
                   ref.read(navigationServiceProvider).navigateBack();
+                  ref.read(navigationServiceProvider).navigateBack();
+                  Alertify(title: 'Product updated successfully.').success();
                 },
               ),
               const Spacing.height(54),

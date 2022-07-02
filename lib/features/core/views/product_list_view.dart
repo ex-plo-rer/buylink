@@ -5,6 +5,7 @@ import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/category_model.dart';
+import 'package:buy_link/features/core/models/edit_product_arg_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/services/location_service.dart';
@@ -14,6 +15,7 @@ import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/product_container.dart';
+import 'package:buy_link/widgets/product_container_plist.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -46,7 +48,7 @@ class _WishlistState extends ConsumerState<ProductListView>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(
-        length: ref.read(categoryNotifierProvider).mCategories.length,
+        length: ref.read(categoryNotifierProvider).storeCategories.length,
         vsync: this);
     _tabController.addListener(_handleTabChange);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -69,8 +71,7 @@ class _WishlistState extends ConsumerState<ProductListView>
           storeId: widget.store.id,
           category: ref
               .watch(categoryNotifierProvider)
-              .mCategories[_tabController.index]
-              .name,
+              .storeCategories[_tabController.index],
         );
   }
 
@@ -108,15 +109,15 @@ class _WishlistState extends ConsumerState<ProductListView>
                     print('index $index');
                     productListNotifier.fetchStoreProducts(
                         storeId: widget.store.id,
-                        category: categoryNotifier.categories[index].name);
+                        category: categoryNotifier.storeCategories[index]);
                   },
-                  tabs: categoryNotifier.mCategories
-                      .map((category) => Tab(text: category.name))
+                  tabs: categoryNotifier.storeCategories
+                      .map((category) => Tab(text: category))
                       .toList()),
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: categoryNotifier.mCategories.map((category) {
+                  children: categoryNotifier.storeCategories.map((category) {
                     return productListNotifier.state.isLoading
                         ? const CircularProgress()
                         : MasonryGridView.count(
@@ -125,7 +126,7 @@ class _WishlistState extends ConsumerState<ProductListView>
                             mainAxisSpacing: 20,
                             crossAxisSpacing: 15,
                             itemBuilder: (context, index) {
-                              return ProductContainer(
+                              return ProductContainerPList(
                                 url: productListNotifier
                                     .products[index].image[0],
                                 storeName: productListNotifier
@@ -146,10 +147,18 @@ class _WishlistState extends ConsumerState<ProductListView>
                                   ref
                                       .read(navigationServiceProvider)
                                       .navigateToNamed(
-                                        Routes.productDetails,
+                                        Routes.productDetails2,
                                         arguments:
                                             productListNotifier.products[index],
+                                        // arguments: EditProductArgModel(store: productListNotifier.products[index].store, product: productListNotifier.productEditModel),
                                       );
+                                  // ref
+                                  //     .read(navigationServiceProvider)
+                                  //     .navigateToNamed(
+                                  //       Routes.editProduct,
+                                  //       // arguments: productListNotifier.products[index],
+                                  //       // arguments: EditProductArgModel(store: productListNotifier.products[index].store, product: productListNotifier.productEditModel),
+                                  //     );
                                 },
                                 onDistanceTapped: () {},
                                 onFlipTapped: () async {

@@ -4,6 +4,7 @@ import 'package:buy_link/features/core/models/most_searched_model.dart';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/chart_data_model.dart';
 import 'package:buy_link/features/core/models/store_quick_model.dart';
+import 'package:buy_link/features/core/notifiers/category_notifier.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/repositories/store_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,21 +23,27 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
   StoreDashboardNotifier(this._reader);
 
   MostSearchedModel? _mostSearchedNCount;
+
   MostSearchedModel? get mostSearchedNCount => _mostSearchedNCount;
 
   bool _initLoading = false;
+
   bool get initLoading => _initLoading;
 
   AnalyticsModel? _searchAnalytics;
+
   AnalyticsModel? get searchAnalytics => _searchAnalytics;
 
   List<ChartDataModel> _searchedData = [];
+
   List<ChartDataModel> get searchedData => _searchedData;
 
   List<ChartDataModel> _visitsData = [];
+
   List<ChartDataModel> get visitsData => _visitsData;
 
   AnalyticsModel? _visitAnalytics;
+
   AnalyticsModel? get visitAnalytics => _visitAnalytics;
 
   Future<void> initFetch({required int storeId}) async {
@@ -46,6 +53,8 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
       await fetchMostSearchedProducts(storeId: storeId, category: 'all');
       await fetchSearchAnalytics(storeId: storeId, week: 'current');
       await fetchVisitAnalytics(storeId: storeId, week: 'current');
+      await _reader(categoryNotifierProvider)
+          .fetchStoreCategories(storeId: storeId.toString());
       // await fetchAllProductCount(storeId: storeId, week: 'current');
       // await fetchSavedProductCount(storeId: storeId, week: 'current');
       // await _reader(coreRepository).initDash(
@@ -157,26 +166,26 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
     }
   }
 
-  // Future<void> fetchStoreProducts({
-  //   required int storeId,
-  //   required String category,
-  // }) async {
-  //   try {
-  //     setState(state: ViewState.loading);
-  //     _products = await _reader(storeRepository).fetchStoreProducts(
-  //       storeId: storeId,
-  //       category: category,
-  //     );
-  //     // }
-  //     // Alertify(title: 'User logged in').success();
-  //     setState(state: ViewState.idle);
-  //   } on NetworkException catch (e) {
-  //     setState(state: ViewState.error);
-  //     Alertify(title: e.error).error();
-  //   } finally {
-  // //     setState(state: ViewState.idle);
-  //   }
-  // }
+// Future<void> fetchStoreProducts({
+//   required int storeId,
+//   required String category,
+// }) async {
+//   try {
+//     setState(state: ViewState.loading);
+//     _products = await _reader(storeRepository).fetchStoreProducts(
+//       storeId: storeId,
+//       category: category,
+//     );
+//     // }
+//     // Alertify(title: 'User logged in').success();
+//     setState(state: ViewState.idle);
+//   } on NetworkException catch (e) {
+//     setState(state: ViewState.error);
+//     Alertify(title: e.error).error();
+//   } finally {
+// //     setState(state: ViewState.idle);
+//   }
+// }
 }
 
 final storeDashboardNotifierProvider =

@@ -1,3 +1,4 @@
+import 'package:buy_link/features/core/models/product_edit_model.dart';
 import 'package:buy_link/features/core/models/search_result_arg_model.dart';
 import 'package:buy_link/features/core/views/add_product_view.dart';
 import 'package:buy_link/features/core/views/add_review_view.dart';
@@ -5,6 +6,7 @@ import 'package:buy_link/features/core/views/categories_view.dart';
 import 'package:buy_link/features/core/views/compare_products_view.dart';
 import 'package:buy_link/features/core/views/compare_view.dart';
 import 'package:buy_link/features/core/views/dashboard_view.dart';
+import 'package:buy_link/features/core/views/edit_product_view.dart';
 import 'package:buy_link/features/core/views/product_details_more_view.dart';
 import 'package:buy_link/features/core/views/product_details_view.dart';
 import 'package:buy_link/features/core/views/store_views/delete_store_validation.dart';
@@ -28,13 +30,17 @@ import 'package:flutter/material.dart';
 
 import '../features/authentication/views/forgot_password_view.dart';
 import '../features/core/models/compare_arg_model.dart';
+import '../features/core/models/edit_product_arg_model.dart';
 import '../features/core/models/message_model.dart';
 import '../features/core/models/product_model.dart';
 import '../features/core/models/store_review_arg_model.dart';
 import '../features/core/models/user_model.dart';
 import '../features/core/views/add_product_desc.dart';
+import '../features/core/views/edit_product_specifics_view.dart';
 import '../features/core/views/message_view/camera_screen.dart';
 import '../features/core/views/message_view/receiver_profile_view.dart';
+import '../features/core/views/product_details_2_more_view.dart';
+import '../features/core/views/product_details_2_view.dart';
 import '../features/core/views/settings_view/about_buylink.dart';
 import '../features/core/views/add_product_specifics_view.dart';
 import '../features/core/views/product_list_view.dart';
@@ -69,7 +75,9 @@ class Routes {
   static const compare = '/compare';
   static const compareProducts = '/compare-products';
   static const productDetails = '/product-details';
+  static const productDetails2 = '/product-details-2';
   static const productDetailsMore = '/product-details-more';
+  static const productDetails2More = '/product-details-2-more';
   static const storeDetails = '/shop-details';
   static const storeReviews = '/store-reviews';
   static const addReview = '/add-review';
@@ -89,9 +97,11 @@ class Routes {
   static const messageView = '/message';
   static const receiverProfileView = '/receiver-profile-view';
   static const addProduct = '/addproduct';
+  static const editProduct = '/edit-product';
   static const deleteStore = '/delete-store';
   static const deleteStoreVal = '/delete-store-val';
   static const addProductSpecifics = '/add-product-specifics';
+  static const editProductSpecifics = '/edit-product-specifics';
   static const addProductDesc = '/add-product-desc';
   static const storeMessages = '/store-messages';
   static const storeSettings = '/store-settings';
@@ -154,8 +164,17 @@ class Routes {
             product: product,
           ),
         );
+      case productDetails2:
+        var product = settings.arguments as ProductModel;
+        return MaterialPageRoute(
+          builder: (_) => ProductDetails2View(
+            product: product,
+          ),
+        );
       case productDetailsMore:
         return MaterialPageRoute(builder: (_) => ProductDetailsMoreView());
+      case productDetails2More:
+        return MaterialPageRoute(builder: (_) => ProductDetails2MoreView());
       case storeDetails:
         // Store store = settings.arguments as Store;
         int storeId = settings.arguments as int;
@@ -253,12 +272,27 @@ class Routes {
       case addProduct:
         Store store = settings.arguments as Store;
         return MaterialPageRoute(
-            builder: (_) => AddProductView(
-                  store: store,
-                ));
+          builder: (_) => AddProductView(
+            store: store,
+          ),
+        );
+      case editProduct:
+        EditProductArgModel args = settings.arguments as EditProductArgModel;
+        return MaterialPageRoute(
+          builder: (_) => EditProductView(
+            args: args,
+          ),
+        );
       case addProductSpecifics:
         return MaterialPageRoute(
             builder: (_) => const AddProductSpecificsView());
+      case editProductSpecifics:
+        ProductEditModel product = settings.arguments as ProductEditModel;
+        return MaterialPageRoute(
+          builder: (_) => EditProductSpecificsView(
+            product: product,
+          ),
+        );
       case addProductDesc:
         return MaterialPageRoute(builder: (_) => const AddProductDescView());
       case deleteUser:

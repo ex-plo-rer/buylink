@@ -1,4 +1,5 @@
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
+import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/services/local_storage_service.dart';
 import 'package:buy_link/services/location_service.dart';
@@ -14,6 +15,7 @@ import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../services/base/network_exception.dart';
 import '../../../services/navigation_service.dart';
+import '../models/category_model.dart';
 import '../models/product_model.dart';
 
 class HomeNotifier extends BaseChangeNotifier {
@@ -24,18 +26,23 @@ class HomeNotifier extends BaseChangeNotifier {
     this._reader, {
     required this.category,
   }) {
-    fetchProducts(
-      category: category,
-    );
+    fetchProducts(category: category);
+    fetchRandomCategories();
   }
 
   bool _productLoading = false;
 
   bool get productLoading => _productLoading;
+  bool _categoriesLoading = false;
+
+  bool get categoriesLoading => _categoriesLoading;
 
   List<ProductModel> _products = [];
 
   List<ProductModel> get products => _products;
+  List<bool?> _fav = [];
+
+  List<bool?> get fav => _fav;
 
   ProductAttrModel? _productAttr;
 
@@ -43,7 +50,30 @@ class HomeNotifier extends BaseChangeNotifier {
   Position? position;
 
   String _initialText = 'Latest products around you';
+
   String get initialText => _initialText;
+
+  List<CategoryModel> _categories = [];
+
+  List<CategoryModel> get categories => _categories;
+
+  void setFav() {
+    for (var product in _products) {
+      _fav.add(product.isFav);
+    }
+  }
+
+  void toggleFav({required int index, required int id}) {
+    if (_fav[index]!) {
+      _fav[index] = false;
+      _reader(wishlistNotifierProvider).removeFromWishlist(productId: id);
+    } else {
+      _fav[index] = true;
+      _reader(wishlistNotifierProvider).addToWishlist(productId: id);
+    }
+    // fetchProducts(category: category);
+    notifyListeners();
+  }
 
   void changeText({required String category}) {
     _initialText = category == 'all'
@@ -51,10 +81,21 @@ class HomeNotifier extends BaseChangeNotifier {
         : 'Latest products around you with tag \'$category\'';
   }
 
-  //
-  // Future<void> setLocation(context) async {
-  //   position = await _reader(locationService).getCurrentLocation();
-  // }
+  Future<void> fetchRandomCategories() async {
+    try {
+      _categoriesLoading = true;
+      setState(state: ViewState.loading);
+      _categories = await _reader(coreRepository).fetchRandomCategories();
+      _categoriesLoading = false;
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      _categoriesLoading = false;
+      setState(state: ViewState.error);
+      Alertify(title: e.error).error();
+    } finally {
+      //setState(state: ViewState.idle);
+    }
+  }
 
   Future<void> fetchProducts({
     required String? category,
@@ -66,14 +107,12 @@ class HomeNotifier extends BaseChangeNotifier {
       // if (serviceEnabled) {
       await _reader(locationService).getCurrentLocation();
       _products = await _reader(coreRepository).fetchProducts(
-        // lat: 3.4,
-        // lon: 3.7,
-        // TODO: the below
         lat: _reader(locationService).lat!,
         lon: _reader(locationService).lon!,
         category: category,
       );
       changeText(category: category ?? 'all');
+      setFav();
       _productLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {

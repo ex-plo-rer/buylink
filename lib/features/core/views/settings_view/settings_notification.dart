@@ -11,17 +11,16 @@ import '../../../../core/constants/colors.dart';
 import '../../notifiers/settings_notifier/settings_notification_notifier.dart';
 
 class SettingNotification extends ConsumerStatefulWidget {
-  SettingNotification ({Key? key}) : super(key: key);
+  SettingNotification({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => SettingNotificationClass(); }
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      SettingNotificationClass();
+}
 
 class SettingNotificationClass extends ConsumerState<SettingNotification> {
-
-
   @override
   Widget build(BuildContext context) {
-
     final settingNotifier = ref.watch(settingNotificationNotifierProvider);
 
     return Scaffold(
@@ -32,61 +31,101 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
             Icons.arrow_back_ios_outlined,
             color: AppColors.dark,
           ),
-          onPressed: () {},),
+          onPressed: () {},
+        ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
-        title: const Text("Notification",
+        title: const Text(
+          "Notification",
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 16,
-            fontWeight: FontWeight.w500,),),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child:
-        settingNotifier.state.isLoading? const CircularProgress():
-        Padding(
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-          child: Column(children: <Widget>[
-            Spacing.mediumHeight(),
-            AppToggle(state: settingNotifier.notifications?.push_alert ??  true, type: "push",
-              title: "Push notifications", subtitle: "Notifies you of events even when you’re not in the app",
-              onChanged: (bool value)  {
-                print (value );
-                settingNotifier.setNotification(text: 'push', fetchState: value);
-              },),
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Divider(color: AppColors.grey6),),
-
-            AppToggle(state: settingNotifier.notifications?.product_alert ?? true, type: "product",
-                title: "Product alert notifications", subtitle: "Notifies you of your favorite products in range.",
-                onChanged:(bool value){
-                  print (value );
-                  settingNotifier.setNotification(text: 'product', fetchState: value);
-                }),
-
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Divider(color: AppColors.grey6),),
-
-            AppToggle(state: settingNotifier.notifications?.chat_alert ?? true, type: "chat",
-                title: "Chat notifications", subtitle: "Notifies you of messages in your inbox", onChanged: (bool value){
-                  print (value );
-                  settingNotifier.setNotification(text: 'chat', fetchState: value);
-                }),
-
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Divider(color: AppColors.grey6),),
-
-            AppToggle(state: settingNotifier.notifications?.email_alert ?? true , type: "email",
-                title: "Email Notifications", subtitle: "Notifies you of important occurrences from Buylink",
-                onChanged: (bool value){print (value );
-                settingNotifier.setNotification(text: 'email', fetchState: value);}),
-
-          ],),),),);
+        child: settingNotifier.state.isLoading
+            ? const CircularProgress()
+            : Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Column(
+                  children: <Widget>[
+                    const Spacing.mediumHeight(),
+                    AppToggle(
+                      state: settingNotifier.pushStatus,
+                      type: "push",
+                      title: "Push notifications",
+                      subtitle:
+                          "Notifies you of events even when you’re not in the app",
+                      onChanged: (bool value) {
+                        print(value);
+                        settingNotifier.toggleStatus(
+                            text: 'push', status: value);
+                        // settingNotifier.setNotification(
+                        //     text: 'push', fetchState: value);
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      child: const Divider(color: AppColors.grey6),
+                    ),
+                    AppToggle(
+                      state: settingNotifier.productStatus,
+                      type: "product",
+                      title: "Product alert notifications",
+                      subtitle:
+                          "Notifies you of your favorite products in range.",
+                      onChanged: (bool value) {
+                        print(value);
+                        settingNotifier.toggleStatus(
+                            text: 'product', status: value);
+                        // settingNotifier.setNotification(
+                        //     text: 'product', fetchState: value);
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      child: const Divider(color: AppColors.grey6),
+                    ),
+                    AppToggle(
+                      state: settingNotifier.chatStatus,
+                      type: "chat",
+                      title: "Chat notifications",
+                      subtitle: "Notifies you of messages in your inbox",
+                      onChanged: (bool value) {
+                        settingNotifier.toggleStatus(
+                            text: 'chat', status: value);
+                        print(value);
+                        // settingNotifier.setNotification(
+                        //     text: 'chat', fetchState: value);
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      child: const Divider(
+                        color: AppColors.grey6,
+                      ),
+                    ),
+                    AppToggle(
+                      state: settingNotifier.emailStatus,
+                      type: "email",
+                      title: "Email Notifications",
+                      subtitle:
+                          "Notifies you of important occurrences from Buylink",
+                      onChanged: (bool value) {
+                        settingNotifier.toggleStatus(
+                            text: 'email', status: value);
+                        print(value);
+                        // settingNotifier.setNotification(
+                        //     text: 'email', fetchState: value);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+      ),
+    );
   }
-
 }
-
