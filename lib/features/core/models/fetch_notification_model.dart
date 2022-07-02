@@ -3,33 +3,34 @@ import 'dart:convert';
 FetchNotificationModel fetchNotificationFromJson(String str) =>
     FetchNotificationModel.fromJson(json.decode(str));
 
-String fetchNoticationToJson(FetchNotificationModel data) => json.encode(data.toJson());
+String fetchNoticationToJson(FetchNotificationModel data) =>
+    json.encode(data.toJson());
 
 class FetchNotificationModel {
   FetchNotificationModel({
-    required this.push_alert,
-    required this.product_alert,
-    required this.chat_alert,
-    required this.email_alert,
-
+    required this.pushAlert,
+    required this.productAlert,
+    required this.chatAlert,
+    required this.emailAlert,
   });
-  bool push_alert;
-  bool product_alert;
-  bool chat_alert;
-  bool email_alert;
 
-  factory FetchNotificationModel.fromJson(Map<String, dynamic> json) => FetchNotificationModel(
-    push_alert: json["push_alert"],
-    product_alert: json["product_alert"],
-    chat_alert: json ["chat_alert"],
-    email_alert: json ["email_alert"],
+  bool pushAlert;
+  bool productAlert;
+  bool chatAlert;
+  bool emailAlert;
 
-  );
+  factory FetchNotificationModel.fromJson(Map<String, dynamic> json) =>
+      FetchNotificationModel(
+        pushAlert: json["push_alert"],
+        productAlert: json["product_alert"],
+        chatAlert: json["chat_alert"],
+        emailAlert: json["email_alert"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "push_alert": push_alert,
-    "product_alert": product_alert,
-    "chat_alert": chat_alert,
-    "email_alert": email_alert,
-  };
+        "push_alert": pushAlert,
+        "product_alert": productAlert,
+        "chat_alert": chatAlert,
+        "email_alert": emailAlert,
+      };
 }
