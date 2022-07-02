@@ -41,6 +41,7 @@ class StoreContainer extends ConsumerWidget {
               image: DecorationImage(
                 image: CachedNetworkImageProvider(storeImage),
                 fit: BoxFit.fill,
+                  opacity: 0.8
               ),
               borderRadius: BorderRadius.circular(20),
             ),

@@ -115,7 +115,7 @@ class SpecialTextField extends StatelessWidget {
                             Spacing.tinyWidth(),
                             Container(
                               height: 25,
-                              width: 2,
+                              width: 1,
                               color: Colors.grey,
                             ),
                             const Text(' '),

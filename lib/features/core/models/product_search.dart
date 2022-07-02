@@ -1,6 +1,7 @@
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/widgets/app_button.dart';
+import 'package:buy_link/widgets/app_empty_states.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,13 @@ class ProductSearch extends SearchDelegate<String> {
           return productSearchNotifier.searchLoading
               ? const CircularProgress()
               : productSearchNotifier.autoComplete!.result.isEmpty
-                  ? const Center(child: Text('No Match'))
+                  ? const Center(child:AppEmptyStates(
+              imageString: "assets/images/empty_search.png",
+              message1String: "Oops, no products available",
+              message2String: "Try searching with another keyword ",
+              buttonString: "",
+            hasButton: false,
+          ))
                   : Expanded(
                       child: ListView.separated(
                         itemCount:
@@ -158,7 +165,9 @@ class ProductSearch extends SearchDelegate<String> {
                                       .autoComplete!.recentSearches.length +
                                   1,
                               itemBuilder: (context, index) => index == 0
-                                  ? const Text('Recently Searched')
+                                  ? const Text('Recently Searched',
+                              style: TextStyle(fontWeight:
+                              FontWeight.w500, fontSize: 12, color:AppColors.grey5),)
                                   : Row(
                                       children: [
                                         Expanded(
@@ -173,7 +182,7 @@ class ProductSearch extends SearchDelegate<String> {
                                           ),
                                         ),
                                         const Icon(
-                                          Icons.north_west_outlined,
+                                          Icons.clear,
                                           color: AppColors.grey5,
                                           size: 15,
                                         ),
@@ -183,6 +192,24 @@ class ProductSearch extends SearchDelegate<String> {
                                   const Spacing.tinyHeight(),
                             ),
                           ),
+                        Spacing.mediumHeight(),
+
+
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Container (
+                              //width: 60,
+                             // height: 20,
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text("Clear all", style: TextStyle(color: AppColors.grey5, fontSize: 12,
+                              fontWeight: FontWeight.w500),),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: AppColors.grey5
+
+                                ),)
+                        )),
+                        Spacing.smallHeight(),
                         if (productSearchNotifier
                             .autoComplete!.result.isNotEmpty)
                           Expanded(
@@ -191,7 +218,8 @@ class ProductSearch extends SearchDelegate<String> {
                                       .autoComplete!.result.length +
                                   1,
                               itemBuilder: (context, index) => index == 0
-                                  ? const Text('Popular Searches')
+                                  ? const Text('Popular Searches', style: TextStyle(fontWeight:
+          FontWeight.w500, fontSize: 12, color:AppColors.grey5),)
                                   : GestureDetector(
                                       onTap: () {
                                         ref
@@ -254,7 +282,7 @@ class ProductSearch extends SearchDelegate<String> {
                               ),
                             ),
                             const Icon(
-                              Icons.north_west_outlined,
+                              Icons.clear,
                               color: AppColors.grey5,
                               size: 15,
                             ),

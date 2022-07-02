@@ -206,7 +206,7 @@ class MessageView extends ConsumerWidget {
                       child: AppTextField(
                         style: TextStyle(
                             color: AppColors.grey3,
-                            fontSize: 12,
+                            fontSize: 13,
                             fontWeight: FontWeight.w500),
                         hintText: 'Type something...',
                         controller: messageTextController,

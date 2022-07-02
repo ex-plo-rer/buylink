@@ -121,7 +121,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   AnimatedSmoothIndicator(
                     count: widget.product.image.length,
                     activeIndex: productDetailsNotifier.activeIndex,
-                    effect: const WormEffect(
+                    effect: const ExpandingDotsEffect(
+                      spacing: 3,
+                      expansionFactor: 5,
+                      activeDotColor: AppColors.primaryColor,
+                      dotColor: AppColors.primaryColor,
                       dotHeight: 4,
                       dotWidth: 4,
                     ),
@@ -167,7 +171,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       // text: widget.product.store.rating,
                       padding: 0,
                       icon: SvgPicture.asset(
-                        AppSvgs.favoriteFilled,
+                        AppSvgs.star,
                         width: 12,
                         height: 12,
                         color: AppColors.yellow,
@@ -225,25 +229,43 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       ),
                       Spacing.tinyWidth(),
                       Visibility(
-                        visible: widget.product.oldPrice > 0,
-                        child: Text(
-                          '${widget.product.oldPrice}',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.grey4,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                      ),
+                          visible: widget.product.oldPrice > 0,
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  // alignment: Alignment.topLeft,
+                                  style: TextStyle(
+                                      color: AppColors.grey9,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.lineThrough),
+                                  child: SvgPicture.asset(
+                                    AppSvgs.naira,
+                                    height: 13.5,
+                                    width: 13.5,
+                                    color: AppColors.grey4,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '${widget.product.oldPrice}',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.grey4,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                     ],
                   ),
                   const Spacing.height(20),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
-                      'A super-comfortable denim legging,built to contour curves, lengthen legs and celebrate your form. Made with an innovative tummy-sliming',
-                      //product.description,
+                      widget.product.desc,
                       // textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 14,
@@ -302,7 +324,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     ),
                   ),
                   const Spacing.bigHeight(),
-                  const Divider(thickness: 2),
+                  const Divider(thickness: 1),
                   GestureDetector(
                     onTap: () {
                       productDetailsNotifier.fetchProductAttr(
@@ -314,7 +336,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20.0,
-                        vertical: 5,
+                        vertical: 9,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -335,7 +357,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       ),
                     ),
                   ),
-                  const Divider(thickness: 2),
+                  const Divider(thickness: 1),
                   const Spacing.bigHeight(),
                   const Align(
                     alignment: Alignment.centerLeft,

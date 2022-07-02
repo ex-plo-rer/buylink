@@ -44,6 +44,9 @@ class HomeNotifier extends BaseChangeNotifier {
 
   List<bool?> get fav => _fav;
 
+  ProductAttrModel? _productAttr;
+
+  ProductAttrModel get productAttr => _productAttr!;
   Position? position;
 
   String _initialText = 'Latest products around you';
@@ -118,6 +121,24 @@ class HomeNotifier extends BaseChangeNotifier {
       Alertify(title: e.error).error();
     } finally {
       // setState(state: ViewState.idle);
+    }
+  }
+
+
+  Future<void> fetchProductAttr({
+    required int productId,
+  }) async {
+    try {
+      setState(state: ViewState.loading);
+      _productAttr =
+      await _reader(coreRepository).fetchProductAttr(productId: productId);
+      // Alertify(title: 'User logged in').success();
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      setState(state: ViewState.error);
+      Alertify(title: e.error).error();
+    } finally {
+      setState(state: ViewState.idle);
     }
   }
 

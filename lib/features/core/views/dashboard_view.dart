@@ -67,7 +67,7 @@ class DashboardView extends ConsumerWidget {
               icon: SvgPicture.asset(
                 dashboardNotifier.selectedIndex == 1
                     ? AppSvgs.favBFilled
-                    : AppSvgs.favorite,
+                    : AppSvgs.favorite2,
               ),
               label: 'Wishlist',
             ),

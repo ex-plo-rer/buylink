@@ -30,7 +30,7 @@ class CategoryContainer extends StatelessWidget {
             fit: BoxFit.fill,
             opacity: 0.67
           ),
-          color: AppColors.red,
+          color: Colors.black,
         ),
         child: Center(
           child: Text(

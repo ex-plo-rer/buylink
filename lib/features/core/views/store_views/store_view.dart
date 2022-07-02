@@ -39,10 +39,11 @@ class StoreView extends ConsumerWidget {
       // ),
         body: SafeArea(
             child:Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 18 , vertical: 18),
+              padding:  EdgeInsets.fromLTRB(18, 24, 18, 0),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+
                     Text(
                       'My Stores',
                       style: TextStyle(
@@ -51,7 +52,7 @@ class StoreView extends ConsumerWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const Spacing.mediumHeight(),
+                    const Spacing.largeHeight(),
                     storeNotifier.state.isLoading
                         ? const CircularProgress()
                         : storeNotifier.state.isError
