@@ -122,8 +122,8 @@ class HomeView extends ConsumerWidget {
                         : MasonryGridView.count(
                             itemCount: homeNotifier.products.length,
                             crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 8,
+                            crossAxisSpacing: 20,
                             itemBuilder: (context, index) {
                               if (index == 3) {
                                 return Container(
@@ -211,7 +211,13 @@ class HomeView extends ConsumerWidget {
                                         );
                                   },
                                   onDistanceTapped: () {
-
+                                    ref
+                                        .read(navigationServiceProvider)
+                                        .navigateToNamed(
+                                          Routes.storeDirection,
+                                          arguments: homeNotifier
+                                              .products[index].store,
+                                        );
                                   },
                                   onFlipTapped: () async {
                                     await ref
@@ -240,6 +246,8 @@ class HomeView extends ConsumerWidget {
                                           );
                                     ref.refresh(homeNotifierProvider(null));
                                   },
+                                  oldPrice:
+                                      homeNotifier.products[index].oldPrice,
                                 );
                               }
                             },

@@ -361,7 +361,7 @@ class SearchProductBottomSheet extends StatelessWidget {
       ),
       // height: 200,
       child: AppButton(
-        text: 'Confirm Location',
+        text: 'confirm location to search',
         backgroundColor: AppColors.primaryColor,
         onPressed: onConfirmPressed,
       ),

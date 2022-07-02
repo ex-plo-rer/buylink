@@ -288,7 +288,7 @@ class _ProductSearchResultViewState
                                   final product =
                                       widget.args.searchResult.result[index];
                                   //TODO: Just return the product and fill the details inside ProductContainerSearch
-                                  return ProductContainerSearch(
+                                  return ProductContainer(
                                     url: product.image.first,
                                     storeName: product.store.name,
                                     productName: product.name,
@@ -378,14 +378,22 @@ class SearchProductBottomSheet extends StatelessWidget {
         color: AppColors.light,
       ),
       // height: 200,
-      child: ProductContainer(
-        url: products[1].image.first,
-        storeName: products[1].store.name,
-        productName: products[1].name,
-        productPrice: products[1].price,
-        distance: '4.3',
-        isFavorite: products[1].isFav!,
-      ),
+      child: SingleChildScrollView(
+          child: ListView.separated(
+        itemCount: products.length,
+        itemBuilder: (context, index) => ProductContainer(
+          url: products[index].image.first,
+          storeName: products[index].store.name,
+          productName: products[index].name,
+          productPrice: products[index].price,
+          oldPrice: products[index].oldPrice,
+          distance: '4.3',
+          isFavorite: products[index].isFav!,
+
+          //product: products,
+        ),
+        separatorBuilder: (context, index) => const Spacing.tinyHeight(),
+      )),
     );
   }
 }
