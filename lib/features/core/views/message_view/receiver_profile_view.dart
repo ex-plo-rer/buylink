@@ -12,8 +12,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes.dart';
+import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_dialog.dart';
 import '../../../../widgets/app_dialog_2.dart';
+import '../../notifiers/category_notifier.dart';
 import '../../notifiers/message_notifier/receiver_profile_notifier.dart';
 
 class ReceiverProfileView extends ConsumerWidget {
@@ -96,16 +98,35 @@ class ReceiverProfileView extends ConsumerWidget {
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: TextButton(
                     //style: ButtonStyle( backgroundColor: Colors.),
-                    onPressed: () {
+                    onPressed: () async {
                       print('Store id: ${args.id}');
                       print(
                           'Store id with s: ${args.id.toString().substring(0, args.id.toString().length - 1)}');
-                      ref.read(navigationServiceProvider).navigateToNamed(
-                            Routes.storeDetails,
-                            arguments: int.parse(args.id
-                                .toString()
-                                .substring(0, args.id.toString().length - 1)),
-                          );
+                      if (ref
+                          .read(categoryNotifierProvider)
+                          .storeCategories
+                          .isEmpty) {
+                        Loader(context).showLoader(text: '');
+                        await ref
+                            .read(categoryNotifierProvider)
+                            .fetchStoreCategories(
+                                storeId: args.id.toString().substring(
+                                    0, args.id.toString().length - 1));
+                        Loader(context).hideLoader();
+                        ref.read(navigationServiceProvider).navigateToNamed(
+                              Routes.storeDetails,
+                              arguments: int.parse(args.id
+                                  .toString()
+                                  .substring(0, args.id.toString().length - 1)),
+                            );
+                      } else {
+                        ref.read(navigationServiceProvider).navigateToNamed(
+                              Routes.storeDetails,
+                              arguments: int.parse(args.id
+                                  .toString()
+                                  .substring(0, args.id.toString().length - 1)),
+                            );
+                      }
                     },
                     child: const Text(
                       "View Store",

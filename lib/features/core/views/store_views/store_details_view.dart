@@ -230,20 +230,18 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Spacing.smallWidth(),
+                                  const Spacing.smallWidth(),
                                   SvgPicture.asset(
                                     AppSvgs.star,
                                     width: 12,
                                     height: 12,
                                     color: AppColors.yellow,
                                   ),
-                                  SizedBox(
-                                    width: 2,
-                                  ),
+                                  const SizedBox(width: 2),
                                   Text(
                                     storeDetailsNotifier.storeDetails.star
                                         .toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.grey1),
@@ -251,8 +249,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                 ],
                               ),
                               Text(
-                                storeDetailsNotifier.storeDetails.about ??
-                                    "No About",
+                                storeDetailsNotifier.storeDetails.about,
                                 style: const TextStyle(
                                   color: AppColors.grey2,
                                   fontSize: 14,
@@ -261,8 +258,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               ),
                               const Spacing.tinyHeight(),
                               Text(
-                                storeDetailsNotifier.storeDetails.address ??
-                                    "No Address",
+                                storeDetailsNotifier.storeDetails.address,
                                 style: const TextStyle(
                                   color: AppColors.grey4,
                                   fontSize: 14,
@@ -271,8 +267,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               ),
                               const Spacing.tinyHeight(),
                               Text(
-                                storeDetailsNotifier.storeDetails.telephone ??
-                                    "No Telephone",
+                                storeDetailsNotifier.storeDetails.telephone,
                                 style: const TextStyle(
                                   color: AppColors.grey4,
                                   fontSize: 14,

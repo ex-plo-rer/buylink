@@ -288,18 +288,13 @@ class _ProductSearchResultViewState
                                   final product =
                                       widget.args.searchResult.result[index];
                                   //TODO: Just return the product and fill the details inside ProductContainerSearch
-                                  return ProductContainer(
+                                  return ProductContainerSearchHorizontal(
                                     url: product.image.first,
                                     storeName: product.store.name,
                                     productName: product.name,
                                     productPrice: product.price,
                                     distance: '4.3',
                                     isFavorite: product.isFav!,
-                                    product: product,
-                                    activeIndex:
-                                        productSearchResultNotifier.activeIndex,
-                                    onPageChanged:
-                                        productSearchResultNotifier.nextPage,
                                   );
                                 },
                                 separatorBuilder: (_, __) =>
@@ -379,21 +374,22 @@ class SearchProductBottomSheet extends StatelessWidget {
       ),
       // height: 200,
       child: SingleChildScrollView(
-          child: ListView.separated(
-        itemCount: products.length,
-        itemBuilder: (context, index) => ProductContainer(
-          url: products[index].image.first,
-          storeName: products[index].store.name,
-          productName: products[index].name,
-          productPrice: products[index].price,
-          oldPrice: products[index].oldPrice,
-          distance: '4.3',
-          isFavorite: products[index].isFav!,
+        child: ListView.separated(
+          itemCount: products.length,
+          itemBuilder: (context, index) => ProductContainer(
+            url: products[index].image.first,
+            storeName: products[index].store.name,
+            productName: products[index].name,
+            productPrice: products[index].price,
+            oldPrice: products[index].oldPrice,
+            distance: '4.3',
+            isFavorite: products[index].isFav!,
 
-          //product: products,
+            //product: products,
+          ),
+          separatorBuilder: (context, index) => const Spacing.tinyHeight(),
         ),
-        separatorBuilder: (context, index) => const Spacing.tinyHeight(),
-      )),
+      ),
     );
   }
 }
