@@ -288,18 +288,13 @@ class _ProductSearchResultViewState
                                   final product =
                                       widget.args.searchResult.result[index];
                                   //TODO: Just return the product and fill the details inside ProductContainerSearch
-                                  return ProductContainer(
+                                  return ProductContainerSearchHorizontal(
                                     url: product.image.first,
                                     storeName: product.store.name,
                                     productName: product.name,
                                     productPrice: product.price,
                                     distance: '4.3',
                                     isFavorite: product.isFav!,
-                                    product: product,
-                                    activeIndex:
-                                        productSearchResultNotifier.activeIndex,
-                                    onPageChanged:
-                                        productSearchResultNotifier.nextPage,
                                   );
                                 },
                                 separatorBuilder: (_, __) =>
