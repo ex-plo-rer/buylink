@@ -22,6 +22,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import '../../../core/utilities/loader.dart';
 import '../../../widgets/circular_progress.dart';
 import '../models/product_search.dart';
 import '../notifiers/category_notifier.dart';
@@ -202,6 +203,7 @@ class HomeView extends ConsumerWidget {
                                   },
                                   onDistanceTapped: () {},
                                   onFlipTapped: () async {
+                                    Loader(context).showLoader(text: '');
                                     await ref
                                         .read(flipNotifierProvider)
                                         .addItemToCompare(
@@ -210,10 +212,13 @@ class HomeView extends ConsumerWidget {
                                     if (ref
                                         .read(flipNotifierProvider)
                                         .successfullyAdded) {
+                                      Loader(context).hideLoader();
                                       ref
                                           .read(navigationServiceProvider)
                                           .navigateToNamed(Routes.compare);
+                                      return;
                                     }
+                                    Loader(context).hideLoader();
                                   },
                                   onFavoriteTapped: () =>
                                       homeNotifier.toggleFav(

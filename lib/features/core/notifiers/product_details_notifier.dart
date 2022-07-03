@@ -56,14 +56,11 @@ class ProductDetailsNotifier extends BaseChangeNotifier {
     _addingToFav = true;
     if (_isFavorite) {
       _isFavorite = false;
-      await _reader(wishlistNotifierProvider)
+      _reader(wishlistNotifierProvider)
           .removeFromWishlist(productId: productId);
-      // _isFavorite = false;
     } else {
       _isFavorite = true;
-      await _reader(wishlistNotifierProvider)
-          .addToWishlist(productId: productId);
-      // _isFavorite = true;
+      _reader(wishlistNotifierProvider).addToWishlist(productId: productId);
     }
     _addingToFav = false;
     notifyListeners();

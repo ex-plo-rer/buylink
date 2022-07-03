@@ -25,6 +25,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/strings.dart';
+import '../../../../core/utilities/loader.dart';
 import '../../../../services/location_service.dart';
 import '../../../../widgets/iconNtext_container.dart';
 import '../../models/compare_arg_model.dart';
@@ -349,6 +350,8 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                             },
                                             onDistanceTapped: () {},
                                             onFlipTapped: () async {
+                                              Loader(context)
+                                                  .showLoader(text: '');
                                               await ref
                                                   .read(flipNotifierProvider)
                                                   .addItemToCompare(
@@ -359,12 +362,15 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                               if (ref
                                                   .read(flipNotifierProvider)
                                                   .successfullyAdded) {
+                                                Loader(context).hideLoader();
                                                 ref
                                                     .read(
                                                         navigationServiceProvider)
                                                     .navigateToNamed(
                                                         Routes.compare);
+                                                return;
                                               }
+                                              Loader(context).hideLoader();
                                             },
                                             onFavoriteTapped: () async {
                                               storeDetailsNotifier

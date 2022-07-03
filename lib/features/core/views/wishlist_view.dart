@@ -20,6 +20,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/utilities/loader.dart';
 import '../models/compare_arg_model.dart';
 import '../notifiers/category_notifier.dart';
 import '../notifiers/flip_notifier.dart';
@@ -76,7 +77,7 @@ class _WishlistState extends ConsumerState<WishlistView>
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding:  const EdgeInsets.fromLTRB(18, 24, 18, 0),
+          padding: const EdgeInsets.fromLTRB(18, 24, 18, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -90,7 +91,7 @@ class _WishlistState extends ConsumerState<WishlistView>
               ),
               const Spacing.mediumHeight(),
               TabBar(
-                indicatorColor: AppColors.primaryColor,
+                  indicatorColor: AppColors.primaryColor,
                   labelColor: AppColors.primaryColor,
                   unselectedLabelColor: AppColors.grey5,
                   //padding: const EdgeInsets.only(bottom: 4),
@@ -146,6 +147,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                                     },
                                     onDistanceTapped: () {},
                                     onFlipTapped: () async {
+                                      Loader(context).showLoader(text: '');
                                       await ref
                                           .read(flipNotifierProvider)
                                           .addItemToCompare(
@@ -154,10 +156,13 @@ class _WishlistState extends ConsumerState<WishlistView>
                                       if (ref
                                           .read(flipNotifierProvider)
                                           .successfullyAdded) {
+                                        Loader(context).hideLoader();
                                         ref
                                             .read(navigationServiceProvider)
                                             .navigateToNamed(Routes.compare);
+                                        return;
                                       }
+                                      Loader(context).hideLoader();
                                     },
                                     onFavoriteTapped: () =>
                                         wishlistNotifier.removeFromFav(

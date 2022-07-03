@@ -160,6 +160,7 @@ class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
                                   ),
                               isFavorite: false,
                               onProductTapped: () async {
+                                Loader(context).showLoader(text: '');
                                 await ref
                                     .read(flipNotifierProvider)
                                     .addItemToCompare(
@@ -168,6 +169,7 @@ class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
                                 if (ref
                                     .read(flipNotifierProvider)
                                     .successfullyAdded) {
+                                  Loader(context).hideLoader();
                                   ref
                                       .read(navigationServiceProvider)
                                       .navigateBack();
@@ -175,11 +177,10 @@ class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
                                       .read(navigationServiceProvider)
                                       .navigateOffNamed(
                                         Routes.compare,
-                                        // arguments: CompareArgModel(
-                                        //     product:
-                                        //         homeNotifier.products[index]),
                                       );
+                                  return;
                                 }
+                                Loader(context).hideLoader();
                               },
                               onDistanceTapped: () {},
                               onFlipTapped: () {

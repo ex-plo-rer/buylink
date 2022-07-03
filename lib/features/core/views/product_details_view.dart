@@ -422,6 +422,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                                       },
                                       onDistanceTapped: () {},
                                       onFlipTapped: () async {
+                                        Loader(context).showLoader(text: '');
                                         await ref
                                             .read(flipNotifierProvider)
                                             .addItemToCompare(
@@ -432,10 +433,13 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                                         if (ref
                                             .read(flipNotifierProvider)
                                             .successfullyAdded) {
+                                          Loader(context).hideLoader();
                                           ref
                                               .read(navigationServiceProvider)
                                               .navigateToNamed(Routes.compare);
+                                          return;
                                         }
+                                        Loader(context).hideLoader();
                                       },
                                       onFavoriteTapped: () async {
                                         productDetailsNotifier

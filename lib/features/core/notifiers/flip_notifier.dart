@@ -36,7 +36,7 @@ class FlipNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       _addingToCompare = false;
       setState(state: ViewState.error);
-      // Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
     } finally {
       //Do something...
     }
