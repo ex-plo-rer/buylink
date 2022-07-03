@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:buy_link/core/constants/dimensions.dart';
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
@@ -86,7 +87,11 @@ class _ProductSearchResultViewState
                     : (constraints.maxHeight / 2) + (constraints.maxHeight / 4),
                 child: FlutterMap(
                   options: MapOptions(
-                    zoom: 11.5,
+                    zoom: Dimensions.zoom,
+                    minZoom: Dimensions.minZoom,
+                    maxZoom: Dimensions.maxZoom,
+                    interactiveFlags:
+                        InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                     onPositionChanged: (MapPosition position, bool hasGesture) {
                       if (hasGesture) {
                         setState(
@@ -101,18 +106,6 @@ class _ProductSearchResultViewState
                         const FitBoundsOptions(padding: EdgeInsets.all(8.0)),
                   ),
                   children: [
-                    TileLayerWidget(
-                      options: TileLayerOptions(
-                        tileProvider: NetworkTileProvider(),
-                        urlTemplate:
-                            "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
-                        // "http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}",
-                        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                        // attributionBuilder: (_) {
-                        //   return const Text("Got more work to do...");
-                        // },
-                      ),
-                    ),
                     LocationMarkerLayerWidget(
                       plugin: LocationMarkerPlugin(
                         centerCurrentLocationStream:
@@ -133,7 +126,8 @@ class _ProductSearchResultViewState
                                 CenterOnLocationUpdate.always,
                           );
                           // Center the location marker on the map and zoom the map to level 18.
-                          _centerCurrentLocationStreamController.add(18);
+                          _centerCurrentLocationStreamController
+                              .add(Dimensions.zoom);
                         },
                         child: const Icon(Icons.my_location,
                             color: Colors.white, size: 30),

@@ -1,3 +1,4 @@
+import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/base_change_notifier.dart';
 import 'package:buy_link/features/core/models/auto_complete_model.dart';
 import 'package:buy_link/features/core/models/search_result_model.dart';
@@ -55,6 +56,10 @@ class ProductSearchNotifier extends BaseChangeNotifier {
 
   bool get searchLoading => _searchLoading;
 
+  List<String>? _recentSearches = [];
+
+  List<String>? get recentSearches => _recentSearches;
+
   void setFilterPosition({
     required double lat,
     required double lon,
@@ -67,7 +72,7 @@ class ProductSearchNotifier extends BaseChangeNotifier {
   void clearFilter() {
     _minPrice = null;
     _maxPrice = null;
-    _sliderValue = 10;
+    _sliderValue = 5;
     notifyListeners();
   }
 
@@ -127,7 +132,35 @@ class ProductSearchNotifier extends BaseChangeNotifier {
     }
   }
 
+  Future<void> search({
+    required String query,
+  }) async {
+    print('Query......: $query');
+    _reader(navigationServiceProvider).navigateToNamed(Routes.productSearch);
+  }
+
   // TODO: Modify this code and separate the shared preference to the local storage service
+  Future<void> getRecentSearches() async {
+    final pref = await SharedPreferences.getInstance();
+    _recentSearches = pref.getStringList(AppStrings.recentSearchKey);
+  }
+
+  Future<void> removeRecent(index) async {
+    _recentSearches!.removeAt(index);
+    print('Removedddddddddddddddddddddd');
+    notifyListeners();
+    final pref = await SharedPreferences.getInstance();
+    pref.setStringList(AppStrings.recentSearchKey, _recentSearches!);
+    print('Removedddddddddddddddddddddd22222222');
+  }
+
+  Future<void> clearRecent() async {
+    _recentSearches!.clear();
+    notifyListeners();
+    final pref = await SharedPreferences.getInstance();
+    pref.remove(AppStrings.recentSearchKey);
+  }
+
   Future<List<String>> getRecentSearchesLike(String query) async {
     final pref = await SharedPreferences.getInstance();
     final allSearches = pref.getStringList(AppStrings.recentSearchKey);
@@ -138,15 +171,38 @@ class ProductSearchNotifier extends BaseChangeNotifier {
     final pref = await SharedPreferences.getInstance();
 
     //Use `Set` to avoid duplication of recentSearches
-    Set<String> allSearches =
-        pref.getStringList(AppStrings.recentSearchKey)?.toSet() ?? {};
+    List<String>? allSearches =
+        pref.getStringList(AppStrings.recentSearchKey)?.toSet().toList();
 
-    //Place it at first in the set
-    allSearches = {searchText, ...allSearches};
-    pref.setStringList(AppStrings.recentSearchKey, allSearches.toList());
+    if (allSearches != null) {
+      if (allSearches.contains(searchText)) return;
+      print('All searches not null');
+      if (allSearches.length > 4) {
+        print('allSearches.length > 4');
+        print('Before removing last $allSearches');
+        allSearches.removeLast();
+        print('After removing last 1 $allSearches');
+        allSearches.insert(0, searchText);
+        print('After removing last 2 $allSearches');
+        pref.setStringList(AppStrings.recentSearchKey, allSearches);
+      } else {
+        print('allSearches.length < 4');
+        allSearches.insert(0, searchText);
+        print('All searches $allSearches');
+        pref.setStringList(AppStrings.recentSearchKey, allSearches);
+      }
+    } else {
+      print('All searches null');
+      allSearches = [];
+      allSearches.insert(0, searchText);
+      print('All searches $allSearches');
+      pref.setStringList(AppStrings.recentSearchKey, allSearches);
+    }
+    // pref.remove(AppStrings.recentSearchKey);
   }
 }
 
 final productSearchNotifierProvider =
     ChangeNotifierProvider<ProductSearchNotifier>(
-        (ref) => ProductSearchNotifier(ref.read));
+  (ref) => ProductSearchNotifier(ref.read),
+);

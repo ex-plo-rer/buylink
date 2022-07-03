@@ -97,7 +97,7 @@ class CompareSearchNotifier extends BaseChangeNotifier {
   void clearFilter() {
     _minPrice = null;
     _maxPrice = null;
-    _sliderValue = 10;
+    _sliderValue = 5;
     notifyListeners();
   }
 

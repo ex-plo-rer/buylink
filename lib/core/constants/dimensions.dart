@@ -7,4 +7,8 @@ class Dimensions {
   static const double medium = 16;
   static const double big = 24;
   static const double large = 32;
+
+  static const double zoom = 11.5;
+  static const double minZoom = 9;
+  static const double maxZoom = 16;
 }

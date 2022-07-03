@@ -16,6 +16,7 @@ import '../../../widgets/circular_progress.dart';
 import '../models/compare_search.dart';
 import '../notifiers/compare_notifier.dart';
 import '../notifiers/store_notifier/compare_search_notifier.dart';
+import '../notifiers/store_notifier/product_search_notifier.dart';
 
 class CompareView extends ConsumerStatefulWidget {
   CompareView({
@@ -98,13 +99,13 @@ class _CompareViewState extends ConsumerState<CompareView> {
                 hintText: 'Search for another product to compare',
                 onTap: () async {
                   searchFN.unfocus();
+                  ref.read(productSearchNotifierProvider).getRecentSearches();
                   await showSearch(
                     context: context,
                     delegate: CompareSearch(
                       ref: ref,
                     ),
                   );
-                  searchFN.unfocus();
                   // if (searchText != null) {
                   //   await homeNotifier.saveToRecentSearches(searchText);
                   // }

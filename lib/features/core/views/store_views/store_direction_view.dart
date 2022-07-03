@@ -16,6 +16,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../../../../core/constants/dimensions.dart';
 import '../../../../core/constants/svgs.dart';
 import '../../../../widgets/distance_container.dart';
 import '../../../../widgets/favorite_container.dart';
@@ -35,7 +36,6 @@ class StoreDirectionView extends ConsumerStatefulWidget {
 
 class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
   MapController? mapController;
-
 
   @override
   void initState() {
@@ -67,17 +67,18 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
         controller: ModalScrollController.of(context),
         child: StoreDirectionBottomSheet(
           distance: ref.read(locationService).getDist(
-            startLat: ref.watch(storeDirectionNotifierProvider).userLat!,
-            startLon: ref.watch(storeDirectionNotifierProvider).userLon!,
-            endLat: widget.store.lat,
-            endLon: widget.store.lon,
-          ),
+                startLat: ref.watch(storeDirectionNotifierProvider).userLat!,
+                startLon: ref.watch(storeDirectionNotifierProvider).userLon!,
+                endLat: widget.store.lat,
+                endLon: widget.store.lon,
+              ),
           normalDistance: ref.read(locationService).getDistance(
-            endLat: widget.store.lat,
-            endLon: widget.store.lon,
-          ),
+                endLat: widget.store.lat,
+                endLon: widget.store.lon,
+              ),
           storeRating: widget.store.star,
           storeName: widget.store.name,
+          storeImage: widget.store.logo,
         ),
       ),
     );
@@ -92,13 +93,12 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
         children: [
           FlutterMap(
             mapController: mapController,
-            options:
-                // MapOptions(
-                //   center: LatLng(51.5, -0.09),
-                //   zoom: 13.0,
-                // ),
-                MapOptions(
-              zoom: 13,
+            options: MapOptions(
+              zoom: Dimensions.zoom,
+              minZoom: Dimensions.minZoom,
+              maxZoom: Dimensions.maxZoom,
+              interactiveFlags:
+                  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
               center:
                   // LatLng(8.17, 4.26),
                   LatLng(
@@ -112,9 +112,10 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
             ),
             layers: [
               TileLayerOptions(
+                tileProvider: NetworkTileProvider(),
                 urlTemplate:
-                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: ['a', 'b', 'c'],
+                    "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
                 attributionBuilder: (_) {
                   return Text(
                     "Testing purpose... ${storeDirNotifier.userLat}, ${ref.read(locationService).getDist(
@@ -141,8 +142,8 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
               MarkerLayerOptions(
                 markers: [
                   Marker(
-                    width: 28.0,
-                    height: 34.44,
+                    width: 80.0,
+                    height: 80.0,
                     point: LatLng(storeDirNotifier.userLat ?? 8.17,
                         storeDirNotifier.userLon ?? 4.26),
                     builder: (ctx) => const Icon(
@@ -151,8 +152,8 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
                     ),
                   ),
                   Marker(
-                    width: 28.0,
-                    height: 34.44,
+                    width: 80.0,
+                    height: 80.0,
                     point: LatLng(widget.store.lat, widget.store.lon),
                     builder: (ctx) => const Icon(
                       Icons.location_history,
@@ -190,11 +191,13 @@ class StoreDirectionBottomSheet extends StatelessWidget {
     required this.normalDistance,
     required this.storeRating,
     required this.storeName,
+    required this.storeImage,
   }) : super(key: key);
   final String distance;
   final String normalDistance;
   final num storeRating;
   final String storeName;
+  final String storeImage;
 
   @override
   Widget build(BuildContext context) {
@@ -239,8 +242,11 @@ class StoreDirectionBottomSheet extends StatelessWidget {
             horizontalTitleGap: 8,
             dense: false,
             contentPadding:
-            const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-            leading: const CircleAvatar(radius: 30),
+                const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundImage: CachedNetworkImageProvider(storeImage),
+            ),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Row(

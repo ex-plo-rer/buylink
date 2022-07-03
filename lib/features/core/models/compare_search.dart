@@ -26,6 +26,13 @@ class CompareSearch extends SearchDelegate<String> {
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
+      textTheme: theme.textTheme.copyWith(
+        headline6: const TextStyle(
+          color: AppColors.grey1,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       appBarTheme: const AppBarTheme(
         elevation: 0,
         color: AppColors.transparent,
@@ -135,112 +142,179 @@ class CompareSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final productSearchNotifier = ref.watch(compareSearchNotifierProvider);
+    final compareSearchNotifier = ref.watch(compareSearchNotifierProvider);
+    final productSearchNotifier = ref.watch(productSearchNotifierProvider);
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: FutureBuilder(
-        future: productSearchNotifier.autoCompleteM(query: query),
+        future: compareSearchNotifier.autoCompleteM(query: query),
         builder: (context, snapshot) {
-          return productSearchNotifier.searchLoading
+          return compareSearchNotifier.searchLoading
               ? const CircularProgress()
               : query.isEmpty
-                  ? Column(
-                      children: [
-                        if (productSearchNotifier
-                            .autoComplete!.recentSearches.isNotEmpty)
-                          Expanded(
-                            child: ListView.separated(
-                              itemCount: productSearchNotifier
-                                      .autoComplete!.recentSearches.length +
-                                  1,
-                              itemBuilder: (context, index) => index == 0
-                                  ? const Text('Recently Searched')
-                                  : Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            productSearchNotifier.autoComplete!
-                                                .recentSearches[index - 1],
-                                            style: const TextStyle(
-                                              color: AppColors.grey1,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                        const Icon(
-                                          Icons.north_west_outlined,
-                                          color: AppColors.grey5,
-                                          size: 15,
-                                        ),
-                                      ],
-                                    ),
-                              separatorBuilder: (context, index) =>
-                                  const Spacing.tinyHeight(),
-                            ),
-                          ),
-                        if (productSearchNotifier
-                            .autoComplete!.result.isNotEmpty)
-                          Expanded(
-                            child: ListView.separated(
-                              itemCount: productSearchNotifier
-                                      .autoComplete!.result.length +
-                                  1,
-                              itemBuilder: (context, index) => index == 0
-                                  ? const Text('Popular Searches')
-                                  : GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(navigationServiceProvider)
-                                            .navigateOffNamed(
-                                                Routes.compareProducts,
-                                                arguments: productSearchNotifier
-                                                    .autoComplete!
-                                                    .result[index - 1]);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              productSearchNotifier
-                                                  .autoComplete!
-                                                  .result[index - 1],
-                                              style: const TextStyle(
-                                                color: AppColors.grey1,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
+                  ? StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) =>
+                          Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (productSearchNotifier.recentSearches != null &&
+                              productSearchNotifier.recentSearches!.isNotEmpty)
+                            ListView.separated(
+                              shrinkWrap: true,
+                              itemCount:
+                                  productSearchNotifier.recentSearches!.length +
+                                      1,
+                              itemBuilder: (context, index) {
+                                return index == 0
+                                    ? const Text(
+                                        'Recently Searched',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12,
+                                            color: AppColors.grey5),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          ref
+                                              .read(navigationServiceProvider)
+                                              .navigateOffNamed(
+                                                  Routes.productSearch,
+                                                  arguments:
+                                                      productSearchNotifier
+                                                              .recentSearches![
+                                                          index - 1]);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                productSearchNotifier
+                                                    .recentSearches![index - 1],
+                                                style: const TextStyle(
+                                                  color: AppColors.grey1,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          const Icon(
-                                            Icons.north_west_outlined,
-                                            color: AppColors.grey5,
-                                            size: 15,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                productSearchNotifier
+                                                    .removeRecent(index - 1);
+                                                setState(() {});
+                                              },
+                                              child: const Icon(
+                                                Icons.clear,
+                                                color: AppColors.grey5,
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                              },
                               separatorBuilder: (context, index) =>
                                   const Spacing.tinyHeight(),
                             ),
-                          ),
-                      ],
+                          if (productSearchNotifier.recentSearches != null &&
+                              productSearchNotifier.recentSearches!.isNotEmpty)
+                            const Spacing.mediumHeight(),
+                          if (productSearchNotifier.recentSearches != null &&
+                              productSearchNotifier.recentSearches!.isNotEmpty)
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  productSearchNotifier.clearRecent();
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  //width: 60,
+                                  // height: 20,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: const Text(
+                                    "Clear all",
+                                    style: TextStyle(
+                                      color: AppColors.grey5,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: AppColors.grey5),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          if (productSearchNotifier.recentSearches != null &&
+                              productSearchNotifier.recentSearches!.isNotEmpty)
+                            const Spacing.smallHeight(),
+                          if (compareSearchNotifier
+                              .autoComplete!.result.isNotEmpty)
+                            Expanded(
+                              child: ListView.separated(
+                                itemCount: compareSearchNotifier
+                                        .autoComplete!.result.length +
+                                    1,
+                                itemBuilder: (context, index) => index == 0
+                                    ? const Text('Popular Searches')
+                                    : GestureDetector(
+                                        onTap: () {
+                                          ref
+                                              .read(navigationServiceProvider)
+                                              .navigateOffNamed(
+                                                  Routes.compareProducts,
+                                                  arguments:
+                                                      compareSearchNotifier
+                                                          .autoComplete!
+                                                          .result[index - 1]);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                compareSearchNotifier
+                                                    .autoComplete!
+                                                    .result[index - 1],
+                                                style: const TextStyle(
+                                                  color: AppColors.grey1,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                            const Icon(
+                                              Icons.north_west_outlined,
+                                              color: AppColors.grey5,
+                                              size: 15,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                separatorBuilder: (context, index) =>
+                                    const Spacing.tinyHeight(),
+                              ),
+                            ),
+                        ],
+                      ),
                     )
                   : ListView.separated(
                       itemCount:
-                          productSearchNotifier.autoComplete!.result.length,
+                          compareSearchNotifier.autoComplete!.result.length,
                       itemBuilder: (context, index) => GestureDetector(
                         onTap: () {
                           ref.read(navigationServiceProvider).navigateOffNamed(
                               Routes.compareProducts,
-                              arguments: productSearchNotifier
+                              arguments: compareSearchNotifier
                                   .autoComplete!.result[index]);
                         },
                         child: Row(
                           children: [
                             Expanded(
                               child: Text(
-                                productSearchNotifier
+                                compareSearchNotifier
                                     .autoComplete!.result[index],
                                 style: const TextStyle(
                                   color: AppColors.grey1,

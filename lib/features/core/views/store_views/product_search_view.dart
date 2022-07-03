@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:buy_link/core/constants/dimensions.dart';
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/search_result_arg_model.dart';
@@ -45,7 +46,14 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
     ref.read(productSearchNotifierProvider).initLocation();
     _centerOnLocationUpdate = CenterOnLocationUpdate.always;
     _centerCurrentLocationStreamController = StreamController<double>();
-    // init();
+    init();
+  }
+
+  init() async {
+    print('ProSV INIT');
+    await ref
+        .read(productSearchNotifierProvider)
+        .saveToRecentSearches(widget.searchTerm);
   }
 
   @override
@@ -141,7 +149,11 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
               plugins: [
                 DragMarkerPlugin(),
               ],
-              zoom: 11.5,
+              zoom: Dimensions.zoom,
+              minZoom: Dimensions.minZoom,
+              maxZoom: Dimensions.maxZoom,
+              interactiveFlags:
+                  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
               onPositionChanged: (MapPosition position, bool hasGesture) {
                 if (hasGesture) {
                   setState(
@@ -159,14 +171,6 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
                   const FitBoundsOptions(padding: EdgeInsets.all(8.0)),
             ),
             children: [
-              TileLayerWidget(
-                options: TileLayerOptions(
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
-                  maxZoom: 19,
-                ),
-              ),
               LocationMarkerLayerWidget(
                 plugin: LocationMarkerPlugin(
                   centerCurrentLocationStream:
@@ -175,54 +179,13 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
                 ),
               ),
             ],
-            // nonRotatedChildren: [
-            //   Positioned(
-            //     right: 20,
-            //     bottom: 100,
-            //     child: FloatingActionButton(
-            //       onPressed: () {
-            //         // Automatically center the location marker on the map when location updated until user interact with the map.
-            //         setState(
-            //           () => _centerOnLocationUpdate =
-            //               CenterOnLocationUpdate.always,
-            //         );
-            //         // Center the location marker on the map and zoom the map to level 18.
-            //         _centerCurrentLocationStreamController.add(18);
-            //       },
-            //       child: const Icon(Icons.my_location,
-            //           color: Colors.white, size: 30),
-            //     ),
-            //   )
-            // ],
             layers: [
               TileLayerOptions(
                 tileProvider: NetworkTileProvider(),
                 urlTemplate:
                     "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                // urlTemplate:
-                //     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                // subdomains: ['a', 'b', 'c'],
-                // // attributionBuilder: (_) {
-                // //   return const Text("Got more work to do...");
-                // // },
               ),
-              // MarkerLayerOptions(
-              //   markers: [
-              //     Marker(
-              //       width: 30.33,
-              //       height: 43.33,
-              //       point: LatLng(
-              //         inputSearchNotifier.filterLat ?? 8.17,
-              //         inputSearchNotifier.filterLon ?? 4.26,
-              //       ),
-              //       builder: (ctx) => const Icon(
-              //         Icons.location_pin,
-              //         color: Color(0xffCD261F),
-              //       ),
-              //     ),
-              //   ],
-              // ),
               DragMarkerPluginOptions(
                 markers: [
                   DragMarker(
@@ -333,7 +296,7 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
             () => _centerOnLocationUpdate = CenterOnLocationUpdate.always,
           );
           // Center the location marker on the map and zoom the map to level 18.
-          _centerCurrentLocationStreamController.add(18);
+          _centerCurrentLocationStreamController.add(Dimensions.zoom);
         },
         child: const Icon(Icons.my_location, color: Colors.white, size: 30),
       ),
@@ -361,7 +324,7 @@ class SearchProductBottomSheet extends StatelessWidget {
       ),
       // height: 200,
       child: AppButton(
-        text: 'confirm location to search',
+        text: 'Confirm location to search',
         backgroundColor: AppColors.primaryColor,
         onPressed: onConfirmPressed,
       ),

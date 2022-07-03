@@ -49,9 +49,7 @@ class HomeView extends ConsumerWidget {
                 hintText: 'What would you like to buy ?',
                 onTap: () async {
                   searchFN.unfocus();
-                  // ref
-                  //     .read(navigationServiceProvider)
-                  //     .navigateToNamed(Routes.inputSearchLocation);
+                  ref.read(productSearchNotifierProvider).getRecentSearches();
                   final searchText = await showSearch(
                     context: context,
                     delegate: ProductSearch(
@@ -63,11 +61,6 @@ class HomeView extends ConsumerWidget {
                       ref: ref,
                     ),
                   );
-                  if (searchText != null) {
-                    await ref
-                        .read(productSearchNotifierProvider)
-                        .saveToRecentSearches(searchText);
-                  }
                 },
                 prefixIcon: const Icon(Icons.search_outlined),
                 hasBorder: false,

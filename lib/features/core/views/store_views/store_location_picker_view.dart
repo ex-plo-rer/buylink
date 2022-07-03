@@ -17,6 +17,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/dimensions.dart';
 import '../../../../core/routes.dart';
 import '../../../../core/utilities/map/circle.dart';
 import '../../../../widgets/app_button.dart';
@@ -87,7 +88,11 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
               plugins: [
                 DragMarkerPlugin(),
               ],
-              zoom: 11.5,
+              zoom: Dimensions.zoom,
+              minZoom: Dimensions.minZoom,
+              maxZoom: Dimensions.maxZoom,
+              interactiveFlags:
+                  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
               onPositionChanged: (MapPosition position, bool hasGesture) {
                 if (hasGesture) {
                   setState(
@@ -105,14 +110,6 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
                   const FitBoundsOptions(padding: EdgeInsets.all(8.0)),
             ),
             children: [
-              TileLayerWidget(
-                options: TileLayerOptions(
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
-                  maxZoom: 19,
-                ),
-              ),
               LocationMarkerLayerWidget(
                 plugin: LocationMarkerPlugin(
                   centerCurrentLocationStream:
@@ -180,7 +177,7 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
             () => _centerOnLocationUpdate = CenterOnLocationUpdate.always,
           );
           // Center the location marker on the map and zoom the map to level 18.
-          _centerCurrentLocationStreamController.add(18);
+          _centerCurrentLocationStreamController.add(Dimensions.zoom);
           ref.read(locationService).getCurrentLocation();
           addStoreNotifier.setStorePosition(
             lat: ref.read(locationService).lat!,
