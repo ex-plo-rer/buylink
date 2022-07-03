@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:buy_link/core/constants/dimensions.dart';
+import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/search_result_arg_model.dart';
@@ -13,12 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_dragmarker/dragmarker.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes.dart';
 import '../../../../core/utilities/map/circle.dart';
 import '../../../../widgets/app_button.dart';
+import '../../models/product_search.dart';
 import '../../notifiers/store_notifier/product_search_notifier.dart';
 
 class ProductSearchView extends ConsumerStatefulWidget {
@@ -193,13 +196,9 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
                       productSearchNotifier.filterLat,
                       productSearchNotifier.filterLon,
                     ),
-                    width: 80.0,
-                    height: 80.0,
-                    builder: (ctx) => const Icon(
-                      Icons.location_on,
-                      size: 50,
-                      color: Color(0xffCD261F),
-                    ),
+                    width: 50.0,
+                    height: 50.0,
+                    builder: (ctx) => SvgPicture.asset(AppSvgs.redMarker),
                     onDragEnd: (details, point) {
                       print('Finished Drag $details $point');
                       productSearchNotifier.setFilterPosition(
@@ -244,6 +243,12 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
           //   ),
           // ),
           MapSearchTermContainer(
+              onContainerTap: () async {
+                await showSearch(
+                  context: context,
+                  delegate: ProductSearch(ref: ref),
+                );
+              },
               searchTerm: widget.searchTerm,
               onMinChanged: productSearchNotifier.onMinPriceChanged,
               onMaxChanged: productSearchNotifier.onMaxPriceChanged,

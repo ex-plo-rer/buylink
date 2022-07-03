@@ -179,7 +179,7 @@ class CompareSearch extends SearchDelegate<String> {
                                           ref
                                               .read(navigationServiceProvider)
                                               .navigateOffNamed(
-                                                  Routes.productSearch,
+                                                  Routes.compareProducts,
                                                   arguments:
                                                       productSearchNotifier
                                                               .recentSearches![

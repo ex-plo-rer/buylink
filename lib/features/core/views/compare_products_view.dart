@@ -4,6 +4,7 @@ import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/compare_arg_model.dart';
+import 'package:buy_link/features/core/models/compare_search.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/product_search_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
@@ -33,7 +34,7 @@ import '../notifiers/flip_notifier.dart';
 import '../notifiers/store_notifier/compare_search_notifier.dart';
 
 class CompareProductsView extends ConsumerStatefulWidget {
-  CompareProductsView({
+  const CompareProductsView({
     Key? key,
     required this.searchTerm,
   }) : super(key: key);
@@ -91,6 +92,12 @@ class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CompareSearchTermContainer(
+                onContainerTap: () async {
+                  await showSearch(
+                    context: context,
+                    delegate: CompareSearch(ref: ref),
+                  );
+                },
                 marginTop: 0,
                 horizontalMargin: 0,
                 containerColor: AppColors.grey10,

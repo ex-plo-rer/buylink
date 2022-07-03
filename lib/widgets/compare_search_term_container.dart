@@ -18,6 +18,7 @@ class CompareSearchTermContainer extends StatelessWidget {
     this.marginTop = 40,
     this.horizontalMargin = 10,
     this.containerColor = AppColors.shade1,
+    this.onContainerTap,
   }) : super(key: key);
   final String searchTerm;
   final void Function(String)? onMinChanged;
@@ -29,61 +30,65 @@ class CompareSearchTermContainer extends StatelessWidget {
   final double marginTop;
   final double horizontalMargin;
   final Color? containerColor;
+  final void Function()? onContainerTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      margin:
-          EdgeInsets.fromLTRB(horizontalMargin, marginTop, horizontalMargin, 0),
-      padding: const EdgeInsets.fromLTRB(4, 10, 13, 10),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(15),
-        color: containerColor,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_outlined,
-              size: 12,
+    return GestureDetector(
+      onTap: onContainerTap,
+      child: Container(
+        height: 60,
+        margin: EdgeInsets.fromLTRB(
+            horizontalMargin, marginTop, horizontalMargin, 0),
+        padding: const EdgeInsets.fromLTRB(4, 10, 13, 10),
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(15),
+          color: containerColor,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_outlined,
+                size: 12,
+              ),
+              onPressed: () => Navigator.pop(context),
             ),
-            onPressed: () => Navigator.pop(context),
-          ),
-          const Spacing.smallWidth(),
-          Expanded(child: Text(searchTerm)),
-          hideFilter ? Container() : const Spacing.mediumWidth(),
-          hideFilter
-              ? Container()
-              : Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: AppColors.shade1,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(10),
+            const Spacing.smallWidth(),
+            Expanded(child: Text(searchTerm)),
+            hideFilter ? Container() : const Spacing.mediumWidth(),
+            hideFilter
+                ? Container()
+                : Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.shade1,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CompareSearchDialog(
+                              onMinChanged: onMinChanged,
+                              onMaxChanged: onMaxChanged,
+                              onSliderChanged: onSliderChanged,
+                              value: sliderValue,
+                              onApplyPressed: onApplyPressed,
+                            );
+                          },
+                        );
+                      },
+                      child: Image.asset("assets/images/filter.png"),
+                    ),
                   ),
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CompareSearchDialog(
-                            onMinChanged: onMinChanged,
-                            onMaxChanged: onMaxChanged,
-                            onSliderChanged: onSliderChanged,
-                            value: sliderValue,
-                            onApplyPressed: onApplyPressed,
-                          );
-                        },
-                      );
-                    },
-                    child: Image.asset("assets/images/filter.png"),
-                  ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }

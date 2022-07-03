@@ -13,10 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_dragmarker/dragmarker.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/svgs.dart';
 import '../../../../core/utilities/map/circle.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/map_price_marker.dart';
@@ -192,14 +194,10 @@ class _ProductSearchResultViewState
                           );
                         }).toList(),
                         Marker(
-                          width: 80,
-                          height: 80,
                           point: widget.args.filterPosition,
-                          builder: (ctx) => const Icon(
-                            Icons.location_pin,
-                            size: 50,
-                            color: Color(0xffCD261F),
-                          ),
+                          width: 50.0,
+                          height: 50.0,
+                          builder: (ctx) => SvgPicture.asset(AppSvgs.redMarker),
                         ),
                       ],
                     ),

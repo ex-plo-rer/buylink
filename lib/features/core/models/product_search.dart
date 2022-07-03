@@ -15,17 +15,9 @@ import '../notifiers/store_notifier/product_search_notifier.dart';
 typedef OnSearchChanged = Future<List<String>> Function(String);
 
 class ProductSearch extends SearchDelegate<String> {
-  final OnSearchChanged onSearchChanged;
-  List<String> _oldFilters = [];
-
-  final List<ProductModel> allProducts;
-  final List<ProductModel> productsSuggestion;
   final WidgetRef ref;
 
   ProductSearch({
-    required this.allProducts,
-    required this.productsSuggestion,
-    required this.onSearchChanged,
     required this.ref,
   });
 

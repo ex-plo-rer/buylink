@@ -50,14 +50,9 @@ class HomeView extends ConsumerWidget {
                 onTap: () async {
                   searchFN.unfocus();
                   ref.read(productSearchNotifierProvider).getRecentSearches();
-                  final searchText = await showSearch(
+                  await showSearch(
                     context: context,
                     delegate: ProductSearch(
-                      productsSuggestion: homeNotifier.products,
-                      allProducts: homeNotifier.products,
-                      onSearchChanged: ref
-                          .read(productSearchNotifierProvider)
-                          .getRecentSearchesLike,
                       ref: ref,
                     ),
                   );

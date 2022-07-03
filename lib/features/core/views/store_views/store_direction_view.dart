@@ -142,23 +142,17 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
               MarkerLayerOptions(
                 markers: [
                   Marker(
-                    width: 80.0,
-                    height: 80.0,
                     point: LatLng(storeDirNotifier.userLat ?? 8.17,
                         storeDirNotifier.userLon ?? 4.26),
-                    builder: (ctx) => const Icon(
-                      Icons.location_pin,
-                      color: Color(0xffCD261F),
-                    ),
+                    width: 50.0,
+                    height: 50.0,
+                    builder: (ctx) => SvgPicture.asset(AppSvgs.redMarker),
                   ),
                   Marker(
-                    width: 80.0,
-                    height: 80.0,
                     point: LatLng(widget.store.lat, widget.store.lon),
-                    builder: (ctx) => const Icon(
-                      Icons.location_history,
-                      color: AppColors.primaryColor,
-                    ),
+                    width: 50.0,
+                    height: 50.0,
+                    builder: (ctx) => SvgPicture.asset(AppSvgs.blueMarker),
                   ),
                 ],
               ),
