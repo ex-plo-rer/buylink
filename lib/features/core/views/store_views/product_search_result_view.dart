@@ -369,6 +369,7 @@ class SearchProductBottomSheet extends StatelessWidget {
         child: ListView.separated(
           itemCount: products.length,
           itemBuilder: (context, index) => ProductContainer(
+            product: products[index],
             url: products[index].image.first,
             storeName: products[index].store.name,
             productName: products[index].name,

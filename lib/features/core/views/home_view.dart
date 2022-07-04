@@ -168,6 +168,7 @@ class HomeView extends ConsumerWidget {
                                 );
                               } else {
                                 return ProductContainer(
+                                  product: homeNotifier.products[index],
                                   url: homeNotifier.products[index].image[0],
                                   storeName:
                                       homeNotifier.products[index].store.name,

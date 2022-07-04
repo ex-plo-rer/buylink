@@ -144,6 +144,7 @@ class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
                           crossAxisSpacing: 15,
                           itemBuilder: (context, index) {
                             return ProductContainer(
+                              product: compareSearchNotifier.products[index],
                               url: compareSearchNotifier
                                   .products[index].image[0],
                               storeName: compareSearchNotifier

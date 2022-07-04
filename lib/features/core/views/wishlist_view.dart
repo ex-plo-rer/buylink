@@ -120,6 +120,8 @@ class _WishlistState extends ConsumerState<WishlistView>
                                 crossAxisSpacing: 15,
                                 itemBuilder: (context, index) {
                                   return ProductContainer(
+                                    product: wishlistNotifier
+                                        .products[index],
                                     url: wishlistNotifier
                                         .products[index].image[0],
                                     storeName: wishlistNotifier

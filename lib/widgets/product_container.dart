@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/distance_container.dart';
@@ -12,7 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../core/utilities/loader.dart';
+import '../features/core/notifiers/category_notifier.dart';
+
 class ProductContainer extends ConsumerWidget {
+  final ProductModel product;
   final String url;
   final String storeName;
   final String productName;
@@ -29,6 +34,7 @@ class ProductContainer extends ConsumerWidget {
 
   const ProductContainer({
     Key? key,
+    required this.product,
     required this.url,
     required this.storeName,
     required this.productName,
@@ -76,7 +82,17 @@ class ProductContainer extends ConsumerWidget {
                       left: 0,
                       child: DistanceContainer(
                         distance: distance,
-                        onDistanceTapped: onDistanceTapped,
+                        onDistanceTapped: () async {
+                          Loader(context).showLoader(text: '');
+                          await ref
+                              .read(categoryNotifierProvider)
+                              .fetchStoreCategories(
+                                  storeId: product.store.id.toString());
+                          Loader(context).hideLoader();
+                          ref.read(navigationServiceProvider).navigateToNamed(
+                              Routes.storeDetails,
+                              arguments: product.store.id);
+                        },
                       ),
                     ),
                     Positioned(

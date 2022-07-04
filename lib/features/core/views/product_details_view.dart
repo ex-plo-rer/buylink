@@ -132,26 +132,26 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   ),
                   ListTile(
                     onTap: () async {
-                      if (ref
+                      // if (ref
+                      //     .read(categoryNotifierProvider)
+                      //     .storeCategories
+                      //     .isEmpty) {
+                      Loader(context).showLoader(text: '');
+                      await ref
                           .read(categoryNotifierProvider)
-                          .storeCategories
-                          .isEmpty) {
-                        Loader(context).showLoader(text: '');
-                        await ref
-                            .read(categoryNotifierProvider)
-                            .fetchStoreCategories(
-                                storeId: widget.product.store.id.toString());
-                        Loader(context).hideLoader();
-                        ref.read(navigationServiceProvider).navigateToNamed(
-                              Routes.storeDetails,
-                              arguments: widget.product.store.id,
-                            );
-                      } else {
-                        ref.read(navigationServiceProvider).navigateToNamed(
-                              Routes.storeDetails,
-                              arguments: widget.product.store.id,
-                            );
-                      }
+                          .fetchStoreCategories(
+                              storeId: widget.product.store.id.toString());
+                      Loader(context).hideLoader();
+                      ref.read(navigationServiceProvider).navigateToNamed(
+                            Routes.storeDetails,
+                            arguments: widget.product.store.id,
+                          );
+                      // } else {
+                      //   ref.read(navigationServiceProvider).navigateToNamed(
+                      //         Routes.storeDetails,
+                      //         arguments: widget.product.store.id,
+                      //       );
+                      // }
                     },
                     leading: CircleAvatar(
                       backgroundColor: AppColors.grey1,
@@ -392,6 +392,8 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                                   crossAxisSpacing: 15,
                                   itemBuilder: (context, index) {
                                     return ProductContainer(
+                                      product: productDetailsNotifier
+                                          .similarProducts[index],
                                       url: productDetailsNotifier
                                           .similarProducts[index].image[0],
                                       storeName: productDetailsNotifier
