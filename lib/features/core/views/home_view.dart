@@ -70,23 +70,29 @@ class HomeView extends ConsumerWidget {
               //   ),
               // ),
               const Spacing.height(12),
-              Visibility(
-                visible: ref.watch(userProvider).currentUser == null,
-                child: AppButton(
-                  text: 'Log in to personalize your Buylink experience',
-                  textColor: AppColors.primaryColor,
-                  fontSize: 14,
-                  backgroundColor: AppColors.shade1,
-                  hasIcon: true,
-                  icon: SvgPicture.asset(AppSvgs.login),
-                  onPressed: () {
-                    ref.read(navigationServiceProvider).navigateOffAllNamed(
-                          Routes.login,
-                          (p0) => false,
-                        );
-                  },
-                ),
-              ),
+              ref.watch(userProvider).currentUser == null
+                  ? AppButton(
+                      text: 'Log in to personalize your Buylink experience',
+                      textColor: AppColors.primaryColor,
+                      fontSize: 14,
+                      backgroundColor: AppColors.shade1,
+                      hasIcon: true,
+                      icon: SvgPicture.asset(AppSvgs.login),
+                      onPressed: () {
+                        ref.read(navigationServiceProvider).navigateOffAllNamed(
+                              Routes.login,
+                              (p0) => false,
+                            );
+                      },
+                    )
+                  : AppButton(
+                      text: 'Welcome to Buylink',
+                      textColor: const Color(0xff14AD9F),
+                      fontSize: 14,
+                      backgroundColor: const Color(0xffDFF8F6),
+                      hasIcon: true,
+                      icon: SvgPicture.asset(AppSvgs.favoriteFilled),
+                    ),
               const Spacing.height(12),
               if (!homeNotifier.productLoading ||
                   homeNotifier.products.isNotEmpty)
