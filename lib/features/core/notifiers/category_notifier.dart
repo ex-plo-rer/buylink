@@ -28,6 +28,9 @@ class CategoryNotifier extends BaseChangeNotifier {
 
   List<String> get storeCategories => _storeCategories;
 
+  bool _storeCategoriesLoading = false;
+  bool get storeCategoriesLoading => _storeCategoriesLoading;
+
   // List<String> uwserCategories = [];
 
   // List<CategoryModel> _categories = [];
@@ -54,9 +57,11 @@ class CategoryNotifier extends BaseChangeNotifier {
 
   Future<void> fetchStoreCategories({required String storeId}) async {
     try {
+      _storeCategoriesLoading = true;
       setState(state: ViewState.loading);
       _storeCategories =
           await _reader(coreRepository).fetchStoreCategories(storeId: storeId);
+      _storeCategoriesLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);

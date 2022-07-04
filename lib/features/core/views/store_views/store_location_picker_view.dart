@@ -46,7 +46,7 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
   void initState() {
     super.initState();
     // ref.read(storeDirectionNotifierProvider).initLocation();
-    ref.read(addStoreNotifierProvider).initLocation();
+    ref.read(storeLocationPickerNotifierProvider).initLocation();
     _centerOnLocationUpdate = CenterOnLocationUpdate.always;
     _centerCurrentLocationStreamController = StreamController<double>();
     // init();
@@ -60,7 +60,8 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final addStoreNotifier = ref.watch(addStoreNotifierProvider);
+    final storeLocationPickerNotifier =
+        ref.watch(storeLocationPickerNotifierProvider);
 
     return Scaffold(
       bottomSheet: BottomSheet(
@@ -103,8 +104,8 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
                 }
               },
               center: LatLng(
-                addStoreNotifier.storeLat,
-                addStoreNotifier.storeLon,
+                storeLocationPickerNotifier.storeLat,
+                storeLocationPickerNotifier.storeLon,
               ),
               // bounds: LatLngBounds(LatLng(58.8, 6.1), LatLng(59, 6.2)),
               boundsOptions:
@@ -130,8 +131,8 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
                 markers: [
                   DragMarker(
                     point: LatLng(
-                      addStoreNotifier.storeLat,
-                      addStoreNotifier.storeLon,
+                      storeLocationPickerNotifier.storeLat,
+                      storeLocationPickerNotifier.storeLon,
                     ),
                     width: 80.0,
                     height: 80.0,
@@ -142,7 +143,7 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
                     ),
                     onDragEnd: (details, point) {
                       print('Finished Drag $details $point');
-                      addStoreNotifier.setStorePosition(
+                      storeLocationPickerNotifier.setStorePosition(
                         lat: point.latitude,
                         lon: point.longitude,
                       );
@@ -181,7 +182,7 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
           // Center the location marker on the map and zoom the map to level 18.
           _centerCurrentLocationStreamController.add(Dimensions.zoom);
           ref.read(locationService).getCurrentLocation();
-          addStoreNotifier.setStorePosition(
+          storeLocationPickerNotifier.setStorePosition(
             lat: ref.read(locationService).lat!,
             lon: ref.read(locationService).lon!,
           );

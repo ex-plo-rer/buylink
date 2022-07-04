@@ -109,15 +109,16 @@ class HomeView extends ConsumerWidget {
                 child: homeNotifier.productLoading
                     ? const CircularProgress()
                     : homeNotifier.products.isEmpty
-                        ? AppEmptyStates(
-                            imageString: AppImages.bag,
-                            message1String:
-                                'No Product... Kindly Reload or check back',
-                            buttonString: 'Reload',
-                            hasButton: true,
+                        ? const AppEmptyStates(
+                            imageString: AppImages.emptyProduct,
+                            message1String: 'Oops, no products available',
+                            message2String:
+                                'Try searching with another keyword',
+                            buttonString: '',
+                            hasButton: false,
                             hasIcon: false,
-                            onButtonPressed: () =>
-                                homeNotifier.fetchProducts(category: 'all'))
+                            // onButtonPressed: () => homeNotifier.fetchProducts(category: 'all'),
+                          )
                         : MasonryGridView.count(
                             itemCount: homeNotifier.products.length,
                             crossAxisCount: 2,

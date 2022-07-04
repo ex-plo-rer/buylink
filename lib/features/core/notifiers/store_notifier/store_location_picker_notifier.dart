@@ -18,132 +18,104 @@ class StoreLocationPickerNotifier extends BaseChangeNotifier {
 
   StoreLocationPickerNotifier(this._reader);
 
-  SearchResultModel? _searchResult;
+  int _currentPage = 1;
 
-  SearchResultModel? get searchResult => _searchResult;
+  int get currentPage => _currentPage;
 
-  double _filterLat = 0;
-  double _filterLon = 0;
+  int _totalPage = 4;
 
-  double get filterLat => _filterLat;
+  int get totalPage => _totalPage;
 
-  double get filterLon => _filterLon;
+  double _storeLat = 0;
+  double _storeLon = 0;
+
+  double get storeLat => _storeLat;
+
+  double get storeLon => _storeLon;
 
   void initLocation() {
     // // Uses the initial location of when the app was lauched first.
-    _filterLat = _reader(locationService).lat!;
-    _filterLon = _reader(locationService).lon!;
+    _storeLat = _reader(locationService).lat!;
+    _storeLon = _reader(locationService).lon!;
     notifyListeners();
   }
 
-  double _sliderValue = 10;
-
-  double get sliderValue => _sliderValue;
-
-  double? _minPrice;
-  double? _maxPrice;
-
-  double? get minPrice => _minPrice;
-
-  double? get maxPrice => _maxPrice;
-
-  AutoCompleteModel? _autoComplete;
-
-  AutoCompleteModel? get autoComplete => _autoComplete;
-
-  bool _searchLoading = false;
-
-  bool get searchLoading => _searchLoading;
-
-  void setFilterPosition({
+  void setStorePosition({
     required double lat,
     required double lon,
   }) {
-    _filterLat = lat;
-    _filterLon = lon;
+    _storeLat = lat;
+    _storeLon = lon;
     notifyListeners();
   }
 
-  void clearFilter() {
-    _minPrice = null;
-    _maxPrice = null;
-    _sliderValue = 10;
+  void moveBackward() {
+    if (_currentPage > 1) {
+      _currentPage -= 1;
+      print('_currentPage: $_currentPage');
+    }
     notifyListeners();
   }
 
-  void onMinPriceChanged(String value) {
-    _minPrice = double.parse(value);
+  void moveForward() async {
+    if (_currentPage < _totalPage) {
+      _currentPage += 1;
+      print('_currentPage: $_currentPage');
+    }
     notifyListeners();
   }
 
-  void onMaxPriceChanged(String value) {
-    _maxPrice = double.parse(value);
+  String? imageFile;
+  String? logoFile;
+
+  void setImageFile({
+    required String imageFile,
+    required bool isImage,
+  }) {
+    if (isImage) {
+      this.imageFile = imageFile;
+    } else {
+      logoFile = imageFile;
+    }
+    print('this.imageFile: ${this.imageFile}');
+    print('this.logoFile: $logoFile');
     notifyListeners();
   }
 
-  void onSliderChanged(double newValue) {
-    _sliderValue = newValue;
+  void onNameChanged(String text) {
     notifyListeners();
   }
 
-  Future<void> fetchProductSearch({
-    required String searchTerm,
-    bool isConfirmButton = true,
+  void onDescriptionChanged(String text) {
+    notifyListeners();
+  }
+
+  Future<void> createStore({
+    required String storeName,
+    required String storeDescription,
+    required double lon,
+    required double lat,
+    required String storeLogo,
+    required String storeImage,
   }) async {
     try {
       setState(state: ViewState.loading);
-      _searchResult = await _reader(coreRepository).fetchProductSearch(
-        searchTerm: searchTerm,
-        lon: _filterLon,
-        lat: _filterLat,
-        distanceRange: isConfirmButton ? 10 : _sliderValue,
-        minPrice: isConfirmButton ? 0 : _minPrice ?? 0,
-        maxPrice: isConfirmButton ? 10000000000 : _maxPrice ?? 10000000000,
+      await _reader(storeRepository).createStore(
+        storeName: storeName,
+        storeDescription: storeDescription,
+        lon: _storeLon,
+        lat: _storeLat,
+        storeLogo: storeLogo,
+        storeImage: storeImage,
       );
+      // TODO: Refresh or call fetchStore wherever this is being called...
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      // Alertify(title: e.error!).error();
+      Alertify().error();
     } finally {
-      //Do something...
+      //setState(state: ViewState.idle);
     }
-  }
-
-  Future<void> autoCompleteM({
-    required String query,
-  }) async {
-    print('Query......: $query');
-    try {
-      _searchLoading = true;
-      setState(state: ViewState.loading);
-      _autoComplete = await _reader(coreRepository).autoComplete(query: query);
-      // return _autoComplete;
-      // setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      _searchLoading = false;
-      setState(state: ViewState.idle);
-    } finally {
-      _searchLoading = false;
-    }
-  }
-
-  // TODO: Modify this code and separate the shared preference to the local storage service
-  Future<List<String>> getRecentSearchesLike(String query) async {
-    final pref = await SharedPreferences.getInstance();
-    final allSearches = pref.getStringList(AppStrings.recentSearchKey);
-    return allSearches!.where((search) => search.startsWith(query)).toList();
-  }
-
-  Future<void> saveToRecentSearches(String searchText) async {
-    final pref = await SharedPreferences.getInstance();
-
-    //Use `Set` to avoid duplication of recentSearches
-    Set<String> allSearches =
-        pref.getStringList(AppStrings.recentSearchKey)?.toSet() ?? {};
-
-    //Place it at first in the set
-    allSearches = {searchText, ...allSearches};
-    pref.setStringList(AppStrings.recentSearchKey, allSearches.toList());
   }
 }
 

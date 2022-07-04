@@ -11,6 +11,7 @@ class SelectImageContainer extends ConsumerWidget {
   final void Function()? onTapped;
   final String text;
   final String? imageFile;
+
   const SelectImageContainer({
     Key? key,
     this.onTapped,
@@ -52,7 +53,7 @@ class SelectImageContainer extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: onTapped,
                         icon: const Icon(
                           Icons.image_outlined,
                           size: 20,

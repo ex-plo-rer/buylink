@@ -136,12 +136,12 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       //     .read(categoryNotifierProvider)
                       //     .storeCategories
                       //     .isEmpty) {
-                      Loader(context).showLoader(text: '');
-                      await ref
-                          .read(categoryNotifierProvider)
-                          .fetchStoreCategories(
-                              storeId: widget.product.store.id.toString());
-                      Loader(context).hideLoader();
+                      // Loader(context).showLoader(text: '');
+                      // await ref
+                      //     .read(categoryNotifierProvider)
+                      //     .fetchStoreCategories(
+                      //         storeId: widget.product.store.id.toString());
+                      // Loader(context).hideLoader();
                       ref.read(navigationServiceProvider).navigateToNamed(
                             Routes.storeDetails,
                             arguments: widget.product.store.id,

@@ -107,14 +107,14 @@ class ReceiverProfileView extends ConsumerWidget {
                       //     .read(categoryNotifierProvider)
                       //     .storeCategories
                       //     .isEmpty) {
-                      Loader(context).showLoader(text: '');
-                      await ref
-                          .read(categoryNotifierProvider)
-                          .fetchStoreCategories(
-                              storeId: args.id
-                                  .toString()
-                                  .substring(0, args.id.toString().length - 1));
-                      Loader(context).hideLoader();
+                      // Loader(context).showLoader(text: '');
+                      // await ref
+                      //     .read(categoryNotifierProvider)
+                      //     .fetchStoreCategories(
+                      //         storeId: args.id
+                      //             .toString()
+                      //             .substring(0, args.id.toString().length - 1));
+                      // Loader(context).hideLoader();
                       ref.read(navigationServiceProvider).navigateToNamed(
                             Routes.storeDetails,
                             arguments: int.parse(args.id

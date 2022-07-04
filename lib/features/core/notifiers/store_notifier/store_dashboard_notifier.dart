@@ -53,8 +53,8 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
       await fetchMostSearchedProducts(storeId: storeId, category: 'all');
       await fetchSearchAnalytics(storeId: storeId, week: 'current');
       await fetchVisitAnalytics(storeId: storeId, week: 'current');
-      await _reader(categoryNotifierProvider)
-          .fetchStoreCategories(storeId: storeId.toString());
+      // await _reader(categoryNotifierProvider)
+      //     .fetchStoreCategories(storeId: storeId.toString());
       // await fetchAllProductCount(storeId: storeId, week: 'current');
       // await fetchSavedProductCount(storeId: storeId, week: 'current');
       // await _reader(coreRepository).initDash(

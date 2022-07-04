@@ -55,7 +55,12 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      // await init();
+      await ref
+          .read(categoryNotifierProvider)
+          .fetchStoreCategories(storeId: widget.storeId.toString());
+      print('Left initttttttttttttttttttttttttt');
       ref
           .watch(storeDetailsNotifierProvider(widget.storeId))
           .fetchStoreProducts(
@@ -93,11 +98,14 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              storeDetailsNotifier.detailsLoading
-                  ? const CircularProgress()
-                  : Stack(
+          child: categoryNotifier.storeCategoriesLoading ||
+                  storeDetailsNotifier.detailsLoading
+              ? const CircularProgress()
+              : Column(
+                  children: [
+                    // storeDetailsNotifier.detailsLoading
+                    //     ? const CircularProgress() :
+                    Stack(
                       children: [
                         Container(
                           height: 243,
@@ -206,14 +214,18 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                         ),
                       ],
                     ),
-              const Spacing.smallHeight(),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                child: storeDetailsNotifier.detailsLoading
-                    ? Container()
-                    : Column(
+                    const Spacing.smallHeight(),
+                    // categoryNotifier.storeCategoriesLoading ||
+                    //         storeDetailsNotifier.detailsLoading
+                    //     ? const CircularProgress() :
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
+                      child:
+                          // storeDetailsNotifier.detailsLoading
+                          //     ? Container() :
+                          Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
@@ -408,9 +420,9 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                           ),
                         ],
                       ),
-              ),
-            ],
-          ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );

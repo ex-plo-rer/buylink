@@ -1,3 +1,4 @@
+import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/widgets/app_button.dart';
@@ -84,7 +85,7 @@ class ProductSearch extends SearchDelegate<String> {
               : productSearchNotifier.autoComplete!.result.isEmpty
                   ? const Center(
                       child: AppEmptyStates(
-                      imageString: "assets/images/empty_search.png",
+                      imageString: AppImages.emptyProduct,
                       message1String: "Oops, no products available",
                       message2String: "Try searching with another keyword ",
                       buttonString: "",

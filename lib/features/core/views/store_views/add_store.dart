@@ -44,6 +44,16 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _nameController.dispose();
+    _storeDescriptionController.dispose();
+    _nameFN.dispose();
+    _storeDescriptionFN.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final addStoreNotifier = ref.watch(addStoreNotifierProvider);
     return Scaffold(

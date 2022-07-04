@@ -115,6 +115,7 @@ class AddStoreNotifier extends BaseChangeNotifier {
   }
 }
 
-final addStoreNotifierProvider = ChangeNotifierProvider<AddStoreNotifier>(
+final addStoreNotifierProvider =
+    ChangeNotifierProvider.autoDispose<AddStoreNotifier>(
   (ref) => AddStoreNotifier(ref.read),
 );
