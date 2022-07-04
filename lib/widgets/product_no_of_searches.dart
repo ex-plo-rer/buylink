@@ -23,11 +23,13 @@ class ProductCount extends StatelessWidget {
     return Row(
       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CachedNetworkImage(
-          imageUrl: productImage,
-          height: 40,
-          width: 40,
-        ),
+        ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            child: CachedNetworkImage(
+              imageUrl: productImage,
+              height: 40,
+              width: 40,
+            )),
         const Spacing.smallWidth(),
         Expanded(
           child: Text(

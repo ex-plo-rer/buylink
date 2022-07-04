@@ -93,13 +93,14 @@ class ProductSearch extends SearchDelegate<String> {
           return productSearchNotifier.searchLoading
               ? const CircularProgress()
               : productSearchNotifier.autoComplete!.result.isEmpty
-                  ? const Center(child:AppEmptyStates(
-              imageString: "assets/images/empty_search.png",
-              message1String: "Oops, no products available",
-              message2String: "Try searching with another keyword ",
-              buttonString: "",
-            hasButton: false,
-          ))
+                  ? const Center(
+                      child: AppEmptyStates(
+                      imageString: "assets/images/empty_search.png",
+                      message1String: "Oops, no products available",
+                      message2String: "Try searching with another keyword ",
+                      buttonString: "",
+                      hasButton: false,
+                    ))
                   : Expanded(
                       child: ListView.separated(
                         itemCount:
@@ -165,9 +166,13 @@ class ProductSearch extends SearchDelegate<String> {
                                       .autoComplete!.recentSearches.length +
                                   1,
                               itemBuilder: (context, index) => index == 0
-                                  ? const Text('Recently Searched',
-                              style: TextStyle(fontWeight:
-                              FontWeight.w500, fontSize: 12, color:AppColors.grey5),)
+                                  ? const Text(
+                                      'Recently Searched',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12,
+                                          color: AppColors.grey5),
+                                    )
                                   : Row(
                                       children: [
                                         Expanded(
@@ -193,22 +198,23 @@ class ProductSearch extends SearchDelegate<String> {
                             ),
                           ),
                         Spacing.mediumHeight(),
-
-
                         Align(
-                          alignment: Alignment.topRight,
-                          child: Container (
-                              //width: 60,
-                             // height: 20,
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text("Clear all", style: TextStyle(color: AppColors.grey5, fontSize: 12,
-                              fontWeight: FontWeight.w500),),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: AppColors.grey5
-
-                                ),)
-                        )),
+                            alignment: Alignment.topRight,
+                            child: Container(
+                                //width: 60,
+                                // height: 20,
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "Clear all",
+                                  style: TextStyle(
+                                      color: AppColors.grey5,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: AppColors.grey5),
+                                ))),
                         Spacing.smallHeight(),
                         if (productSearchNotifier
                             .autoComplete!.result.isNotEmpty)
@@ -218,8 +224,13 @@ class ProductSearch extends SearchDelegate<String> {
                                       .autoComplete!.result.length +
                                   1,
                               itemBuilder: (context, index) => index == 0
-                                  ? const Text('Popular Searches', style: TextStyle(fontWeight:
-          FontWeight.w500, fontSize: 12, color:AppColors.grey5),)
+                                  ? const Text(
+                                      'Popular Searches',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12,
+                                          color: AppColors.grey5),
+                                    )
                                   : GestureDetector(
                                       onTap: () {
                                         ref
