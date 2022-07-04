@@ -84,9 +84,19 @@ class ChatNotifier extends BaseChangeNotifier {
   Stream<QuerySnapshot<Object?>>? fetchAllMessages(
       {required var senderId, required var receiverId}) {
     generateId(senderId: senderId, receiverId: receiverId);
+    firestoreInstance
+        .collection('chats/$chatId/messages')
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot documentSnapshot in snapshot.docs) {
+        if (documentSnapshot.get('text') == 'Hello') {}
+      }
+    });
+
     return firestoreInstance
         .collection('chats/$chatId/messages')
         .orderBy('timeStamp')
+        // .where('text' == 'hello')
         .snapshots();
   }
 
@@ -138,7 +148,7 @@ class ChatNotifier extends BaseChangeNotifier {
   void getMessages() async {
     final messages = await firestoreInstance.collection('messages').get();
     for (var message in messages.docs) {
-      print(message.data());
+      print(message.get('field'));
     }
   }
 

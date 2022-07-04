@@ -312,7 +312,11 @@ class SignupView extends ConsumerWidget {
                                     _emailAddressController.text.isEmpty
                                 ? AppColors.grey6
                                 : signupNotifier.currentPage == 4 &&
-                                        _passwordController.text.isEmpty
+                                        (_passwordController.text.isEmpty ||
+                                            _passwordController.text.length <
+                                                8 ||
+                                            !_passwordController.text
+                                                .contains(RegExp(r'[0-9]')))
                                     ? AppColors.grey6
                                     : AppColors.primaryColor,
                         // onPressed: signupNotifier.currentPage == 1 ?_nameController.text.isEmpty: signupNotifier.currentPage == 2? _emailAddressController.text.isEmpty: signupNotifier.currentPage == 4? _passwordController.text.isEmpty
@@ -323,7 +327,11 @@ class SignupView extends ConsumerWidget {
                                     _emailAddressController.text.isEmpty
                                 ? null
                                 : signupNotifier.currentPage == 4 &&
-                                        _passwordController.text.isEmpty
+                                        (_passwordController.text.isEmpty ||
+                                            _passwordController.text.length <
+                                                8 ||
+                                            !_passwordController.text
+                                                .contains(RegExp(r'[0-9]')))
                                     ? null
                                     : () async {
                                         if (signupNotifier.currentPage == 2) {
@@ -349,6 +357,7 @@ class SignupView extends ConsumerWidget {
                                               curve: Curves.easeIn,
                                             );
                                             signupNotifier.startTimer();
+                                            return;
                                           }
                                           Loader(context).hideLoader();
                                         } else if (signupNotifier.currentPage ==
@@ -385,13 +394,22 @@ class SignupView extends ConsumerWidget {
                                           }
                                         } else if (signupNotifier.currentPage ==
                                             4) {
+                                          //Check if boxes are checked
+                                          if (_passwordController
+                                                  .text.isEmpty ||
+                                              _passwordController.text.length <
+                                                  8 ||
+                                              !_passwordController.text
+                                                  .contains(RegExp(r'[0-9]'))) {
+                                            return;
+                                          }
                                           Loader(context).showLoader(text: '');
                                           await signupNotifier.signUp(
                                             name: _nameController.text,
                                             email: _emailAddressController.text,
                                             password: _passwordController.text,
                                           );
-                                          Loader(context).hideLoader();
+                                          // Loader(context).hideLoader();
                                           signupNotifier.moveForward();
                                           _pageController.animateToPage(
                                             // array starts at 0 (lol)

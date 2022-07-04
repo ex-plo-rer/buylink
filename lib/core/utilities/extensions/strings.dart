@@ -41,11 +41,18 @@ extension StringExtension on String {
     String initials = "";
     List parts = split(" ");
 
-    if (parts.length > 1) {
-      initials = parts[0].toString().substring(0, 1) +
-          parts[1].toString().substring(0, 1);
+    if (length == 1) {
+      initials = parts[0].toString().substring(0, 1);
     } else {
-      initials = parts[0].toString().substring(0, 2);
+      if (parts.length > 1) {
+        // This check caters for a single letter with a space after it
+        String secondLetter = parts[1].toString().isEmpty
+            ? ''
+            : parts[1].toString().substring(0, 1);
+        initials = parts[0].toString().substring(0, 1) + secondLetter;
+      } else {
+        initials = parts[0].toString().substring(0, 2);
+      }
     }
     initials = initials.toUpperCase();
     return initials;
