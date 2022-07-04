@@ -13,11 +13,13 @@ import '../../../core/constants/svgs.dart';
 import '../notifiers/dashboard_notifier.dart';
 
 class DashboardView extends ConsumerWidget {
-  const DashboardView({
+  DashboardView({
     Key? key,
     this.index,
+    this.fromLoginOrSignup = false,
   }) : super(key: key);
 
+  bool fromLoginOrSignup;
   final int? index;
 
   @override
@@ -33,7 +35,9 @@ class DashboardView extends ConsumerWidget {
       },
       child: Scaffold(
         body: [
-          HomeView(),
+          HomeView(
+            fromLoginOrSignup: fromLoginOrSignup,
+          ),
           const WishlistView(),
           const StoreView(),
           const NotificationView(),

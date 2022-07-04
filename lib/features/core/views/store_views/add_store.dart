@@ -254,7 +254,7 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                           ),
                           const Spacing.mediumHeight(),
                           SelectImageContainer(
-                            text: 'Add your store\'s logo',
+                            text: 'Add your stores logo',
                             imageFile: addStoreNotifier.logoFile,
                             onTapped: () async {
                               print('Pick file Clicked');

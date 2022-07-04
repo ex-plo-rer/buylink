@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:buy_link/core/utilities/base_change_notifier.dart';
 import 'package:buy_link/features/core/models/auto_complete_model.dart';
 import 'package:buy_link/features/core/models/search_result_model.dart';
@@ -18,20 +20,18 @@ class StoreLocationPickerNotifier extends BaseChangeNotifier {
 
   StoreLocationPickerNotifier(this._reader);
 
-  int _currentPage = 1;
-
-  int get currentPage => _currentPage;
-
-  int _totalPage = 4;
-
-  int get totalPage => _totalPage;
-
   double _storeLat = 0;
   double _storeLon = 0;
 
   double get storeLat => _storeLat;
 
   double get storeLon => _storeLon;
+
+  Timer? timer;
+
+  bool _showInstruction = true;
+
+  bool get showInstruction => _showInstruction;
 
   void initLocation() {
     // // Uses the initial location of when the app was lauched first.
@@ -49,73 +49,17 @@ class StoreLocationPickerNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  void moveBackward() {
-    if (_currentPage > 1) {
-      _currentPage -= 1;
-      print('_currentPage: $_currentPage');
-    }
-    notifyListeners();
-  }
-
-  void moveForward() async {
-    if (_currentPage < _totalPage) {
-      _currentPage += 1;
-      print('_currentPage: $_currentPage');
-    }
-    notifyListeners();
-  }
-
-  String? imageFile;
-  String? logoFile;
-
-  void setImageFile({
-    required String imageFile,
-    required bool isImage,
-  }) {
-    if (isImage) {
-      this.imageFile = imageFile;
-    } else {
-      logoFile = imageFile;
-    }
-    print('this.imageFile: ${this.imageFile}');
-    print('this.logoFile: $logoFile');
-    notifyListeners();
-  }
-
-  void onNameChanged(String text) {
-    notifyListeners();
-  }
-
-  void onDescriptionChanged(String text) {
-    notifyListeners();
-  }
-
-  Future<void> createStore({
-    required String storeName,
-    required String storeDescription,
-    required double lon,
-    required double lat,
-    required String storeLogo,
-    required String storeImage,
-  }) async {
-    try {
-      setState(state: ViewState.loading);
-      await _reader(storeRepository).createStore(
-        storeName: storeName,
-        storeDescription: storeDescription,
-        lon: _storeLon,
-        lat: _storeLat,
-        storeLogo: storeLogo,
-        storeImage: storeImage,
-      );
-      // TODO: Refresh or call fetchStore wherever this is being called...
-      setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      setState(state: ViewState.error);
-      Alertify().error();
-    } finally {
-      //setState(state: ViewState.idle);
-    }
+  void startTimer() async {
+    await Future.delayed(const Duration(seconds: 2));
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      print(timer.tick);
+      if (timer.tick == 10) {
+        print(timer.tick);
+        timer.cancel();
+        _showInstruction = false;
+        notifyListeners();
+      }
+    });
   }
 }
 

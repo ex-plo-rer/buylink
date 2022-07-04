@@ -27,16 +27,32 @@ import '../../../widgets/circular_progress.dart';
 import '../models/product_search.dart';
 import '../notifiers/category_notifier.dart';
 
-class HomeView extends ConsumerWidget {
-  HomeView({Key? key}) : super(key: key);
+class HomeView extends ConsumerStatefulWidget {
+  HomeView({
+    Key? key,
+    this.fromLoginOrSignup = false,
+  }) : super(key: key);
+  bool fromLoginOrSignup;
 
+  @override
+  ConsumerState<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends ConsumerState<HomeView> {
   final searchFN = FocusNode();
 
   @override
-  Widget build(BuildContext context, ref) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.fromLoginOrSignup) {
+      ref.read(homeNotifierProvider(null)).startTimer();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final homeNotifier = ref.watch(homeNotifierProvider(null));
-    final wishlistNotifier = ref.watch(wishlistNotifierProvider);
-    final categoryNotifier = ref.watch(categoryNotifierProvider);
     print('latttttttttttttttttttttttttt${ref.watch(locationService).lat}');
     // ref.watch(locationService).getCurrentLocation();
     return Scaffold(
@@ -85,14 +101,18 @@ class HomeView extends ConsumerWidget {
                             );
                       },
                     )
-                  : AppButton(
-                      text: 'Welcome to Buylink',
-                      textColor: const Color(0xff14AD9F),
-                      fontSize: 14,
-                      backgroundColor: const Color(0xffDFF8F6),
-                      hasIcon: true,
-                      icon: SvgPicture.asset(AppSvgs.favoriteFilled),
-                    ),
+                  : widget.fromLoginOrSignup
+                      ? homeNotifier.showWelcome
+                          ? AppButton(
+                              text: 'Welcome to Buylink',
+                              textColor: const Color(0xff14AD9F),
+                              fontSize: 14,
+                              backgroundColor: const Color(0xffDFF8F6),
+                              hasIcon: true,
+                              icon: SvgPicture.asset(AppSvgs.favoriteFilled),
+                            )
+                          : const Spacing.empty()
+                      : const Spacing.empty(),
               const Spacing.height(12),
               if (!homeNotifier.productLoading ||
                   homeNotifier.products.isNotEmpty)

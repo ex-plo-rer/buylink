@@ -1,15 +1,7 @@
 import 'dart:async';
 
-import 'package:buy_link/core/utilities/alertify.dart';
-import 'package:buy_link/core/utilities/loader.dart';
-import 'package:buy_link/features/core/models/search_result_arg_model.dart';
-import 'package:buy_link/features/core/notifiers/store_notifier/add_store_notifier.dart';
 import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/back_arrow.dart';
-import 'package:buy_link/widgets/map_search_dialog.dart';
-import 'package:buy_link/widgets/map_search_term_container.dart';
-import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -19,10 +11,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimensions.dart';
-import '../../../../core/routes.dart';
-import '../../../../core/utilities/map/circle.dart';
 import '../../../../widgets/app_button.dart';
-import '../../notifiers/store_notifier/product_search_notifier.dart';
+import '../../../../widgets/back_arrow.dart';
 import '../../notifiers/store_notifier/store_location_picker_notifier.dart';
 
 class StoreLocationPicker extends ConsumerStatefulWidget {
@@ -47,6 +37,7 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
     super.initState();
     // ref.read(storeDirectionNotifierProvider).initLocation();
     ref.read(storeLocationPickerNotifierProvider).initLocation();
+    ref.read(storeLocationPickerNotifierProvider).startTimer();
     _centerOnLocationUpdate = CenterOnLocationUpdate.always;
     _centerCurrentLocationStreamController = StreamController<double>();
     // init();
@@ -82,96 +73,99 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
           );
         },
       ),
-      body: Stack(
-        children: [
-          FlutterMap(
-            options: MapOptions(
-              allowPanningOnScrollingParent: false,
-              plugins: [
-                DragMarkerPlugin(),
-              ],
-              zoom: Dimensions.zoom,
-              minZoom: Dimensions.minZoom,
-              maxZoom: Dimensions.maxZoom,
-              interactiveFlags:
-                  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-              onPositionChanged: (MapPosition position, bool hasGesture) {
-                if (hasGesture) {
-                  setState(
-                    () =>
-                        _centerOnLocationUpdate = CenterOnLocationUpdate.never,
-                  );
-                }
-              },
-              center: LatLng(
-                storeLocationPickerNotifier.storeLat,
-                storeLocationPickerNotifier.storeLon,
-              ),
-              // bounds: LatLngBounds(LatLng(58.8, 6.1), LatLng(59, 6.2)),
-              boundsOptions:
-                  const FitBoundsOptions(padding: EdgeInsets.all(8.0)),
-            ),
-            children: [
-              LocationMarkerLayerWidget(
-                plugin: LocationMarkerPlugin(
-                  centerCurrentLocationStream:
-                      _centerCurrentLocationStreamController.stream,
-                  centerOnLocationUpdate: _centerOnLocationUpdate,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            FlutterMap(
+              options: MapOptions(
+                allowPanningOnScrollingParent: false,
+                plugins: [
+                  DragMarkerPlugin(),
+                ],
+                zoom: Dimensions.zoom,
+                minZoom: Dimensions.minZoom,
+                maxZoom: Dimensions.maxZoom,
+                interactiveFlags:
+                    InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                onPositionChanged: (MapPosition position, bool hasGesture) {
+                  if (hasGesture) {
+                    setState(
+                      () => _centerOnLocationUpdate =
+                          CenterOnLocationUpdate.never,
+                    );
+                  }
+                },
+                center: LatLng(
+                  storeLocationPickerNotifier.storeLat,
+                  storeLocationPickerNotifier.storeLon,
                 ),
+                // bounds: LatLngBounds(LatLng(58.8, 6.1), LatLng(59, 6.2)),
+                boundsOptions:
+                    const FitBoundsOptions(padding: EdgeInsets.all(8.0)),
               ),
-            ],
-            layers: [
-              TileLayerOptions(
-                tileProvider: NetworkTileProvider(),
-                urlTemplate:
-                    "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
-                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-              ),
-              DragMarkerPluginOptions(
-                markers: [
-                  DragMarker(
-                    point: LatLng(
-                      storeLocationPickerNotifier.storeLat,
-                      storeLocationPickerNotifier.storeLon,
+              children: [
+                LocationMarkerLayerWidget(
+                  plugin: LocationMarkerPlugin(
+                    centerCurrentLocationStream:
+                        _centerCurrentLocationStreamController.stream,
+                    centerOnLocationUpdate: _centerOnLocationUpdate,
+                  ),
+                ),
+              ],
+              layers: [
+                TileLayerOptions(
+                  tileProvider: NetworkTileProvider(),
+                  urlTemplate:
+                      "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+                  subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                ),
+                DragMarkerPluginOptions(
+                  markers: [
+                    DragMarker(
+                      point: LatLng(
+                        storeLocationPickerNotifier.storeLat,
+                        storeLocationPickerNotifier.storeLon,
+                      ),
+                      width: 80.0,
+                      height: 80.0,
+                      builder: (ctx) => const Icon(
+                        Icons.location_on,
+                        size: 50,
+                        color: Color(0xffCD261F),
+                      ),
+                      onDragEnd: (details, point) {
+                        print('Finished Drag $details $point');
+                        storeLocationPickerNotifier.setStorePosition(
+                          lat: point.latitude,
+                          lon: point.longitude,
+                        );
+                      },
+                      updateMapNearEdge: false,
+                      rotateMarker: true,
+                    )
+                  ],
+                ),
+              ],
+            ),
+            if (storeLocationPickerNotifier.showInstruction)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: AppButton(
+                      height: 41,
+                      width: MediaQuery.of(context).size.width - 100,
+                      text: 'Place the Red Marker above your store',
+                      fontSize: 14,
+                      backgroundColor: AppColors.grey4,
                     ),
-                    width: 80.0,
-                    height: 80.0,
-                    builder: (ctx) => const Icon(
-                      Icons.location_on,
-                      size: 50,
-                      color: Color(0xffCD261F),
-                    ),
-                    onDragEnd: (details, point) {
-                      print('Finished Drag $details $point');
-                      storeLocationPickerNotifier.setStorePosition(
-                        lat: point.latitude,
-                        lon: point.longitude,
-                      );
-                    },
-                    updateMapNearEdge: false,
-                    rotateMarker: true,
-                  )
+                  ),
                 ],
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 30),
-                child: AppButton(
-                  height: 41,
-                  width: MediaQuery.of(context).size.width - 100,
-                  text: 'Place the Red Marker above your store',
-                  fontSize: 14,
-                  backgroundColor: AppColors.grey4,
-                ),
-              ),
-            ],
-          ),
-          //const BackArrow()
-        ],
+            const BackArrow()
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

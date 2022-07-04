@@ -134,8 +134,11 @@ class SignupNotifier extends BaseChangeNotifier {
         title: 'Wellcome to Buylink',
       ).success();
       _reader(localStorageService).deleteSecureData(AppStrings.otpEmailKey);
-      _reader(navigationServiceProvider)
-          .navigateOffAllNamed(Routes.dashboard, (p0) => false);
+      _reader(navigationServiceProvider).navigateOffAllNamed(
+        Routes.dashboard,
+        (p0) => false,
+        arguments: true,
+      );
 
       await _reader(userProvider).setUser();
 
@@ -144,7 +147,7 @@ class SignupNotifier extends BaseChangeNotifier {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
     } finally {
-     // setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 

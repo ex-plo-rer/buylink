@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/repositories/core_repository.dart';
@@ -56,6 +58,25 @@ class HomeNotifier extends BaseChangeNotifier {
   List<CategoryModel> _categories = [];
 
   List<CategoryModel> get categories => _categories;
+
+  Timer? timer;
+
+  bool _showWelcome = true;
+
+  bool get showWelcome => _showWelcome;
+
+  void startTimer() async {
+    await Future.delayed(const Duration(seconds: 2));
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      print(timer.tick);
+      if (timer.tick == 10) {
+        print(timer.tick);
+        timer.cancel();
+        _showWelcome = false;
+        notifyListeners();
+      }
+    });
+  }
 
   void setFav() {
     for (var product in _products) {
@@ -124,14 +145,13 @@ class HomeNotifier extends BaseChangeNotifier {
     }
   }
 
-
   Future<void> fetchProductAttr({
     required int productId,
   }) async {
     try {
       setState(state: ViewState.loading);
       _productAttr =
-      await _reader(coreRepository).fetchProductAttr(productId: productId);
+          await _reader(coreRepository).fetchProductAttr(productId: productId);
       // Alertify(title: 'User logged in').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {

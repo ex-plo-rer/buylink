@@ -49,6 +49,7 @@ class LoginNotifier extends BaseChangeNotifier {
       _reader(navigationServiceProvider).navigateOffAllNamed(
         Routes.dashboard,
         (p0) => false,
+        arguments: true,
       );
 
       // Calling _reader(userProvider); helps to initialize the methods inside

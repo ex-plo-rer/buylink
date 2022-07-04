@@ -57,6 +57,7 @@ class SelectImageContainer extends ConsumerWidget {
                         icon: const Icon(
                           Icons.image_outlined,
                           size: 20,
+                          color: AppColors.grey5,
                         ),
                       ),
                       Text(

@@ -136,7 +136,11 @@ class Routes {
       case onboarding:
         return MaterialPageRoute(builder: (_) => OnboardingView());
       case dashboard:
-        return MaterialPageRoute(builder: (_) => const DashboardView());
+        bool? fromLoginOrSignup = settings.arguments as bool?;
+        return MaterialPageRoute(
+            builder: (_) => DashboardView(
+                  fromLoginOrSignup: fromLoginOrSignup ?? false,
+                ));
       case wishlist:
         return MaterialPageRoute(builder: (_) => const WishlistView());
       case productList:
