@@ -121,7 +121,8 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   AnimatedSmoothIndicator(
                     count: widget.product.image.length,
                     activeIndex: productDetailsNotifier.activeIndex,
-                    effect: const WormEffect(
+                    effect: const ExpandingDotsEffect(
+                      expansionFactor: 4,
                       dotHeight: 4,
                       dotWidth: 4,
                     ),
