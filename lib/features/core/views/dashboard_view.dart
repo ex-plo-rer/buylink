@@ -25,7 +25,7 @@ class DashboardView extends ConsumerWidget {
     final dashboardNotifier = ref.watch(dashboardChangeNotifier);
     return WillPopScope(
       onWillPop: () async {
-        if (dashboardNotifier.selectedIndex == 0) return true;
+        // if (dashboardNotifier.selectedIndex == 0) return true;
         if (dashboardNotifier.navigationQueue.isEmpty) return true;
         // dashboardNotifier.selectedIndex = dashboardNotifier.navigationQueue.last;
         dashboardNotifier.willPopM();
