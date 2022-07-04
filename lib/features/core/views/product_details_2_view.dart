@@ -13,6 +13,7 @@ import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/back_arrow.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/distance_container.dart';
+import 'package:buy_link/widgets/expandable_text.dart';
 import 'package:buy_link/widgets/favorite_container.dart';
 import 'package:buy_link/widgets/iconNtext_container.dart';
 import 'package:buy_link/widgets/product_container.dart';
@@ -212,7 +213,7 @@ class _ProductDetails2ViewState extends ConsumerState<ProductDetails2View> {
               AnimatedSmoothIndicator(
                 count: widget.product.image.length,
                 activeIndex: productDetails2Notifier.activeIndex,
-                effect: const WormEffect(
+                effect: const ExpandingDotsEffect(
                   dotHeight: 4,
                   dotWidth: 4,
                 ),
@@ -254,15 +255,10 @@ class _ProductDetails2ViewState extends ConsumerState<ProductDetails2View> {
                 ),
               ),
               const Spacing.height(20),
-              const Text(
-                'A super-comfortable denim legging,built to contour curves, lengthen legs and celebrate your form. Made with an innovative tummy-sliming',
-                //product.description,
-                // textAlign: TextAlign.justify,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.grey2,
-                ),
+              ExpandableText(
+                text: widget.product.desc,
+                // text: 'A super-comfortable denim legging,built to contour curves, lengthen legs and celebrate your qwew ewewe dsfsfsd fwsfddwfwefd asfdsffsd wef',
+                trimLines: 2,
               ),
               const Spacing.bigHeight(),
               const Divider(thickness: 2),
