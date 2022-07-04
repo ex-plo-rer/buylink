@@ -2,6 +2,7 @@ import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/features/core/models/message_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/models/user_model.dart';
+import 'package:buy_link/features/core/notifiers/message_notifier/chat_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -149,7 +150,11 @@ class ReceiverProfileView extends ConsumerWidget {
                           onText1Pressed: () => ref
                               .read(navigationServiceProvider)
                               .navigateBack(),
-                          onText2Pressed: () {
+                          onText2Pressed: () async {
+                            await ref
+                                .read(chatNotifierProvider)
+                                .deleteConversation();
+                            ref.read(navigationServiceProvider).navigateBack();
                             ref.read(navigationServiceProvider).navigateBack();
                           },
                           title2:
@@ -177,20 +182,25 @@ class ReceiverProfileView extends ConsumerWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AppDialog2(
-                            title:
-                                'Block ${fromStore ? args.storeName : args.name}?',
+                            title: 'Delete Conversation?',
+                            title2:
+                                'The messages would be cleared only from your inbox',
                             text1: 'No',
                             text2: 'Yes',
                             onText1Pressed: () => ref
                                 .read(navigationServiceProvider)
                                 .navigateBack(),
-                            onText2Pressed: () {
+                            onText2Pressed: () async {
+                              await ref
+                                  .read(chatNotifierProvider)
+                                  .deleteConversation();
+                              ref
+                                  .read(navigationServiceProvider)
+                                  .navigateBack();
                               ref
                                   .read(navigationServiceProvider)
                                   .navigateBack();
                             },
-                            title2:
-                                '${fromStore ? args.storeName : args.name} won’t be able to send you messages',
                           );
                         },
                       );

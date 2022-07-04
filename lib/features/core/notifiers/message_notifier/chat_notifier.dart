@@ -90,6 +90,18 @@ class ChatNotifier extends BaseChangeNotifier {
         .snapshots();
   }
 
+  Future<void> deleteConversation() async {
+    print('Chat id $chatId');
+    await firestoreInstance
+        .collection('chats/$chatId/messages')
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot documentSnapshot in snapshot.docs) {
+        documentSnapshot.reference.delete();
+      }
+    });
+  }
+
   void sendMessage({
     required String messageText,
     required String senderName,
@@ -177,7 +189,7 @@ class ChatNotifier extends BaseChangeNotifier {
       setState(state: ViewState.error);
       Alertify().error();
     } finally {
-     // setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 }
