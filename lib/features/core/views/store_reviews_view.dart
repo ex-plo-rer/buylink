@@ -106,10 +106,8 @@ class StoreReviewsView extends ConsumerWidget {
                                       itemCount: 5,
                                       itemPadding: const EdgeInsets.symmetric(
                                           horizontal: 0.0),
-                                      itemBuilder: (context, _) => const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
+                                      itemBuilder: (context, _) =>
+                                          SvgPicture.asset(AppSvgs.starFilled),
                                       onRatingUpdate: (rating) {
                                         print(rating);
                                       },
@@ -217,10 +215,7 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: storeReviewNotifier.containerColor0,
                     icon: storeReviewNotifier.is0Selected
                         ? SvgPicture.asset(AppSvgs.starFilled)
-                        : const Icon(
-                            Icons.star_outline,
-                            size: 12,
-                          ),
+                        : SvgPicture.asset(AppSvgs.star),
                     radius: 6,
                     fontSize: 14,
                   ),
@@ -233,10 +228,7 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: storeReviewNotifier.containerColor5,
                     icon: storeReviewNotifier.is5Selected
                         ? SvgPicture.asset(AppSvgs.starFilled)
-                        : const Icon(
-                            Icons.star_outline,
-                            size: 12,
-                          ),
+                        : SvgPicture.asset(AppSvgs.star),
                     radius: 6,
                     fontSize: 14,
                   ),
@@ -249,10 +241,7 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: storeReviewNotifier.containerColor4,
                     icon: storeReviewNotifier.is4Selected
                         ? SvgPicture.asset(AppSvgs.starFilled)
-                        : const Icon(
-                            Icons.star_outline,
-                            size: 12,
-                          ),
+                        : SvgPicture.asset(AppSvgs.star),
                     radius: 6,
                     fontSize: 14,
                   ),
@@ -265,10 +254,7 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: storeReviewNotifier.containerColor3,
                     icon: storeReviewNotifier.is3Selected
                         ? SvgPicture.asset(AppSvgs.starFilled)
-                        : const Icon(
-                            Icons.star_outline,
-                            size: 12,
-                          ),
+                        : SvgPicture.asset(AppSvgs.star),
                     radius: 6,
                     fontSize: 14,
                   ),
@@ -281,10 +267,7 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: storeReviewNotifier.containerColor2,
                     icon: storeReviewNotifier.is2Selected
                         ? SvgPicture.asset(AppSvgs.starFilled)
-                        : const Icon(
-                            Icons.star_outline,
-                            size: 12,
-                          ),
+                        : SvgPicture.asset(AppSvgs.star),
                     radius: 6,
                     fontSize: 14,
                   ),
@@ -297,10 +280,7 @@ class StoreReviewsView extends ConsumerWidget {
                     containerColor: storeReviewNotifier.containerColor1,
                     icon: storeReviewNotifier.is1Selected
                         ? SvgPicture.asset(AppSvgs.starFilled)
-                        : const Icon(
-                            Icons.star_outline,
-                            size: 12,
-                          ),
+                        : SvgPicture.asset(AppSvgs.star),
                     radius: 6,
                     fontSize: 14,
                   ),

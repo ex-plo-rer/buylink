@@ -39,10 +39,9 @@ class StoreContainer extends ConsumerWidget {
             decoration: BoxDecoration(
               color: AppColors.grey,
               image: DecorationImage(
-                image: CachedNetworkImageProvider(storeImage),
-                fit: BoxFit.fill,
-                  opacity: 0.8
-              ),
+                  image: CachedNetworkImageProvider(storeImage),
+                  fit: BoxFit.fill,
+                  opacity: 0.8),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
@@ -68,17 +67,19 @@ class StoreContainer extends ConsumerWidget {
                     ],
                   ),
                 ),
-                Center(
-                  child: Text(
-                    storeName,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: AppColors.light,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Center(
+                      child: Text(
+                        storeName,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: AppColors.light,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
                 const Spacing.largeHeight(),
               ],
             ),

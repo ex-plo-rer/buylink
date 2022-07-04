@@ -44,6 +44,7 @@ import '../features/core/views/product_details_2_view.dart';
 import '../features/core/views/settings_view/about_buylink.dart';
 import '../features/core/views/add_product_specifics_view.dart';
 import '../features/core/views/product_list_view.dart';
+import '../features/core/views/settings_view/customer_support.dart';
 import '../features/core/views/settings_view/term_of_use.dart';
 import '../features/core/views/store_views/delete_store_view.dart';
 import '../features/core/views/store_views/edit_store_name.dart';
@@ -116,10 +117,11 @@ class Routes {
 
   // static const addProductSpecifics = '/add-product-spec';
   static const cameraScreen = '/camera-screen';
-  static const productSearchResult = 'product-search-result';
-  static const productSearchedResult = 'product-searched-result';
-  static const productSearch = 'product-search';
-  static const termOfUse = 'term-of-use';
+  static const productSearchResult = '/product-search-result';
+  static const productSearchedResult = '/product-searched-result';
+  static const productSearch = '/product-search';
+  static const termOfUse = '/term-of-use';
+  static const customerSupport = '/customer-support';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -330,6 +332,8 @@ class Routes {
         );
       case termOfUse:
         return MaterialPageRoute(builder: (_) => TermOfUse());
+      case customerSupport:
+        return MaterialPageRoute(builder: (_) => CustomerSupportView());
 
       // case otpVerification:
       // case otpVerification:

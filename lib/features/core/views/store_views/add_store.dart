@@ -159,7 +159,9 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                             suffixIcon: _storeDescriptionController.text.isEmpty
                                 ? null
                                 : GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      _storeDescriptionController.clear();
+                                    },
                                     child: const CircleAvatar(
                                       backgroundColor: AppColors.grey7,
                                       radius: 10,
@@ -182,7 +184,7 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                             fontSize: 24,
                             firstColor: AppColors.grey1,
                           ),
-                          const Spacing.height(12),
+                          const Spacing.height(40),
                           const Spacing.largeHeight(),
                           Center(
                             child: Image.asset(

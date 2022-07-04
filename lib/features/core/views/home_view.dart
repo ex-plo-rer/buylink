@@ -42,7 +42,10 @@ class HomeView extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(18, 24, 18, 0),
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -112,8 +115,8 @@ class HomeView extends ConsumerWidget {
                         : MasonryGridView.count(
                             itemCount: homeNotifier.products.length,
                             crossAxisCount: 2,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
                             itemBuilder: (context, index) {
                               if (index == 3) {
                                 return Container(

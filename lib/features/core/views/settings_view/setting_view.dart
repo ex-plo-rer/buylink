@@ -266,7 +266,12 @@ class SettingView extends ConsumerWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(4),
                   children: <Widget>[
-                    const ListTile(
+                    ListTile(
+                      onTap: () {
+                        ref
+                            .read(navigationServiceProvider)
+                            .navigateToNamed(Routes.customerSupport);
+                      },
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: Text(
                         "Customer Support",
