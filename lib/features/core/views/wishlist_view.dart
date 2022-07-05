@@ -73,7 +73,8 @@ class _WishlistState extends ConsumerState<WishlistView>
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(18, 24, 18, 0),
-          child: wishlistNotifier.state.isLoading
+          child: wishlistNotifier.state.isLoading ||
+                  categoryNotifier.userCategoriesLoading
               ? const CircularProgress()
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

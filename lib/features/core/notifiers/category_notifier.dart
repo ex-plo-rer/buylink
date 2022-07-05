@@ -29,7 +29,12 @@ class CategoryNotifier extends BaseChangeNotifier {
   List<String> get storeCategories => _storeCategories;
 
   bool _storeCategoriesLoading = false;
+
   bool get storeCategoriesLoading => _storeCategoriesLoading;
+
+  bool _userCategoriesLoading = false;
+
+  bool get userCategoriesLoading => _userCategoriesLoading;
 
   // List<String> uwserCategories = [];
 
@@ -39,15 +44,14 @@ class CategoryNotifier extends BaseChangeNotifier {
   List<CategoryModel> mCategories = [];
 
   Future<void> fetchUserCategories() async {
+    _userCategoriesLoading = true;
     try {
       setState(state: ViewState.loading);
       _userCategories = await _reader(coreRepository).fetchUserCategories();
-      // userCategories = [
-      //   CategoryModel(id: 99101, name: 'All', image: ''),
-      //   ..._userCategories
-      // ];
+      _userCategoriesLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
+      _userCategoriesLoading = false;
       setState(state: ViewState.error);
       Alertify(title: e.error).error();
     } finally {

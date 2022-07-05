@@ -66,7 +66,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppTextField(
-                hintText: 'What would you like to buy ?',
+                hintText: 'What would you like to buy?',
                 onTap: () async {
                   searchFN.unfocus();
                   ref.read(productSearchNotifierProvider).getRecentSearches();
