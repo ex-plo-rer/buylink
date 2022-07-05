@@ -206,14 +206,14 @@ class _CompareViewState extends ConsumerState<CompareView> {
                                 CompareTexts2(
                                   title: 'Distance',
                                   subTitle1:
-                                      '${ref.read(locationService).getDistance(
+                                      '${ref.read(locationService).getDist(
                                             endLat: compareSearchNotifier
                                                 .itemsToCompare[0].store.lat,
                                             endLon: compareSearchNotifier
                                                 .itemsToCompare[0].store.lon,
                                           )}km',
                                   subTitle2:
-                                      '${ref.read(locationService).getDistance(
+                                      '${ref.read(locationService).getDist(
                                             endLat: compareSearchNotifier
                                                     .haveProductToCompare
                                                 ? compareSearchNotifier

@@ -181,7 +181,12 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
             lon: ref.read(locationService).lon!,
           );
         },
-        child: const Icon(Icons.my_location, color: Colors.white, size: 30),
+        backgroundColor: AppColors.light,
+        child: const Icon(
+          Icons.my_location,
+          color: AppColors.grey2,
+          size: 15,
+        ),
       ),
     );
   }

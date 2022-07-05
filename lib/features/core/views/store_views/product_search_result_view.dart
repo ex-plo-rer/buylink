@@ -131,8 +131,12 @@ class _ProductSearchResultViewState
                           _centerCurrentLocationStreamController
                               .add(Dimensions.zoom);
                         },
-                        child: const Icon(Icons.my_location,
-                            color: Colors.white, size: 30),
+                        backgroundColor: AppColors.light,
+                        child: const Icon(
+                          Icons.my_location,
+                          color: AppColors.grey2,
+                          size: 15,
+                        ),
                       ),
                     )
                   ],

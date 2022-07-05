@@ -1,28 +1,16 @@
-import 'dart:async';
-
-import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
-import 'package:buy_link/features/core/models/search_result_arg_model.dart';
-import 'package:buy_link/features/core/notifiers/store_notifier/add_store_notifier.dart';
-import 'package:buy_link/services/location_service.dart';
-import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/map_search_dialog.dart';
-import 'package:buy_link/widgets/map_search_term_container.dart';
-import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_dragmarker/dragmarker.dart';
-import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../../core/constants/colors.dart';
-import '../../../../core/routes.dart';
-import '../../../../core/utilities/map/circle.dart';
+import '../../../../core/constants/dimensions.dart';
+import '../../../../core/constants/svgs.dart';
 import '../../../../widgets/app_button.dart';
 import '../../models/product_model.dart';
-import '../../notifiers/store_notifier/product_search_notifier.dart';
-import '../../notifiers/store_notifier/store_location_picker_notifier.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
 
 class EditStoreLocationView extends ConsumerStatefulWidget {
@@ -101,7 +89,11 @@ class _EditStoreLocationViewState extends ConsumerState<EditStoreLocationView> {
               plugins: [
                 DragMarkerPlugin(),
               ],
-              zoom: 11.5,
+              zoom: Dimensions.zoom,
+              minZoom: Dimensions.minZoom,
+              maxZoom: Dimensions.maxZoom,
+              interactiveFlags:
+                  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
               // onPositionChanged: (MapPosition position, bool hasGesture) {
               //   if (hasGesture) {
               //     setState(
@@ -149,13 +141,9 @@ class _EditStoreLocationViewState extends ConsumerState<EditStoreLocationView> {
                       storeSettingsNotifier.storeLat,
                       storeSettingsNotifier.storeLon,
                     ),
-                    width: 80.0,
-                    height: 80.0,
-                    builder: (ctx) => const Icon(
-                      Icons.location_on,
-                      size: 50,
-                      color: Color(0xffCD261F),
-                    ),
+                    width: 50.0,
+                    height: 50.0,
+                    builder: (ctx) => SvgPicture.asset(AppSvgs.redMarker),
                     onDragEnd: (details, point) {
                       print('Finished Drag $details $point');
                       storeSettingsNotifier.setStorePosition(
@@ -174,7 +162,7 @@ class _EditStoreLocationViewState extends ConsumerState<EditStoreLocationView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 30),
                 child: AppButton(
                   height: 41,
                   width: MediaQuery.of(context).size.width - 100,
