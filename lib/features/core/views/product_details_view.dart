@@ -43,7 +43,7 @@ class ProductDetailsView extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
-  late String symb;
+  ScrollController? controller;
 
   @override
   void initState() {
@@ -59,20 +59,8 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
     });
   }
 
-  void symbol(context) {
-    Locale locale = Localizations.localeOf(context);
-    var format =
-        NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
-    symb = format.currencySymbol;
-    print("CURRENCY SYMBOL ${symb}"); // $
-    print("CURRENCY NAME ${format.currencyName}"); // USD
-    // var format = NumberFormat.simpleCurrency(locale: Platform.localeName);
-    symb = format.currencySymbol;
-  }
-
   @override
   Widget build(BuildContext context) {
-    symbol(context);
     final productDetailsNotifier = ref.watch(productDetailsNotifierProvider);
     // final homeNotifier = ref.watch(homeNotifierProvider(''));
     final wishlistNotifier = ref.watch(wishlistNotifierProvider);
@@ -81,6 +69,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
         child: Stack(
           children: [
             SingleChildScrollView(
+              controller: controller,
               child: Column(
                 children: [
                   Container(
@@ -167,8 +156,8 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       ),
                     ),
                     subtitle: IconNTextContainer(
-                      text: '4.6',
-                      // text: widget.product.store.rating,
+                      // text: '4.6',
+                      text: widget.product.store.star.toString(),
                       padding: 0,
                       icon: SvgPicture.asset(
                         AppSvgs.star,
@@ -179,7 +168,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       containerColor: AppColors.transparent,
                     ),
                     trailing: DistanceContainer(
-                      distance: ref.watch(locationService).getDistance(
+                      distance: ref.watch(locationService).getDist(
                             endLat: widget.product.lat,
                             endLon: widget.product.lon,
                           ),
@@ -205,7 +194,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                         text: TextSpan(
                           children: [
                             WidgetSpan(
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AppColors.grey1,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -227,7 +216,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                           ],
                         ),
                       ),
-                      Spacing.tinyWidth(),
+                      const Spacing.tinyWidth(),
                       Visibility(
                           visible: widget.product.oldPrice > 0,
                           child: RichText(
@@ -235,7 +224,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                               children: [
                                 WidgetSpan(
                                   // alignment: Alignment.topLeft,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: AppColors.grey9,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
@@ -263,11 +252,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   ),
                   const Spacing.height(20),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
                       widget.product.desc,
                       // textAlign: TextAlign.justify,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.grey2,
@@ -374,82 +363,74 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     ),
                   ),
                   const Spacing.height(20),
-                  SizedBox(
-                    height: 400,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: productDetailsNotifier.state.isLoading
-                          ? const CircularProgress()
-                          : productDetailsNotifier.similarProducts.isEmpty
-                              ? const Center(
-                                  child: Text('No similar product'),
-                                )
-                              : MasonryGridView.count(
-                                  itemCount: productDetailsNotifier
-                                      .similarProducts.length,
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 15,
-                                  itemBuilder: (context, index) {
-                                    return ProductContainer(
-                                      product: productDetailsNotifier
-                                          .similarProducts[index],
-                                      isFavorite: productDetailsNotifier
-                                          .similarProducts[index].isFav!,
-                                      isDetails: true,
-                                      onProductTapped: () {
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: productDetailsNotifier.state.isLoading
+                        ? const CircularProgress()
+                        : productDetailsNotifier.similarProducts.isEmpty
+                            ? const Center(child: Text('No similar product'))
+                            : MasonryGridView.count(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                controller: controller,
+                                itemCount: productDetailsNotifier
+                                    .similarProducts.length,
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 20,
+                                crossAxisSpacing: 15,
+                                itemBuilder: (context, index) {
+                                  return ProductContainer(
+                                    product: productDetailsNotifier
+                                        .similarProducts[index],
+                                    isFavorite: productDetailsNotifier
+                                        .similarProducts[index].isFav!,
+                                    isDetails: true,
+                                    onProductTapped: () {
+                                      ref
+                                          .read(navigationServiceProvider)
+                                          .navigateToNamed(
+                                            Routes.productDetails,
+                                            arguments: productDetailsNotifier
+                                                .similarProducts[index],
+                                          );
+                                    },
+                                    onDistanceTapped: () {},
+                                    onFlipTapped: () async {
+                                      Loader(context).showLoader(text: '');
+                                      await ref
+                                          .read(flipNotifierProvider)
+                                          .addItemToCompare(
+                                              productId: productDetailsNotifier
+                                                  .similarProducts[index].id);
+                                      if (ref
+                                          .read(flipNotifierProvider)
+                                          .successfullyAdded) {
+                                        Loader(context).hideLoader();
                                         ref
                                             .read(navigationServiceProvider)
-                                            .navigateToNamed(
-                                              Routes.productDetails,
-                                              arguments: productDetailsNotifier
-                                                  .similarProducts[index],
+                                            .navigateToNamed(Routes.compare);
+                                        return;
+                                      }
+                                      Loader(context).hideLoader();
+                                    },
+                                    onFavoriteTapped: () async {
+                                      productDetailsNotifier
+                                              .similarProducts[index].isFav!
+                                          ? await wishlistNotifier
+                                              .removeFromWishlist(
+                                              productId: productDetailsNotifier
+                                                  .similarProducts[index].id,
+                                            )
+                                          : await wishlistNotifier
+                                              .addToWishlist(
+                                              productId: productDetailsNotifier
+                                                  .similarProducts[index].id,
                                             );
-                                      },
-                                      onDistanceTapped: () {},
-                                      onFlipTapped: () async {
-                                        Loader(context).showLoader(text: '');
-                                        await ref
-                                            .read(flipNotifierProvider)
-                                            .addItemToCompare(
-                                                productId:
-                                                    productDetailsNotifier
-                                                        .similarProducts[index]
-                                                        .id);
-                                        if (ref
-                                            .read(flipNotifierProvider)
-                                            .successfullyAdded) {
-                                          Loader(context).hideLoader();
-                                          ref
-                                              .read(navigationServiceProvider)
-                                              .navigateToNamed(Routes.compare);
-                                          return;
-                                        }
-                                        Loader(context).hideLoader();
-                                      },
-                                      onFavoriteTapped: () async {
-                                        productDetailsNotifier
-                                                .similarProducts[index].isFav!
-                                            ? await wishlistNotifier
-                                                .removeFromWishlist(
-                                                productId:
-                                                    productDetailsNotifier
-                                                        .similarProducts[index]
-                                                        .id,
-                                              )
-                                            : await wishlistNotifier
-                                                .addToWishlist(
-                                                productId:
-                                                    productDetailsNotifier
-                                                        .similarProducts[index]
-                                                        .id,
-                                              );
-                                        ref.refresh(homeNotifierProvider(''));
-                                      },
-                                    );
-                                  },
-                                ),
-                    ),
+                                      ref.refresh(homeNotifierProvider(''));
+                                    },
+                                  );
+                                },
+                              ),
                   ),
                 ],
               ),
