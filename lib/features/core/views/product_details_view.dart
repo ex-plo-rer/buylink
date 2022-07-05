@@ -1,6 +1,7 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/compare_arg_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
@@ -157,7 +158,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     ),
                     subtitle: IconNTextContainer(
                       // text: '4.6',
-                      text: widget.product.store.star.toString(),
+                      text: ''.extractDouble(widget.product.store.star),
                       padding: 0,
                       icon: SvgPicture.asset(
                         AppSvgs.star,

@@ -75,9 +75,9 @@ class ProductContainer extends ConsumerWidget {
                         //   product.lat,
                         //   product.lon,
                         // ).toString(),
-                        distance: ref
-                            .watch(locationService)
-                            .getDist(endLat: product.lat, endLon: product.lon),
+                        distance: ref.watch(locationService).getDist(
+                            endLat: product.store.lat,
+                            endLon: product.store.lon),
                         onDistanceTapped: () async {
                           ref.read(navigationServiceProvider).navigateToNamed(
                               Routes.storeDetails,

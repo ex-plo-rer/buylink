@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/chart_data_model.dart';
 import 'package:buy_link/services/navigation_service.dart';
@@ -424,11 +425,16 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                             ),
                                           ),
                                           IconNTextContainer2(
-                                            text: storeDashboardNotifier
-                                                    .mostSearchedNCount
-                                                    ?.storeGrade
-                                                    .toStringAsFixed(1) ??
-                                                '00',
+                                            text: ''.extractDouble(
+                                                storeDashboardNotifier
+                                                        .mostSearchedNCount
+                                                        ?.storeGrade ??
+                                                    0),
+                                            // storeDashboardNotifier
+                                            //         .mostSearchedNCount
+                                            //         ?.storeGrade
+                                            //         .toStringAsFixed(1) ??
+                                            //     '00',
                                             textColor: const Color(0xff5C6475),
                                             fontSize: 12,
                                             icon: SvgPicture.asset(

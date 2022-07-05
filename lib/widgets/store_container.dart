@@ -1,3 +1,4 @@
+import 'package:buy_link/core/utilities/extensions/strings.dart' as str;
 import 'package:buy_link/features/core/views/store_views/store_dashboard_view.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/spacing.dart';
@@ -14,7 +15,7 @@ import '../core/routes.dart';
 class StoreContainer extends ConsumerWidget {
   final String storeImage;
   final String storeName;
-  final num starRate;
+  final double starRate;
   final void Function()? onTap;
 
   const StoreContainer({
@@ -58,9 +59,9 @@ class StoreContainer extends ConsumerWidget {
                         width: 14,
                         height: 14,
                       ),
-                      Spacing.tinyWidth(),
+                      const Spacing.tinyWidth(),
                       Text(
-                        starRate.toStringAsFixed(1),
+                        ''.extractDouble(starRate),
                         style: const TextStyle(
                             color: AppColors.light, fontSize: 16),
                       )
@@ -68,7 +69,7 @@ class StoreContainer extends ConsumerWidget {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: Center(
                       child: Text(
                         storeName,

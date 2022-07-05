@@ -24,7 +24,7 @@ class MostSearchedModel {
   List<MostSearchedProductModel> products;
   int storeProductCount;
   int storeProductsSaved;
-  num storeGrade;
+  double storeGrade;
 
   factory MostSearchedModel.fromJson(Map<String, dynamic> json) =>
       MostSearchedModel(
@@ -32,7 +32,7 @@ class MostSearchedModel {
             json["data"].map((x) => MostSearchedProductModel.fromJson(x))),
         storeProductCount: json["store_product_count"],
         storeProductsSaved: json["store_products_saved"],
-        storeGrade: json["store_grade"],
+        storeGrade: json["store_grade"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 extension StringExtension on String {
@@ -56,6 +57,13 @@ extension StringExtension on String {
     }
     initials = initials.toUpperCase();
     return initials;
+  }
+
+  // TODO: Move this method out of here.
+  String extractDouble(double value) {
+    return value.toStringAsFixed(1).characters.last == '0'
+        ? value.toStringAsFixed(1).characters.first
+        : value.toStringAsFixed(1);
   }
 
   String formatMoney() {

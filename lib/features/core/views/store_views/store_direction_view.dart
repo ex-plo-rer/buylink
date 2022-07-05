@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:buy_link/core/constants/colors.dart';
+import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/map/circle.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/store_direction_notifier.dart';
 import 'package:buy_link/features/core/views/store_views/store_messages.dart';
@@ -148,7 +149,8 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
                         endLat: widget.store.lat,
                         endLon: widget.store.lon,
                       ),
-                  storeRating: widget.store.star,
+                  // storeRating: widget.store.star,
+                  storeRating: ''.extractDouble(widget.store.star),
                   storeName: widget.store.name,
                   storeImage: widget.store.logo,
                 );
@@ -173,7 +175,7 @@ class StoreDirectionBottomSheet extends StatelessWidget {
   final String distance;
 
   // final String normalDistance;
-  final num storeRating;
+  final String storeRating;
   final String storeName;
   final String storeImage;
   final ScrollController scrollController;
