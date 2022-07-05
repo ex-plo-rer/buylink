@@ -58,10 +58,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 24,
-          ),
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -142,7 +139,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                         : MasonryGridView.count(
                             itemCount: homeNotifier.products.length,
                             crossAxisCount: 2,
-                            mainAxisSpacing: 20,
+                            mainAxisSpacing: 10,
                             crossAxisSpacing: 15,
                             itemBuilder: (context, index) {
                               if (index == 3) {
