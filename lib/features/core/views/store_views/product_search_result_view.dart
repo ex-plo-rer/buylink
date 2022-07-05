@@ -370,15 +370,7 @@ class SearchProductBottomSheet extends StatelessWidget {
           itemCount: products.length,
           itemBuilder: (context, index) => ProductContainer(
             product: products[index],
-            url: products[index].image.first,
-            storeName: products[index].store.name,
-            productName: products[index].name,
-            productPrice: products[index].price,
-            oldPrice: products[index].oldPrice,
-            distance: '4.3',
             isFavorite: products[index].isFav!,
-
-            //product: products,
           ),
           separatorBuilder: (context, index) => const Spacing.tinyHeight(),
         ),

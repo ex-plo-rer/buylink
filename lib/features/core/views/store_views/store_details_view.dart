@@ -334,22 +334,6 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                           return ProductContainer(
                                             product: storeDetailsNotifier
                                                 .products[index],
-                                            url: storeDetailsNotifier
-                                                .products[index].image[0],
-                                            storeName: storeDetailsNotifier
-                                                .products[index].store.name,
-                                            productName: storeDetailsNotifier
-                                                .products[index].name,
-                                            productPrice: storeDetailsNotifier
-                                                .products[index].price,
-                                            distance: ref
-                                                .read(locationService)
-                                                .getDistance(
-                                                  endLat: storeDetailsNotifier
-                                                      .products[index].lat,
-                                                  endLon: storeDetailsNotifier
-                                                      .products[index].lon,
-                                                ),
                                             isFavorite: true,
                                             onProductTapped: () {
                                               ref

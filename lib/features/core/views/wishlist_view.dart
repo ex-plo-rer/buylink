@@ -122,22 +122,6 @@ class _WishlistState extends ConsumerState<WishlistView>
                                         return ProductContainer(
                                           product:
                                               wishlistNotifier.products[index],
-                                          url: wishlistNotifier
-                                              .products[index].image[0],
-                                          storeName: wishlistNotifier
-                                              .products[index].store.name,
-                                          productName: wishlistNotifier
-                                              .products[index].name,
-                                          productPrice: wishlistNotifier
-                                              .products[index].price,
-                                          distance: ref
-                                              .read(locationService)
-                                              .getDistance(
-                                                endLat: wishlistNotifier
-                                                    .products[index].lat,
-                                                endLon: wishlistNotifier
-                                                    .products[index].lon,
-                                              ),
                                           isFavorite: true,
                                           onProductTapped: () {
                                             ref

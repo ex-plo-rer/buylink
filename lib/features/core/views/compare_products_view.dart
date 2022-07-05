@@ -111,8 +111,8 @@ class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
                   if (compareSearchNotifier.minPrice! >=
                       compareSearchNotifier.maxPrice!) {
                     Alertify(
-                            title:
-                                'Minimum price should not be greater than maximum price.')
+                        title:
+                        'Minimum price should not be greater than maximum price.')
                         .error();
                   } else {
                     ref.read(navigationServiceProvider).navigateBack();
@@ -129,87 +129,73 @@ class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
               child: compareSearchNotifier.productsLoading
                   ? const CircularProgress()
                   : compareSearchNotifier.products.isEmpty
-                      ? AppEmptyStates(
-                          imageString: AppImages.bag,
-                          message1String:
-                              'No Product... Kindly Reload or check back',
-                          buttonString: 'Reload',
-                          hasButton: false,
-                          hasIcon: false,
-                          onButtonPressed: () => () {})
-                      : MasonryGridView.count(
-                          itemCount: compareSearchNotifier.products.length,
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 20,
-                          crossAxisSpacing: 15,
-                          itemBuilder: (context, index) {
-                            return ProductContainer(
-                              product: compareSearchNotifier.products[index],
-                              url: compareSearchNotifier
-                                  .products[index].image[0],
-                              storeName: compareSearchNotifier
-                                  .products[index].store.name,
-                              productName:
-                                  compareSearchNotifier.products[index].name,
-                              productPrice:
-                                  compareSearchNotifier.products[index].price,
-                              distance: ref.watch(locationService).getDistance(
-                                    endLat: compareSearchNotifier
-                                        .products[index].lat,
-                                    endLon: compareSearchNotifier
-                                        .products[index].lon,
-                                  ),
-                              isFavorite: false,
-                              onProductTapped: () async {
-                                Loader(context).showLoader(text: '');
-                                await ref
-                                    .read(flipNotifierProvider)
-                                    .addItemToCompare(
-                                        productId: compareSearchNotifier
-                                            .products[index].id);
-                                if (ref
-                                    .read(flipNotifierProvider)
-                                    .successfullyAdded) {
-                                  Loader(context).hideLoader();
-                                  ref
-                                      .read(navigationServiceProvider)
-                                      .navigateBack();
-                                  ref
-                                      .read(navigationServiceProvider)
-                                      .navigateOffNamed(
-                                        Routes.compare,
-                                      );
-                                  return;
-                                }
-                                Loader(context).hideLoader();
-                              },
-                              onDistanceTapped: () {},
-                              onFlipTapped: () {
-                                // ref
-                                //     .read(navigationServiceProvider)
-                                //     .navigateToNamed(
-                                //       Routes.compare,
-                                //       arguments: CompareArgModel(
-                                //           product: compareSearchNotifier
-                                //               .products[index]),
-                                //     );
-                              },
-                              onFavoriteTapped: () async {
-                                // compareSearchNotifier.products[index].isFav!
-                                //     ? await wishlistNotifier
-                                //         .removeFromWishlist(
-                                //         productId: compareSearchNotifier
-                                //             .products[index].id,
-                                //       )
-                                //     : await wishlistNotifier.addToWishlist(
-                                //         productId: compareSearchNotifier
-                                //             .products[index].id,
-                                //       );
-                                // ref.refresh(
-                                //     compareSearchNotifierProvider(null));
-                              },
-                            );
-                          }),
+                  ? AppEmptyStates(
+                  imageString: AppImages.bag,
+                  message1String:
+                  'No Product... Kindly Reload or check back',
+                  buttonString: 'Reload',
+                  hasButton: false,
+                  hasIcon: false,
+                  onButtonPressed: () => () {})
+                  : MasonryGridView.count(
+                  itemCount: compareSearchNotifier.products.length,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 15,
+                  itemBuilder: (context, index) {
+                    return ProductContainer(
+                      product: compareSearchNotifier.products[index],
+                      isFavorite: false,
+                      onProductTapped: () async {
+                        Loader(context).showLoader(text: '');
+                        await ref
+                            .read(flipNotifierProvider)
+                            .addItemToCompare(
+                            productId: compareSearchNotifier
+                                .products[index].id);
+                        if (ref
+                            .read(flipNotifierProvider)
+                            .successfullyAdded) {
+                          Loader(context).hideLoader();
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateBack();
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateOffNamed(
+                            Routes.compare,
+                          );
+                          return;
+                        }
+                        Loader(context).hideLoader();
+                      },
+                      onDistanceTapped: () {},
+                      onFlipTapped: () {
+                        // ref
+                        //     .read(navigationServiceProvider)
+                        //     .navigateToNamed(
+                        //       Routes.compare,
+                        //       arguments: CompareArgModel(
+                        //           product: compareSearchNotifier
+                        //               .products[index]),
+                        //     );
+                      },
+                      onFavoriteTapped: () async {
+                        // compareSearchNotifier.products[index].isFav!
+                        //     ? await wishlistNotifier
+                        //         .removeFromWishlist(
+                        //         productId: compareSearchNotifier
+                        //             .products[index].id,
+                        //       )
+                        //     : await wishlistNotifier.addToWishlist(
+                        //         productId: compareSearchNotifier
+                        //             .products[index].id,
+                        //       );
+                        // ref.refresh(
+                        //     compareSearchNotifierProvider(null));
+                      },
+                    );
+                  }),
             ),
           ],
         ),

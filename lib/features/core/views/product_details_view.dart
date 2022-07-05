@@ -394,22 +394,6 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                                     return ProductContainer(
                                       product: productDetailsNotifier
                                           .similarProducts[index],
-                                      url: productDetailsNotifier
-                                          .similarProducts[index].image[0],
-                                      storeName: productDetailsNotifier
-                                          .similarProducts[index].store.name,
-                                      productName: productDetailsNotifier
-                                          .similarProducts[index].name,
-                                      productPrice: productDetailsNotifier
-                                          .similarProducts[index].price,
-                                      distance: ref
-                                          .watch(locationService)
-                                          .getDistance(
-                                            endLat: productDetailsNotifier
-                                                .similarProducts[index].lat,
-                                            endLon: productDetailsNotifier
-                                                .similarProducts[index].lon,
-                                          ),
                                       isFavorite: productDetailsNotifier
                                           .similarProducts[index].isFav!,
                                       isDetails: true,
