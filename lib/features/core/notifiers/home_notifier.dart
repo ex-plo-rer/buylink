@@ -65,6 +65,14 @@ class HomeNotifier extends BaseChangeNotifier {
 
   bool get showWelcome => _showWelcome;
 
+  bool willPopM() {
+    if (_initialText != 'Latest products around you') {
+      fetchProducts(category: 'all');
+      return false;
+    }
+    return _initialText == 'Latest products around you';
+  }
+
   void startTimer() async {
     await Future.delayed(const Duration(seconds: 2));
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {

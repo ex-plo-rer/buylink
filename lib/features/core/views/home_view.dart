@@ -53,211 +53,219 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
     final homeNotifier = ref.watch(homeNotifierProvider(null));
-    print('latttttttttttttttttttttttttt${ref
-        .watch(locationService)
-        .lat}');
+    print('latttttttttttttttttttttttttt${ref.watch(locationService).lat}');
     // ref.watch(locationService).getCurrentLocation();
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 24,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppTextField(
-                hintText: 'What would you like to buy?',
-                onTap: () async {
-                  searchFN.unfocus();
-                  ref.read(productSearchNotifierProvider).getRecentSearches();
-                  await showSearch(
-                    context: context,
-                    delegate: ProductSearch(
-                      ref: ref,
-                    ),
-                  );
-                },
-                prefixIcon: const Icon(Icons.search_outlined),
-                hasBorder: false,
-                isSearch: true,
-                fillColor: AppColors.grey8,
-                focusNode: searchFN,
-              ),
-              //   ),
-              // ),
-              const Spacing.height(12),
-              ref
-                  .watch(userProvider)
-                  .currentUser == null
-                  ? AppButton(
-                text: 'Log in to personalize your Buylink experience',
-                textColor: AppColors.primaryColor,
-                fontSize: 14,
-                backgroundColor: AppColors.shade1,
-                hasIcon: true,
-                icon: SvgPicture.asset(AppSvgs.login),
-                onPressed: () {
-                  ref.read(navigationServiceProvider).navigateOffAllNamed(
-                    Routes.login,
-                        (p0) => false,
-                  );
-                },
-              )
-                  : widget.fromLoginOrSignup
-                  ? homeNotifier.showWelcome
-                  ? AppButton(
-                text: 'Welcome to Buylink',
-                textColor: const Color(0xff14AD9F),
-                fontSize: 14,
-                backgroundColor: const Color(0xffDFF8F6),
-                hasIcon: true,
-                icon: SvgPicture.asset(AppSvgs.favoriteFilled),
-              )
-                  : const Spacing.empty()
-                  : const Spacing.empty(),
-              const Spacing.height(12),
-              if (!homeNotifier.productLoading ||
-                  homeNotifier.products.isNotEmpty)
-                Text(
-                  homeNotifier.initialText,
-                  style: const TextStyle(
-                    color: AppColors.grey1,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+    return WillPopScope(
+      onWillPop: () async {
+        return homeNotifier.willPopM();
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+              horizontal: 24,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppTextField(
+                  hintText: 'What would you like to buy?',
+                  onTap: () async {
+                    searchFN.unfocus();
+                    ref.read(productSearchNotifierProvider).getRecentSearches();
+                    await showSearch(
+                      context: context,
+                      delegate: ProductSearch(
+                        ref: ref,
+                      ),
+                    );
+                  },
+                  prefixIcon: const Icon(Icons.search_outlined),
+                  hasBorder: false,
+                  isSearch: true,
+                  fillColor: AppColors.grey8,
+                  focusNode: searchFN,
                 ),
-              const Spacing.smallHeight(),
-              Expanded(
-                child: homeNotifier.productLoading
-                    ? const CircularProgress()
-                    : homeNotifier.products.isEmpty
-                    ? const AppEmptyStates(
-                  imageString: AppImages.emptyProduct,
-                  message1String: 'Oops, no products available',
-                  message2String:
-                  'Try searching with another keyword',
-                  buttonString: '',
-                  hasButton: false,
-                  hasIcon: false,
-                  // onButtonPressed: () => homeNotifier.fetchProducts(category: 'all'),
-                )
-                    : MasonryGridView.count(
-                  itemCount: homeNotifier.products.length,
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 15,
-                  itemBuilder: (context, index) {
-                    if (index == 3) {
-                      return Container(
-                        height: 182,
-                        color: AppColors.transparent,
-                        child: homeNotifier.categoriesLoading
-                            ? const CircularProgress()
-                            : homeNotifier.categories.isEmpty
-                            ? const Center(
-                          child: Text('Category is empty'),
-                        )
-                            : Column(
-                          mainAxisAlignment:
-                          MainAxisAlignment
-                              .spaceBetween,
-                          children: [
-                            CategoryContainer(
-                              categoryName: homeNotifier
-                                  .categories[0].name,
-                              categoryImage: homeNotifier
-                                  .categories[0].image,
-                              onTap: () =>
-                                  homeNotifier
-                                      .fetchProducts(
-                                      category: homeNotifier
-                                          .categories[0]
-                                          .name),
-                            ),
-                            CategoryContainer(
-                              categoryName: homeNotifier
-                                  .categories[1].name,
-                              categoryImage: homeNotifier
-                                  .categories[1].image,
-                              onTap: () =>
-                                  homeNotifier
-                                      .fetchProducts(
-                                      category: homeNotifier
-                                          .categories[1]
-                                          .name),
-                            ),
-                            CategoryContainer(
-                              categoryName: homeNotifier
-                                  .categories[2].name,
-                              categoryImage: homeNotifier
-                                  .categories[2].image,
-                              onTap: () =>
-                                  homeNotifier
-                                      .fetchProducts(
-                                      category: homeNotifier
-                                          .categories[2]
-                                          .name),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      return ProductContainer(
-                        product: homeNotifier.products[index],
-                        isFavorite: homeNotifier.fav[index]!,
-                        onProductTapped: () {
+                //   ),
+                // ),
+                const Spacing.height(12),
+                ref.watch(userProvider).currentUser == null
+                    ? AppButton(
+                        text: 'Log in to personalize your Buylink experience',
+                        textColor: AppColors.primaryColor,
+                        fontSize: 14,
+                        backgroundColor: AppColors.shade1,
+                        hasIcon: true,
+                        icon: SvgPicture.asset(AppSvgs.login),
+                        onPressed: () {
                           ref
                               .read(navigationServiceProvider)
-                              .navigateToNamed(
-                            Routes.productDetails,
-                            arguments:
-                            homeNotifier.products[index],
-                          );
+                              .navigateOffAllNamed(
+                                Routes.login,
+                                (p0) => false,
+                              );
                         },
-                        onDistanceTapped: () {},
-                        onFlipTapped: () async {
-                          Loader(context).showLoader(text: '');
-                          await ref
-                              .read(flipNotifierProvider)
-                              .addItemToCompare(
-                              productId: homeNotifier
-                                  .products[index].id);
-                          if (ref
-                              .read(flipNotifierProvider)
-                              .successfullyAdded) {
-                            Loader(context).hideLoader();
-                            ref
-                                .read(navigationServiceProvider)
-                                .navigateToNamed(Routes.compare);
-                            return;
-                          }
-                          Loader(context).hideLoader();
-                        },
-                        onFavoriteTapped: () =>
-                            homeNotifier.toggleFav(
-                                index: index,
-                                id: homeNotifier.products[index].id),
-                        // {
-                        //   homeNotifier.products[index].isFav!
-                        //       ? await wishlistNotifier
-                        //           .removeFromWishlist(
-                        //           productId:
-                        //               homeNotifier.products[index].id,
-                        //         )
-                        //       : await wishlistNotifier.addToWishlist(
-                        //           productId:
-                        //               homeNotifier.products[index].id,
-                        //         );
-                        //   ref.refresh(homeNotifierProvider(null));
-                        // },
-                      );
-                    }
-                  },
+                      )
+                    : widget.fromLoginOrSignup
+                        ? homeNotifier.showWelcome
+                            ? AppButton(
+                                text: 'Welcome to Buylink',
+                                textColor: const Color(0xff14AD9F),
+                                fontSize: 14,
+                                backgroundColor: const Color(0xffDFF8F6),
+                                hasIcon: true,
+                                icon: SvgPicture.asset(AppSvgs.favoriteFilled),
+                              )
+                            : const Spacing.empty()
+                        : const Spacing.empty(),
+                const Spacing.height(12),
+                if (!homeNotifier.productLoading ||
+                    homeNotifier.products.isNotEmpty)
+                  Text(
+                    homeNotifier.initialText,
+                    style: const TextStyle(
+                      color: AppColors.grey1,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                const Spacing.smallHeight(),
+                Expanded(
+                  child: homeNotifier.productLoading
+                      ? const CircularProgress()
+                      : homeNotifier.products.isEmpty
+                          ? const AppEmptyStates(
+                              imageString: AppImages.emptyProduct,
+                              message1String: 'Oops, no products available',
+                              message2String:
+                                  'Try searching with another keyword',
+                              buttonString: '',
+                              hasButton: false,
+                              hasIcon: false,
+                              // onButtonPressed: () => homeNotifier.fetchProducts(category: 'all'),
+                            )
+                          : MasonryGridView.count(
+                              itemCount: homeNotifier.products.length,
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 15,
+                              itemBuilder: (context, index) {
+                                if (index == 3) {
+                                  return Container(
+                                    height: 182,
+                                    color: AppColors.transparent,
+                                    child: homeNotifier.categoriesLoading
+                                        ? const CircularProgress()
+                                        : homeNotifier.categories.isEmpty
+                                            ? const Center(
+                                                child:
+                                                    Text('Category is empty'),
+                                              )
+                                            : Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  CategoryContainer(
+                                                    categoryName: homeNotifier
+                                                        .categories[0].name,
+                                                    categoryImage: homeNotifier
+                                                        .categories[0].image,
+                                                    onTap: () => homeNotifier
+                                                        .fetchProducts(
+                                                            category:
+                                                                homeNotifier
+                                                                    .categories[
+                                                                        0]
+                                                                    .name),
+                                                  ),
+                                                  CategoryContainer(
+                                                    categoryName: homeNotifier
+                                                        .categories[1].name,
+                                                    categoryImage: homeNotifier
+                                                        .categories[1].image,
+                                                    onTap: () => homeNotifier
+                                                        .fetchProducts(
+                                                            category:
+                                                                homeNotifier
+                                                                    .categories[
+                                                                        1]
+                                                                    .name),
+                                                  ),
+                                                  CategoryContainer(
+                                                    categoryName: homeNotifier
+                                                        .categories[2].name,
+                                                    categoryImage: homeNotifier
+                                                        .categories[2].image,
+                                                    onTap: () => homeNotifier
+                                                        .fetchProducts(
+                                                            category:
+                                                                homeNotifier
+                                                                    .categories[
+                                                                        2]
+                                                                    .name),
+                                                  ),
+                                                ],
+                                              ),
+                                  );
+                                } else {
+                                  return ProductContainer(
+                                    product: homeNotifier.products[index],
+                                    isFavorite: homeNotifier.fav[index]!,
+                                    onProductTapped: () {
+                                      ref
+                                          .read(navigationServiceProvider)
+                                          .navigateToNamed(
+                                            Routes.productDetails,
+                                            arguments:
+                                                homeNotifier.products[index],
+                                          );
+                                    },
+                                    onDistanceTapped: () {},
+                                    onFlipTapped: () async {
+                                      Loader(context).showLoader(text: '');
+                                      await ref
+                                          .read(flipNotifierProvider)
+                                          .addItemToCompare(
+                                              productId: homeNotifier
+                                                  .products[index].id);
+                                      if (ref
+                                          .read(flipNotifierProvider)
+                                          .successfullyAdded) {
+                                        Loader(context).hideLoader();
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateToNamed(Routes.compare);
+                                        return;
+                                      }
+                                      Loader(context).hideLoader();
+                                    },
+                                    onFavoriteTapped: () =>
+                                        homeNotifier.toggleFav(
+                                            index: index,
+                                            id: homeNotifier
+                                                .products[index].id),
+                                    // {
+                                    //   homeNotifier.products[index].isFav!
+                                    //       ? await wishlistNotifier
+                                    //           .removeFromWishlist(
+                                    //           productId:
+                                    //               homeNotifier.products[index].id,
+                                    //         )
+                                    //       : await wishlistNotifier.addToWishlist(
+                                    //           productId:
+                                    //               homeNotifier.products[index].id,
+                                    //         );
+                                    //   ref.refresh(homeNotifierProvider(null));
+                                    // },
+                                  );
+                                }
+                              },
+                            ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
