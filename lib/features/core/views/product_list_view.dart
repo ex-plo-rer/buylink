@@ -22,6 +22,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../widgets/app_empty_states.dart';
 import '../models/compare_arg_model.dart';
 import '../models/product_model.dart';
 import '../notifiers/category_notifier.dart';
@@ -120,84 +121,106 @@ class _WishlistState extends ConsumerState<ProductListView>
                   children: categoryNotifier.storeCategories.map((category) {
                     return productListNotifier.state.isLoading
                         ? const CircularProgress()
-                        : MasonryGridView.count(
-                            itemCount: productListNotifier.products.length,
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
-                            itemBuilder: (context, index) {
-                              return ProductContainerPList(
-                                url: productListNotifier
-                                    .products[index].image[0],
-                                storeName: productListNotifier
-                                    .products[index].store.name,
-                                productName:
-                                    productListNotifier.products[index].name,
-                                productPrice:
-                                    productListNotifier.products[index].price,
-                                distance: ref.read(locationService).getDistance(
-                                      endLat: productListNotifier
-                                          .products[index].lat,
-                                      endLon: productListNotifier
-                                          .products[index].lon,
-                                    ),
-                                isFavorite:
-                                    productListNotifier.products[index].isFav!,
-                                onProductTapped: () {
+                        : productListNotifier.products.isEmpty
+                            ? AppEmptyStates(
+                                onButtonPressed: () {
                                   ref
                                       .read(navigationServiceProvider)
                                       .navigateToNamed(
-                                        Routes.productDetails2,
-                                        arguments:
-                                            productListNotifier.products[index],
-                                        // arguments: EditProductArgModel(store: productListNotifier.products[index].store, product: productListNotifier.productEditModel),
+                                        Routes.addProduct,
+                                        arguments: widget.store,
                                       );
-                                  // ref
-                                  //     .read(navigationServiceProvider)
-                                  //     .navigateToNamed(
-                                  //       Routes.editProduct,
-                                  //       // arguments: productListNotifier.products[index],
-                                  //       // arguments: EditProductArgModel(store: productListNotifier.products[index].store, product: productListNotifier.productEditModel),
-                                  //     );
                                 },
-                                onDistanceTapped: () {},
-                                onFlipTapped: () async {
-                                  await ref
-                                      .read(flipNotifierProvider)
-                                      .addItemToCompare(
-                                          productId: productListNotifier
-                                              .products[index].id);
-                                  if (ref
-                                      .read(flipNotifierProvider)
-                                      .successfullyAdded) {
-                                    ref
-                                        .read(navigationServiceProvider)
-                                        .navigateToNamed(Routes.compare);
-                                  }
-                                },
-                                onFavoriteTapped: () async {
-                                  productListNotifier.products[index].isFav!
-                                      ? await ref
-                                          .read(wishlistNotifierProvider)
-                                          .removeFromWishlist(
-                                            productId: ref
-                                                .read(wishlistNotifierProvider)
-                                                .products[index]
-                                                .id,
-                                          )
-                                      : await ref
-                                          .read(wishlistNotifierProvider)
-                                          .addToWishlist(
-                                            productId: ref
-                                                .read(wishlistNotifierProvider)
-                                                .products[index]
-                                                .id,
+                                imageString: AppImages.emptyProduct,
+                                message1String: 'No Product Added Yet',
+                                message2String:
+                                    'Tap the button below to create your first store',
+                                buttonString: '+ Add your first Product',
+                                hasButton: true,
+                                hasIcon: false,
+                                // onButtonPressed: () => homeNotifier.fetchProducts(category: 'all'),
+                              )
+                            : MasonryGridView.count(
+                                itemCount: productListNotifier.products.length,
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 20,
+                                crossAxisSpacing: 15,
+                                itemBuilder: (context, index) {
+                                  return ProductContainerPList(
+                                    url: productListNotifier
+                                        .products[index].image[0],
+                                    storeName: productListNotifier
+                                        .products[index].store.name,
+                                    productName: productListNotifier
+                                        .products[index].name,
+                                    productPrice: productListNotifier
+                                        .products[index].price,
+                                    distance:
+                                        ref.read(locationService).getDistance(
+                                              endLat: productListNotifier
+                                                  .products[index].lat,
+                                              endLon: productListNotifier
+                                                  .products[index].lon,
+                                            ),
+                                    isFavorite: productListNotifier
+                                        .products[index].isFav!,
+                                    onProductTapped: () {
+                                      ref
+                                          .read(navigationServiceProvider)
+                                          .navigateToNamed(
+                                            Routes.productDetails2,
+                                            arguments: productListNotifier
+                                                .products[index],
+                                            // arguments: EditProductArgModel(store: productListNotifier.products[index].store, product: productListNotifier.productEditModel),
                                           );
-                                  ref.refresh(wishlistNotifierProvider);
+                                      // ref
+                                      //     .read(navigationServiceProvider)
+                                      //     .navigateToNamed(
+                                      //       Routes.editProduct,
+                                      //       // arguments: productListNotifier.products[index],
+                                      //       // arguments: EditProductArgModel(store: productListNotifier.products[index].store, product: productListNotifier.productEditModel),
+                                      //     );
+                                    },
+                                    onDistanceTapped: () {},
+                                    onFlipTapped: () async {
+                                      await ref
+                                          .read(flipNotifierProvider)
+                                          .addItemToCompare(
+                                              productId: productListNotifier
+                                                  .products[index].id);
+                                      if (ref
+                                          .read(flipNotifierProvider)
+                                          .successfullyAdded) {
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateToNamed(Routes.compare);
+                                      }
+                                    },
+                                    onFavoriteTapped: () async {
+                                      productListNotifier.products[index].isFav!
+                                          ? await ref
+                                              .read(wishlistNotifierProvider)
+                                              .removeFromWishlist(
+                                                productId: ref
+                                                    .read(
+                                                        wishlistNotifierProvider)
+                                                    .products[index]
+                                                    .id,
+                                              )
+                                          : await ref
+                                              .read(wishlistNotifierProvider)
+                                              .addToWishlist(
+                                                productId: ref
+                                                    .read(
+                                                        wishlistNotifierProvider)
+                                                    .products[index]
+                                                    .id,
+                                              );
+                                      ref.refresh(wishlistNotifierProvider);
+                                    },
+                                  );
                                 },
                               );
-                            },
-                          );
                   }).toList(),
                 ),
               ),

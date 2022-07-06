@@ -165,69 +165,67 @@ class ProductContainer extends ConsumerWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                Row(
-                    //  mainAxisSize: MainAxisSize.min,
-                    children: [
-                      RichText(
-                        // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
+                Row(mainAxisSize: MainAxisSize.min, children: [
+                  RichText(
+                    // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
+                    text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                          style: const TextStyle(
+                            color: AppColors.grey1,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          child: SvgPicture.asset(
+                            AppSvgs.naira,
+                            height: 15,
+                            width: 15,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '$productPrice',
+                          style: const TextStyle(
+                            color: AppColors.grey1,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacing.tinyWidth(),
+                  Visibility(
+                      visible: oldPrice > 0,
+                      child: RichText(
                         text: TextSpan(
                           children: [
                             WidgetSpan(
+                              // alignment: Alignment.topLeft,
                               style: const TextStyle(
-                                color: AppColors.grey1,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
+                                  color: AppColors.grey4,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  decoration: TextDecoration.lineThrough),
                               child: SvgPicture.asset(
                                 AppSvgs.naira,
-                                height: 15,
-                                width: 15,
+                                height: 13.5,
+                                width: 13.5,
+                                color: AppColors.grey4,
                               ),
                             ),
                             TextSpan(
-                              text: '$productPrice',
+                              text: '$oldPrice',
                               style: const TextStyle(
-                                color: AppColors.grey1,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.grey4,
+                                decoration: TextDecoration.lineThrough,
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      const Spacing.tinyWidth(),
-                      Visibility(
-                          visible: oldPrice > 0,
-                          child: RichText(
-                            text: TextSpan(
-                              children: [
-                                WidgetSpan(
-                                  // alignment: Alignment.topLeft,
-                                  style: const TextStyle(
-                                      color: AppColors.grey4,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      decoration: TextDecoration.lineThrough),
-                                  child: SvgPicture.asset(
-                                    AppSvgs.naira,
-                                    height: 13.5,
-                                    width: 13.5,
-                                    color: AppColors.grey4,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '$oldPrice',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.grey4,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ]),
+                      )),
+                ]),
                 // Text(
                 //   '#$productPrice',
                 //   overflow: isDetails ? null : TextOverflow.ellipsis,
