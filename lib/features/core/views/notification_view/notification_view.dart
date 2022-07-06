@@ -56,7 +56,7 @@ class _NotificationState extends ConsumerState<NotificationView>
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding:  const EdgeInsets.fromLTRB(18, 14, 18, 0),
+          padding: const EdgeInsets.fromLTRB(18, 14, 18, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -73,6 +73,7 @@ class _NotificationState extends ConsumerState<NotificationView>
                 labelColor: AppColors.primaryColor,
                 unselectedLabelColor: AppColors.grey5,
                 padding: const EdgeInsets.only(bottom: 10),
+                indicatorColor: AppColors.primaryColor,
                 controller: _tabController,
                 //isScrollable: true,
                 tabs: const [
