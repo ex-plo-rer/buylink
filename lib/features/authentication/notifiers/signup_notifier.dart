@@ -40,7 +40,7 @@ class SignupNotifier extends BaseChangeNotifier {
   // int _seconds = 30;
   // int get seconds => _seconds;
 
-  String _minutes = '00';
+  String _minutes = '0';
   String _seconds = '00';
 
   String get minutes => _minutes;

@@ -161,6 +161,38 @@ class ForgotPasswordView extends ConsumerWidget {
                               _otp = val;
                             },
                           ),
+                          Spacing.mediumHeight(),
+                          Align(
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                '$0:${forgotPasswordNotifier.seconds}',
+                                style: const TextStyle(
+                                  color: AppColors.grey1,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )),
+                          Align(
+                              alignment: Alignment.topCenter,
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (forgotPasswordNotifier.canResendOTP) {
+                                    //Resend OTP;
+                                  } else {
+                                    Alertify(title: 'Please wait...').error();
+                                  }
+                                },
+                                child: Text(
+                                  'Resend OTP',
+                                  style: TextStyle(
+                                    color: forgotPasswordNotifier.canResendOTP
+                                        ? AppColors.primaryColor
+                                        : AppColors.grey6,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              )),
                         ],
                       ),
                       Column(
