@@ -1,7 +1,4 @@
-import 'package:buy_link/features/core/models/category_model.dart';
-import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/store_quick_model.dart';
-import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/repositories/store_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -47,7 +44,7 @@ class StoreDetailsNotifier extends BaseChangeNotifier {
       Alertify(title: e.error!).error();
     } finally {
       _detailsLoading = false;
-     // setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 
@@ -68,7 +65,7 @@ class StoreDetailsNotifier extends BaseChangeNotifier {
       setState(state: ViewState.error);
       Alertify(title: e.error!).error();
     } finally {
-     // setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 }

@@ -1,5 +1,3 @@
-import 'package:buy_link/core/routes.dart';
-import 'package:buy_link/services/navigation_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/utilities/alertify.dart';
@@ -10,6 +8,7 @@ import '../../../../services/base/network_exception.dart';
 
 class DeleteUserNotifier extends BaseChangeNotifier {
   final Reader _reader;
+
   DeleteUserNotifier(this._reader);
 
   final List<String> reasons = [
@@ -21,42 +20,55 @@ class DeleteUserNotifier extends BaseChangeNotifier {
   ];
 
   late bool _accountDeleted;
+
   bool get accountDeleted => _accountDeleted;
 
   bool _reason1 = false;
+
   bool get reason1 => _reason1;
 
   bool _reason2 = false;
+
   bool get reason2 => _reason2;
 
   bool _reason3 = false;
+
   bool get reason3 => _reason3;
 
   bool _reason4 = false;
+
   bool get reason4 => _reason4;
 
   bool _reason5 = false;
+
   bool get reason5 => _reason5;
 
   String _reason = '';
+
   String get reason => _reason;
 
   bool _passwordVisible = false;
+
   bool get passwordVisible => _passwordVisible;
 
   int _currentPage = 1;
+
   int get currentPage => _currentPage;
 
   int _totalPage = 3;
+
   int get totalPage => _totalPage;
 
   String _detail = '';
+
   String get detail => _detail;
 
   String _password = '';
+
   String get password => _password;
 
   late bool _passwordCorrect;
+
   bool get passwordCorrect => _passwordCorrect;
 
   void toggleCheckbox({required bool? value, required int index}) {

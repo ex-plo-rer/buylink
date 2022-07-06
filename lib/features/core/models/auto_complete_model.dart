@@ -2,7 +2,6 @@
 //
 //     final autoCompleteModel = autoCompleteModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 AutoCompleteModel autoCompleteModelFromJson(String str) =>

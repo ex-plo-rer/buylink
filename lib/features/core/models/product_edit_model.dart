@@ -2,7 +2,6 @@
 //
 //     final productEditModel = productEditModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 ProductEditModel productEditModelFromJson(String str) =>

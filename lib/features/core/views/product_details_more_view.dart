@@ -1,22 +1,11 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/constants/images.dart';
-import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/product_details_notifier.dart';
-import 'package:buy_link/widgets/app_button.dart';
-import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/compare_texts.dart';
-import 'package:buy_link/widgets/compare_texts_2.dart';
-import 'package:buy_link/widgets/product_container.dart';
-import 'package:buy_link/widgets/product_image_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
@@ -35,13 +24,10 @@ class ProductDetailsMoreView extends ConsumerWidget {
         ),
         leading: IconButton(
           onPressed: () {
-            ref
-                .read(navigationServiceProvider)
-                .navigateBack();
+            ref.read(navigationServiceProvider).navigateBack();
           },
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined, size: 15, color: AppColors.grey2
-          ),
+          icon: const Icon(Icons.arrow_back_ios_outlined,
+              size: 15, color: AppColors.grey2),
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,

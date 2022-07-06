@@ -1,10 +1,8 @@
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/constants/colors.dart';
-import '../core/constants/svgs.dart';
 
 class BackArrow extends ConsumerWidget {
   const BackArrow({

@@ -7,7 +7,6 @@ import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../repositories/setting_repository.dart';
 import '../../../../services/base/network_exception.dart';
-import '../user_provider.dart';
 
 class EditUserNameNotifier extends BaseChangeNotifier {
   final Reader _reader;

@@ -2,13 +2,10 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
-import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/features/core/models/compare_arg_model.dart';
 import 'package:buy_link/features/core/notifiers/flip_notifier.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/product_search_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
-import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
@@ -21,11 +18,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
+
 import '../../../core/utilities/loader.dart';
 import '../../../widgets/circular_progress.dart';
 import '../models/product_search.dart';
-import '../notifiers/category_notifier.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   HomeView({

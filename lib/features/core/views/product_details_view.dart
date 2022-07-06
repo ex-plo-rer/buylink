@@ -50,7 +50,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .watch(productDetailsNotifierProvider)
           .setFavorite(widget.product.isFav!);

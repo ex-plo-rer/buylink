@@ -1,16 +1,11 @@
 import 'package:buy_link/features/core/notifiers/dashboard_notifier.dart';
 import 'package:buy_link/services/local_storage_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../../../../core/constants/strings.dart';
 import '../../../../core/routes.dart';
-import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../services/navigation_service.dart';
-import '../../../../core/utilities/view_state.dart';
-import '../../../../repositories/setting_repository.dart';
-import '../../../../services/base/network_exception.dart';
-import '../../models/user_model.dart';
-import '../user_provider.dart';
 
 class SettingNotifier extends BaseChangeNotifier {
   final Reader _reader;

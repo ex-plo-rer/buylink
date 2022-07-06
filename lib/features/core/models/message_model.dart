@@ -1,5 +1,3 @@
-import 'package:buy_link/features/core/models/product_model.dart';
-
 // storeId is only required when we want to move to the messageview from storedashboard
 class MessageModel {
   dynamic id;

@@ -1,10 +1,8 @@
 import 'package:buy_link/core/utilities/loader.dart';
-import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/widgets/otp_input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/strings.dart';
@@ -17,7 +15,6 @@ import '../../../widgets/app_button.dart';
 import '../../../widgets/app_check_box.dart';
 import '../../../widgets/app_linear_progress.dart';
 import '../../../widgets/app_text_field.dart';
-import '../../../widgets/otp_form.dart';
 import '../../../widgets/spacing.dart';
 import '../../../widgets/text_with_rich.dart';
 import '../notifiers/forgot_password_notifier.dart';

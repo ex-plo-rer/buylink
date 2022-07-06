@@ -6,7 +6,6 @@ import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/search_result_arg_model.dart';
 import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/map_search_dialog.dart';
 import 'package:buy_link/widgets/map_search_term_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +16,9 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes.dart';
-import '../../../../core/utilities/map/circle.dart';
 import '../../../../widgets/app_button.dart';
 import '../../models/product_search.dart';
 import '../../notifiers/store_notifier/product_search_notifier.dart';

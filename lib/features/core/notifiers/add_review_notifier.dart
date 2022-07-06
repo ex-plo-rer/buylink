@@ -1,7 +1,6 @@
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/services/base/network_exception.dart';
-import 'package:buy_link/services/navigation_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/utilities/base_change_notifier.dart';

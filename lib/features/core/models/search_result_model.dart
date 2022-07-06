@@ -2,9 +2,9 @@
 //
 //     final searchResultModel = searchResultModelFromJson(jsonString);
 
-import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
+
+import 'package:buy_link/features/core/models/product_model.dart';
 
 SearchResultModel searchResultModelFromJson(String str) =>
     SearchResultModel.fromJson(json.decode(str));

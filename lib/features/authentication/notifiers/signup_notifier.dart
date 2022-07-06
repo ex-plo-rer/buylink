@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
@@ -12,7 +11,6 @@ import '../../../repositories/authentication_repository.dart';
 import '../../../services/base/network_exception.dart';
 import '../../../services/local_storage_service.dart';
 import '../../../services/navigation_service.dart';
-import '../../../services/snackbar_service.dart';
 import '../../core/notifiers/user_provider.dart';
 
 class SignupNotifier extends BaseChangeNotifier {

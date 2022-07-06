@@ -1,27 +1,16 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/constants/images.dart';
-import 'package:buy_link/core/constants/strings.dart';
-import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/features/core/models/category_model.dart';
-import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
-import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/app_button.dart';
-import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/utilities/loader.dart';
-import '../models/compare_arg_model.dart';
 import '../notifiers/category_notifier.dart';
 import '../notifiers/flip_notifier.dart';
 
@@ -39,7 +28,7 @@ class _WishlistState extends ConsumerState<WishlistView>
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(categoryNotifierProvider).fetchUserCategories();
       _tabController = TabController(
           length: ref.read(categoryNotifierProvider).userCategories.length,

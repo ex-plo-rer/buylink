@@ -9,7 +9,6 @@ import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/custmised_text.dart';
-import 'package:buy_link/widgets/iconNtext_container.dart';
 import 'package:buy_link/widgets/most_searched_product_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(storeDashboardNotifierProvider)
           .initFetch(storeId: widget.store.id);

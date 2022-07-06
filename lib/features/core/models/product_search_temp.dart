@@ -1,13 +1,10 @@
 import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:buy_link/features/core/notifiers/home_notifier.dart';
-import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/colors.dart';
-import '../../../core/routes.dart';
 import '../notifiers/store_notifier/product_search_notifier.dart';
 
 typedef OnSearchChanged = Future<List<String>> Function(String);

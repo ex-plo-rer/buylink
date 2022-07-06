@@ -2,7 +2,6 @@
 //
 //     final reviewStatsModel = reviewStatsModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 ReviewStatsModel reviewStatsModelFromJson(String str) =>

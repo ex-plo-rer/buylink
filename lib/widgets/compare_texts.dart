@@ -2,7 +2,6 @@ import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/colors.dart';
-import '../core/constants/strings.dart';
 
 class CompareTexts extends StatelessWidget {
   final String title;

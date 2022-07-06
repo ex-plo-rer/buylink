@@ -2,7 +2,6 @@
 //
 //     final mostSearchedModel = mostSearchedModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'most_searched_model.dart';

@@ -1,22 +1,16 @@
 import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/features/core/models/message_model.dart';
-import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:buy_link/features/core/models/user_model.dart';
 import 'package:buy_link/features/core/notifiers/message_notifier/chat_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes.dart';
-import '../../../../core/utilities/loader.dart';
-import '../../../../widgets/app_dialog.dart';
 import '../../../../widgets/app_dialog_2.dart';
-import '../../notifiers/category_notifier.dart';
 import '../../notifiers/message_notifier/receiver_profile_notifier.dart';
 
 class ReceiverProfileView extends ConsumerWidget {

@@ -55,11 +55,6 @@
 //
 //
 
-// To parse this JSON data, do
-//
-//     final savedSessionModel = savedSessionModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 SavedSessionModel savedSessionModelFromJson(String str) =>

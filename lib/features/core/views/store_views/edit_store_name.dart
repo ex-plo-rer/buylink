@@ -1,19 +1,13 @@
-import 'package:buy_link/core/routes.dart';
-import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:buy_link/features/core/notifiers/store_notifier/store_notifier.dart';
-import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
-import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/text_with_rich.dart';
-import '../../notifiers/store_notifier/edit_store_name_notifier.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
 
 class EditStoreName extends ConsumerWidget {

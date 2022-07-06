@@ -1,8 +1,5 @@
-import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
-import '../core/constants/colors.dart';
-import '../core/constants/strings.dart';
 import 'compare_texts.dart';
 
 class CompareTexts2 extends StatelessWidget {

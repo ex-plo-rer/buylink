@@ -1,12 +1,8 @@
-import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/models/store_quick_model.dart';
 import 'package:buy_link/features/core/models/weekly_data_model.dart';
-import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../core/constants/strings.dart';
+
 import '../features/core/models/product_model.dart';
-import '../features/core/models/search_result_model.dart';
-import '../features/core/models/user_model.dart';
 import '../features/core/notifiers/user_provider.dart';
 import '../services/local_storage_service.dart';
 import '../services/network/network_service.dart';

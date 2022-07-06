@@ -1,10 +1,5 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
-import 'package:buy_link/features/core/notifiers/home_notifier.dart';
-import 'package:buy_link/widgets/distance_container.dart';
-import 'package:buy_link/widgets/spacing.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -50,7 +45,7 @@ class AppRatingBar extends ConsumerWidget {
       itemBuilder: (context, _) => SvgPicture.asset(
         AppSvgs.star,
         color: Colors.amber,
-      //  width: ,
+        //  width: ,
       ),
       onRatingUpdate: onRatingUpdate,
     );

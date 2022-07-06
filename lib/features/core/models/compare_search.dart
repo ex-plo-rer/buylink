@@ -1,10 +1,4 @@
-import 'package:buy_link/features/core/models/compare_arg_model.dart';
-import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:buy_link/features/core/notifiers/compare_notifier.dart';
-import 'package:buy_link/features/core/notifiers/compare_notifier.dart';
-import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';

@@ -52,7 +52,7 @@ class _ProductDetails2ViewState extends ConsumerState<ProductDetails2View> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
   @override
@@ -95,7 +95,7 @@ class _ProductDetails2ViewState extends ConsumerState<ProductDetails2View> {
             itemBuilder: (context) => [
               PopupMenuItem(
                 onTap: () async {
-                  WidgetsBinding.instance!
+                  WidgetsBinding.instance
                       .addPostFrameCallback((timeStamp) async {
                     loader.showLoader(text: '');
                     await productDetails2Notifier.loadEdit(
@@ -126,7 +126,7 @@ class _ProductDetails2ViewState extends ConsumerState<ProductDetails2View> {
               ),
               PopupMenuItem(
                 onTap: () {
-                  WidgetsBinding.instance!
+                  WidgetsBinding.instance
                       .addPostFrameCallback((timeStamp) async {
                     showDialog(
                       context: context,

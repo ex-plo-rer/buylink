@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/constants/colors.dart';
-import '../features/core/notifiers/settings_notifier/settings_notification_notifier.dart';
 
 class AppToggle extends StatelessWidget {
   AppToggle({

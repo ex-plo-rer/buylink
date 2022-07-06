@@ -2,12 +2,13 @@
 //
 //     final mostSearchedProductModel = mostSearchedProductModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
-MostSearchedProductModel mostSearchedProductModelFromJson(String str) => MostSearchedProductModel.fromJson(json.decode(str));
+MostSearchedProductModel mostSearchedProductModelFromJson(String str) =>
+    MostSearchedProductModel.fromJson(json.decode(str));
 
-String mostSearchedProductModelToJson(MostSearchedProductModel data) => json.encode(data.toJson());
+String mostSearchedProductModelToJson(MostSearchedProductModel data) =>
+    json.encode(data.toJson());
 
 class MostSearchedProductModel {
   MostSearchedProductModel({
@@ -22,17 +23,18 @@ class MostSearchedProductModel {
   int searches;
   int star;
 
-  factory MostSearchedProductModel.fromJson(Map<String, dynamic> json) => MostSearchedProductModel(
-    name: json["name"],
-    image: json["image"],
-    searches: json["searches"],
-    star: json["star"],
-  );
+  factory MostSearchedProductModel.fromJson(Map<String, dynamic> json) =>
+      MostSearchedProductModel(
+        name: json["name"],
+        image: json["image"],
+        searches: json["searches"],
+        star: json["star"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "image": image,
-    "searches": searches,
-    "star": star,
-  };
+        "name": name,
+        "image": image,
+        "searches": searches,
+        "star": star,
+      };
 }

@@ -1,13 +1,14 @@
 import 'dart:convert';
 
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/constants/strings.dart';
 import '../features/core/models/user_model.dart';
 
 class LocalStorageService {
   static LocalStorageService? _instance;
+
   // static SharedPreferences? _preferences;
   final _storage = const FlutterSecureStorage();
 
@@ -48,13 +49,13 @@ class LocalStorageService {
     return value == null ? null : UserModel.fromJson(json.decode(value));
   }
 
-  // Future<List<String>> getRecentSearchesLike(String query) async {
-  //   final allSearches = await _storage.read(key :AppStrings.recentSearchKey);
-  //   return allSearches
-  //       ?.where((product) =>
-  //       product.name.toLowerCase().contains(query.toLowerCase()))
-  //       .toList();
-  // }
+// Future<List<String>> getRecentSearchesLike(String query) async {
+//   final allSearches = await _storage.read(key :AppStrings.recentSearchKey);
+//   return allSearches
+//       ?.where((product) =>
+//       product.name.toLowerCase().contains(query.toLowerCase()))
+//       .toList();
+// }
 
 }
 

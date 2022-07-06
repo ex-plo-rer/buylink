@@ -1,18 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:buy_link/core/utilities/base_change_notifier.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import '../core/constants/strings.dart';
-import '../features/core/models/user_model.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../widgets/app_dialog.dart';
 import 'package:location/location.dart' as lll;
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationService extends BaseChangeNotifier {
   final Reader _reader;
@@ -149,4 +141,4 @@ class LocationService extends BaseChangeNotifier {
 }
 
 final locationService =
-    ChangeNotifierProvider<LocationService>((ref) => LocationService(ref.read));
+    Provider<LocationService>((ref) => LocationService(ref.read));

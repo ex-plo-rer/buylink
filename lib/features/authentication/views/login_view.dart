@@ -4,7 +4,6 @@ import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
-import 'package:buy_link/widgets/app_dialog.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:buy_link/widgets/text_with_rich.dart';

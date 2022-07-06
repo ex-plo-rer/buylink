@@ -1,4 +1,3 @@
-import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/loader.dart';
-import '../../../../services/navigation_service.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/spacing.dart';

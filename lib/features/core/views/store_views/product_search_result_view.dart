@@ -1,26 +1,22 @@
 import 'dart:async';
 
 import 'package:buy_link/core/constants/dimensions.dart';
-import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:buy_link/widgets/map_search_dialog.dart';
 import 'package:buy_link/widgets/product_container.dart';
-import 'package:buy_link/widgets/product_container_search.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_dragmarker/dragmarker.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/svgs.dart';
 import '../../../../core/utilities/map/circle.dart';
-import '../../../../widgets/app_button.dart';
 import '../../../../widgets/map_price_marker.dart';
 import '../../../../widgets/map_search_term_container.dart';
 import '../../../../widgets/product_container_search_horizontal.dart';
@@ -55,7 +51,7 @@ class _ProductSearchResultViewState
   void initState() {
     super.initState();
     // ref.read(storeDirectionNotifierProvider).initLocation();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(productSearchNotifierProvider).initLocation();
       _centerOnLocationUpdate = CenterOnLocationUpdate.always;
       _centerCurrentLocationStreamController = StreamController<double>();

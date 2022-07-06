@@ -1,20 +1,12 @@
-import 'dart:io';
-
-import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/notifiers/add_product_notifier.dart';
-import 'package:buy_link/features/core/views/add_product_desc.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_dropdown_field.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:buy_link/widgets/select_product_image_container.dart';
 import 'package:buy_link/widgets/special_text_field.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/colors.dart';
-import '../../../core/routes.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
 

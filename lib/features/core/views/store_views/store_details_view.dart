@@ -55,7 +55,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // await init();
       await ref
           .read(categoryNotifierProvider)

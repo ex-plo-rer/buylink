@@ -1,18 +1,13 @@
-import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/widgets/search_result_stores_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_dragmarker/dragmarker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+
 import '../../../../core/constants/colors.dart';
 import '../../../../widgets/map_search_dialog.dart';
-import '../../../../widgets/circular_progress.dart';
 import '../../../../widgets/spacing.dart';
-import '../../notifiers/home_notifier.dart';
 import '../../notifiers/store_notifier/product_search_notifier.dart';
-import '../../notifiers/store_notifier/product_searched_result_notifier.dart';
 
 class ProductSearchedResultView extends ConsumerStatefulWidget {
   const ProductSearchedResultView({Key? key}) : super(key: key);

@@ -3,20 +3,14 @@ import 'dart:async';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/repositories/core_repository.dart';
-import 'package:buy_link/services/local_storage_service.dart';
 import 'package:buy_link/services/location_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/constants/strings.dart';
-import '../../../core/routes.dart';
 import '../../../core/utilities/alertify.dart';
 import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../services/base/network_exception.dart';
-import '../../../services/navigation_service.dart';
 import '../models/category_model.dart';
 import '../models/product_model.dart';
 

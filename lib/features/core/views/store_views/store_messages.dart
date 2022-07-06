@@ -1,5 +1,3 @@
-import 'package:buy_link/core/constants/strings.dart';
-import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/message_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
@@ -30,7 +28,7 @@ class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
   void initState() {
     // TODO: implement initState
     print('_StoreMessagesViewState Init state called');
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(messageListNotifierProvider)
           .getChatList(sessionId: '${widget.store.id}s');
@@ -47,7 +45,9 @@ class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
           color: AppColors.dark, //change your color here
         ),
         leading: IconButton(
-          onPressed: () {ref.read(navigationServiceProvider).navigateBack();},
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             size: 12,

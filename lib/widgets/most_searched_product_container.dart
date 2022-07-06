@@ -2,12 +2,8 @@ import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../core/constants/colors.dart';
-import '../core/constants/strings.dart';
-import '../core/constants/svgs.dart';
 import 'app_rating_bar.dart';
 
 class MostSearchedProductContainer extends StatelessWidget {
@@ -56,23 +52,23 @@ class MostSearchedProductContainer extends StatelessWidget {
                 ),
               ),
 
-      // RatingBar.builder(
-      //   itemSize: 20,
-      //   initialRating: rating.toDouble(),
-      //   minRating: 0,
-      //   direction: Axis.horizontal,
-      //   allowHalfRating: true,
-      //   itemCount: 5,
-      //   ignoreGestures: true,
-      //   unratedColor: AppColors.grey7,
-      //   itemPadding: EdgeInsets.symmetric(horizontal: 4),
-      //   itemBuilder: (context, _) => SvgPicture.asset(
-      //     AppSvgs.star,
-      //     color: Colors.amber,
-      //     //  width: ,
-      //   ),
-      //   onRatingUpdate: (rating){},
-      // ),
+              // RatingBar.builder(
+              //   itemSize: 20,
+              //   initialRating: rating.toDouble(),
+              //   minRating: 0,
+              //   direction: Axis.horizontal,
+              //   allowHalfRating: true,
+              //   itemCount: 5,
+              //   ignoreGestures: true,
+              //   unratedColor: AppColors.grey7,
+              //   itemPadding: EdgeInsets.symmetric(horizontal: 4),
+              //   itemBuilder: (context, _) => SvgPicture.asset(
+              //     AppSvgs.star,
+              //     color: Colors.amber,
+              //     //  width: ,
+              //   ),
+              //   onRatingUpdate: (rating){},
+              // ),
               AppRatingBar(
                 itemSize: 14,
                 itemPadding: 1,
