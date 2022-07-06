@@ -139,7 +139,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                         : MasonryGridView.count(
                             itemCount: homeNotifier.products.length,
                             crossAxisCount: 2,
-                            mainAxisSpacing: 10,
+                            mainAxisSpacing: 20,
                             crossAxisSpacing: 15,
                             itemBuilder: (context, index) {
                               if (index == 3) {
