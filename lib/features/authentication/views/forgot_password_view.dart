@@ -135,7 +135,7 @@ class ForgotPasswordView extends ConsumerWidget {
                         ],
                       ),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const TextWithRich(
                             firstText: 'Check',
@@ -157,6 +157,35 @@ class ForgotPasswordView extends ConsumerWidget {
                             onChanged: (val) {
                               _otp = val;
                             },
+                          ),
+                          Text(
+                            '${forgotPasswordNotifier.minutes}:${forgotPasswordNotifier.seconds}',
+                            style: const TextStyle(
+                              color: AppColors.grey1,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (forgotPasswordNotifier.canResendOTP) {
+                                //Resend OTP;
+                                forgotPasswordNotifier.resendOTP(
+                                    email: _emailAddressController.text);
+                              } else {
+                                Alertify(title: 'Please wait...').error();
+                              }
+                            },
+                            child: Text(
+                              'Resend OTP',
+                              style: TextStyle(
+                                color: forgotPasswordNotifier.canResendOTP
+                                    ? AppColors.primaryColor
+                                    : AppColors.grey6,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -262,6 +291,7 @@ class ForgotPasswordView extends ConsumerWidget {
                                   duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeIn,
                                 );
+                                forgotPasswordNotifier.startTimer();
                               } else if (forgotPasswordNotifier.currentPage ==
                                   2) {
                                 // TODO: Delete the otp after the process is successful

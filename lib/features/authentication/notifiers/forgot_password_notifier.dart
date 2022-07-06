@@ -32,7 +32,6 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
 
   String get seconds => _seconds;
 
-  Timer? timer;
   Duration _duration = Duration(seconds: 30);
 
   Duration get duration => _duration;
@@ -42,17 +41,24 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
   bool get canResendOTP => _canResendOTP;
 
   void startTimer() async {
+    _duration = const Duration(seconds: 30);
     await Future.delayed(const Duration(seconds: 2));
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       final sec = _duration.inSeconds - 1;
       if (_duration.inSeconds > 0) {
         _duration = Duration(seconds: sec);
+        _canResendOTP = false;
       } else {
         _canResendOTP = true;
       }
       print(_duration.inSeconds);
       twoDig();
     });
+  }
+
+  Future<void> resendOTP({required String email}) async {
+    startTimer();
+    await checkEmail(reason: 'forgot password', email: email);
   }
 
   void twoDig() {
@@ -137,7 +143,7 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
         password: password,
       );
 
-      timer?.cancel();
+      // timer?.cancel();
 
       Alertify(title: 'Password changed successfully').success();
       _reader(localStorageService).deleteSecureData(AppStrings.otpEmailKey);

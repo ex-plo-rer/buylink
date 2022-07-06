@@ -76,8 +76,8 @@ class ProductContainer extends ConsumerWidget {
                             endLon: product.store.lon),
                         onDistanceTapped: () async {
                           ref.read(navigationServiceProvider).navigateToNamed(
-                              Routes.storeDetails,
-                              arguments: product.store.id);
+                              Routes.storeDirection,
+                              arguments: product.store);
                         },
                       ),
                     ),

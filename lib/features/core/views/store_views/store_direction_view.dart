@@ -37,7 +37,9 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
   void initState() {
     // TODO: implement initState
     mapController = MapController();
-    // ref.read(storeDirectionNotifierProvider).getLocationUpdate();
+    ref
+        .read(storeDirectionNotifierProvider)
+        .getLocationUpdate(); // TODO: Replace with live uppppp (comment out)
     // init();
     super.initState();
   }

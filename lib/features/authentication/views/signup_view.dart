@@ -172,7 +172,7 @@ class SignupView extends ConsumerWidget {
                           ],
                         ),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const TextWithRich(
                               firstText: 'Check',
@@ -207,6 +207,8 @@ class SignupView extends ConsumerWidget {
                               onTap: () {
                                 if (signupNotifier.canResendOTP) {
                                   //Resend OTP;
+                                  signupNotifier.resendOTP(
+                                      email: _emailAddressController.text);
                                 } else {
                                   Alertify(title: 'Please wait...').error();
                                 }
