@@ -9,9 +9,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/svgs.dart';
 import '../../../../core/routes.dart';
 import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_dialog.dart';
@@ -34,6 +36,7 @@ class ReceiverProfileView extends ConsumerWidget {
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             color: AppColors.dark,
+            size: 14,
           ),
           onPressed: () {},
         ),
@@ -74,7 +77,12 @@ class ReceiverProfileView extends ConsumerWidget {
                   ),
                   if (!fromStore) const SizedBox(width: 4),
                   if (!fromStore)
-                    const Icon(Icons.star, color: Colors.amber, size: 16),
+                    SvgPicture.asset(
+                      AppSvgs.starFilled,
+                      color: Colors.amber,
+                      width: 12,
+                      height: 12,
+                    ),
                   if (!fromStore) const SizedBox(width: 4),
                   if (!fromStore)
                     const Text(

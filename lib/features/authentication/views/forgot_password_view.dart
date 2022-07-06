@@ -165,7 +165,7 @@ class ForgotPasswordView extends ConsumerWidget {
                           Align(
                               alignment: Alignment.topCenter,
                               child: Text(
-                                '$0:${forgotPasswordNotifier.seconds}',
+                                '0:${forgotPasswordNotifier.seconds}',
                                 style: const TextStyle(
                                   color: AppColors.grey1,
                                   fontSize: 14,
@@ -177,7 +177,8 @@ class ForgotPasswordView extends ConsumerWidget {
                               child: GestureDetector(
                                 onTap: () {
                                   if (forgotPasswordNotifier.canResendOTP) {
-                                    //Resend OTP;
+                                    forgotPasswordNotifier.startTimer();
+                                    Alertify(title: 'OTP resent...').success();
                                   } else {
                                     Alertify(title: 'Please wait...').error();
                                   }
