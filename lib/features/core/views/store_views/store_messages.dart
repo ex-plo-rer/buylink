@@ -12,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes.dart';
 import '../../../../services/navigation_service.dart';
+import '../../../../widgets/app_empty_states.dart';
 import '../../../../widgets/circular_progress.dart';
 
 class StoreMessagesView extends ConsumerStatefulWidget {
@@ -47,7 +48,9 @@ class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
           color: AppColors.dark, //change your color here
         ),
         leading: IconButton(
-          onPressed: () {ref.read(navigationServiceProvider).navigateBack();},
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             size: 12,
@@ -74,10 +77,24 @@ class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
                   ? 1
                   : messageListNotifier.chats.length,
               itemBuilder: (context, index) => messageListNotifier.chats.isEmpty
-                  ? const Center(
-                      child: Text(
-                          'You don\'t have an active conversation going on'),
-                    )
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                          Spacing.largeHeight(),
+                          Spacing.largeHeight(),
+                          Spacing.largeHeight(),
+                          Spacing.largeHeight(),
+                          AppEmptyStates(
+                              imageString: "assets/images/no_messages.png",
+                              message1String: "No messages yet",
+                              hasButton: false,
+                              buttonString: ""),
+                        ])
+                  // const Center(
+                  //         child: Text(
+                  //             'You don\'t have an active conversation going on'),
+                  //       )
                   : ChatTile(
                       title: messageListNotifier.chats[index].name,
                       subtitle: messageListNotifier.chats[index].msg,

@@ -232,7 +232,7 @@ class MessageScreen extends ConsumerWidget {
                           Spacing.largeHeight(),
                           AppEmptyStates(
                               imageString: "assets/images/no_messages.png",
-                              message1String: "No notifications yet",
+                              message1String: "No messages yet",
                               hasButton: false,
                               buttonString: ""),
                         ])
