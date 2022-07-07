@@ -19,6 +19,7 @@ class CustomisedText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
+      margin: EdgeInsets.only(top: 2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: AppColors.shade1,
