@@ -103,6 +103,7 @@ class StoreReviewsView extends ConsumerWidget {
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
                                       itemCount: 5,
+                                      unratedColor: AppColors.grey7,
                                       itemPadding: const EdgeInsets.symmetric(
                                           horizontal: 0.0),
                                       itemBuilder: (context, _) =>
@@ -176,11 +177,10 @@ class StoreReviewsView extends ConsumerWidget {
                               ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
-                            Icons.chat,
-                            size: 16,
-                          ),
+                        children: [
+                          SvgPicture.asset(AppSvgs.addReviewIcon,
+                              width: 16, height: 16),
+                          Spacing.tinyWidth(),
                           Text(
                             ' Add Review',
                             style: TextStyle(
@@ -302,7 +302,7 @@ class StoreReviewsView extends ConsumerWidget {
                       ? const CircularProgress()
                       : storeReviewNotifier.reviews.isEmpty
                           ? const Center(
-                              child: Text('No Reviews Yet'),
+                              child: Text('No reviews available'),
                             )
                           : Container(
                               decoration: BoxDecoration(
@@ -323,10 +323,19 @@ class StoreReviewsView extends ConsumerWidget {
                                         child: Row(
                                           children: [
                                             CircleAvatar(
+                                              backgroundColor: AppColors.shade3,
                                               radius: 16,
-                                              child: Text('Ayodeji'.initials()),
+                                              child: Text(
+                                                'Ayodeji'.initials(),
+                                                style: TextStyle(
+                                                    color: AppColors.light,
+                                                    fontSize: 10,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
                                             ),
                                             const Spacing.tinyWidth(),
+                                            Spacing.tinyWidth(),
                                             Text(
                                               storeReviewNotifier
                                                       .reviews[index].name ??
@@ -380,6 +389,20 @@ class StoreReviewsView extends ConsumerWidget {
                                   //     fontWeight: FontWeight.w500,
                                   //   ),
                                   // ),
+                                  Spacing.tinyHeight(),
+
+                                  Visibility(
+                                      visible: storeReviewNotifier
+                                          .reviews[index].title.isNotEmpty,
+                                      child: Text(
+                                        storeReviewNotifier
+                                            .reviews[index].title,
+                                        style: TextStyle(
+                                            color: AppColors.grey2,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14),
+                                      )),
+                                  Spacing.tinyHeight(),
                                   LayoutBuilder(
                                     builder: (context, size) {
                                       // Build the textspan
@@ -423,9 +446,9 @@ class StoreReviewsView extends ConsumerWidget {
                                               child: const Text(
                                                 'See more',
                                                 style: TextStyle(
-                                                  color: AppColors.grey5,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors.grey4,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             ),

@@ -130,7 +130,7 @@ class AddReviewView extends ConsumerWidget {
                     ),
                     Spacing.smallHeight(),
                     ReviewTextField(
-                      hintText: 'Sumarize your review',
+                      hintText: 'summarize your review',
                       focusNode: reviewTitleFN,
                       controller: reviewTitleController,
                       title: 'Title of your review (optional)',
@@ -141,7 +141,7 @@ class AddReviewView extends ConsumerWidget {
                     const Spacing.height(20),
                     ReviewTextField(
                       hintText:
-                          'Describe your experience shopping at the store(optional)',
+                          'Describe your experience shopping at the store',
                       focusNode: reviewCommentFN,
                       controller: reviewCommentController,
                       title: 'How was your experience? (optional)',

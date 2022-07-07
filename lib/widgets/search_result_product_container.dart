@@ -1,5 +1,7 @@
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,6 +10,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../core/constants/colors.dart';
 import '../core/constants/images.dart';
 import '../core/constants/svgs.dart';
+import '../services/location_service.dart';
 import 'distance_container.dart';
 
 class SearchResultContainer extends ConsumerWidget {
@@ -59,23 +62,47 @@ class SearchResultContainer extends ConsumerWidget {
             child: Container(
               height: 176,
               // width: 156,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    url,
-                    // 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg'
-                  ),
-                  fit: BoxFit.fill,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
+              // decoration: BoxDecoration(
+              //   image: DecorationImage(
+              //     image: CachedNetworkImageProvider(
+              //       url,
+              //       // 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg'
+              //     ),
+              //     fit: BoxFit.fill,
+              //   ),
+              //   borderRadius: BorderRadius.circular(20),
+              // ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Stack(
                   children: [
+                    CarouselSlider.builder(
+                      itemCount: imageCount,
+                      options: CarouselOptions(
+                        height: 447,
+                        autoPlay: true,
+                        disableCenter: true,
+                        viewportFraction: 1,
+                        aspectRatio: 0,
+                        // onPageChanged: compareNotifier.nextPage,
+                        // onPageChanged: onPageChanged,
+                      ),
+                      itemBuilder: (context, index, realIndex) {
+                        //final urlImage = url;
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(url),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                     Positioned(
-                      top: 0,
-                      left: 0,
+                      top: 6,
+                      left: 6,
                       child: DistanceContainer(
                         distance: distance,
                         onDistanceTapped: onDistanceTapped,

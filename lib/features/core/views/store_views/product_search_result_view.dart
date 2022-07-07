@@ -17,6 +17,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/svgs.dart';
 import '../../../../core/utilities/map/circle.dart';
+import '../../../../services/location_service.dart';
 import '../../../../widgets/map_price_marker.dart';
 import '../../../../widgets/map_search_term_container.dart';
 import '../../../../widgets/product_container_search_horizontal.dart';
@@ -285,12 +286,16 @@ class _ProductSearchResultViewState
                                     isFavorite: product.isFav!,
                                     storeName: product.store.name,
                                     url: product.image[index],
-                                    distance: '4.3',
+                                    distance: ref
+                                        .watch(locationService)
+                                        .getDist(
+                                            endLat: product.store.lat,
+                                            endLon: product.store.lon),
                                     productName: product.name,
                                     productPrice: product.price,
                                     oldPrice: product.oldPrice,
                                     index: index,
-                                    imageCount: 3,
+                                    imageCount: product.image.length,
                                   );
                                 },
                                 separatorBuilder: (_, __) =>

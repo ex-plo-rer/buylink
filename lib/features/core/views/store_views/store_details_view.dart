@@ -110,7 +110,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                         Container(
                           height: 243,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(0),
                             image: DecorationImage(
                               image: CachedNetworkImageProvider(
                                 storeDetailsNotifier.storeDetails.background,
@@ -187,24 +187,54 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                         hasBorder: true,
                                       ),
                                       const Spacing.smallWidth(),
-                                      AppButton(
-                                        text: 'See Review',
-                                        textColor: AppColors.shade5,
-                                        fontSize: 12,
-                                        width: null,
-                                        height: 32,
-                                        borderColor: AppColors.shade5,
-                                        onPressed: () => ref
-                                            .read(navigationServiceProvider)
-                                            .navigateToNamed(
-                                              Routes.storeReviews,
-                                              arguments: StoreReviewArgModel(
-                                                  storeName:
-                                                      storeDetailsNotifier
-                                                          .storeDetails.name,
-                                                  storeId: widget.storeId),
-                                            ),
-                                      ),
+                                      GestureDetector(
+                                          onTap: () => ref
+                                              .read(navigationServiceProvider)
+                                              .navigateToNamed(
+                                                  Routes.storeReviews,
+                                                  arguments: StoreReviewArgModel(
+                                                      storeName:
+                                                          storeDetailsNotifier
+                                                              .storeDetails
+                                                              .name,
+                                                      storeId: widget.storeId)),
+                                          child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.rectangle,
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  border: Border.all(
+                                                      color: AppColors
+                                                          .primaryColor)),
+                                              child: Text(
+                                                "See Review",
+                                                style: TextStyle(
+                                                    color:
+                                                        AppColors.primaryColor,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ))),
+                                      // AppButton(
+                                      //   text: 'See Review  ',
+                                      //   hasIcon: false,
+                                      //   textColor: AppColors.shade5,
+                                      //   fontSize: 12,
+                                      //   width: null,
+                                      //   height: 32,
+                                      //   borderColor: AppColors.shade5,
+                                      //   onPressed: () => ref
+                                      //       .read(navigationServiceProvider)
+                                      //       .navigateToNamed(
+                                      //         Routes.storeReviews,
+                                      //         arguments: StoreReviewArgModel(
+                                      //             storeName:
+                                      //                 storeDetailsNotifier
+                                      //                     .storeDetails.name,
+                                      //             storeId: widget.storeId),
+                                      //       ),
+                                      // ),
                                     ],
                                   ),
                                 ],
@@ -218,92 +248,105 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                     // categoryNotifier.storeCategoriesLoading ||
                     //         storeDetailsNotifier.detailsLoading
                     //     ? const CircularProgress() :
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
-                      child:
-                          // storeDetailsNotifier.detailsLoading
-                          //     ? Container() :
-                          Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Spacing.smallHeight(),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    storeDetailsNotifier.storeDetails.name,
-                                    style: const TextStyle(
-                                      color: AppColors.grey1,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
+
+                    // storeDetailsNotifier.detailsLoading
+                    //     ? Container() :
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Spacing.smallHeight(),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      storeDetailsNotifier.storeDetails.name,
+                                      style: const TextStyle(
+                                        color: AppColors.grey1,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
+                                    const Spacing.smallWidth(),
+                                    SvgPicture.asset(
+                                      AppSvgs.star,
+                                      width: 12,
+                                      height: 12,
+                                      color: AppColors.yellow,
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Text(
+                                      storeDetailsNotifier.storeDetails.star
+                                          .toStringAsFixed(1),
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.grey1),
+                                    ),
+                                  ],
+                                ),
+                                Spacing.smallHeight(),
+                                Text(
+                                  storeDetailsNotifier.storeDetails.about,
+                                  style: const TextStyle(
+                                    color: AppColors.grey2,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  const Spacing.smallWidth(),
-                                  SvgPicture.asset(
-                                    AppSvgs.star,
-                                    width: 12,
-                                    height: 12,
-                                    color: AppColors.yellow,
+                                ),
+                                const Spacing.smallHeight(),
+                                Text(
+                                  storeDetailsNotifier.storeDetails.address,
+                                  style: const TextStyle(
+                                    color: AppColors.grey4,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  const SizedBox(width: 2),
-                                  Text(
-                                    storeDetailsNotifier.storeDetails.star
-                                        .toString(),
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.grey1),
+                                ),
+                                const Spacing.tinyHeight(),
+                                Text(
+                                  storeDetailsNotifier.storeDetails.telephone,
+                                  style: const TextStyle(
+                                    color: AppColors.grey4,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                ],
-                              ),
-                              Text(
-                                storeDetailsNotifier.storeDetails.about,
-                                style: const TextStyle(
-                                  color: AppColors.grey2,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
                                 ),
-                              ),
-                              const Spacing.tinyHeight(),
-                              Text(
-                                storeDetailsNotifier.storeDetails.address,
-                                style: const TextStyle(
-                                  color: AppColors.grey4,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                                const Spacing.tinyHeight(),
+                                Text(
+                                  storeDetailsNotifier.storeDetails.email,
+                                  style: const TextStyle(
+                                    color: AppColors.grey4,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              const Spacing.tinyHeight(),
-                              Text(
-                                storeDetailsNotifier.storeDetails.telephone,
-                                style: const TextStyle(
-                                  color: AppColors.grey4,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const Spacing.tinyHeight(),
-                              Text(
-                                storeDetailsNotifier.storeDetails.email,
-                                style: const TextStyle(
-                                  color: AppColors.grey4,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const Spacing.bigHeight(),
-                            ],
+                                const Spacing.smallHeight(),
+                              ],
+                            )),
+                        const Spacing.smallHeight(),
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            //This is for background color
+                            color: Colors.white.withOpacity(0.0),
+
+                            //This is for bottom border that is needed
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: AppColors.grey8, width: 2)),
                           ),
-                          const Spacing.bigHeight(),
-                          TabBar(
-                              labelColor: AppColors.shade5,
+                          child: TabBar(
+                              physics: NeverScrollableScrollPhysics(),
+                              labelColor: AppColors.primaryColor,
+                              indicatorColor: AppColors.primaryColor,
                               unselectedLabelColor: AppColors.grey5,
-                              padding: const EdgeInsets.only(bottom: 24),
+                              //padding: const EdgeInsets.only(bottom: 0),
                               controller: _tabController,
                               isScrollable: true,
                               onTap: (index) {
@@ -316,94 +359,96 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               tabs: categoryNotifier.storeCategories
                                   .map((category) => Tab(text: category))
                                   .toList()),
-                          SizedBox(
-                            height: 500,
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: categoryNotifier.storeCategories
-                                  .map((category) {
-                                return storeDetailsNotifier.state.isLoading
-                                    ? const CircularProgress()
-                                    : MasonryGridView.count(
-                                        itemCount: storeDetailsNotifier
-                                            .products.length,
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 20,
-                                        crossAxisSpacing: 15,
-                                        itemBuilder: (context, index) {
-                                          return ProductContainer(
-                                            product: storeDetailsNotifier
-                                                .products[index],
-                                            isFavorite: true,
-                                            onProductTapped: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                    Routes.productDetails,
-                                                    arguments:
-                                                        storeDetailsNotifier
-                                                            .products[index],
-                                                  );
-                                            },
-                                            onDistanceTapped: () {},
-                                            onFlipTapped: () async {
-                                              Loader(context)
-                                                  .showLoader(text: '');
-                                              await ref
-                                                  .read(flipNotifierProvider)
-                                                  .addItemToCompare(
-                                                      productId:
-                                                          storeDetailsNotifier
-                                                              .products[index]
-                                                              .id);
-                                              if (ref
-                                                  .read(flipNotifierProvider)
-                                                  .successfullyAdded) {
-                                                Loader(context).hideLoader();
+                        ),
+                        SizedBox(
+                          height: 500,
+                          child: Padding(
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: categoryNotifier.storeCategories
+                                    .map((category) {
+                                  return storeDetailsNotifier.state.isLoading
+                                      ? const CircularProgress()
+                                      : MasonryGridView.count(
+                                          itemCount: storeDetailsNotifier
+                                              .products.length,
+                                          crossAxisCount: 2,
+                                          mainAxisSpacing: 20,
+                                          crossAxisSpacing: 15,
+                                          itemBuilder: (context, index) {
+                                            return ProductContainer(
+                                              product: storeDetailsNotifier
+                                                  .products[index],
+                                              isFavorite: true,
+                                              onProductTapped: () {
                                                 ref
                                                     .read(
                                                         navigationServiceProvider)
                                                     .navigateToNamed(
-                                                        Routes.compare);
-                                                return;
-                                              }
-                                              Loader(context).hideLoader();
-                                            },
-                                            onFavoriteTapped: () async {
-                                              storeDetailsNotifier
-                                                      .products[index].isFav!
-                                                  ? await ref
+                                                      Routes.productDetails,
+                                                      arguments:
+                                                          storeDetailsNotifier
+                                                              .products[index],
+                                                    );
+                                              },
+                                              onDistanceTapped: () {},
+                                              onFlipTapped: () async {
+                                                Loader(context)
+                                                    .showLoader(text: '');
+                                                await ref
+                                                    .read(flipNotifierProvider)
+                                                    .addItemToCompare(
+                                                        productId:
+                                                            storeDetailsNotifier
+                                                                .products[index]
+                                                                .id);
+                                                if (ref
+                                                    .read(flipNotifierProvider)
+                                                    .successfullyAdded) {
+                                                  Loader(context).hideLoader();
+                                                  ref
                                                       .read(
-                                                          wishlistNotifierProvider)
-                                                      .removeFromWishlist(
-                                                        productId: ref
-                                                            .read(
-                                                                wishlistNotifierProvider)
-                                                            .products[index]
-                                                            .id,
-                                                      )
-                                                  : await ref
-                                                      .read(
-                                                          wishlistNotifierProvider)
-                                                      .addToWishlist(
-                                                        productId: ref
-                                                            .read(
-                                                                wishlistNotifierProvider)
-                                                            .products[index]
-                                                            .id,
-                                                      );
-                                              ref.refresh(
-                                                  wishlistNotifierProvider);
-                                            },
-                                          );
-                                        },
-                                      );
-                              }).toList(),
-                            ),
-                          ),
-                        ],
-                      ),
+                                                          navigationServiceProvider)
+                                                      .navigateToNamed(
+                                                          Routes.compare);
+                                                  return;
+                                                }
+                                                Loader(context).hideLoader();
+                                              },
+                                              onFavoriteTapped: () async {
+                                                storeDetailsNotifier
+                                                        .products[index].isFav!
+                                                    ? await ref
+                                                        .read(
+                                                            wishlistNotifierProvider)
+                                                        .removeFromWishlist(
+                                                          productId: ref
+                                                              .read(
+                                                                  wishlistNotifierProvider)
+                                                              .products[index]
+                                                              .id,
+                                                        )
+                                                    : await ref
+                                                        .read(
+                                                            wishlistNotifierProvider)
+                                                        .addToWishlist(
+                                                          productId: ref
+                                                              .read(
+                                                                  wishlistNotifierProvider)
+                                                              .products[index]
+                                                              .id,
+                                                        );
+                                                ref.refresh(
+                                                    wishlistNotifierProvider);
+                                              },
+                                            );
+                                          },
+                                        );
+                                }).toList(),
+                              )),
+                        ),
+                      ],
                     ),
                   ],
                 ),
