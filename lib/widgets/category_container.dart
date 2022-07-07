@@ -20,28 +20,30 @@ class CategoryContainer extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 48,
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
-              image: CachedNetworkImageProvider(categoryImage),
-              fit: BoxFit.fill,
-              opacity: 0.67),
-          color: Colors.black,
-        ),
-        child: Center(
-          child: Text(
-            categoryName,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.light,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
+          height: 48,
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+                image: CachedNetworkImageProvider(categoryImage),
+                fit: BoxFit.fill,
+                opacity: 0.67),
+            color: Colors.black,
           ),
-        ),
-      ),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: Center(
+              child: Text(
+                categoryName,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.light,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          )),
     );
   }
 }

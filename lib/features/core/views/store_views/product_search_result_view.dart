@@ -20,6 +20,7 @@ import '../../../../core/utilities/map/circle.dart';
 import '../../../../widgets/map_price_marker.dart';
 import '../../../../widgets/map_search_term_container.dart';
 import '../../../../widgets/product_container_search_horizontal.dart';
+import '../../../../widgets/search_result_product_container.dart';
 import '../../models/search_result_arg_model.dart';
 import '../../notifiers/store_notifier/product_search_notifier.dart';
 import '../../notifiers/store_notifier/product_search_result_notifier.dart';
@@ -280,13 +281,16 @@ class _ProductSearchResultViewState
                                   final product =
                                       widget.args.searchResult.result[index];
                                   //TODO: Just return the product and fill the details inside ProductContainerSearch
-                                  return ProductContainerSearchHorizontal(
-                                    url: product.image.first,
+                                  return SearchResultContainer(
+                                    isFavorite: product.isFav!,
                                     storeName: product.store.name,
+                                    url: product.image[index],
+                                    distance: '4.3',
                                     productName: product.name,
                                     productPrice: product.price,
-                                    distance: '4.3',
-                                    isFavorite: product.isFav!,
+                                    oldPrice: product.oldPrice,
+                                    index: index,
+                                    imageCount: 3,
                                   );
                                 },
                                 separatorBuilder: (_, __) =>

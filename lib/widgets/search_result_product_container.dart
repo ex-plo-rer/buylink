@@ -15,7 +15,9 @@ class SearchResultContainer extends ConsumerWidget {
   final String storeName;
   final String productName;
   final int productPrice;
+  final int oldPrice;
   final String distance;
+  final int index;
   final void Function()? onProductTapped;
   final void Function()? onDistanceTapped;
   final void Function()? onFlipTapped;
@@ -23,6 +25,7 @@ class SearchResultContainer extends ConsumerWidget {
   final bool isBig;
   final bool isFavorite;
   final bool isDetails;
+  final int imageCount;
 
   const SearchResultContainer({
     Key? key,
@@ -30,8 +33,11 @@ class SearchResultContainer extends ConsumerWidget {
     required this.storeName,
     required this.productName,
     required this.productPrice,
+    required this.oldPrice,
     required this.distance,
+    required this.index,
     required this.isFavorite,
+    required this.imageCount,
     this.onProductTapped,
     this.onDistanceTapped,
     this.onFlipTapped,
@@ -99,19 +105,22 @@ class SearchResultContainer extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    Positioned (
-                      bottom: 4,
-                          right: 0,
-                      left: 0,
-                      child: Center (child: AnimatedSmoothIndicator(
-                        count: 3,
-                        activeIndex: 1,
-                        effect: const WormEffect(
-                          dotHeight: 4,
-                          dotWidth: 4,
-                        ),
-                      ),
-                    )),
+                    Positioned(
+                        bottom: 4,
+                        right: 0,
+                        left: 0,
+                        child: Center(
+                          child: AnimatedSmoothIndicator(
+                            count: imageCount,
+                            activeIndex: index,
+                            effect: const ExpandingDotsEffect(
+                                activeDotColor: AppColors.light,
+                                dotColor: AppColors.light,
+                                dotHeight: 4,
+                                dotWidth: 4,
+                                expansionFactor: 4),
+                          ),
+                        )),
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -137,8 +146,6 @@ class SearchResultContainer extends ConsumerWidget {
             ),
           ),
           const Spacing.tinyHeight(),
-
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -155,39 +162,73 @@ class SearchResultContainer extends ConsumerWidget {
                 productName,
                 overflow: isDetails ? null : TextOverflow.ellipsis,
                 style: const TextStyle(
-                  color: AppColors.grey1,
+                  color: AppColors.grey2,
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-
-
-              RichText(
-                // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
-                text: TextSpan(
-                  children: [
-                    WidgetSpan(
-                      style: TextStyle(
-                        color: AppColors.grey1,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+              Row(children: <Widget>[
+                Visibility(
+                    visible: oldPrice > 0,
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          WidgetSpan(
+                            // alignment: Alignment.topLeft,
+                            style: const TextStyle(
+                                color: AppColors.grey4,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                decoration: TextDecoration.lineThrough),
+                            child: SvgPicture.asset(
+                              AppSvgs.naira,
+                              height: 13.5,
+                              width: 13.5,
+                              color: AppColors.grey4,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '$oldPrice',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.grey4,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        ],
                       ),
-                      child: SvgPicture.asset(
-                        AppSvgs.naira, height: 15, width: 15,
+                    )),
+                Spacing.tinyWidth(),
+                RichText(
+                  // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
+                  text: TextSpan(
+                    children: [
+                      WidgetSpan(
+                        style: TextStyle(
+                          color: AppColors.grey1,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        child: SvgPicture.asset(
+                          AppSvgs.naira,
+                          height: 15,
+                          width: 15,
+                        ),
                       ),
-                    ),
-                    TextSpan(
-                      text: '#$productPrice',
-                      //overflow: isDetails ? null : TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.grey1,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                      TextSpan(
+                        text: '$productPrice',
+                        //overflow: isDetails ? null : TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: AppColors.grey1,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ]),
               // Text(
               //   '#$productPrice',
               //   overflow: isDetails ? null : TextOverflow.ellipsis,

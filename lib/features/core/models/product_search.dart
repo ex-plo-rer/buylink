@@ -176,33 +176,39 @@ class ProductSearch extends SearchDelegate<String> {
                                                               .recentSearches![
                                                           index - 1]);
                                         },
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                productSearchNotifier
-                                                    .recentSearches![index - 1],
-                                                style: const TextStyle(
-                                                  color: AppColors.grey1,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
+                                        child: Padding(
+                                            padding:
+                                                EdgeInsets.only(bottom: 10),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    productSearchNotifier
+                                                            .recentSearches![
+                                                        index - 1],
+                                                    style: const TextStyle(
+                                                      color: AppColors.grey1,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                productSearchNotifier
-                                                    .removeRecent(index - 1);
-                                                setState(() {});
-                                              },
-                                              child: const Icon(
-                                                Icons.clear,
-                                                color: AppColors.grey5,
-                                                size: 15,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    productSearchNotifier
+                                                        .removeRecent(
+                                                            index - 1);
+                                                    setState(() {});
+                                                  },
+                                                  child: const Icon(
+                                                    Icons.clear,
+                                                    color: AppColors.grey5,
+                                                    size: 15,
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
                                       );
                               },
                               separatorBuilder: (context, index) =>
