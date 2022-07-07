@@ -1,16 +1,11 @@
 import 'package:buy_link/features/core/models/category_model.dart';
-import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../core/constants/strings.dart';
-import '../../../core/routes.dart';
 import '../../../core/utilities/alertify.dart';
 import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../services/base/network_exception.dart';
-import '../../../services/navigation_service.dart';
-import '../models/product_model.dart';
 
 class CategoryNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -29,7 +24,12 @@ class CategoryNotifier extends BaseChangeNotifier {
   List<String> get storeCategories => _storeCategories;
 
   bool _storeCategoriesLoading = false;
+
   bool get storeCategoriesLoading => _storeCategoriesLoading;
+
+  bool _userCategoriesLoading = false;
+
+  bool get userCategoriesLoading => _userCategoriesLoading;
 
   // List<String> uwserCategories = [];
 
@@ -39,15 +39,14 @@ class CategoryNotifier extends BaseChangeNotifier {
   List<CategoryModel> mCategories = [];
 
   Future<void> fetchUserCategories() async {
+    _userCategoriesLoading = true;
     try {
       setState(state: ViewState.loading);
       _userCategories = await _reader(coreRepository).fetchUserCategories();
-      // userCategories = [
-      //   CategoryModel(id: 99101, name: 'All', image: ''),
-      //   ..._userCategories
-      // ];
+      _userCategoriesLoading = false;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
+      _userCategoriesLoading = false;
       setState(state: ViewState.error);
       Alertify(title: e.error).error();
     } finally {

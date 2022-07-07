@@ -1,7 +1,4 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/features/core/models/compare_arg_model.dart';
-import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:buy_link/widgets/compare_texts_2.dart';
@@ -38,7 +35,7 @@ class _CompareViewState extends ConsumerState<CompareView> {
   void initState() {
     // TODO: implement initState
     print('Compare view init state called');
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       // ref
       //     .read(compareSearchNotifierProvider)
       //     .saveProduct(product: widget.arguments.product!);
@@ -206,14 +203,14 @@ class _CompareViewState extends ConsumerState<CompareView> {
                                 CompareTexts2(
                                   title: 'Distance',
                                   subTitle1:
-                                      '${ref.read(locationService).getDistance(
+                                      '${ref.read(locationService).getDist(
                                             endLat: compareSearchNotifier
                                                 .itemsToCompare[0].store.lat,
                                             endLon: compareSearchNotifier
                                                 .itemsToCompare[0].store.lon,
                                           )}km',
                                   subTitle2:
-                                      '${ref.read(locationService).getDistance(
+                                      '${ref.read(locationService).getDist(
                                             endLat: compareSearchNotifier
                                                     .haveProductToCompare
                                                 ? compareSearchNotifier

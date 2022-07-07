@@ -36,7 +36,7 @@ class _NotificationState extends ConsumerState<NotificationView>
     // TODO: implement initState
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(notificationNotifierProvider).fetchNotifications();
     });
     super.initState();

@@ -1,18 +1,8 @@
-import 'dart:ffi';
-import 'dart:io';
-
-import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/features/core/models/product_edit_model.dart';
-import 'package:buy_link/features/core/notifiers/add_product_notifier.dart';
 import 'package:buy_link/features/core/notifiers/category_notifier.dart';
-import 'package:buy_link/features/core/views/add_product_desc.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_dropdown_field.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:buy_link/widgets/select_product_image_container.dart';
 import 'package:buy_link/widgets/special_text_field.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,7 +14,6 @@ import '../../../widgets/app_button.dart';
 import '../../../widgets/edit_product_images_container.dart';
 import '../../../widgets/spacing.dart';
 import '../models/edit_product_arg_model.dart';
-import '../models/product_model.dart';
 import '../notifiers/edit_product_notifier.dart';
 import '../notifiers/product_list_notifier.dart';
 import '../notifiers/store_notifier/store_dashboard_notifier.dart';

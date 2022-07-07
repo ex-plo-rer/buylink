@@ -1,12 +1,6 @@
 import 'package:buy_link/features/core/models/analytics_model.dart';
-import 'package:buy_link/features/core/models/category_model.dart';
-import 'package:buy_link/features/core/models/most_searched_model.dart';
-import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/chart_data_model.dart';
-import 'package:buy_link/features/core/models/store_quick_model.dart';
-import 'package:buy_link/features/core/notifiers/category_notifier.dart';
 import 'package:buy_link/repositories/core_repository.dart';
-import 'package:buy_link/repositories/store_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/utilities/alertify.dart';
@@ -14,7 +8,6 @@ import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../services/base/network_exception.dart';
 import '../../models/most_searched_count_model.dart';
-import '../../models/product_model.dart';
 
 //TODO: Save this week products and have another copy that can be modified...
 class StoreDashboardNotifier extends BaseChangeNotifier {

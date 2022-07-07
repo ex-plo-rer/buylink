@@ -1,32 +1,17 @@
-import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:buy_link/core/utilities/alertify.dart';
-import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/loader.dart';
-import 'package:buy_link/features/core/models/product_model.dart';
-import 'package:buy_link/features/core/notifiers/message_notifier/message_list_notifier.dart';
-import 'package:buy_link/features/core/notifiers/user_provider.dart';
-import 'package:buy_link/features/core/views/message_view/receiver_profile_view.dart';
-import 'package:buy_link/features/core/views/settings_view/change_name.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'dart:math' as math;
 
 import '../../../../core/constants/colors.dart';
-import '../../../../core/routes.dart';
 import '../../../../services/navigation_service.dart';
-import '../../../../widgets/app_button.dart';
-import '../../../../widgets/message_bubble.dart';
 import '../../../../widgets/spacing.dart';
-import '../../models/message_model.dart';
-import '../../models/user_model.dart';
 import '../../notifiers/message_notifier/chat_notifier.dart';
-import '../../notifiers/message_notifier/message_notifier.dart';
 
 class CustomerSupportView extends ConsumerWidget {
   TextEditingController messageTextController = TextEditingController();

@@ -1,18 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:buy_link/core/utilities/base_change_notifier.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import '../core/constants/strings.dart';
-import '../features/core/models/user_model.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../widgets/app_dialog.dart';
 import 'package:location/location.dart' as lll;
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationService extends BaseChangeNotifier {
   final Reader _reader;
@@ -53,14 +45,13 @@ class LocationService extends BaseChangeNotifier {
   }
 
   String getDist({
-    required double startLat,
-    required double startLon,
     required double endLat,
     required double endLon,
   }) {
     double distance = Geolocator.distanceBetween(_lat!, _lon!, endLat, endLon);
 
-    return (distance / 1000).toStringAsFixed(1);
+    // return (distance / 1000).toStringAsFixed(1);
+    return (distance).toString();
   }
 
   Future<void> getCurrentLocation() async {
@@ -149,4 +140,5 @@ class LocationService extends BaseChangeNotifier {
   }
 }
 
-final locationService = Provider((ref) => LocationService(ref.read));
+final locationService =
+    Provider<LocationService>((ref) => LocationService(ref.read));

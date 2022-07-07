@@ -1,24 +1,16 @@
 import 'package:buy_link/core/utilities/extensions/strings.dart';
-import 'package:buy_link/features/core/views/settings_view/change_name.dart';
-import 'package:buy_link/features/core/views/settings_view/privacy_policy.dart';
-import 'package:buy_link/features/core/views/settings_view/settings_notification.dart';
 import 'package:buy_link/features/core/views/settings_view/term_of_use.dart';
 import 'package:buy_link/widgets/app_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
-import '../../../../core/constants/svgs.dart';
 import '../../../../core/routes.dart';
 import '../../../../services/navigation_service.dart';
 import '../../../../widgets/spacing.dart';
 import '../../notifiers/settings_notifier/setting_notifier.dart';
 import '../../notifiers/user_provider.dart';
-import 'about_buylink.dart';
-import 'change_email.dart';
-import 'change_password.dart';
 
 class SettingView extends ConsumerWidget {
   const SettingView({Key? key}) : super(key: key);

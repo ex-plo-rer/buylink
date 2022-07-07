@@ -7,10 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/spacing.dart';
-import '../../../../widgets/text_with_rich.dart';
 import '../../models/product_model.dart';
 import '../../notifiers/store_notifier/delete_store_notifier.dart';
-import 'delete_store_validation.dart';
 
 class DeleteStore extends ConsumerWidget {
   final Store store;

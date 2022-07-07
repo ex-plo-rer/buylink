@@ -9,6 +9,7 @@ import 'package:flutter_map_dragmarker/dragmarker.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimensions.dart';
 import '../../../../widgets/app_button.dart';
@@ -181,7 +182,12 @@ class _StoreLocationPickerState extends ConsumerState<StoreLocationPicker> {
             lon: ref.read(locationService).lon!,
           );
         },
-        child: const Icon(Icons.my_location, color: Colors.white, size: 30),
+        backgroundColor: AppColors.light,
+        child: const Icon(
+          Icons.my_location,
+          color: AppColors.grey2,
+          size: 15,
+        ),
       ),
     );
   }

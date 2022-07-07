@@ -2,13 +2,13 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/chart_data_model.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/custmised_text.dart';
-import 'package:buy_link/widgets/iconNtext_container.dart';
 import 'package:buy_link/widgets/most_searched_product_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(storeDashboardNotifierProvider)
           .initFetch(storeId: widget.store.id);
@@ -424,11 +424,16 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                             ),
                                           ),
                                           IconNTextContainer2(
-                                            text: storeDashboardNotifier
-                                                    .mostSearchedNCount
-                                                    ?.storeGrade
-                                                    .toStringAsFixed(1) ??
-                                                '00',
+                                            text: ''.extractDouble(
+                                                storeDashboardNotifier
+                                                        .mostSearchedNCount
+                                                        ?.storeGrade ??
+                                                    0),
+                                            // storeDashboardNotifier
+                                            //         .mostSearchedNCount
+                                            //         ?.storeGrade
+                                            //         .toStringAsFixed(1) ??
+                                            //     '00',
                                             textColor: const Color(0xff5C6475),
                                             fontSize: 12,
                                             icon: SvgPicture.asset(

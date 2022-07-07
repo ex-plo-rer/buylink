@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/colors.dart';
-import '../features/startup/notifiers/onboarding_notifier.dart';
 
 // Container buildDot(ref, BuildContext context){
 //   var onboardnotifier = ref.watch(onboardProv);
@@ -58,7 +55,9 @@ class DotsIndicator extends AnimatedWidget {
       margin: EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: controller.page == index ? AppColors.primaryColor: AppColors.shade3,
+        color: controller.page == index
+            ? AppColors.primaryColor
+            : AppColors.shade3,
       ),
     );
   }

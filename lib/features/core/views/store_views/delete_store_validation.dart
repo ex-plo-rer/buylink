@@ -1,5 +1,4 @@
 import 'package:buy_link/core/utilities/loader.dart';
-import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/widgets/app_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/spacing.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../models/product_model.dart';
-import '../../notifiers/store_notifier/delete_store_validation_notifier.dart';
 import '../../notifiers/store_notifier/store_notifier.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
 

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../core/constants/colors.dart';
-
 class TextWithRich extends StatelessWidget {
   final String firstText;
   final String secondText;

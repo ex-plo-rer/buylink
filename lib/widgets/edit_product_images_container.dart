@@ -1,17 +1,8 @@
-import 'dart:io';
-
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/features/core/notifiers/add_product_notifier.dart';
-import 'package:buy_link/widgets/add_product_image_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../features/core/notifiers/edit_product_notifier.dart';
-import '../features/core/notifiers/store_notifier/add_store_notifier.dart';
 
 class EditProductImagesContainer extends ConsumerWidget {
   final String? image1;

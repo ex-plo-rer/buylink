@@ -2,7 +2,6 @@
 //
 //     final productModel = productModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 ProductModel productModelFromJson(String str) =>
@@ -111,7 +110,7 @@ class Store {
   String? location;
   double lon;
   double lat;
-  num star;
+  double star;
   String logo;
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
@@ -121,6 +120,7 @@ class Store {
         lon: json["lon"].toDouble(),
         lat: json["lat"].toDouble(),
         star: json["star"].toDouble(),
+        // star: json["star"].parse(json["star"].toStringAsFixed(1)),
         logo: json["logo"],
       );
 

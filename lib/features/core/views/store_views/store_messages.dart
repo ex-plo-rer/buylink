@@ -1,5 +1,3 @@
-import 'package:buy_link/core/constants/strings.dart';
-import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/message_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
@@ -31,7 +29,7 @@ class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
   void initState() {
     // TODO: implement initState
     print('_StoreMessagesViewState Init state called');
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(messageListNotifierProvider)
           .getChatList(sessionId: '${widget.store.id}s');

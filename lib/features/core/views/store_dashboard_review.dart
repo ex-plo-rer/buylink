@@ -1,6 +1,4 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/routes.dart';
-import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_rating_bar.dart';

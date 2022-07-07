@@ -1,4 +1,3 @@
-import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';

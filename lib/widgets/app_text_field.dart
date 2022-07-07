@@ -70,6 +70,7 @@ class AppTextField extends StatelessWidget {
           const Spacing.tinyHeight(),
           TextFormField(
             style: style,
+            obscuringCharacter: '●',
             initialValue: initialValue,
             controller: controller,
             focusNode: focusNode,

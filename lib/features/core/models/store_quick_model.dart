@@ -2,7 +2,6 @@
 //
 //     final storeQuickModel = storeQuickModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 StoreQuickModel storeQuickModelFromJson(String str) =>

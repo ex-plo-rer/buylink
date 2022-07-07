@@ -1,5 +1,4 @@
 import 'package:buy_link/core/routes.dart';
-import 'package:buy_link/features/core/views/store_views/delete_store_view.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,6 @@ import '../../../../core/constants/colors.dart';
 import '../../../../widgets/spacing.dart';
 import '../../models/product_model.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
-import 'edit_store_description.dart';
-import 'edit_store_name.dart';
-import 'package:latlong2/latlong.dart';
 
 class StoreSetting extends ConsumerWidget {
   final Store store;

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
@@ -12,7 +11,6 @@ import '../../../repositories/authentication_repository.dart';
 import '../../../services/base/network_exception.dart';
 import '../../../services/local_storage_service.dart';
 import '../../../services/navigation_service.dart';
-import '../../../services/snackbar_service.dart';
 import '../../core/notifiers/user_provider.dart';
 
 class SignupNotifier extends BaseChangeNotifier {
@@ -47,8 +45,7 @@ class SignupNotifier extends BaseChangeNotifier {
 
   String get seconds => _seconds;
 
-  Timer? timer;
-  Duration _duration = Duration(seconds: 30);
+  Duration _duration = const Duration(seconds: 30);
 
   Duration get duration => _duration;
 
@@ -61,17 +58,25 @@ class SignupNotifier extends BaseChangeNotifier {
   bool get emailUnique => _emailUnique;
 
   void startTimer() async {
+    _duration = const Duration(seconds: 30);
     await Future.delayed(const Duration(seconds: 2));
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       final sec = _duration.inSeconds - 1;
       if (_duration.inSeconds > 0) {
         _duration = Duration(seconds: sec);
+        _canResendOTP = false;
       } else {
+        timer.cancel();
         _canResendOTP = true;
       }
       print(_duration.inSeconds);
       twoDig();
     });
+  }
+
+  Future<void> resendOTP({required String email}) async {
+    startTimer();
+    await checkEmail(reason: 'signup', email: email);
   }
 
   void twoDig() {
@@ -129,7 +134,7 @@ class SignupNotifier extends BaseChangeNotifier {
         password: password,
       );
 
-      timer?.cancel();
+      // timer?.cancel();
       Alertify(
         title: 'Wellcome to Buylink',
       ).success();
@@ -167,6 +172,7 @@ class SignupNotifier extends BaseChangeNotifier {
         reason: reason,
         email: email,
       );
+      Alertify(title: 'Kindly check your email.').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);

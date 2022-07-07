@@ -1,4 +1,3 @@
-import 'package:buy_link/features/core/notifiers/message_notifier/camera_screen_notifier.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';

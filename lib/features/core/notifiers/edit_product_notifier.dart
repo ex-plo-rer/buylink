@@ -1,4 +1,3 @@
-import 'package:buy_link/core/routes.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -7,7 +6,6 @@ import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../repositories/core_repository.dart';
 import '../../../services/base/network_exception.dart';
-import '../../../services/navigation_service.dart';
 
 class EditProductNotifier extends BaseChangeNotifier {
   final Reader _reader;

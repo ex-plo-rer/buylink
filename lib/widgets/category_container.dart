@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/colors.dart';
-import '../core/constants/images.dart';
 
 class CategoryContainer extends StatelessWidget {
   const CategoryContainer({
@@ -26,10 +25,9 @@ class CategoryContainer extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-            image: CachedNetworkImageProvider(categoryImage),
-            fit: BoxFit.fill,
-            opacity: 0.67
-          ),
+              image: CachedNetworkImageProvider(categoryImage),
+              fit: BoxFit.fill,
+              opacity: 0.67),
           color: Colors.black,
         ),
         child: Center(

@@ -2,7 +2,6 @@
 //
 //     final weeklyDataModel = weeklyDataModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 WeeklyDataModel weeklyDataModelFromJson(String str) =>

@@ -35,7 +35,7 @@ class _StoreVisitsViewState extends ConsumerState<StoreVisitsView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref
           .read(storeVisitsNotifierProvider)
           .fetchWeeklyData(storeId: widget.store.id, week: 'current');

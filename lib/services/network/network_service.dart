@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+
 // import 'package:logging/logging.dart';
 
 import '../../core/constants/strings.dart';
 import '../base/network_exception.dart';
-import 'package:http/http.dart' as http;
 
 class NetworkService {
   // final log = Logger('HttpService');

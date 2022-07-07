@@ -5,8 +5,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../features/core/notifiers/store_notifier/add_store_notifier.dart';
-
 class SelectImageContainer extends ConsumerWidget {
   final void Function()? onTapped;
   final String text;

@@ -1,13 +1,12 @@
-import 'package:buy_link/features/core/notifiers/notification_notifier/notification_notifier.dart';
-import 'package:buy_link/features/core/views/notification_view/notification_view.dart';
 import 'package:buy_link/features/core/views/home_view.dart';
+import 'package:buy_link/features/core/views/notification_view/notification_view.dart';
 import 'package:buy_link/features/core/views/settings_view/setting_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_view.dart';
 import 'package:buy_link/features/core/views/wishlist_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/svgs.dart';
 import '../notifiers/dashboard_notifier.dart';

@@ -14,7 +14,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/svgs.dart';
 import '../../../widgets/circular_progress.dart';
-import '../models/product_model.dart';
 import '../notifiers/store_notifier/store_review_notifier.dart';
 
 class StoreReviewsView extends ConsumerWidget {

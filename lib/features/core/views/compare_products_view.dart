@@ -1,25 +1,13 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
-import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
-import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/features/core/models/compare_arg_model.dart';
 import 'package:buy_link/features/core/models/compare_search.dart';
-import 'package:buy_link/features/core/notifiers/home_notifier.dart';
-import 'package:buy_link/features/core/notifiers/store_notifier/product_search_notifier.dart';
-import 'package:buy_link/features/core/notifiers/user_provider.dart';
-import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
-import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/app_empty_states.dart';
-import 'package:buy_link/widgets/app_text_field.dart';
-import 'package:buy_link/widgets/category_container.dart';
 import 'package:buy_link/widgets/product_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
@@ -27,9 +15,6 @@ import '../../../core/utilities/alertify.dart';
 import '../../../core/utilities/loader.dart';
 import '../../../widgets/circular_progress.dart';
 import '../../../widgets/compare_search_term_container.dart';
-import '../../../widgets/map_search_term_container.dart';
-import '../models/product_search.dart';
-import '../notifiers/category_notifier.dart';
 import '../notifiers/flip_notifier.dart';
 import '../notifiers/store_notifier/compare_search_notifier.dart';
 
@@ -145,20 +130,6 @@ class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
                           itemBuilder: (context, index) {
                             return ProductContainer(
                               product: compareSearchNotifier.products[index],
-                              url: compareSearchNotifier
-                                  .products[index].image[0],
-                              storeName: compareSearchNotifier
-                                  .products[index].store.name,
-                              productName:
-                                  compareSearchNotifier.products[index].name,
-                              productPrice:
-                                  compareSearchNotifier.products[index].price,
-                              distance: ref.watch(locationService).getDistance(
-                                    endLat: compareSearchNotifier
-                                        .products[index].lat,
-                                    endLon: compareSearchNotifier
-                                        .products[index].lon,
-                                  ),
                               isFavorite: false,
                               onProductTapped: () async {
                                 Loader(context).showLoader(text: '');

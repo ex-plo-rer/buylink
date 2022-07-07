@@ -2,10 +2,10 @@
 //
 //     final analyticsModel = analyticsModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
-AnalyticsModel analyticsModelFromJson(String str) => AnalyticsModel.fromJson(json.decode(str));
+AnalyticsModel analyticsModelFromJson(String str) =>
+    AnalyticsModel.fromJson(json.decode(str));
 
 String analyticsModelToJson(AnalyticsModel data) => json.encode(data.toJson());
 
@@ -33,26 +33,26 @@ class AnalyticsModel {
   int total;
 
   factory AnalyticsModel.fromJson(Map<String, dynamic> json) => AnalyticsModel(
-    sunday: json["sunday"],
-    monday: json["monday"],
-    tuesday: json["tuesday"],
-    wednesday: json["wednesday"],
-    thursday: json["thursday"],
-    friday: json["friday"],
-    saturday: json["saturday"],
-    type: json["type"],
-    total: json["total"],
-  );
+        sunday: json["sunday"],
+        monday: json["monday"],
+        tuesday: json["tuesday"],
+        wednesday: json["wednesday"],
+        thursday: json["thursday"],
+        friday: json["friday"],
+        saturday: json["saturday"],
+        type: json["type"],
+        total: json["total"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "sunday": sunday,
-    "monday": monday,
-    "tuesday": tuesday,
-    "wednesday": wednesday,
-    "thursday": thursday,
-    "friday": friday,
-    "saturday": saturday,
-    "type": type,
-    "total": total,
-  };
+        "sunday": sunday,
+        "monday": monday,
+        "tuesday": tuesday,
+        "wednesday": wednesday,
+        "thursday": thursday,
+        "friday": friday,
+        "saturday": saturday,
+        "type": type,
+        "total": total,
+      };
 }

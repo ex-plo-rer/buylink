@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../core/constants/colors.dart';
-import '../core/constants/svgs.dart';
 
 class FavoriteContainer extends StatelessWidget {
   const FavoriteContainer({

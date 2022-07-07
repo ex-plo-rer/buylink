@@ -1,17 +1,11 @@
 import 'package:buy_link/core/utilities/base_change_notifier.dart';
 import 'package:buy_link/features/core/models/auto_complete_model.dart';
-import 'package:buy_link/features/core/models/search_result_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../core/constants/strings.dart';
-import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../repositories/core_repository.dart';
-import '../../../../repositories/store_repository.dart';
 import '../../../../services/base/network_exception.dart';
 import '../../../../services/location_service.dart';
-import '../../../../services/navigation_service.dart';
 import '../../models/product_model.dart';
 
 class CompareSearchNotifier extends BaseChangeNotifier {

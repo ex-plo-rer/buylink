@@ -2,8 +2,6 @@ import 'package:buy_link/widgets/app_progress_bar.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 
-import '../core/constants/colors.dart';
-
 class AppLinearProgress extends StatelessWidget {
   const AppLinearProgress({
     Key? key,

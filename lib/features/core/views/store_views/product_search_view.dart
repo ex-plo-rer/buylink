@@ -6,7 +6,6 @@ import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/search_result_arg_model.dart';
 import 'package:buy_link/services/navigation_service.dart';
-import 'package:buy_link/widgets/map_search_dialog.dart';
 import 'package:buy_link/widgets/map_search_term_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +16,9 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes.dart';
-import '../../../../core/utilities/map/circle.dart';
 import '../../../../widgets/app_button.dart';
 import '../../models/product_search.dart';
 import '../../notifiers/store_notifier/product_search_notifier.dart';
@@ -76,10 +75,13 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
           return Container(
             // height: 90,
             padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(15),
-                color: AppColors.light),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              color: AppColors.light,
+            ),
             child: SearchProductBottomSheet(
               onConfirmPressed: () async {
                 Loader(context).showLoader(text: 'Loading');
@@ -222,26 +224,24 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
               // ),
             ],
           ),
-          // Positioned(
-          //   bottom: 100,
-          //   left: 20,
-          //   right: 0,
-          //   child: Container(
-          //     padding: const EdgeInsets.all(20),
-          //     height: 30,
-          //     decoration: BoxDecoration(
-          //       shape: BoxShape.rectangle,
-          //       borderRadius: BorderRadius.circular(10),
-          //     ),
-          //     child: const Text(
-          //       "Move Marker to specify location",
-          //       style: TextStyle(
-          //           color: AppColors.primaryColor,
-          //           fontSize: 14,
-          //           fontWeight: FontWeight.w500),
-          //     ),
-          //   ),
-          // ),
+          Positioned(
+            bottom: 300,
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              height: 30,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Text(
+                "Move Marker to specify location",
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
           MapSearchTermContainer(
               onContainerTap: () async {
                 await showSearch(
@@ -294,16 +294,47 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
               }),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Automatically center the location marker on the map when location updated until user interact with the map.
-          setState(
-            () => _centerOnLocationUpdate = CenterOnLocationUpdate.always,
-          );
-          // Center the location marker on the map and zoom the map to level 18.
-          _centerCurrentLocationStreamController.add(Dimensions.zoom);
-        },
-        child: const Icon(Icons.my_location, color: Colors.white, size: 30),
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 80),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const Spacing.empty(),
+            const Spacing.empty(),
+            const Spacing.empty(),
+            const AppButton(
+              width: null,
+              height: 33,
+              text: 'You can move red marker',
+              backgroundColor: AppColors.light,
+              textColor: AppColors.grey1,
+              fontSize: 14,
+            ),
+            SizedBox(
+              height: 40,
+              width: 40,
+              child: FloatingActionButton(
+                backgroundColor: AppColors.light,
+                child: const Icon(
+                  Icons.my_location,
+                  color: AppColors.grey2,
+                  size: 15,
+                ),
+                onPressed: () {
+                  // Automatically center the location marker on the map when location updated until user interact with the map.
+                  setState(
+                    () =>
+                        _centerOnLocationUpdate = CenterOnLocationUpdate.always,
+                  );
+                  // Center the location marker on the map and zoom the map to level 18.
+                  _centerCurrentLocationStreamController.add(Dimensions.zoom);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

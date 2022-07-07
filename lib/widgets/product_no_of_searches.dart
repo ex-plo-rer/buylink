@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/colors.dart';
-import '../core/constants/images.dart';
 
 class ProductCount extends StatelessWidget {
   const ProductCount({
