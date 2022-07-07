@@ -37,16 +37,17 @@ class Loader {
           child: Container(
             decoration: const BoxDecoration(color: Color(0xffE5E5E5)),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Image.asset(
-                    AppImages.staticLoader,
-                    width: 28,
-                    height: 25,
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 50),
+                //   child: Image.asset(
+                //     AppImages.staticLoader,
+                //     width: 28,
+                //     height: 25,
+                //   ),
+                // ),
                 Image.asset(
                   AppImages.loader,
                   width: 38,

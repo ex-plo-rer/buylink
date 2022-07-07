@@ -171,7 +171,7 @@ class LoginView extends ConsumerWidget {
                   Align(
                     alignment: Alignment.center,
                     child: TextWithRich(
-                      firstText: 'Don’t have an account ?',
+                      firstText: 'Don’t have an account?',
                       secondText: 'Sign Up',
                       fontSize: 14,
                       firstColor: AppColors.grey2,

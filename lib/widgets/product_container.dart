@@ -15,15 +15,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/utilities/loader.dart';
 import '../features/core/notifiers/category_notifier.dart';
+import '../services/location_service.dart';
 
 class ProductContainer extends ConsumerWidget {
   final ProductModel product;
-  final String url;
-  final String storeName;
-  final String productName;
-  final int productPrice;
-  final int oldPrice;
-  final String distance;
   final void Function()? onProductTapped;
   final void Function()? onDistanceTapped;
   final void Function()? onFlipTapped;
@@ -35,12 +30,6 @@ class ProductContainer extends ConsumerWidget {
   const ProductContainer({
     Key? key,
     required this.product,
-    required this.url,
-    required this.storeName,
-    required this.productName,
-    required this.productPrice,
-    this.oldPrice = 0,
-    required this.distance,
     required this.isFavorite,
     this.onProductTapped,
     this.onDistanceTapped,
@@ -65,10 +54,7 @@ class ProductContainer extends ConsumerWidget {
               // width: 156,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    url,
-                    // 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg'
-                  ),
+                  image: CachedNetworkImageProvider(product.image[0]),
                   fit: BoxFit.fill,
                 ),
                 borderRadius: BorderRadius.circular(20),
@@ -81,11 +67,20 @@ class ProductContainer extends ConsumerWidget {
                       top: 0,
                       left: 0,
                       child: DistanceContainer(
-                        distance: distance,
+                        // distance: distance,
+                        // distance: Geolocator.distanceBetween(
+                        //   ref.watch(locationService).lat ?? 0,
+                        //   ref.watch(locationService).lon ?? 0,
+                        //   product.lat,
+                        //   product.lon,
+                        // ).toString(),
+                        distance: ref.watch(locationService).getDist(
+                            endLat: product.store.lat,
+                            endLon: product.store.lon),
                         onDistanceTapped: () async {
                           ref.read(navigationServiceProvider).navigateToNamed(
-                              Routes.storeDetails,
-                              arguments: product.store.id);
+                              Routes.storeDirection,
+                              arguments: product.store);
                         },
                       ),
                     ),
@@ -148,7 +143,7 @@ class ProductContainer extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  storeName,
+                  product.store.name,
                   overflow: isDetails ? null : TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: AppColors.grey3,
@@ -157,7 +152,7 @@ class ProductContainer extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  productName,
+                  product.name,
                   overflow: isDetails ? null : TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: AppColors.grey2,
@@ -165,67 +160,69 @@ class ProductContainer extends ConsumerWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                Row(mainAxisSize: MainAxisSize.min, children: [
-                  RichText(
-                    // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          style: const TextStyle(
-                            color: AppColors.grey1,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          child: SvgPicture.asset(
-                            AppSvgs.naira,
-                            height: 15,
-                            width: 15,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '$productPrice',
-                          style: const TextStyle(
-                            color: AppColors.grey1,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacing.tinyWidth(),
-                  Visibility(
-                      visible: oldPrice > 0,
-                      child: RichText(
+                Row(
+                    //  mainAxisSize: MainAxisSize.min,
+                    children: [
+                      RichText(
+                        // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
                         text: TextSpan(
                           children: [
                             WidgetSpan(
-                              // alignment: Alignment.topLeft,
                               style: const TextStyle(
-                                  color: AppColors.grey4,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  decoration: TextDecoration.lineThrough),
+                                color: AppColors.grey1,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
                               child: SvgPicture.asset(
                                 AppSvgs.naira,
-                                height: 13.5,
-                                width: 13.5,
-                                color: AppColors.grey4,
+                                height: 15,
+                                width: 15,
                               ),
                             ),
                             TextSpan(
-                              text: '$oldPrice',
+                              text: '${product.price}',
                               style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.grey4,
-                                decoration: TextDecoration.lineThrough,
+                                color: AppColors.grey1,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
                         ),
-                      )),
-                ]),
+                      ),
+                      const Spacing.tinyWidth(),
+                      Visibility(
+                          visible: product.oldPrice > 0,
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  // alignment: Alignment.topLeft,
+                                  style: const TextStyle(
+                                      color: AppColors.grey4,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.lineThrough),
+                                  child: SvgPicture.asset(
+                                    AppSvgs.naira,
+                                    height: 13.5,
+                                    width: 13.5,
+                                    color: AppColors.grey4,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '${product.oldPrice}',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.grey4,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ]),
                 // Text(
                 //   '#$productPrice',
                 //   overflow: isDetails ? null : TextOverflow.ellipsis,
