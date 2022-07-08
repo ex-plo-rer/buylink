@@ -82,69 +82,95 @@ class _WishlistState extends ConsumerState<ProductListView>
     final productListNotifier = ref.watch(productListNotifierProvider);
     final categoryNotifier = ref.watch(categoryNotifierProvider);
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 24,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: AppColors.dark,
+          //size: 14//change your color here
+        ),
+        leading: IconButton(
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
+          icon: const Icon(Icons.arrow_back_ios_outlined,
+              size: 15, color: AppColors.grey2),
+        ),
+        elevation: 0,
+        backgroundColor: AppColors.transparent,
+        title: const Text(
+          "Product Lists",
+          style: TextStyle(
+            color: AppColors.grey3,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Product List',
-                style: TextStyle(
-                  color: AppColors.grey1,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // const Spacing.mediumHeight(),
+            DecoratedBox(
+                decoration: BoxDecoration(
+                  //This is for background color
+                  color: Colors.white.withOpacity(0.0),
+
+                  //This is for bottom border that is needed
+                  border: Border(
+                      bottom: BorderSide(color: AppColors.grey8, width: 2)),
                 ),
-              ),
-              const Spacing.mediumHeight(),
-              TabBar(
-                  labelColor: AppColors.shade5,
-                  unselectedLabelColor: AppColors.grey5,
-                  padding: const EdgeInsets.only(bottom: 24),
-                  controller: _tabController,
-                  isScrollable: true,
-                  onTap: (index) {
-                    print('index $index');
-                    productListNotifier.fetchStoreProducts(
-                        storeId: widget.store.id,
-                        category: categoryNotifier.storeCategories[index]);
-                  },
-                  tabs: categoryNotifier.storeCategories
-                      .map((category) => Tab(text: category))
-                      .toList()),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: categoryNotifier.storeCategories.map((category) {
-                    return productListNotifier.state.isLoading
-                        ? const CircularProgress()
-                        : productListNotifier.products.isEmpty
-                            ? AppEmptyStates(
-                                onButtonPressed: () {
-                                  ref
-                                      .read(navigationServiceProvider)
-                                      .navigateToNamed(
-                                        Routes.addProduct,
-                                        arguments: widget.store,
-                                      );
-                                },
-                                imageString: AppImages.emptyProduct,
-                                message1String: 'No Product Added Yet',
-                                message2String:
-                                    'Tap the button below to create your first store',
-                                buttonString: '+ Add your first Product',
-                                hasButton: true,
-                                hasIcon: false,
-                                // onButtonPressed: () => homeNotifier.fetchProducts(category: 'all'),
-                              )
-                            : MasonryGridView.count(
+                child: TabBar(
+                    indicatorColor: AppColors.primaryColor,
+                    labelColor: AppColors.shade5,
+                    unselectedLabelColor: AppColors.grey5,
+                    // padding: const EdgeInsets.only(bottom: 0),
+                    controller: _tabController,
+                    isScrollable: true,
+                    onTap: (index) {
+                      print('index $index');
+                      productListNotifier.fetchStoreProducts(
+                          storeId: widget.store.id,
+                          category: categoryNotifier.storeCategories[index]);
+                    },
+                    tabs: categoryNotifier.storeCategories
+                        .map((category) => Tab(text: category))
+                        .toList())),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: categoryNotifier.storeCategories.map((category) {
+                  return productListNotifier.state.isLoading
+                      ? const CircularProgress()
+                      : productListNotifier.products.isEmpty
+                          ? AppEmptyStates(
+                              onButtonPressed: () {
+                                ref
+                                    .read(navigationServiceProvider)
+                                    .navigateToNamed(
+                                      Routes.addProduct,
+                                      arguments: widget.store,
+                                    );
+                              },
+                              imageString: AppImages.emptyProduct,
+                              message1String: 'No Product Added Yet',
+                              message2String:
+                                  'Tap the button below to create your first store',
+                              buttonString: '+ Add your first Product',
+                              hasButton: true,
+                              hasIcon: false,
+                              // onButtonPressed: () => homeNotifier.fetchProducts(category: 'all'),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 24,
+                              ),
+                              child: MasonryGridView.count(
                                 itemCount: productListNotifier.products.length,
                                 crossAxisCount: 2,
-                                mainAxisSpacing: 20,
-                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 0,
+                                crossAxisSpacing: 16,
                                 itemBuilder: (context, index) {
                                   return ProductContainerPList(
                                     url: productListNotifier
@@ -220,12 +246,11 @@ class _WishlistState extends ConsumerState<ProductListView>
                                     },
                                   );
                                 },
-                              );
-                  }).toList(),
-                ),
+                              ));
+                }).toList(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

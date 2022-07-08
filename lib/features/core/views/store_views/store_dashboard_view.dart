@@ -348,7 +348,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                 onTap: () => ref
                                     .read(navigationServiceProvider)
                                     .navigateToNamed(
-                                      Routes.storeReviews,
+                                      Routes.storeReviews2,
                                       arguments: StoreReviewArgModel(
                                         storeName: widget.store.name,
                                         storeId: widget.store.id,

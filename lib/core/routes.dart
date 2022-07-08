@@ -57,6 +57,7 @@ import '../features/core/views/store_views/product_saved_view.dart';
 import '../features/core/views/store_views/product_search_result_view.dart';
 import '../features/core/views/store_views/store_location_picker_view.dart';
 import '../features/core/views/store_views/store_messages.dart';
+import '../features/core/views/store_views/store_review_2.dart';
 import '../features/core/views/store_views/store_settings.dart';
 import '../features/core/views/store_views/store_view.dart';
 import '../features/startup/views/onboarding_view.dart';
@@ -78,6 +79,7 @@ class Routes {
   static const productDetails2More = '/product-details-2-more';
   static const storeDetails = '/shop-details';
   static const storeReviews = '/store-reviews';
+  static const storeReviews2 = '/store-reviews-2';
   static const addReview = '/add-review';
   static const onboarding = '/onboarding';
   static const storeView = '/store';
@@ -192,6 +194,16 @@ class Routes {
             settings.arguments as StoreReviewArgModel;
         return MaterialPageRoute(
           builder: (_) => StoreReviewsView(
+            storeReviewsArgs: storeReviewsArgs,
+          ),
+        );
+
+      case storeReviews2:
+        // Store store = settings.arguments as Store;
+        StoreReviewArgModel storeReviewsArgs =
+            settings.arguments as StoreReviewArgModel;
+        return MaterialPageRoute(
+          builder: (_) => StoreReviewsView2(
             storeReviewsArgs: storeReviewsArgs,
           ),
         );

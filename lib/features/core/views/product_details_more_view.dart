@@ -20,7 +20,8 @@ class ProductDetailsMoreView extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: AppColors.dark, //change your color here
+          color: AppColors.dark,
+          //size: 14//change your color here
         ),
         leading: IconButton(
           onPressed: () {

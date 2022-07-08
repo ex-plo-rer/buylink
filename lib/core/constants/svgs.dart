@@ -28,4 +28,13 @@ class AppSvgs {
   static const redMarker = 'assets/svgs/marker_red.svg';
   static const blueMarker = 'assets/svgs/marker_blue.svg';
   static const splash = 'assets/svgs/buylink_splash.svg';
+  static const document = 'assets/svgs/document.svg';
+  static const envelope = 'assets/svgs/envelope.svg';
+  static const info = 'assets/svgs/info.svg';
+  static const key = 'assets/svgs/key.svg';
+  static const lock = 'assets/svgs/lock.svg';
+  static const trash = 'assets/svgs/trash.svg';
+  static const user = 'assets/svgs/user.svg';
+  static const headset = 'assets/svgs/headset.svg';
+  static const bell2 = 'assets/svgs/bell_2.svg';
 }

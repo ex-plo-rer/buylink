@@ -3,9 +3,11 @@ import 'package:buy_link/features/core/views/settings_view/term_of_use.dart';
 import 'package:buy_link/widgets/app_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/svgs.dart';
 import '../../../../core/routes.dart';
 import '../../../../services/navigation_service.dart';
 import '../../../../widgets/spacing.dart';
@@ -97,9 +99,10 @@ class SettingView extends ConsumerWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      leading: const Icon(
-                        Icons.person,
-                        color: AppColors.shade5,
+                      leading: SvgPicture.asset(
+                        AppSvgs.user,
+                        width: 14,
+                        height: 14,
                       ),
                       trailing: const Icon(
                         Icons.keyboard_arrow_right,
@@ -127,9 +130,10 @@ class SettingView extends ConsumerWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      leading: const Icon(
-                        Icons.email_outlined,
-                        color: AppColors.shade5,
+                      leading: SvgPicture.asset(
+                        AppSvgs.document,
+                        width: 14,
+                        height: 14,
                       ),
                       trailing: const Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
@@ -155,9 +159,10 @@ class SettingView extends ConsumerWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      leading: const Icon(
-                        Icons.vpn_key_rounded,
-                        color: AppColors.shade5,
+                      leading: SvgPicture.asset(
+                        AppSvgs.key,
+                        width: 14,
+                        height: 14,
                       ),
                       trailing: const Icon(
                         Icons.keyboard_arrow_right,
@@ -183,8 +188,11 @@ class SettingView extends ConsumerWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      leading:
-                          const Icon(Icons.delete, color: AppColors.shade5),
+                      leading: SvgPicture.asset(
+                        AppSvgs.trash,
+                        width: 14,
+                        height: 14,
+                      ),
                       trailing: const Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
                       onTap: () => ref
@@ -216,8 +224,11 @@ class SettingView extends ConsumerWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      leading: const Icon(Icons.notifications_none,
-                          color: AppColors.shade5),
+                      leading: SvgPicture.asset(
+                        AppSvgs.bell2,
+                        width: 14,
+                        height: 14,
+                      ),
                       trailing: const Icon(
                         Icons.keyboard_arrow_right,
                         color: AppColors.shade5,
@@ -260,9 +271,9 @@ class SettingView extends ConsumerWidget {
                   children: <Widget>[
                     ListTile(
                       onTap: () {
-                        ref
-                            .read(navigationServiceProvider)
-                            .navigateToNamed(Routes.customerSupport);
+                        // ref
+                        //     .read(navigationServiceProvider)
+                        //     .navigateToNamed(Routes.customerSupport);
                       },
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: Text(
@@ -272,9 +283,10 @@ class SettingView extends ConsumerWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      leading: Icon(
-                        Icons.headset_mic_outlined,
-                        color: AppColors.shade5,
+                      leading: SvgPicture.asset(
+                        AppSvgs.headset,
+                        width: 14,
+                        height: 14,
                       ),
                       trailing: Icon(
                         Icons.keyboard_arrow_right,
@@ -297,9 +309,10 @@ class SettingView extends ConsumerWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      leading: const Icon(
-                        Icons.lock_outline_rounded,
-                        color: AppColors.shade5,
+                      leading: SvgPicture.asset(
+                        AppSvgs.lock,
+                        width: 14,
+                        height: 14,
                       ),
                       trailing: const Icon(
                         Icons.keyboard_arrow_right,
@@ -325,8 +338,11 @@ class SettingView extends ConsumerWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      leading: const Icon(Icons.insert_drive_file_outlined,
-                          color: AppColors.shade5),
+                      leading: SvgPicture.asset(
+                        AppSvgs.document,
+                        width: 14,
+                        height: 14,
+                      ),
                       trailing: const Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
                       onTap: () {
@@ -350,8 +366,11 @@ class SettingView extends ConsumerWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      leading: const Icon(Icons.info_outline_rounded,
-                          color: AppColors.shade5),
+                      leading: SvgPicture.asset(
+                        AppSvgs.info,
+                        width: 14,
+                        height: 14,
+                      ),
                       trailing: const Icon(Icons.keyboard_arrow_right,
                           color: AppColors.shade5),
                       onTap: () {

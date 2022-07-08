@@ -162,8 +162,8 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       padding: 0,
                       icon: SvgPicture.asset(
                         AppSvgs.star,
-                        width: 12,
-                        height: 12,
+                        width: 11,
+                        height: 11,
                         color: AppColors.yellow,
                       ),
                       containerColor: AppColors.transparent,

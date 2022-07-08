@@ -99,17 +99,17 @@ class MessageView extends ConsumerWidget {
             ),
 */
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.info_outline),
-              tooltip: 'Setting Icon',
-              onPressed: () {
-                ref.read(navigationServiceProvider).navigateToNamed(
-                    Routes.receiverProfileView,
-                    arguments: args);
-              },
-            ), //IconButton
-          ],
+          // actions: [
+          //   IconButton(
+          //     icon: const Icon(Icons.info_outline),
+          //     tooltip: 'Setting Icon',
+          //     onPressed: () {
+          //       ref.read(navigationServiceProvider).navigateToNamed(
+          //           Routes.receiverProfileView,
+          //           arguments: args);
+          //     },
+          //   ), //IconButton
+          // ],
           //<Widget>[]
           backgroundColor: AppColors.shade7,
           elevation: 50.0,
