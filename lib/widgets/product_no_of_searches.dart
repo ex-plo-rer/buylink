@@ -23,7 +23,7 @@ class ProductCount extends StatelessWidget {
       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: CachedNetworkImage(
               imageUrl: productImage,
               height: 40,
@@ -44,6 +44,7 @@ class ProductCount extends StatelessWidget {
         ),
         const Spacing.smallWidth(),
         Text(
+          // '$productNum',
           '${productNum.substring(0, productNum.characters.firstWhere((element) => element.contains('-')).length)} ${type.toLowerCase() == 'searches' ? 'Searches' : type.toLowerCase() == 'visits' ? 'Visits' : 'Saves'}',
           style: const TextStyle(
             color: AppColors.grey4,

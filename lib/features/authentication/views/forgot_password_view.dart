@@ -163,15 +163,16 @@ class ForgotPasswordView extends ConsumerWidget {
                           ),
                           Spacing.mediumHeight(),
                           Align(
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                '0:${forgotPasswordNotifier.seconds}',
-                                style: const TextStyle(
-                                  color: AppColors.grey1,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              )),
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              '0:${forgotPasswordNotifier.seconds}',
+                              style: const TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                           Align(
                               alignment: Alignment.topCenter,
                               child: GestureDetector(

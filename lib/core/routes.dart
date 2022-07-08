@@ -261,7 +261,11 @@ class Routes {
         Store store = settings.arguments as Store;
         return MaterialPageRoute(builder: (_) => StoreVisitsView(store: store));
       case savedProducts:
-        return MaterialPageRoute(builder: (_) => ProductSavedView());
+        Store store = settings.arguments as Store;
+        return MaterialPageRoute(
+            builder: (_) => ProductSavedView(
+                  store: store,
+                ));
       case storeDirection:
         Store store = settings.arguments as Store;
         return MaterialPageRoute(
@@ -269,9 +273,9 @@ class Routes {
       case noproductView:
         return MaterialPageRoute(builder: (_) => NoProductView());
       case addstoreView:
-        return MaterialPageRoute(builder: (_) => AddStoreView());
+        return MaterialPageRoute(builder: (_) => const AddStoreView());
       case storeLocationPickerView:
-        return MaterialPageRoute(builder: (_) => StoreLocationPicker());
+        return MaterialPageRoute(builder: (_) => const StoreLocationPicker());
       case editStoreLocationView:
         Store store = settings.arguments as Store;
         return MaterialPageRoute(

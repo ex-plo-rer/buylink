@@ -202,7 +202,7 @@ class _ProductSearchedViewState extends ConsumerState<ProductSearchedView> {
                                   itemBuilder: (context, index) {
                                     return productSearchedNotifier
                                             .weeklyData!.sunday.isEmpty
-                                        ? const Center(child: Text('Empty'))
+                                        ? const Spacing.empty()
                                         : ProductCount(
                                             productImage:
                                                 productSearchedNotifier
@@ -230,7 +230,7 @@ class _ProductSearchedViewState extends ConsumerState<ProductSearchedView> {
                                   itemBuilder: (context, index) {
                                     return productSearchedNotifier
                                             .weeklyData!.monday.isEmpty
-                                        ? const Center(child: Text('Empty'))
+                                        ? const Spacing.empty()
                                         : ProductCount(
                                             productImage:
                                                 productSearchedNotifier
@@ -258,7 +258,7 @@ class _ProductSearchedViewState extends ConsumerState<ProductSearchedView> {
                                   itemBuilder: (context, index) {
                                     return productSearchedNotifier
                                             .weeklyData!.tuesday.isEmpty
-                                        ? const Center(child: Text('Empty'))
+                                        ? const Spacing.empty()
                                         : ProductCount(
                                             productImage:
                                                 productSearchedNotifier
@@ -288,7 +288,7 @@ class _ProductSearchedViewState extends ConsumerState<ProductSearchedView> {
                                   itemBuilder: (context, index) {
                                     return productSearchedNotifier
                                             .weeklyData!.wednesday.isEmpty
-                                        ? const Center(child: Text('Empty'))
+                                        ? const Spacing.empty()
                                         : ProductCount(
                                             productImage:
                                                 productSearchedNotifier
@@ -318,7 +318,7 @@ class _ProductSearchedViewState extends ConsumerState<ProductSearchedView> {
                                   itemBuilder: (context, index) {
                                     return productSearchedNotifier
                                             .weeklyData!.thursday.isEmpty
-                                        ? const Center(child: Text('Empty'))
+                                        ? const Spacing.empty()
                                         : ProductCount(
                                             productImage:
                                                 productSearchedNotifier
@@ -347,7 +347,7 @@ class _ProductSearchedViewState extends ConsumerState<ProductSearchedView> {
                                   itemBuilder: (context, index) {
                                     return productSearchedNotifier
                                             .weeklyData!.friday.isEmpty
-                                        ? const Center(child: Text('Empty'))
+                                        ? const Spacing.empty()
                                         : ProductCount(
                                             productImage:
                                                 productSearchedNotifier
@@ -375,7 +375,7 @@ class _ProductSearchedViewState extends ConsumerState<ProductSearchedView> {
                                   itemBuilder: (context, index) {
                                     return productSearchedNotifier
                                             .weeklyData!.saturday.isEmpty
-                                        ? const Center(child: Text('Empty'))
+                                        ? const Spacing.empty()
                                         : ProductCount(
                                             productImage:
                                                 productSearchedNotifier

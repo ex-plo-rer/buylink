@@ -83,7 +83,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
             Row(
               children: <Widget>[
                 Container(
-                    padding: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
@@ -95,7 +95,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                       // borderRadius: BorderRadius.all(),
                     ),
                     child: GestureDetector(
-                      child: Icon(
+                      child: const Icon(
                         Icons.mail_outline_outlined,
                         color: AppColors.primaryColor,
                         size: 20,
@@ -109,7 +109,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                     )),
                 const Spacing.smallWidth(),
                 Container(
-                    padding: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
@@ -364,7 +364,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                   child: Column(
                                     //mainAxisAlignment: Main,
                                     children: [
-                                      Spacing.tinyHeight(),
+                                      const Spacing.tinyHeight(),
                                       FavoriteContainer(
                                         height: 28,
                                         width: 28,
@@ -461,9 +461,10 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                             const Spacing.smallWidth(),
                             Expanded(
                               child: GestureDetector(
-                                // onTap: () => ref
-                                //     .read(navigationServiceProvider)
-                                //     .navigateToNamed(Routes.savedProducts),
+                                onTap: () => ref
+                                    .read(navigationServiceProvider)
+                                    .navigateToNamed(Routes.savedProducts,
+                                        arguments: widget.store),
                                 child: Container(
                                   padding: const EdgeInsets.all(12),
                                   height: 154,
@@ -473,7 +474,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Spacing.tinyHeight(),
+                                      const Spacing.tinyHeight(),
                                       FavoriteContainer(
                                         height: 28,
                                         width: 28,
@@ -487,7 +488,8 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                           ref
                                               .read(navigationServiceProvider)
                                               .navigateToNamed(
-                                                  Routes.savedProducts);
+                                                  Routes.savedProducts,
+                                                  arguments: widget.store);
                                         },
                                         child: const Text(
                                           'Saved Products',
@@ -524,18 +526,6 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                             height: 40,
                                             verticalPadding: 5,
                                           ),
-                                          // Spacing.tinyWidth(),
-                                          // CustomisedText(
-                                          //   text: '9',
-                                          //   height: 40,
-                                          //   verticalPadding: 7,
-                                          // ),
-                                          // Spacing.tinyWidth(),
-                                          // CustomisedText(
-                                          //   text: '0',
-                                          //   height: 40,
-                                          //   verticalPadding: 7,
-                                          // ),
                                         ],
                                       ),
                                       const Spacing.smallHeight(),
@@ -557,10 +547,10 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                         ),
                         const Spacing.height(20),
                         GestureDetector(
-                          onTap: () => ref
-                              .read(navigationServiceProvider)
-                              .navigateToNamed(Routes.storeVisits,
-                                  arguments: widget.store),
+                          // onTap: () => ref
+                          //     .read(navigationServiceProvider)
+                          //     .navigateToNamed(Routes.storeVisits,
+                          //         arguments: widget.store),
                           child: Container(
                             height: 243,
                             decoration: BoxDecoration(
@@ -619,11 +609,11 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                         children: [
                                           TextButton(
                                             onPressed: () {
-                                              ref
-                                                  .read(
-                                                      navigationServiceProvider)
-                                                  .navigateToNamed(
-                                                      Routes.storeVisits);
+                                              // ref
+                                              //     .read(
+                                              //         navigationServiceProvider)
+                                              //     .navigateToNamed(
+                                              //         Routes.storeVisits);
                                             },
                                             child: const Text(
                                               'Store Visits',
