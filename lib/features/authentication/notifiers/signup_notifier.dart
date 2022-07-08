@@ -176,7 +176,7 @@ class SignupNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
     } finally {
       // setState(state: ViewState.idle);
     }

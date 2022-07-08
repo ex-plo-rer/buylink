@@ -52,7 +52,7 @@ class _WishlistState extends ConsumerState<ProductListView>
         length: ref.read(categoryNotifierProvider).storeCategories.length,
         vsync: this);
     _tabController.addListener(_handleTabChange);
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .watch(productListNotifierProvider)
           .fetchStoreProducts(storeId: widget.store.id, category: 'all');

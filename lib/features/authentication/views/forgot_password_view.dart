@@ -177,7 +177,8 @@ class ForgotPasswordView extends ConsumerWidget {
                               child: GestureDetector(
                                 onTap: () {
                                   if (forgotPasswordNotifier.canResendOTP) {
-                                    forgotPasswordNotifier.startTimer();
+                                    forgotPasswordNotifier.resendOTP(
+                                        email: _emailAddressController.text);
                                     Alertify(title: 'OTP resent...').success();
                                   } else {
                                     Alertify(title: 'Please wait...').error();
