@@ -30,11 +30,11 @@ class _WishlistState extends ConsumerState<WishlistView>
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(categoryNotifierProvider).fetchUserCategories();
+      await ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
       _tabController = TabController(
           length: ref.read(categoryNotifierProvider).userCategories.length,
           vsync: this);
       _tabController.addListener(_handleTabChange);
-      ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
     });
     super.initState();
   }
@@ -62,7 +62,7 @@ class _WishlistState extends ConsumerState<WishlistView>
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(18, 24, 18, 0),
-          child: wishlistNotifier.state.isLoading ||
+          child: wishlistNotifier.favLoading ||
                   categoryNotifier.userCategoriesLoading
               ? const CircularProgress()
               : Column(
@@ -100,7 +100,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                           return wishlistNotifier.favLoading
                               ? const CircularProgress()
                               : wishlistNotifier.products.isEmpty
-                                  ? Center(child: Text('Empty'))
+                                  ? const Center(child: Text('Empty'))
                                   : MasonryGridView.count(
                                       itemCount:
                                           wishlistNotifier.products.length,
