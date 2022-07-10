@@ -166,6 +166,40 @@ class DeleteUser extends ConsumerWidget {
                                 hasBorder: false,
                                 contentPadding: 16,
                                 fillColor: AppColors.grey8,
+                                suffixIcon: _detailController.text.isEmpty
+                                    ? null
+                                    : Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () => deleteUserNotifier
+                                                .togglePassword(),
+                                            child: Icon(
+                                              deleteUserNotifier.passwordVisible
+                                                  ? Icons.visibility
+                                                  : Icons.visibility_off,
+                                              color: AppColors.dark,
+                                            ),
+                                          ),
+                                          const Spacing.smallWidth(),
+                                          GestureDetector(
+                                            onTap: () {
+                                              _detailController.clear();
+                                            },
+                                            child: const CircleAvatar(
+                                              backgroundColor: AppColors.grey7,
+                                              radius: 10,
+                                              child: Icon(
+                                                Icons.clear_rounded,
+                                                color: AppColors.light,
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                               ),
                             ],
                           ),
@@ -241,7 +275,9 @@ class DeleteUser extends ConsumerWidget {
                                           ),
                                           const Spacing.smallWidth(),
                                           GestureDetector(
-                                            onTap: () {},
+                                            onTap: () {
+                                              _passwordController.clear();
+                                            },
                                             child: const CircleAvatar(
                                               backgroundColor: AppColors.grey7,
                                               radius: 10,

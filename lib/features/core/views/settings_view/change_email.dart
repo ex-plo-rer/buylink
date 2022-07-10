@@ -106,7 +106,9 @@ class ChangeEmail extends ConsumerWidget {
                               suffixIcon: _newEmailController.text.isEmpty
                                   ? null
                                   : GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        _newEmailController.clear();
+                                      },
                                       child: const CircleAvatar(
                                         backgroundColor: AppColors.grey7,
                                         radius: 10,

@@ -209,6 +209,8 @@ class MessageView extends ConsumerWidget {
                             fontSize: 13,
                             fontWeight: FontWeight.w500),
                         hintText: 'Type something...',
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
                         controller: messageTextController,
                         fillColor: AppColors.grey10,
                         validator: (value) {

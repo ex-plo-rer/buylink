@@ -1,6 +1,7 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/widgets/product_no_of_searches.dart';
 import 'package:buy_link/widgets/spacing.dart';

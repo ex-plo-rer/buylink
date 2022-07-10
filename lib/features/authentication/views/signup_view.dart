@@ -269,7 +269,9 @@ class SignupView extends ConsumerWidget {
                                         ),
                                         const Spacing.smallWidth(),
                                         GestureDetector(
-                                          onTap: () {},
+                                          onTap: () {
+                                            _passwordController.clear();
+                                          },
                                           child: const CircleAvatar(
                                             backgroundColor: AppColors.grey7,
                                             radius: 10,
