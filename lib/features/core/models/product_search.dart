@@ -1,4 +1,5 @@
 import 'package:buy_link/core/constants/images.dart';
+import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/widgets/app_empty_states.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/spacing.dart';
@@ -72,64 +73,67 @@ class ProductSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     final productSearchNotifier = ref.watch(productSearchNotifierProvider);
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: FutureBuilder(
-        future: productSearchNotifier.autoCompleteM(query: query),
-        builder: (context, snapshot) {
-          return productSearchNotifier.searchLoading
-              ? const CircularProgress()
-              : productSearchNotifier.autoComplete!.result.isEmpty
-                  ? const Center(
-                      child: AppEmptyStates(
-                      imageString: AppImages.emptyProduct,
-                      message1String: "Oops, no products available",
-                      message2String: "Try searching with another keyword ",
-                      buttonString: "",
-                      hasButton: false,
-                    ))
-                  : Expanded(
-                      child: ListView.separated(
-                        itemCount:
-                            productSearchNotifier.autoComplete!.result.length,
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
-                            ref
-                                .read(navigationServiceProvider)
-                                .navigateOffNamed(
-                                  Routes.productSearch,
-                                  arguments: productSearchNotifier
-                                      .autoComplete!.result[index],
-                                );
-                          },
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  productSearchNotifier
-                                      .autoComplete!.result[index],
-                                  style: const TextStyle(
-                                    color: AppColors.grey1,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+    return query.isEmpty
+        ? Container()
+        : Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: FutureBuilder(
+              future: productSearchNotifier.autoCompleteM(query: query),
+              builder: (context, snapshot) {
+                return productSearchNotifier.searchLoading
+                    ? const CircularProgress()
+                    : productSearchNotifier.autoComplete!.result.isEmpty
+                        ? const Center(
+                            child: AppEmptyStates(
+                            imageString: AppImages.emptyProduct,
+                            message1String: "Oops, no products available",
+                            message2String:
+                                "Try searching with another keyword ",
+                            buttonString: "",
+                            hasButton: false,
+                          ))
+                        : Expanded(
+                            child: ListView.separated(
+                              itemCount: productSearchNotifier
+                                  .autoComplete!.result.length,
+                              itemBuilder: (context, index) => GestureDetector(
+                                onTap: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateOffNamed(
+                                        Routes.productSearch,
+                                        arguments: productSearchNotifier
+                                            .autoComplete!.result[index],
+                                      );
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        productSearchNotifier
+                                            .autoComplete!.result[index],
+                                        style: const TextStyle(
+                                          color: AppColors.grey1,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.north_west_outlined,
+                                      color: AppColors.grey5,
+                                      size: 15,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const Icon(
-                                Icons.north_west_outlined,
-                                color: AppColors.grey5,
-                                size: 15,
-                              ),
-                            ],
-                          ),
-                        ),
-                        separatorBuilder: (context, index) =>
-                            const Spacing.tinyHeight(),
-                      ),
-                    );
-        },
-      ),
-    );
+                              separatorBuilder: (context, index) =>
+                                  const Spacing.tinyHeight(),
+                            ),
+                          );
+              },
+            ),
+          );
   }
 
   @override

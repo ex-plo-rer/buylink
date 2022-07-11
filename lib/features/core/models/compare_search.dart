@@ -81,57 +81,59 @@ class CompareSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     final compareSearchNotifier = ref.watch(compareSearchNotifierProvider);
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: FutureBuilder(
-        future: compareSearchNotifier.autoCompleteM(query: query),
-        builder: (context, snapshot) {
-          return compareSearchNotifier.searchLoading
-              ? const CircularProgress()
-              : compareSearchNotifier.autoComplete!.result.isEmpty
-                  ? const Center(child: Text('No Match'))
-                  : Expanded(
-                      child: ListView.separated(
-                        itemCount:
-                            compareSearchNotifier.autoComplete!.result.length,
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
-                            ref
-                                .read(navigationServiceProvider)
-                                .navigateOffNamed(
-                                  Routes.compareProducts,
-                                  arguments: compareSearchNotifier
-                                      .autoComplete!.result[index],
-                                );
-                          },
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  compareSearchNotifier
-                                      .autoComplete!.result[index],
-                                  style: const TextStyle(
-                                    color: AppColors.grey1,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+    return query.isEmpty
+        ? Container()
+        : Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: FutureBuilder(
+              future: compareSearchNotifier.autoCompleteM(query: query),
+              builder: (context, snapshot) {
+                return compareSearchNotifier.searchLoading
+                    ? const CircularProgress()
+                    : compareSearchNotifier.autoComplete!.result.isEmpty
+                        ? const Center(child: Text('No Match'))
+                        : Expanded(
+                            child: ListView.separated(
+                              itemCount: compareSearchNotifier
+                                  .autoComplete!.result.length,
+                              itemBuilder: (context, index) => GestureDetector(
+                                onTap: () {
+                                  ref
+                                      .read(navigationServiceProvider)
+                                      .navigateOffNamed(
+                                        Routes.compareProducts,
+                                        arguments: compareSearchNotifier
+                                            .autoComplete!.result[index],
+                                      );
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        compareSearchNotifier
+                                            .autoComplete!.result[index],
+                                        style: const TextStyle(
+                                          color: AppColors.grey1,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.north_west_outlined,
+                                      color: AppColors.grey5,
+                                      size: 15,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const Icon(
-                                Icons.north_west_outlined,
-                                color: AppColors.grey5,
-                                size: 15,
-                              ),
-                            ],
-                          ),
-                        ),
-                        separatorBuilder: (context, index) =>
-                            const Spacing.tinyHeight(),
-                      ),
-                    );
-        },
-      ),
-    );
+                              separatorBuilder: (context, index) =>
+                                  const Spacing.tinyHeight(),
+                            ),
+                          );
+              },
+            ),
+          );
   }
 
   @override

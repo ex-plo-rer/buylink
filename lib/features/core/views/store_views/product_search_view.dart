@@ -5,6 +5,7 @@ import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/loader.dart';
 import 'package:buy_link/features/core/models/search_result_arg_model.dart';
+import 'package:buy_link/services/location_service.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/map_search_term_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
@@ -37,6 +38,7 @@ class ProductSearchView extends ConsumerStatefulWidget {
 class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
   final searchFocus = FocusNode();
   final searchController = TextEditingController();
+  MapController? mapController;
   late CenterOnLocationUpdate _centerOnLocationUpdate;
 
   late StreamController<double> _centerCurrentLocationStreamController;
@@ -46,6 +48,7 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
     super.initState();
     // ref.read(storeDirectionNotifierProvider).initLocation();
     ref.read(productSearchNotifierProvider).initLocation();
+    mapController = MapController();
     _centerOnLocationUpdate = CenterOnLocationUpdate.always;
     _centerCurrentLocationStreamController = StreamController<double>();
     init();
@@ -149,6 +152,7 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
       body: Stack(
         children: [
           FlutterMap(
+            mapController: mapController,
             options: MapOptions(
               allowPanningOnScrollingParent: false,
               plugins: [
@@ -323,7 +327,11 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
                   size: 15,
                 ),
                 onPressed: () {
+                  // mapController?.center;
                   // Automatically center the location marker on the map when location updated until user interact with the map.
+                  productSearchNotifier.setFilterPosition(
+                      lat: ref.read(locationService).lat!,
+                      lon: ref.read(locationService).lon!);
                   setState(
                     () =>
                         _centerOnLocationUpdate = CenterOnLocationUpdate.always,
