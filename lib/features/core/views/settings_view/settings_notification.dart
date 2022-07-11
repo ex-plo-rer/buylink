@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../services/navigation_service.dart';
 import '../../notifiers/settings_notifier/settings_notification_notifier.dart';
 
 class SettingNotification extends ConsumerStatefulWidget {
@@ -31,7 +32,9 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
             size: 14,
             color: AppColors.dark,
           ),
-          onPressed: () {},
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,

@@ -40,10 +40,8 @@ class DeleteUser extends ConsumerWidget {
         leading: deleteUserNotifier.currentPage == 1
             ? null
             : IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: AppColors.dark,
-                ),
+                icon: const Icon(Icons.arrow_back_ios_outlined,
+                    color: AppColors.dark, size: 14),
                 onPressed: () {
                   deleteUserNotifier.moveBackward();
                   print(deleteUserNotifier.currentPage);

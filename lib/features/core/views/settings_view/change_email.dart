@@ -16,6 +16,7 @@ import '../../../../widgets/otp_input.dart';
 import '../../../../widgets/spacing.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/settings_notifier/change_email_notifier.dart';
+import '../../notifiers/user_provider.dart';
 
 class ChangeEmail extends ConsumerWidget {
   ChangeEmail({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class ChangeEmail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final userProv = ref.watch(userProvider);
     final changeEmailNotifier = ref.watch(editUserEmailNotifierProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -34,10 +36,8 @@ class ChangeEmail extends ConsumerWidget {
         leading: changeEmailNotifier.currentPage == 1
             ? null
             : IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: AppColors.dark,
-                ),
+                icon: const Icon(Icons.arrow_back_ios_outlined,
+                    color: AppColors.dark, size: 14),
                 onPressed: () {
                   changeEmailNotifier.moveBackward();
                   print(changeEmailNotifier.currentPage);
@@ -98,7 +98,7 @@ class ChangeEmail extends ConsumerWidget {
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500),
                               title: '',
-                              hintText: 'Example@gmail.com',
+                              hintText: userProv.currentUser?.email,
                               keyboardType: TextInputType.emailAddress,
                               focusNode: _newEmailFN,
                               controller: _newEmailController,

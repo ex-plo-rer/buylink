@@ -5,11 +5,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/loader.dart';
+import '../../../../services/navigation_service.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/spacing.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/settings_notifier/change_name_notifier.dart';
+import '../../notifiers/user_provider.dart';
 
 class EditUserName extends ConsumerWidget {
   EditUserName({Key? key}) : super(key: key);
@@ -21,16 +23,17 @@ class EditUserName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final userProv = ref.watch(userProvider);
     final editUserNameNotifier = ref.watch(editUserNameNotifierProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            color: AppColors.dark,
-          ),
-          onPressed: () {},
+          icon: const Icon(Icons.arrow_back_ios_outlined,
+              color: AppColors.dark, size: 14),
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
@@ -64,7 +67,7 @@ class EditUserName extends ConsumerWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.w500),
                   title: '',
-                  hintText: 'Deji',
+                  hintText: userProv.currentUser?.name,
                   focusNode: _nameFN,
                   controller: _nameController,
                   onChanged: editUserNameNotifier.onNameChanged,

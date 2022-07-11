@@ -36,10 +36,8 @@ class ChangePassword extends ConsumerWidget {
         leading: changePasswordNotifier.currentPage == 1
             ? null
             : IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: AppColors.dark,
-                ),
+                icon: const Icon(Icons.arrow_back_ios_outlined,
+                    color: AppColors.dark, size: 14),
                 onPressed: () {
                   changePasswordNotifier.moveBackward();
                   print(changePasswordNotifier.currentPage);
@@ -260,7 +258,10 @@ class ChangePassword extends ConsumerWidget {
                         Alertify(title: 'Your old password is not correct')
                             .error();
                       }
-                    } else if (changePasswordNotifier.currentPage == 2) {
+                    } else if (changePasswordNotifier.currentPage == 2 &&
+                        _newPasswordController.text.length > 7 &&
+                        _newPasswordController.text
+                            .contains(RegExp(r'[0-9]'))) {
                       Loader(context).showLoader(text: '');
                       await changePasswordNotifier.changePassword(
                         newPassword: _newPasswordController.text,
