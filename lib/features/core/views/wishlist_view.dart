@@ -28,15 +28,29 @@ class _WishlistState extends ConsumerState<WishlistView>
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(categoryNotifierProvider).fetchUserCategories();
-      await ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
-      _tabController = TabController(
-          length: ref.read(categoryNotifierProvider).userCategories.length,
-          vsync: this);
-      _tabController.addListener(_handleTabChange);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    // if (ref.read(categoryNotifierProvider).userCategories.isEmpty) {
+    //   await ref.read(categoryNotifierProvider).fetchUserCategories();
+    // }
+    // ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
+    _tabController = TabController(
+        length: ref.read(categoryNotifierProvider).userCategories.length,
+        vsync: this);
+    _tabController.addListener(_handleTabChange);
+    // });
+    // init();
     super.initState();
+  }
+
+  Future<void> init() async {
+    if (ref.read(categoryNotifierProvider).userCategories.isEmpty) {
+      await ref.read(categoryNotifierProvider).fetchUserCategories();
+    }
+    // ref.read(wishlistNotifierProvider).fetchWishlist(category: 'all');
+    _tabController = TabController(
+        length: ref.watch(categoryNotifierProvider).userCategories.length,
+        vsync: this);
+    _tabController.addListener(_handleTabChange);
   }
 
   @override
@@ -56,8 +70,8 @@ class _WishlistState extends ConsumerState<WishlistView>
   // TODO: Make the third product fill the screen's width
   @override
   Widget build(BuildContext context) {
-    final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     final categoryNotifier = ref.watch(categoryNotifierProvider);
+    final wishlistNotifier = ref.watch(wishlistNotifierProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -92,6 +106,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                         tabs: categoryNotifier.userCategories
                             .map((category) => Tab(text: category))
                             .toList()),
+                    const Spacing.mediumHeight(),
                     Expanded(
                       child: TabBarView(
                         controller: _tabController,
@@ -101,56 +116,67 @@ class _WishlistState extends ConsumerState<WishlistView>
                               ? const CircularProgress()
                               : wishlistNotifier.products.isEmpty
                                   ? const Center(child: Text('Empty'))
-                                  : MasonryGridView.count(
-                                      itemCount:
-                                          wishlistNotifier.products.length,
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 20,
-                                      crossAxisSpacing: 15,
-                                      itemBuilder: (context, index) {
-                                        return ProductContainer(
-                                          product:
-                                              wishlistNotifier.products[index],
-                                          isFavorite: true,
-                                          onProductTapped: () {
-                                            ref
-                                                .read(navigationServiceProvider)
-                                                .navigateToNamed(
-                                                  Routes.productDetails,
-                                                  arguments: wishlistNotifier
-                                                      .products[index],
-                                                );
-                                          },
-                                          onDistanceTapped: () {},
-                                          onFlipTapped: () async {
-                                            Loader(context)
-                                                .showLoader(text: '');
-                                            await ref
-                                                .read(flipNotifierProvider)
-                                                .addItemToCompare(
-                                                    productId: wishlistNotifier
-                                                        .products[index].id);
-                                            if (ref
-                                                .read(flipNotifierProvider)
-                                                .successfullyAdded) {
-                                              Loader(context).hideLoader();
+                                  : RefreshIndicator(
+                                      onRefresh: () async {
+                                        await wishlistNotifier.fetchWishlist(
+                                            category:
+                                                categoryNotifier.userCategories[
+                                                    _tabController.index]);
+                                      },
+                                      child: MasonryGridView.count(
+                                        itemCount:
+                                            wishlistNotifier.products.length,
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 15,
+                                        itemBuilder: (context, index) {
+                                          return ProductContainer(
+                                            product: wishlistNotifier
+                                                .products[index],
+                                            isFavorite: true,
+                                            onProductTapped: () {
                                               ref
                                                   .read(
                                                       navigationServiceProvider)
                                                   .navigateToNamed(
-                                                      Routes.compare);
-                                              return;
-                                            }
-                                            // Loader(context).hideLoader();
-                                          },
-                                          onFavoriteTapped: () =>
-                                              wishlistNotifier.removeFromFav(
-                                            index: index,
-                                            id: wishlistNotifier
-                                                .products[index].id,
-                                          ),
-                                        );
-                                      },
+                                                    Routes.productDetails,
+                                                    arguments: wishlistNotifier
+                                                        .products[index],
+                                                  );
+                                            },
+                                            onDistanceTapped: () {},
+                                            onFlipTapped: () async {
+                                              Loader(context)
+                                                  .showLoader(text: '');
+                                              await ref
+                                                  .read(flipNotifierProvider)
+                                                  .addItemToCompare(
+                                                      productId:
+                                                          wishlistNotifier
+                                                              .products[index]
+                                                              .id);
+                                              if (ref
+                                                  .read(flipNotifierProvider)
+                                                  .successfullyAdded) {
+                                                Loader(context).hideLoader();
+                                                ref
+                                                    .read(
+                                                        navigationServiceProvider)
+                                                    .navigateToNamed(
+                                                        Routes.compare);
+                                                return;
+                                              }
+                                              // Loader(context).hideLoader();
+                                            },
+                                            onFavoriteTapped: () =>
+                                                wishlistNotifier.removeFromFav(
+                                              index: index,
+                                              id: wishlistNotifier
+                                                  .products[index].id,
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     );
                         }).toList(),
                       ),

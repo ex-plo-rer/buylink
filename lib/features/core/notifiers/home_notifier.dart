@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
+import 'package:buy_link/features/core/notifiers/category_notifier.dart';
 import 'package:buy_link/features/core/notifiers/wishlist_notifier.dart';
 import 'package:buy_link/repositories/core_repository.dart';
 import 'package:buy_link/services/location_service.dart';
@@ -134,6 +135,7 @@ class HomeNotifier extends BaseChangeNotifier {
         lon: _reader(locationService).lon!,
         category: category,
       );
+      _reader(categoryNotifierProvider).fetchUserCategories();
       changeText(category: category ?? 'all');
       setFav();
       _productLoading = false;

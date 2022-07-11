@@ -11,7 +11,7 @@ class WishlistNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   WishlistNotifier(this._reader) {
-    // fetchWishlist(category: category);
+    fetchWishlist(category: 'all');
   }
 
   List<ProductModel> _products = [];

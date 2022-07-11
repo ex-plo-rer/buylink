@@ -138,123 +138,135 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               hasIcon: false,
                               // onButtonPressed: () => homeNotifier.fetchProducts(category: 'all'),
                             )
-                          : MasonryGridView.count(
-                              itemCount: homeNotifier.products.length,
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 15,
-                              itemBuilder: (context, index) {
-                                if (index == 3) {
-                                  return Container(
-                                    height: 182,
-                                    color: AppColors.transparent,
-                                    child: homeNotifier.categoriesLoading
-                                        ? const CircularProgress()
-                                        : homeNotifier.categories.isEmpty
-                                            ? const Center(
-                                                child:
-                                                    Text('Category is empty'),
-                                              )
-                                            : Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  CategoryContainer(
-                                                    categoryName: homeNotifier
-                                                        .categories[0].name,
-                                                    categoryImage: homeNotifier
-                                                        .categories[0].image,
-                                                    onTap: () => homeNotifier
-                                                        .fetchProducts(
-                                                            category:
-                                                                homeNotifier
-                                                                    .categories[
-                                                                        0]
-                                                                    .name),
-                                                  ),
-                                                  CategoryContainer(
-                                                    categoryName: homeNotifier
-                                                        .categories[1].name,
-                                                    categoryImage: homeNotifier
-                                                        .categories[1].image,
-                                                    onTap: () => homeNotifier
-                                                        .fetchProducts(
-                                                            category:
-                                                                homeNotifier
-                                                                    .categories[
-                                                                        1]
-                                                                    .name),
-                                                  ),
-                                                  CategoryContainer(
-                                                    categoryName: homeNotifier
-                                                        .categories[2].name,
-                                                    categoryImage: homeNotifier
-                                                        .categories[2].image,
-                                                    onTap: () => homeNotifier
-                                                        .fetchProducts(
-                                                            category:
-                                                                homeNotifier
-                                                                    .categories[
-                                                                        2]
-                                                                    .name),
-                                                  ),
-                                                ],
-                                              ),
-                                  );
-                                } else {
-                                  return ProductContainer(
-                                    product: homeNotifier.products[index],
-                                    isFavorite: homeNotifier.fav[index]!,
-                                    onProductTapped: () {
-                                      ref
-                                          .read(navigationServiceProvider)
-                                          .navigateToNamed(
-                                            Routes.productDetails,
-                                            arguments:
-                                                homeNotifier.products[index],
-                                          );
-                                    },
-                                    onDistanceTapped: () {},
-                                    onFlipTapped: () async {
-                                      Loader(context).showLoader(text: '');
-                                      await ref
-                                          .read(flipNotifierProvider)
-                                          .addItemToCompare(
-                                              productId: homeNotifier
-                                                  .products[index].id);
-                                      if (ref
-                                          .read(flipNotifierProvider)
-                                          .successfullyAdded) {
-                                        Loader(context).hideLoader();
+                          : RefreshIndicator(
+                              onRefresh: () async {
+                                await homeNotifier.fetchProducts(
+                                    category: null);
+                              },
+                              child: MasonryGridView.count(
+                                itemCount: homeNotifier.products.length,
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 20,
+                                crossAxisSpacing: 15,
+                                itemBuilder: (context, index) {
+                                  if (index == 3) {
+                                    return Container(
+                                      height: 182,
+                                      color: AppColors.transparent,
+                                      child: homeNotifier.categoriesLoading
+                                          ? const CircularProgress()
+                                          : homeNotifier.categories.isEmpty
+                                              ? const Center(
+                                                  child:
+                                                      Text('Category is empty'),
+                                                )
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    CategoryContainer(
+                                                      categoryName: homeNotifier
+                                                          .categories[0].name,
+                                                      categoryImage:
+                                                          homeNotifier
+                                                              .categories[0]
+                                                              .image,
+                                                      onTap: () => homeNotifier
+                                                          .fetchProducts(
+                                                              category:
+                                                                  homeNotifier
+                                                                      .categories[
+                                                                          0]
+                                                                      .name),
+                                                    ),
+                                                    CategoryContainer(
+                                                      categoryName: homeNotifier
+                                                          .categories[1].name,
+                                                      categoryImage:
+                                                          homeNotifier
+                                                              .categories[1]
+                                                              .image,
+                                                      onTap: () => homeNotifier
+                                                          .fetchProducts(
+                                                              category:
+                                                                  homeNotifier
+                                                                      .categories[
+                                                                          1]
+                                                                      .name),
+                                                    ),
+                                                    CategoryContainer(
+                                                      categoryName: homeNotifier
+                                                          .categories[2].name,
+                                                      categoryImage:
+                                                          homeNotifier
+                                                              .categories[2]
+                                                              .image,
+                                                      onTap: () => homeNotifier
+                                                          .fetchProducts(
+                                                              category:
+                                                                  homeNotifier
+                                                                      .categories[
+                                                                          2]
+                                                                      .name),
+                                                    ),
+                                                  ],
+                                                ),
+                                    );
+                                  } else {
+                                    return ProductContainer(
+                                      product: homeNotifier.products[index],
+                                      isFavorite: homeNotifier.fav[index]!,
+                                      onProductTapped: () {
                                         ref
                                             .read(navigationServiceProvider)
-                                            .navigateToNamed(Routes.compare);
-                                        return;
-                                      }
-                                      Loader(context).hideLoader();
-                                    },
-                                    onFavoriteTapped: () =>
-                                        homeNotifier.toggleFav(
-                                            index: index,
-                                            id: homeNotifier
-                                                .products[index].id),
-                                    // {
-                                    //   homeNotifier.products[index].isFav!
-                                    //       ? await wishlistNotifier
-                                    //           .removeFromWishlist(
-                                    //           productId:
-                                    //               homeNotifier.products[index].id,
-                                    //         )
-                                    //       : await wishlistNotifier.addToWishlist(
-                                    //           productId:
-                                    //               homeNotifier.products[index].id,
-                                    //         );
-                                    //   ref.refresh(homeNotifierProvider(null));
-                                    // },
-                                  );
-                                }
-                              },
+                                            .navigateToNamed(
+                                              Routes.productDetails,
+                                              arguments:
+                                                  homeNotifier.products[index],
+                                            );
+                                      },
+                                      onDistanceTapped: () {},
+                                      onFlipTapped: () async {
+                                        Loader(context).showLoader(text: '');
+                                        await ref
+                                            .read(flipNotifierProvider)
+                                            .addItemToCompare(
+                                                productId: homeNotifier
+                                                    .products[index].id);
+                                        if (ref
+                                            .read(flipNotifierProvider)
+                                            .successfullyAdded) {
+                                          Loader(context).hideLoader();
+                                          ref
+                                              .read(navigationServiceProvider)
+                                              .navigateToNamed(Routes.compare);
+                                          return;
+                                        }
+                                        Loader(context).hideLoader();
+                                      },
+                                      onFavoriteTapped: () =>
+                                          homeNotifier.toggleFav(
+                                              index: index,
+                                              id: homeNotifier
+                                                  .products[index].id),
+                                      // {
+                                      //   homeNotifier.products[index].isFav!
+                                      //       ? await wishlistNotifier
+                                      //           .removeFromWishlist(
+                                      //           productId:
+                                      //               homeNotifier.products[index].id,
+                                      //         )
+                                      //       : await wishlistNotifier.addToWishlist(
+                                      //           productId:
+                                      //               homeNotifier.products[index].id,
+                                      //         );
+                                      //   ref.refresh(homeNotifierProvider(null));
+                                      // },
+                                    );
+                                  }
+                                },
+                              ),
                             ),
                 ),
               ],
