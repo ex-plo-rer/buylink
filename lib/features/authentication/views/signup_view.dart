@@ -206,6 +206,7 @@ class SignupView extends ConsumerWidget {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 )),
+                            Spacing.tinyHeight(),
                             Align(
                                 alignment: Alignment.topCenter,
                                 child: GestureDetector(
