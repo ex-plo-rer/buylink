@@ -89,6 +89,7 @@ class ChangePassword extends ConsumerWidget {
                             fontSize: 24,
                             firstColor: AppColors.primaryColor,
                           ),
+                          Spacing.smallHeight(),
                           const Align(
                             alignment: Alignment.topLeft,
                             child: const Text(

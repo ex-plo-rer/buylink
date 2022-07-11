@@ -34,7 +34,7 @@ class MostSearchedProductContainer extends StatelessWidget {
           image: CachedNetworkImageProvider(
             productImage,
           ),
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
       ),
       child: Column(

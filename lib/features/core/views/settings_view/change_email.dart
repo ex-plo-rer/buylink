@@ -86,7 +86,7 @@ class ChangeEmail extends ConsumerWidget {
                         Column(
                           children: [
                             const TextWithRich(
-                              firstText: 'Change ',
+                              firstText: 'Change',
                               secondText: 'email address',
                               fontSize: 24,
                               firstColor: AppColors.primaryColor,

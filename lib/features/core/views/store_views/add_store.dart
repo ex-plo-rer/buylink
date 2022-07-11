@@ -62,10 +62,8 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
         leading: addStoreNotifier.currentPage == 1
             ? null
             : IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: AppColors.dark,
-                ),
+                icon: const Icon(Icons.arrow_back_ios_outlined,
+                    color: AppColors.dark, size: 14),
                 onPressed: () {
                   addStoreNotifier.moveBackward();
                   print(addStoreNotifier.currentPage);
