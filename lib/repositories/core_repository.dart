@@ -244,6 +244,30 @@ class CoreRepository {
     return _category;
   }
 
+  Future<List<String>> fetchAllCategories() async {
+    print(
+        '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+    };
+    print('Fetch all categories params sent to server $body');
+
+    var response = await networkService.post(
+      'users/all-categories',
+      body: body,
+      headers: headers,
+    );
+
+    print('Fetch all categories response $response');
+    List<String> _category = [];
+    for (var category in response) {
+      _category.add(category);
+    }
+
+    return _category;
+  }
+
   Future<List<String>> fetchUserCategories() async {
     print(
         '_reader(userProvider).currentUser?.id ${_reader(userProvider).currentUser?.id}');

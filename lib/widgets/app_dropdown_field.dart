@@ -41,10 +41,10 @@ class AppDropdownField extends StatelessWidget {
             ),
           ),
           const Spacing.tinyHeight(),
-
           DropdownButtonFormField(
             isExpanded: true,
             // value: addProductNotifier.categoryValue,
+            icon: const Icon(Icons.keyboard_arrow_down_rounded),
             key: dKey,
             hint: Text(hintText != null ? hintText! : ''),
             items: items,
@@ -58,7 +58,7 @@ class AppDropdownField extends StatelessWidget {
               hintStyle: const TextStyle(fontSize: 14),
               prefixIcon: prefixIcon != null
                   ? UnconstrainedBox(
-                  child: prefixIcon, alignment: Alignment.center)
+                      child: prefixIcon, alignment: Alignment.center)
                   : null,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),

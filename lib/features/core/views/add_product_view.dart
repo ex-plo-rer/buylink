@@ -41,6 +41,7 @@ class AddProductView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final addProductNotifier = ref.watch(addProductNotifierProvider);
+    final categoryNotifier = ref.watch(categoryNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -103,7 +104,7 @@ class AddProductView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.grey2,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
@@ -127,7 +128,7 @@ class AddProductView extends ConsumerWidget {
                       onChanged: addProductNotifier.onMinPriceChanged,
                     ),
                   ),
-                  Spacing.smallWidth(),
+                  const Spacing.smallWidth(),
                   Expanded(
                     child: SpecialTextField(
                       controller: maxPriceCtrl,
@@ -143,9 +144,7 @@ class AddProductView extends ConsumerWidget {
               AppDropdownField(
                 title: 'Product Category',
                 hintText: 'Select Product Category',
-                items: ref
-                    .read(categoryNotifierProvider)
-                    .userCategories
+                items: categoryNotifier.allCategories
                     .map(
                       (category) => DropdownMenuItem(
                         child: Text(category),
@@ -153,7 +152,7 @@ class AddProductView extends ConsumerWidget {
                       ),
                     )
                     .toList(),
-                onChanged: addProductNotifier.categories.isEmpty
+                onChanged: categoryNotifier.allCategories.isEmpty
                     ? null
                     : (newCategory) {
                         // _subCatKey.currentState?.reset();
@@ -183,7 +182,7 @@ class AddProductView extends ConsumerWidget {
               // ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.grey2,
                     fontSize: 14,
                     fontWeight: FontWeight.w500),
@@ -211,7 +210,7 @@ class AddProductView extends ConsumerWidget {
               const Spacing.mediumHeight(),
               AppTextField(
                 controller: productDescCtrl,
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.grey2,
                     fontSize: 14,
                     fontWeight: FontWeight.w500),

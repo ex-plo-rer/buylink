@@ -21,15 +21,15 @@ class AddProductNotifier extends BaseChangeNotifier {
 
   String? get sizeValue => _sizeValue;
 
-  List<String> _categories = ['Aaaa', 'Bbbbb', 'Ccccc'];
+  final List<String> _categories = [];
 
   List<String> get categories => _categories;
 
-  List<String> _sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+  final List<String> _sizes = ['S', 'M', 'L', 'XL', 'XXL'];
 
   List<String> get sizes => _sizes;
 
-  List<String?> _imageList = [];
+  final List<String?> _imageList = [];
 
   List<String?> get imageList => _imageList;
 

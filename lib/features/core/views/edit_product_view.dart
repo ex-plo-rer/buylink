@@ -88,6 +88,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
   @override
   Widget build(BuildContext context) {
     final editProductNotifier = ref.watch(editProductNotifierProvider);
+    final categoryNotifier = ref.watch(categoryNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -145,7 +146,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.grey2,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
@@ -169,7 +170,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                       onChanged: editProductNotifier.onMinPriceChanged,
                     ),
                   ),
-                  Spacing.smallWidth(),
+                  const Spacing.smallWidth(),
                   Expanded(
                     child: SpecialTextField(
                       controller: maxPriceCtrl,
@@ -185,9 +186,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
               AppDropdownField(
                 title: 'Product Category',
                 hintText: 'Select Product Category',
-                items: ref
-                    .read(categoryNotifierProvider)
-                    .userCategories
+                items: categoryNotifier.allCategories
                     .map(
                       (category) => DropdownMenuItem(
                         child: Text(category),
@@ -195,7 +194,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                       ),
                     )
                     .toList(),
-                onChanged: editProductNotifier.categories.isEmpty
+                onChanged: categoryNotifier.allCategories.isEmpty
                     ? null
                     : (newCategory) {
                         // _subCatKey.currentState?.reset();
@@ -225,7 +224,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
               // ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.grey2,
                     fontSize: 14,
                     fontWeight: FontWeight.w500),
@@ -254,7 +253,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
               const Spacing.mediumHeight(),
               AppTextField(
                 controller: productDescCtrl,
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.grey2,
                     fontSize: 14,
                     fontWeight: FontWeight.w500),

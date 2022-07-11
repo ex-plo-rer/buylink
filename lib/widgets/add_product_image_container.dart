@@ -48,15 +48,26 @@ class AddProductImageContainer extends ConsumerWidget {
               borderRadius: const BorderRadius.all(
                 Radius.circular(4),
               ),
-              image: DecorationImage(
-                image: imagePath != null && imagePath!.contains('https://')
-                    ? CachedNetworkImageProvider(imagePath!) as ImageProvider
-                    : FileImage(
-                        File(imagePath ?? ''),
-                      ),
-                fit: BoxFit.fill,
-              ),
+              image: imagePath == null
+                  ? null
+                  : DecorationImage(
+                      image:
+                          imagePath != null && imagePath!.contains('https://')
+                              ? CachedNetworkImageProvider(imagePath!)
+                                  as ImageProvider
+                              : FileImage(
+                                  File(imagePath ?? ''),
+                                ),
+                      fit: BoxFit.fill,
+                    ),
             ),
+            child: imagePath == null
+                ? const Center(
+                    child: Icon(
+                    Icons.image_outlined,
+                    color: AppColors.grey1,
+                  ))
+                : null,
           ),
         ),
         Visibility(

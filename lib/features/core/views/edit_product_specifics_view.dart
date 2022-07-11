@@ -121,7 +121,7 @@ class _EditProductSpecificsViewState
               ),
               const Spacing.height(20),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
@@ -132,7 +132,7 @@ class _EditProductSpecificsViewState
                 onChanged: addProductNotifier.onBrandChanged,
               ),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
@@ -157,7 +157,7 @@ class _EditProductSpecificsViewState
                       onChanged: addProductNotifier.onMinAgeChanged,
                     ),
                   ),
-                  Spacing.smallWidth(),
+                  const Spacing.smallWidth(),
                   Expanded(
                     child: SpecialTextField(
                       height: 56,
@@ -183,7 +183,7 @@ class _EditProductSpecificsViewState
                       onChanged: addProductNotifier.onMinWeightChanged,
                     ),
                   ),
-                  Spacing.smallWidth(),
+                  const Spacing.smallWidth(),
                   Expanded(
                     child: SpecialTextField(
                       height: 56,
@@ -207,7 +207,7 @@ class _EditProductSpecificsViewState
                       ),
                     )
                     .toList(),
-                onChanged: addProductNotifier.categories.isEmpty
+                onChanged: addProductNotifier.sizes.isEmpty
                     ? null
                     : (newSize) {
                         // _subCatKey.currentState?.reset();
@@ -217,7 +217,7 @@ class _EditProductSpecificsViewState
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
@@ -229,7 +229,7 @@ class _EditProductSpecificsViewState
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w600),
@@ -243,7 +243,7 @@ class _EditProductSpecificsViewState
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),

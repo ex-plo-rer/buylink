@@ -60,7 +60,7 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.height(20),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
@@ -70,7 +70,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                 onChanged: addProductNotifier.onBrandChanged,
               ),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
@@ -93,7 +93,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                       onChanged: addProductNotifier.onMinAgeChanged,
                     ),
                   ),
-                  Spacing.smallWidth(),
+                  const Spacing.smallWidth(),
                   Expanded(
                     child: SpecialTextField(
                       height: 56,
@@ -117,7 +117,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                       onChanged: addProductNotifier.onMinWeightChanged,
                     ),
                   ),
-                  Spacing.smallWidth(),
+                  const Spacing.smallWidth(),
                   Expanded(
                     child: SpecialTextField(
                       height: 56,
@@ -140,7 +140,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                       ),
                     )
                     .toList(),
-                onChanged: addProductNotifier.categories.isEmpty
+                onChanged: addProductNotifier.sizes.isEmpty
                     ? null
                     : (newSize) {
                         // _subCatKey.currentState?.reset();
@@ -150,7 +150,7 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
@@ -161,7 +161,7 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w600),
@@ -173,7 +173,7 @@ class AddProductSpecificsView extends ConsumerWidget {
               ),
               const Spacing.mediumHeight(),
               AppTextField(
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600),
