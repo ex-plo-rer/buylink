@@ -199,7 +199,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                               .name,
                                                       storeId: widget.storeId)),
                                           child: Container(
-                                              padding: EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(10),
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.rectangle,
                                                   borderRadius:
@@ -207,7 +207,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                   border: Border.all(
                                                       color: AppColors
                                                           .primaryColor)),
-                                              child: Text(
+                                              child: const Text(
                                                 "See Review",
                                                 style: TextStyle(
                                                     color:
@@ -291,7 +291,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                     ),
                                   ],
                                 ),
-                                Spacing.smallHeight(),
+                                const Spacing.smallHeight(),
                                 Text(
                                   storeDetailsNotifier.storeDetails.about,
                                   style: const TextStyle(
@@ -337,12 +337,12 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                             color: Colors.white.withOpacity(0.0),
 
                             //This is for bottom border that is needed
-                            border: Border(
-                                bottom: BorderSide(
+                            border: const Border(
+                                bottom: const BorderSide(
                                     color: AppColors.grey8, width: 2)),
                           ),
                           child: TabBar(
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               labelColor: AppColors.primaryColor,
                               indicatorColor: AppColors.primaryColor,
                               unselectedLabelColor: AppColors.grey5,
@@ -363,7 +363,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                         SizedBox(
                           height: 500,
                           child: Padding(
-                              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                               child: TabBarView(
                                 controller: _tabController,
                                 children: categoryNotifier.storeCategories
@@ -371,6 +371,8 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                   return storeDetailsNotifier.state.isLoading
                                       ? const CircularProgress()
                                       : MasonryGridView.count(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
                                           itemCount: storeDetailsNotifier
                                               .products.length,
                                           crossAxisCount: 2,
@@ -380,7 +382,8 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                             return ProductContainer(
                                               product: storeDetailsNotifier
                                                   .products[index],
-                                              isFavorite: true,
+                                              isFavorite: storeDetailsNotifier
+                                                  .fav[index]!,
                                               onProductTapped: () {
                                                 ref
                                                     .read(
@@ -416,32 +419,11 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                 }
                                                 // Loader(context).hideLoader();
                                               },
-                                              onFavoriteTapped: () async {
-                                                storeDetailsNotifier
-                                                        .products[index].isFav!
-                                                    ? await ref
-                                                        .read(
-                                                            wishlistNotifierProvider)
-                                                        .removeFromWishlist(
-                                                          productId: ref
-                                                              .read(
-                                                                  wishlistNotifierProvider)
-                                                              .products[index]
-                                                              .id,
-                                                        )
-                                                    : await ref
-                                                        .read(
-                                                            wishlistNotifierProvider)
-                                                        .addToWishlist(
-                                                          productId: ref
-                                                              .read(
-                                                                  wishlistNotifierProvider)
-                                                              .products[index]
-                                                              .id,
-                                                        );
-                                                ref.refresh(
-                                                    wishlistNotifierProvider);
-                                              },
+                                              onFavoriteTapped: () =>
+                                                  storeDetailsNotifier.toggleFav(
+                                                      index: index,
+                                                      id: storeDetailsNotifier
+                                                          .products[index].id),
                                             );
                                           },
                                         );

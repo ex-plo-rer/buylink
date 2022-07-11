@@ -7,6 +7,7 @@ import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../services/base/network_exception.dart';
 import '../../models/product_model.dart';
+import '../wishlist_notifier.dart';
 
 class StoreDetailsNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -26,6 +27,27 @@ class StoreDetailsNotifier extends BaseChangeNotifier {
 
   bool _detailsLoading = false;
   bool get detailsLoading => _detailsLoading;
+
+  final List<bool?> _fav = [];
+  List<bool?> get fav => _fav;
+
+  void setFav() {
+    for (var product in _products) {
+      _fav.add(product.isFav);
+    }
+  }
+
+  void toggleFav({required int index, required int id}) {
+    if (_fav[index]!) {
+      _fav[index] = false;
+      _reader(wishlistNotifierProvider).removeFromWishlist(productId: id);
+    } else {
+      _fav[index] = true;
+      _reader(wishlistNotifierProvider).addToWishlist(productId: id);
+    }
+    // fetchProducts(category: category);
+    notifyListeners();
+  }
 
   Future<void> fetchStoreQuickDetails({
     required int storeId,
@@ -58,6 +80,7 @@ class StoreDetailsNotifier extends BaseChangeNotifier {
         storeId: storeId,
         category: category,
       );
+      setFav();
       // }
       // Alertify(title: 'User logged in').success();
       setState(state: ViewState.idle);

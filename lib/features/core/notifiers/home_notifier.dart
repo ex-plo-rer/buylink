@@ -37,8 +37,8 @@ class HomeNotifier extends BaseChangeNotifier {
   List<ProductModel> _products = [];
 
   List<ProductModel> get products => _products;
-  List<bool?> _fav = [];
 
+  final List<bool?> _fav = [];
   List<bool?> get fav => _fav;
 
   ProductAttrModel? _productAttr;
