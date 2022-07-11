@@ -134,7 +134,7 @@ class ChangeEmail extends ConsumerWidget {
                             ),
                             const Spacing.height(12),
                             const Text(
-                              'Please fill in the 4 digit code we sent to your email to verify your account',
+                              'Please fill in the 4 digit code we sent to your email to verify your new email address',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: AppColors.grey2,

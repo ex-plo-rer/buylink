@@ -93,7 +93,7 @@ class SettingView extends ConsumerWidget {
                       visualDensity:
                           const VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
-                        "Change Username",
+                        "Change User Name",
                         style: TextStyle(
                             color: AppColors.shade6,
                             fontSize: 14,

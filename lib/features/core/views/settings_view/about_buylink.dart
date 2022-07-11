@@ -148,6 +148,7 @@ class About extends ConsumerWidget {
                               fontSize: 14,
                               fontWeight: FontWeight.w500),
                         ),
+                        Spacing.tinyWidth(),
                         Icon(
                           Icons.favorite,
                           color: AppColors.red,
