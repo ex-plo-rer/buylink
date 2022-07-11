@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../core/routes.dart';
 import '../../../../core/utilities/loader.dart';
+import '../../../../services/navigation_service.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/text_with_rich.dart';
@@ -64,12 +66,14 @@ class EditStoreName extends ConsumerWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.w500),
                   title: '',
-                  hintText: 'Atinuke Stores',
+                  hintText: store.name,
                   focusNode: _nameFN,
                   controller: _nameController,
                   onChanged: storeSettingsNotifier.onNameChanged,
                   suffixIcon: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      _nameController.clear();
+                    },
                     child: const CircleAvatar(
                       backgroundColor: AppColors.grey7,
                       radius: 10,
@@ -106,6 +110,11 @@ class EditStoreName extends ConsumerWidget {
                               newValue: _nameController.text,
                             );
                           }
+
+                          ref.read(navigationServiceProvider).navigateToNamed(
+                                Routes.storeSettings,
+                                arguments: store,
+                              );
                         },
                 ),
               ],

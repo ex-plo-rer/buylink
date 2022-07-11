@@ -174,8 +174,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                       .mostSearchedNCount!.products.isEmpty
                                   ? const Center(child: Text('No Product yet'))
                                   : ListView.separated(
-                                      itemCount: storeDashboardNotifier
-                                          .mostSearchedNCount!.products.length,
+                                      itemCount: 5,
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) =>
                                           MostSearchedProductContainer(
@@ -444,7 +443,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                           ),
                                         ],
                                       ),
-                                      const Spacing.tinyHeight(),
+                                      const Spacing.smallHeight(),
                                       const Text(
                                         'See all reviews',
                                         style: TextStyle(
@@ -478,8 +477,9 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                       FavoriteContainer(
                                         height: 28,
                                         width: 28,
-                                        favIcon:
-                                            SvgPicture.asset(AppSvgs.favorite),
+                                        favIcon: SvgPicture.asset(
+                                            AppSvgs.favorite,
+                                            color: AppColors.primaryColor),
                                         containerColor: AppColors.shade1,
                                         padding: 6,
                                       ),

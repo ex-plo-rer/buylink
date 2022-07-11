@@ -206,6 +206,7 @@ class SignupView extends ConsumerWidget {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 )),
+                            Spacing.tinyHeight(),
                             Align(
                                 alignment: Alignment.topCenter,
                                 child: GestureDetector(
@@ -219,7 +220,7 @@ class SignupView extends ConsumerWidget {
                                     }
                                   },
                                   child: Text(
-                                    'Resend OTP',
+                                    'Resend Code',
                                     style: TextStyle(
                                       color: signupNotifier.canResendOTP
                                           ? AppColors.primaryColor

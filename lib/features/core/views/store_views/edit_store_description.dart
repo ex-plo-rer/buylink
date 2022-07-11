@@ -1,4 +1,5 @@
 import 'package:buy_link/core/utilities/view_state.dart';
+import 'package:buy_link/features/core/models/store_quick_model.dart';
 import 'package:buy_link/features/core/notifiers/store_notifier/store_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/spacing.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../core/routes.dart';
 import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
@@ -18,6 +20,7 @@ import '../../notifiers/store_notifier/store_settings_notifier.dart';
 class EditStoreDesc extends ConsumerWidget {
   EditStoreDesc({Key? key, required this.store}) : super(key: key);
   final Store store;
+
   final _formKey = GlobalKey<FormState>();
 
   final _descriptionFN = FocusNode();
@@ -75,6 +78,20 @@ class EditStoreDesc extends ConsumerWidget {
                   controller: _descriptionController,
                   maxLines: 5,
                   onChanged: storeSettingsNotifier.onNameChanged,
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      _descriptionController.clear();
+                    },
+                    child: const CircleAvatar(
+                      backgroundColor: AppColors.grey7,
+                      radius: 10,
+                      child: Icon(
+                        Icons.clear_rounded,
+                        color: AppColors.light,
+                        size: 15,
+                      ),
+                    ),
+                  ),
                   hasBorder: true,
                 ),
                 const Spacing.largeHeight(),
@@ -101,6 +118,10 @@ class EditStoreDesc extends ConsumerWidget {
                               newValue: _descriptionController.text,
                             );
                           }
+                          ref.read(navigationServiceProvider).navigateToNamed(
+                                Routes.storeSettings,
+                                arguments: store,
+                              );
                         },
                 ),
               ],

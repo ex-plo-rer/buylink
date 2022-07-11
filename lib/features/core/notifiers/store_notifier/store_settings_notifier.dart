@@ -78,7 +78,7 @@ class StoreSettingNotifier extends BaseChangeNotifier {
       // _reader(navigationServiceProvider).navigateBack();
       _reader(navigationServiceProvider)
           .navigateOffAllNamed(Routes.dashboard, (p0) => false);
-      Alertify(title: 'Changes saved successfully').success();
+      Alertify(title: 'Your changes have been saved').success();
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
