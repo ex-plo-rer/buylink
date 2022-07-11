@@ -16,18 +16,17 @@ class SettingNotificationNotifier extends BaseChangeNotifier {
 
   FetchNotificationModel? _notifications;
 
-  late bool _pushStatus;
+  bool? _pushStatus;
+  bool? get pushStatus => _pushStatus;
 
-  bool get pushStatus => _pushStatus;
-  late bool _productStatus;
+  bool? _productStatus;
+  bool? get productStatus => _productStatus;
 
-  bool get productStatus => _productStatus;
-  late bool _chatStatus;
+  bool? _chatStatus;
+  bool? get chatStatus => _chatStatus;
 
-  bool get chatStatus => _chatStatus;
-  late bool _emailStatus;
-
-  bool get emailStatus => _emailStatus;
+  bool? _emailStatus;
+  bool? get emailStatus => _emailStatus;
 
   toggleStatus({
     required String text,

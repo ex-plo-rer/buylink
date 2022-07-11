@@ -54,7 +54,7 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
                   children: <Widget>[
                     const Spacing.mediumHeight(),
                     AppToggle(
-                      state: settingNotifier.pushStatus,
+                      state: settingNotifier.pushStatus ?? true,
                       type: "push",
                       title: "Push notifications",
                       subtitle:
@@ -72,7 +72,7 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
                       child: const Divider(color: AppColors.grey6),
                     ),
                     AppToggle(
-                      state: settingNotifier.productStatus,
+                      state: settingNotifier.productStatus ?? true,
                       type: "product",
                       title: "Product alert notifications",
                       subtitle:
@@ -90,7 +90,7 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
                       child: const Divider(color: AppColors.grey6),
                     ),
                     AppToggle(
-                      state: settingNotifier.chatStatus,
+                      state: settingNotifier.chatStatus ?? true,
                       type: "chat",
                       title: "Chat notifications",
                       subtitle: "Notifies you of messages in your inbox",
@@ -109,7 +109,7 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
                       ),
                     ),
                     AppToggle(
-                      state: settingNotifier.emailStatus,
+                      state: settingNotifier.emailStatus ?? true,
                       type: "email",
                       title: "Email Notifications",
                       subtitle:
