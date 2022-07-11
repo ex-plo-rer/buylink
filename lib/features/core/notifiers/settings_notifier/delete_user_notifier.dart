@@ -5,6 +5,7 @@ import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../repositories/setting_repository.dart';
 import '../../../../services/base/network_exception.dart';
+import '../../../../services/navigation_service.dart';
 
 class DeleteUserNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -146,7 +147,8 @@ class DeleteUserNotifier extends BaseChangeNotifier {
       );
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
+      // _reader(navigationServiceProvider).navigateBack();
     } finally {
       //setState(state: ViewState.idle);
     }
@@ -168,7 +170,8 @@ class DeleteUserNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {
       //setState(state: ViewState.idle);
     }

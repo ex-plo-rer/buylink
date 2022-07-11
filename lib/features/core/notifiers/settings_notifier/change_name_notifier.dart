@@ -14,6 +14,7 @@ class EditUserNameNotifier extends BaseChangeNotifier {
   EditUserNameNotifier(this._reader);
 
   String _name = '';
+
   String get name => _name;
 
   void onNameChanged(String text) {
@@ -33,7 +34,8 @@ class EditUserNameNotifier extends BaseChangeNotifier {
           .navigateOffAllNamed(Routes.dashboard, (p0) => false);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {
       // setState(state: ViewState.idle);
     }

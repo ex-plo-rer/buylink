@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
+import '../../../services/navigation_service.dart';
 
 class AddReviewNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -56,7 +57,8 @@ class AddReviewNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {
       //setState(state: ViewState.idle);
     }

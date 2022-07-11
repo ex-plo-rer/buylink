@@ -6,6 +6,7 @@ import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../services/base/network_exception.dart';
 import '../../../../services/location_service.dart';
+import '../../../../services/navigation_service.dart';
 
 class AddStoreNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -107,6 +108,7 @@ class AddStoreNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify().error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {
       //setState(state: ViewState.idle);
     }

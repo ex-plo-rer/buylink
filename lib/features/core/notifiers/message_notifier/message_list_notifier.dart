@@ -7,6 +7,7 @@ import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../services/base/network_exception.dart';
+import '../../../../services/navigation_service.dart';
 import '../../models/saved_session_model.dart';
 
 class MessageListNotifier extends BaseChangeNotifier {
@@ -122,6 +123,7 @@ class MessageListNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify().error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {
       // setState(state: ViewState.idle);
     }

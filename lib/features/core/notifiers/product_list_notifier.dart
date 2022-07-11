@@ -5,6 +5,7 @@ import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../repositories/store_repository.dart';
 import '../../../services/base/network_exception.dart';
+import '../../../services/navigation_service.dart';
 import '../models/product_model.dart';
 
 class ProductListNotifier extends BaseChangeNotifier {
@@ -15,6 +16,7 @@ class ProductListNotifier extends BaseChangeNotifier {
   }
 
   List<ProductModel> _products = [];
+
   List<ProductModel> get products => _products;
 
   Future<void> fetchStoreProducts({
@@ -32,7 +34,8 @@ class ProductListNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {
       // setState(state: ViewState.idle);
     }

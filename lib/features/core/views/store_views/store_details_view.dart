@@ -414,7 +414,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                           Routes.compare);
                                                   return;
                                                 }
-                                                Loader(context).hideLoader();
+                                                // Loader(context).hideLoader();
                                               },
                                               onFavoriteTapped: () async {
                                                 storeDetailsNotifier

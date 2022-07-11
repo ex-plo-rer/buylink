@@ -83,6 +83,7 @@ class StoreSettingNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify(title: e.error).error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {}
   }
 
@@ -99,7 +100,7 @@ class StoreSettingNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
     } finally {}
   }
 }

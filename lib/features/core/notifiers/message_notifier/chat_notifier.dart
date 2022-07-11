@@ -12,6 +12,7 @@ import '../../../../core/utilities/base_change_notifier.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../repositories/core_repository.dart';
 import '../../../../services/base/network_exception.dart';
+import '../../../../services/navigation_service.dart';
 
 class ChatNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -51,6 +52,7 @@ class ChatNotifier extends BaseChangeNotifier {
     final ref = FirebaseStorage.instance.ref().child(path);
     uploadTask = ref.putFile(file);
 
+    //TODO: Navigate back if this fails
     final snapshot = await uploadTask!.whenComplete(() {});
 
     _imageUrl = await snapshot.ref.getDownloadURL();
@@ -195,6 +197,7 @@ class ChatNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify().error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {
       // setState(state: ViewState.idle);
     }

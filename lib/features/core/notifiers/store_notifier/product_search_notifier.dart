@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/strings.dart';
+import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/view_state.dart';
 import '../../../../repositories/core_repository.dart';
 import '../../../../services/base/network_exception.dart';
@@ -106,7 +107,7 @@ class ProductSearchNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      // Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
     } finally {
       //Do something...
     }

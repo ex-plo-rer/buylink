@@ -6,6 +6,7 @@ import 'package:buy_link/services/base/network_exception.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/utilities/base_change_notifier.dart';
+import '../../../../services/navigation_service.dart';
 import '../../models/product_model.dart';
 
 class StoreNotifier extends BaseChangeNotifier {
@@ -16,6 +17,7 @@ class StoreNotifier extends BaseChangeNotifier {
   }
 
   List<Store> _myStores = [];
+
   List<Store> get myStores => _myStores;
 
   Future<void> fetchMyStores() async {
@@ -26,6 +28,7 @@ class StoreNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
       Alertify().error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {
       // setState(state: ViewState.idle);
     }

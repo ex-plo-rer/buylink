@@ -141,7 +141,7 @@ class _WishlistState extends ConsumerState<WishlistView>
                                                       Routes.compare);
                                               return;
                                             }
-                                            Loader(context).hideLoader();
+                                            // Loader(context).hideLoader();
                                           },
                                           onFavoriteTapped: () =>
                                               wishlistNotifier.removeFromFav(
