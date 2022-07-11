@@ -194,7 +194,7 @@ class _WishlistState extends ConsumerState<ProductListView>
                                       productPrice: productListNotifier
                                           .products[index].price,
                                       distance:
-                                          ref.read(locationService).getDistance(
+                                          ref.read(locationService).getDist(
                                                 endLat: productListNotifier
                                                     .products[index].lat,
                                                 endLon: productListNotifier

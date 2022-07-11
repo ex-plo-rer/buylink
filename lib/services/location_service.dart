@@ -50,8 +50,8 @@ class LocationService extends BaseChangeNotifier {
   }) {
     double distance = Geolocator.distanceBetween(_lat!, _lon!, endLat, endLon);
 
-    // return (distance / 1000).toStringAsFixed(1);
-    return (distance).toString();
+    return (distance / 1000).toStringAsFixed(1);
+    // return (distance).toString();
   }
 
   Future<void> getCurrentLocation() async {
@@ -141,4 +141,4 @@ class LocationService extends BaseChangeNotifier {
 }
 
 final locationService =
-    Provider<LocationService>((ref) => LocationService(ref.read));
+    ChangeNotifierProvider<LocationService>((ref) => LocationService(ref.read));
