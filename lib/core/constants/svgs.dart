@@ -37,4 +37,5 @@ class AppSvgs {
   static const user = 'assets/svgs/user.svg';
   static const headset = 'assets/svgs/headset.svg';
   static const bell2 = 'assets/svgs/bell_2.svg';
+  static const shop = 'assets/svgs/shop.svg';
 }
