@@ -7,6 +7,7 @@ class AppImages {
   static const emptyStore = 'assets/images/store_empty_state.png';
   static const staticLoader = 'assets/images/loader_static.png';
   static const emptyProduct = 'assets/images/empty_product.png';
+  static const splash = 'assets/images/b_splash.png';
 
   //Gif
   static const loader = 'assets/gif/loader.gif';

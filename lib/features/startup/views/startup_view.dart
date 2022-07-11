@@ -1,3 +1,4 @@
+import 'package:buy_link/core/constants/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,20 +13,22 @@ class StartupView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     ref.watch(startUpNotifierProvider);
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        // child:
-        // SvgPicture.asset(
-        //   AppSvgs.splash,
-        //   width: 60,
-        //   height: 20,
-        // ),
-        child: Text(
-          'Buylink',
-          style: TextStyle(
-            color: AppColors.primaryColor,
-            fontSize: 50,
-            fontWeight: FontWeight.w700,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 150.0),
+          //   child: Image.asset(
+          //     AppImages.splash,
+          //     width: MediaQuery.of(context).size.width - 110,
+          //     height: 70,
+          //   ),
+          child: Text(
+            'Buylink',
+            style: TextStyle(
+              color: AppColors.primaryColor,
+              fontSize: 70,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),
