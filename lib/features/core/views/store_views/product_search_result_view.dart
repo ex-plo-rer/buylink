@@ -294,7 +294,9 @@ class _ProductSearchResultViewState
                                     productName: product.name,
                                     productPrice: product.price,
                                     oldPrice: product.oldPrice,
-                                    index: index,
+                                    //onPageChanged: productSearchResultNotifier.nextPage(index,""),
+                                    index:
+                                        productSearchResultNotifier.activeIndex,
                                     imageCount: product.image.length,
                                   );
                                 },

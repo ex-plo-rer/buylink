@@ -219,7 +219,7 @@ class SignupView extends ConsumerWidget {
                                     }
                                   },
                                   child: Text(
-                                    'Resend OTP',
+                                    'Resend Code',
                                     style: TextStyle(
                                       color: signupNotifier.canResendOTP
                                           ? AppColors.primaryColor
