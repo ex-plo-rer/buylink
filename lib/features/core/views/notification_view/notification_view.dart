@@ -61,7 +61,7 @@ class _NotificationState extends ConsumerState<NotificationView>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Notification',
+                'Notifications',
                 style: TextStyle(
                   color: AppColors.grey1,
                   fontSize: 24,
@@ -69,25 +69,34 @@ class _NotificationState extends ConsumerState<NotificationView>
                 ),
               ),
               const Spacing.mediumHeight(),
-              TabBar(
-                labelColor: AppColors.primaryColor,
-                unselectedLabelColor: AppColors.grey5,
-                padding: const EdgeInsets.only(bottom: 10),
-                indicatorColor: AppColors.primaryColor,
-                controller: _tabController,
-                //isScrollable: true,
-                tabs: const [
-                  Tab(text: "Product Alert"),
-                  Tab(text: "Messages"),
-                ],
-                onTap: (index) => index == 0
-                    ? ref
-                        .read(notificationNotifierProvider)
-                        .fetchNotifications()
-                    : ref.read(messageListNotifierProvider).getChatList(
-                        sessionId:
-                            '${ref.read(userProvider).currentUser!.id}u'),
-              ),
+              DecoratedBox(
+                  decoration: BoxDecoration(
+                    //This is for background color
+                    color: Colors.white.withOpacity(0.0),
+
+                    //This is for bottom border that is needed
+                    border: Border(
+                        bottom: BorderSide(color: AppColors.grey8, width: 2)),
+                  ),
+                  child: TabBar(
+                    labelColor: AppColors.primaryColor,
+                    unselectedLabelColor: AppColors.grey5,
+                    padding: const EdgeInsets.only(bottom: 0),
+                    indicatorColor: AppColors.primaryColor,
+                    controller: _tabController,
+                    //isScrollable: true,
+                    tabs: const [
+                      Tab(text: "Product Alert"),
+                      Tab(text: "Messages"),
+                    ],
+                    onTap: (index) => index == 0
+                        ? ref
+                            .read(notificationNotifierProvider)
+                            .fetchNotifications()
+                        : ref.read(messageListNotifierProvider).getChatList(
+                            sessionId:
+                                '${ref.read(userProvider).currentUser!.id}u'),
+                  )),
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
@@ -150,7 +159,7 @@ class ProductAlertScreen extends ConsumerWidget {
                               ),
                               children: <TextSpan>[
                                 const TextSpan(
-                                  text: "A ",
+                                  text: "A store selling",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12,
@@ -165,8 +174,7 @@ class ProductAlertScreen extends ConsumerWidget {
                                   ),
                                 ),
                                 const TextSpan(
-                                    text:
-                                        " store is around your present location",
+                                    text: " is around your present location.",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 12,
