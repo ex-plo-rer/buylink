@@ -1,13 +1,8 @@
-import 'dart:io';
-
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/loader.dart';
-import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/message_notifier/message_list_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
-import 'package:buy_link/features/core/views/message_view/receiver_profile_view.dart';
-import 'package:buy_link/features/core/views/settings_view/change_name.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,16 +13,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'dart:math' as math;
 
 import '../../../../core/constants/colors.dart';
-import '../../../../core/routes.dart';
 import '../../../../services/navigation_service.dart';
-import '../../../../widgets/app_button.dart';
 import '../../../../widgets/message_bubble.dart';
 import '../../../../widgets/spacing.dart';
 import '../../models/message_model.dart';
-import '../../models/user_model.dart';
 import '../../notifiers/message_notifier/chat_notifier.dart';
-import '../../notifiers/message_notifier/message_notifier.dart';
-import 'camera_screen.dart';
 
 class MessageView extends ConsumerWidget {
   MessageView({
@@ -119,7 +109,30 @@ class MessageView extends ConsumerWidget {
               size: 16,
             ),
             tooltip: 'Back arrow',
-            onPressed: () => ref.read(navigationServiceProvider).navigateBack(),
+            onPressed: () async {
+              if (ref.watch(chatNotifierProvider).lastMessage != null) {
+                Loader(context).showLoader(text: 'Saving session');
+                await ref.read(chatNotifierProvider).saveSession(
+                      chatId: ref.watch(chatNotifierProvider).chatId,
+                      message:
+                          ref.watch(chatNotifierProvider).lastMessage ?? '',
+                      actor: args.from == 'storeMessages' ? 'store' : 'user',
+                    );
+                // args.from == 'storeMessages'
+                //     ? '${args.storeId}s'
+                //     : '${ref.read(userProvider).currentUser!.id}u',
+                if (args.from == 'storeMessages') {
+                  ref
+                      .read(messageListNotifierProvider)
+                      .getChatList(sessionId: '${args.storeId}s');
+                } else if (args.from == 'notification') {
+                  ref.read(messageListNotifierProvider).getChatList(
+                      sessionId: '${ref.read(userProvider).currentUser!.id}u');
+                }
+                Loader(context).hideLoader();
+              }
+              ref.read(navigationServiceProvider).navigateBack();
+            },
           ),
           //IconButton
         ),
