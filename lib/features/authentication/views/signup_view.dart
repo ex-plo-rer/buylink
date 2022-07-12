@@ -17,7 +17,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/svgs.dart';
 import '../../../services/snackbar_service.dart';
+import '../../../widgets/app_button_2.dart';
 import '../../../widgets/otp_form.dart';
 import '../../../widgets/otp_input.dart';
 import '../notifiers/login_notifier.dart';
@@ -253,7 +255,10 @@ class SignupView extends ConsumerWidget {
                               focusNode: _passwordFN,
                               onChanged: signupNotifier.onPasswordChanged,
                               suffixIcon: _passwordController.text.isEmpty
-                                  ? null
+                                  ? Icon(
+                                      Icons.visibility_off_outlined,
+                                      color: AppColors.grey6,
+                                    )
                                   : Row(
                                       mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -263,8 +268,8 @@ class SignupView extends ConsumerWidget {
                                               signupNotifier.togglePassword(),
                                           child: Icon(
                                             signupNotifier.passwordVisible
-                                                ? Icons.visibility
-                                                : Icons.visibility_off,
+                                                ? Icons.visibility_outlined
+                                                : Icons.visibility_off_outlined,
                                             color: AppColors.dark,
                                           ),
                                         ),
@@ -309,7 +314,8 @@ class SignupView extends ConsumerWidget {
                   ),
                   Column(
                     children: [
-                      AppButton(
+                      AppButton2(
+                        prevIcon: AppSvgs.forward,
                         // isLoading: signupNotifier.state.isLoading,
                         text: signupNotifier.currentPage ==
                                 signupNotifier.totalPage

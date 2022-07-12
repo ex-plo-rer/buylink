@@ -34,11 +34,11 @@ class EditStoreDesc extends ConsumerWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            color: AppColors.dark,
-          ),
-          onPressed: () {},
+          icon: const Icon(Icons.arrow_back_ios_outlined,
+              color: AppColors.dark, size: 14),
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,

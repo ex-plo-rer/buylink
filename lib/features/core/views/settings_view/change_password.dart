@@ -6,8 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/svgs.dart';
 import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
+import '../../../../widgets/app_button_2.dart';
 import '../../../../widgets/app_check_box.dart';
 import '../../../../widgets/app_linear_progress.dart';
 import '../../../../widgets/app_text_field.dart';
@@ -116,7 +118,10 @@ class ChangePassword extends ConsumerWidget {
                             onChanged:
                                 changePasswordNotifier.onOldPasswordChanged,
                             suffixIcon: _oldPasswordController.text.isEmpty
-                                ? null
+                                ? Icon(
+                                    Icons.visibility_off_outlined,
+                                    color: AppColors.grey6,
+                                  )
                                 : Row(
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -127,8 +132,8 @@ class ChangePassword extends ConsumerWidget {
                                         child: Icon(
                                           changePasswordNotifier
                                                   .oldPasswordVisible
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
+                                              ? Icons.visibility_outlined
+                                              : Icons.visibility_off_outlined,
                                           color: AppColors.dark,
                                         ),
                                       ),
@@ -225,7 +230,8 @@ class ChangePassword extends ConsumerWidget {
                     ],
                   ),
                 ),
-                AppButton(
+                AppButton2(
+                  prevIcon: AppSvgs.forward,
                   // isLoading: changePasswordNotifier.state.isLoading,
                   text: changePasswordNotifier.currentPage ==
                           changePasswordNotifier.totalPage

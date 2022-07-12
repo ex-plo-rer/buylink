@@ -1,11 +1,14 @@
+import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../widgets/app_button.dart';
+import '../../../../widgets/app_button_2.dart';
 import '../../../../widgets/spacing.dart';
 import '../../models/product_model.dart';
 import '../../notifiers/store_notifier/delete_store_notifier.dart';
@@ -24,11 +27,11 @@ class DeleteStore extends ConsumerWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            color: AppColors.dark,
-          ),
-          onPressed: () {},
+          icon: const Icon(Icons.arrow_back_ios_outlined,
+              color: AppColors.dark, size: 14),
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
@@ -50,9 +53,8 @@ class DeleteStore extends ConsumerWidget {
               const Spacing.largeHeight(),
               CircleAvatar(
                 radius: 38,
-                child: Icon(
-                  Icons.delete_outline_rounded,
-                  size: 28,
+                child: SvgPicture.asset(
+                  AppSvgs.trash,
                   color: AppColors.red,
                 ),
                 backgroundColor: AppColors.redshade1,
@@ -69,8 +71,9 @@ class DeleteStore extends ConsumerWidget {
               const Spacing.largeHeight(),
               const Spacing.largeHeight(),
               const Spacing.largeHeight(),
-              AppButton(
-                text: "Continue >>",
+              AppButton2(
+                prevIcon: AppSvgs.forward,
+                text: "Continue ",
                 backgroundColor: AppColors.primaryColor,
                 onPressed: () =>
                     ref.read(navigationServiceProvider).navigateToNamed(

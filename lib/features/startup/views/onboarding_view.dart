@@ -1,10 +1,12 @@
 import 'package:buy_link/core/constants/colors.dart';
+import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/widgets/app_button.dart';
 import 'package:buy_link/widgets/text_with_rich.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../widgets/app_button_2.dart';
 import '../../../widgets/dot_build.dart';
 import '../../../widgets/spacing.dart';
 import '../notifiers/onboarding_notifier.dart';
@@ -76,10 +78,11 @@ class OnboardingView extends ConsumerWidget {
           Spacing.largeHeight(),
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: AppButton(
+            child: AppButton2(
+              prevIcon: AppSvgs.forward,
               text: onboardnotifier.currentPage == 2
-                  ? 'Get Started  >>'
-                  : 'Continue  >>',
+                  ? 'Get Started '
+                  : 'Continue ',
               backgroundColor: AppColors.primaryColor,
               onPressed: () {
                 onboardnotifier.nextPage();

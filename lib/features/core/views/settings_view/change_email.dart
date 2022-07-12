@@ -6,10 +6,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/svgs.dart';
 import '../../../../core/utilities/alertify.dart';
 import '../../../../services/local_storage_service.dart';
 import '../../../../services/snackbar_service.dart';
 import '../../../../widgets/app_button.dart';
+import '../../../../widgets/app_button_2.dart';
 import '../../../../widgets/app_linear_progress.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/otp_input.dart';
@@ -154,7 +156,8 @@ class ChangeEmail extends ConsumerWidget {
                   ),
                   Column(
                     children: [
-                      AppButton(
+                      AppButton2(
+                        prevIcon: AppSvgs.forward,
                         // isLoading: changeEmailNotifier.state.isLoading,
                         text: changeEmailNotifier.currentPage ==
                                 changeEmailNotifier.totalPage

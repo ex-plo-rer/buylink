@@ -85,7 +85,10 @@ class DeleteStoreVal extends ConsumerWidget {
                   focusNode: _passwordFN,
                   onChanged: storeSettingsNotifier.onPasswordChanged,
                   suffixIcon: _passwordController.text.isEmpty
-                      ? null
+                      ? Icon(
+                          Icons.visibility_off_outlined,
+                          color: AppColors.grey6,
+                        )
                       : Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -95,14 +98,16 @@ class DeleteStoreVal extends ConsumerWidget {
                                   storeSettingsNotifier.togglePassword(),
                               child: Icon(
                                 storeSettingsNotifier.passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_outlined
+                                    : Icons.visibility_off_outlined,
                                 color: AppColors.dark,
                               ),
                             ),
                             const Spacing.smallWidth(),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                _passwordController.clear();
+                              },
                               child: const CircleAvatar(
                                 backgroundColor: AppColors.grey7,
                                 radius: 10,

@@ -12,9 +12,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/svgs.dart';
 import '../../../../core/routes.dart';
 import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
+import '../../../../widgets/app_button_2.dart';
 import '../../../../widgets/app_linear_progress.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/spacing.dart';
@@ -285,7 +287,13 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                 const Spacing.largeHeight(),
                 Column(
                   children: [
-                    AppButton(
+                    AppButton2(
+                      prevIcon: addStoreNotifier.currentPage ==
+                              addStoreNotifier.totalPage
+                          ? ""
+                          : addStoreNotifier.currentPage == 3
+                              ? ""
+                              : AppSvgs.forward,
                       // isLoading: addStoreNotifier.state.isLoading,
                       text: addStoreNotifier.currentPage ==
                               addStoreNotifier.totalPage

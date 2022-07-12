@@ -121,8 +121,8 @@ class LoginView extends ConsumerWidget {
                     suffixIcon: IconButton(
                       icon: Icon(
                         loginNotifier.passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                         color: AppColors.dark,
                       ),
                       onPressed: () => loginNotifier.togglePassword(),
