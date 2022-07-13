@@ -34,9 +34,7 @@ class DashboardView extends ConsumerWidget {
       },
       child: Scaffold(
         body: [
-          HomeView(
-            fromLoginOrSignup: fromLoginOrSignup,
-          ),
+          HomeView(fromLoginOrSignup: fromLoginOrSignup),
           const WishlistView(),
           const StoreView(),
           const NotificationView(),

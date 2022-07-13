@@ -11,6 +11,8 @@ import '../../../../repositories/core_repository.dart';
 import '../../../../services/base/network_exception.dart';
 import '../../../../services/location_service.dart';
 import '../../../../services/navigation_service.dart';
+import '../../models/product_model.dart';
+import '../wishlist_notifier.dart';
 
 class ProductSearchResultNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -58,6 +60,10 @@ class ProductSearchResultNotifier extends BaseChangeNotifier {
 
   bool _searchLoading = false;
 
+  final List<bool?> _fav = [];
+
+  List<bool?> get fav => _fav;
+
   bool get searchLoading => _searchLoading;
   bool _isHorizontal = false;
 
@@ -65,6 +71,23 @@ class ProductSearchResultNotifier extends BaseChangeNotifier {
 
   late List<Color> markerColors;
   late List<Color> markerTextColors;
+
+  void setFav(List<ProductModel> products) {
+    for (var product in products) {
+      _fav.add(product.isFav);
+    }
+  }
+
+  void toggleFav({required int index, required int id}) {
+    if (_fav[index]!) {
+      _fav[index] = false;
+      _reader(wishlistNotifierProvider).removeFromWishlist(productId: id);
+    } else {
+      _fav[index] = true;
+      _reader(wishlistNotifierProvider).addToWishlist(productId: id);
+    }
+    notifyListeners();
+  }
 
   void changeViewToHorizontal() {
     _isHorizontal = true;
@@ -146,5 +169,5 @@ class ProductSearchResultNotifier extends BaseChangeNotifier {
 }
 
 final productSearchResultNotifierProvider =
-    ChangeNotifierProvider<ProductSearchResultNotifier>(
+    ChangeNotifierProvider.autoDispose<ProductSearchResultNotifier>(
         (ref) => ProductSearchResultNotifier(ref.read));
