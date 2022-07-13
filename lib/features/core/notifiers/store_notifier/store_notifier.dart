@@ -27,7 +27,7 @@ class StoreNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify().error();
+      Alertify(title: e.error).error();
       _reader(navigationServiceProvider).navigateBack();
     } finally {
       // setState(state: ViewState.idle);
@@ -35,5 +35,5 @@ class StoreNotifier extends BaseChangeNotifier {
   }
 }
 
-final storeNotifierProvider = ChangeNotifierProvider.autoDispose<StoreNotifier>(
-    (ref) => StoreNotifier(ref.read));
+final storeNotifierProvider =
+    ChangeNotifierProvider<StoreNotifier>((ref) => StoreNotifier(ref.read));
