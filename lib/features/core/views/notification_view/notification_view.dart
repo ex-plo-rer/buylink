@@ -77,8 +77,7 @@ class _NotificationState extends ConsumerState<NotificationView>
 
                     //This is for bottom border that is needed
                     border: const Border(
-                        bottom:
-                            const BorderSide(color: AppColors.grey8, width: 2)),
+                        bottom: BorderSide(color: AppColors.grey8, width: 2)),
                   ),
                   child: TabBar(
                     labelColor: AppColors.primaryColor,
@@ -161,14 +160,8 @@ class ProductAlertScreen extends ConsumerWidget {
                                     .notifications[parentIndex].length,
                                 itemBuilder: (context, index) =>
                                     NotificationTile(
-                                  productName: notificationNotifier
-                                      .notifications[parentIndex][index]
-                                      .product,
-                                  productImage: notificationNotifier
-                                      .notifications[parentIndex][index].image,
-                                  dateTime: notificationNotifier
-                                      .notifications[parentIndex][index]
-                                      .dateTime,
+                                  product: notificationNotifier
+                                      .notifications[parentIndex][index],
                                 ),
                                 separatorBuilder: (__, _) =>
                                     const Spacing.smallHeight(),
