@@ -17,7 +17,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../features/core/notifiers/user_provider.dart';
 import '../services/location_service.dart';
+import 'auth_dialog.dart';
 
 class ProductContainerSearch extends ConsumerWidget {
   final void Function()? onProductTapped;
@@ -102,7 +104,20 @@ class ProductContainerSearch extends ConsumerWidget {
                   bottom: 8,
                   right: 48,
                   child: GestureDetector(
-                    onTap: onFlipTapped,
+                    onTap: () {
+                      if (ref.watch(userProvider).currentUser == null) {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          barrierColor: AppColors.transparent,
+                          builder: (BuildContext context) {
+                            return const AuthDialog();
+                          },
+                        );
+                        return;
+                      }
+                      onFlipTapped;
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -121,7 +136,20 @@ class ProductContainerSearch extends ConsumerWidget {
                   bottom: 8,
                   right: 8,
                   child: GestureDetector(
-                    onTap: onFavoriteTapped,
+                    onTap: () {
+                      if (ref.watch(userProvider).currentUser == null) {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          barrierColor: AppColors.transparent,
+                          builder: (BuildContext context) {
+                            return const AuthDialog();
+                          },
+                        );
+                        return;
+                      }
+                      onFavoriteTapped;
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(

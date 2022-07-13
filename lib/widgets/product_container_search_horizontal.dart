@@ -11,8 +11,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/routes.dart';
+import '../features/core/notifiers/user_provider.dart';
 import '../services/location_service.dart';
 import '../services/navigation_service.dart';
+import 'auth_dialog.dart';
 
 class ProductContainerSearchHorizontal extends ConsumerWidget {
   final ProductModel product;
@@ -173,7 +175,20 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
             bottom: 8,
             right: 8,
             child: GestureDetector(
-              onTap: onFlipTapped,
+              onTap: () {
+                if (ref.watch(userProvider).currentUser == null) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    barrierColor: AppColors.transparent,
+                    builder: (BuildContext context) {
+                      return const AuthDialog();
+                    },
+                  );
+                  return;
+                }
+                onFlipTapped;
+              },
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -192,7 +207,20 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
             bottom: 48,
             right: 8,
             child: GestureDetector(
-              onTap: onFavoriteTapped,
+              onTap: () {
+                if (ref.watch(userProvider).currentUser == null) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    barrierColor: AppColors.transparent,
+                    builder: (BuildContext context) {
+                      return const AuthDialog();
+                    },
+                  );
+                  return;
+                }
+                onFavoriteTapped;
+              },
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(

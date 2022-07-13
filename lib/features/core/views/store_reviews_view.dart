@@ -13,8 +13,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/svgs.dart';
+import '../../../widgets/auth_dialog.dart';
 import '../../../widgets/circular_progress.dart';
 import '../notifiers/store_notifier/store_review_notifier.dart';
+import '../notifiers/user_provider.dart';
 
 class StoreReviewsView extends ConsumerWidget {
   const StoreReviewsView({
@@ -170,11 +172,23 @@ class StoreReviewsView extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () =>
-                          ref.read(navigationServiceProvider).navigateToNamed(
-                                Routes.addReview,
-                                arguments: storeReviewsArgs.storeId,
-                              ),
+                      onTap: () {
+                        if (ref.watch(userProvider).currentUser == null) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            barrierColor: AppColors.transparent,
+                            builder: (BuildContext context) {
+                              return const AuthDialog();
+                            },
+                          );
+                          return;
+                        }
+                        ref.read(navigationServiceProvider).navigateToNamed(
+                              Routes.addReview,
+                              arguments: storeReviewsArgs.storeId,
+                            );
+                      },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

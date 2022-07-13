@@ -15,6 +15,7 @@ import '../../../core/utilities/loader.dart';
 import '../../../widgets/app_empty_states.dart';
 import '../notifiers/category_notifier.dart';
 import '../notifiers/flip_notifier.dart';
+import '../notifiers/user_provider.dart';
 
 class WishlistView extends ConsumerStatefulWidget {
   const WishlistView({Key? key}) : super(key: key);
@@ -29,18 +30,20 @@ class _WishlistState extends ConsumerState<WishlistView>
 
   @override
   void initState() {
-    // TODO: implement initState
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    // if (ref.read(categoryNotifierProvider).userCategories.isEmpty) {
-    //   await ref.read(categoryNotifierProvider).fetchUserCategories();
-    // }
-    // ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
-    _tabController = TabController(
-        length: ref.read(categoryNotifierProvider).userCategories.length,
-        vsync: this);
-    _tabController.addListener(_handleTabChange);
-    // });
-    // init();
+    if (ref.read(userProvider).currentUser != null) {
+      // TODO: implement initState
+      // WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // if (ref.read(categoryNotifierProvider).userCategories.isEmpty) {
+      //   await ref.read(categoryNotifierProvider).fetchUserCategories();
+      // }
+      // ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
+      _tabController = TabController(
+          length: ref.read(categoryNotifierProvider).userCategories.length,
+          vsync: this);
+      _tabController.addListener(_handleTabChange);
+      // });
+      // init();
+    }
     super.initState();
   }
 
