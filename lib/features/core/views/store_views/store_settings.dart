@@ -2,9 +2,11 @@ import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/svgs.dart';
 import '../../../../widgets/spacing.dart';
 import '../../models/product_model.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
@@ -53,12 +55,8 @@ class StoreSetting extends ConsumerWidget {
                   color: AppColors.grey3,
                 ),
               ),
-              leading: const CircleAvatar(
-                child: Icon(
-                  Icons.storefront_outlined,
-                  size: 18,
-                  color: AppColors.grey2,
-                ),
+              leading: CircleAvatar(
+                child: SvgPicture.asset(AppSvgs.shop2),
                 backgroundColor: AppColors.grey8,
               ),
               trailing: const Icon(
@@ -85,9 +83,8 @@ class StoreSetting extends ConsumerWidget {
                     color: AppColors.grey3,
                   ),
                 ),
-                leading: const CircleAvatar(
-                  child: Icon(Icons.vpn_key_rounded,
-                      size: 18, color: AppColors.grey2),
+                leading: CircleAvatar(
+                  child: SvgPicture.asset(AppSvgs.key_2),
                   backgroundColor: AppColors.grey8,
                 ),
                 trailing: const Icon(
@@ -113,9 +110,8 @@ class StoreSetting extends ConsumerWidget {
                   color: AppColors.grey3,
                 ),
               ),
-              leading: const CircleAvatar(
-                child:
-                    Icon(Icons.location_city, size: 18, color: AppColors.grey2),
+              leading: CircleAvatar(
+                child: SvgPicture.asset(AppSvgs.location),
                 backgroundColor: AppColors.grey8,
               ),
               trailing: const Icon(
@@ -148,8 +144,8 @@ class StoreSetting extends ConsumerWidget {
                   color: AppColors.grey3,
                 ),
               ),
-              leading: const CircleAvatar(
-                child: Icon(Icons.delete, size: 18, color: AppColors.grey2),
+              leading: CircleAvatar(
+                child: SvgPicture.asset(AppSvgs.trash_2),
                 backgroundColor: AppColors.grey8,
               ),
               trailing: const Icon(

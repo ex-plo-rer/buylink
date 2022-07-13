@@ -26,7 +26,7 @@ class StartupView extends ConsumerWidget {
             'Buylink',
             style: TextStyle(
               color: AppColors.primaryColor,
-              fontSize: 70,
+              fontSize: 60,
               fontWeight: FontWeight.w700,
             ),
           ),

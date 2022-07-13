@@ -31,8 +31,11 @@ class EditStoreName extends ConsumerWidget {
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             color: AppColors.dark,
+            size: 14,
           ),
-          onPressed: () {},
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,

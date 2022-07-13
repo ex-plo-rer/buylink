@@ -8,12 +8,14 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/strings.dart';
+import '../../../core/constants/svgs.dart';
 import '../../../core/routes.dart';
 import '../../../core/utilities/alertify.dart';
 import '../../../services/local_storage_service.dart';
 import '../../../services/navigation_service.dart';
 import '../../../services/snackbar_service.dart';
 import '../../../widgets/app_button.dart';
+import '../../../widgets/app_button_2.dart';
 import '../../../widgets/app_check_box.dart';
 import '../../../widgets/app_linear_progress.dart';
 import '../../../widgets/app_text_field.dart';
@@ -220,7 +222,10 @@ class ForgotPasswordView extends ConsumerWidget {
                             focusNode: _passwordFN,
                             onChanged: forgotPasswordNotifier.onPasswordChanged,
                             suffixIcon: _passwordController.text.isEmpty
-                                ? null
+                                ? Icon(
+                                    Icons.visibility_off_outlined,
+                                    color: AppColors.grey6,
+                                  )
                                 : Row(
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -230,14 +235,16 @@ class ForgotPasswordView extends ConsumerWidget {
                                             .togglePassword(),
                                         child: Icon(
                                           forgotPasswordNotifier.passwordVisible
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
+                                              ? Icons.visibility_outlined
+                                              : Icons.visibility_off_outlined,
                                           color: AppColors.dark,
                                         ),
                                       ),
                                       const Spacing.smallWidth(),
                                       GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+                                          _passwordController.clear();
+                                        },
                                         child: const CircleAvatar(
                                           backgroundColor: AppColors.grey7,
                                           radius: 10,
@@ -272,7 +279,8 @@ class ForgotPasswordView extends ConsumerWidget {
                     ],
                   ),
                 ),
-                AppButton(
+                AppButton2(
+                  prevIcon: AppSvgs.forward,
                   // isLoading: forgotPasswordNotifier.state.isLoading,
                   text: forgotPasswordNotifier.currentPage ==
                           forgotPasswordNotifier.totalPage
