@@ -251,6 +251,7 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
                 await showSearch(
                   context: context,
                   delegate: ProductSearch(ref: ref),
+                  query: widget.searchTerm,
                 );
               },
               searchTerm: widget.searchTerm,
