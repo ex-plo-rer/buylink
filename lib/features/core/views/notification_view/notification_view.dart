@@ -6,6 +6,7 @@ import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/features/core/views/message_view/message_view.dart';
 import 'package:buy_link/widgets/app_empty_states.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
+import 'package:buy_link/widgets/notification_tile.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,8 +76,9 @@ class _NotificationState extends ConsumerState<NotificationView>
                     color: Colors.white.withOpacity(0.0),
 
                     //This is for bottom border that is needed
-                    border: Border(
-                        bottom: BorderSide(color: AppColors.grey8, width: 2)),
+                    border: const Border(
+                        bottom:
+                            const BorderSide(color: AppColors.grey8, width: 2)),
                   ),
                   child: TabBar(
                     labelColor: AppColors.primaryColor,
@@ -123,92 +125,58 @@ class ProductAlertScreen extends ConsumerWidget {
     return Scaffold(
       body: notificationNotifier.notificationsLoading
           ? const CircularProgress()
-          : ListView.builder(
-              // physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemCount: notificationNotifier.notifications.isEmpty
-                  ? 1
-                  : notificationNotifier.notifications.length,
-              itemBuilder: (context, int index) => notificationNotifier
-                      .notifications.isEmpty
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                          Spacing.largeHeight(),
-                          Spacing.largeHeight(),
-                          Spacing.largeHeight(),
-                          Spacing.largeHeight(),
-                          AppEmptyStates(
-                              imageString: "assets/images/no_notifications.png",
-                              message1String: "No notifications yet",
-                              hasButton: false,
-                              buttonString: ""),
-                        ])
-                  : Column(
-                      children: <Widget>[
-                        ListTile(
-                          contentPadding:
-                              const EdgeInsets.only(left: 0.0, right: 0.0),
-                          title: RichText(
-                            //textAlign: TextAlign.,
-                            text: TextSpan(
-                              style: const TextStyle(
-                                fontSize: 12.0,
-                                color: Colors.black,
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: notificationNotifier.periods.isEmpty
+                        ? 1
+                        : notificationNotifier.periods.length,
+                    itemBuilder: (context, parentIndex) => notificationNotifier
+                            .periods.isEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: const <Widget>[
+                              AppEmptyStates(
+                                  imageString:
+                                      "assets/images/no_notifications.png",
+                                  message1String: "No notifications yet",
+                                  hasButton: false,
+                                  buttonString: ""),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(notificationNotifier.periods[parentIndex]),
+                              const Spacing.mediumHeight(),
+                              ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: notificationNotifier
+                                    .notifications[parentIndex].length,
+                                itemBuilder: (context, index) =>
+                                    NotificationTile(
+                                  productName: notificationNotifier
+                                      .notifications[parentIndex][index]
+                                      .product,
+                                  productImage: notificationNotifier
+                                      .notifications[parentIndex][index].image,
+                                  dateTime: notificationNotifier
+                                      .notifications[parentIndex][index]
+                                      .dateTime,
+                                ),
+                                separatorBuilder: (__, _) =>
+                                    const Spacing.smallHeight(),
                               ),
-                              children: <TextSpan>[
-                                const TextSpan(
-                                  text: "A store selling",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: AppColors.grey5),
-                                ),
-                                TextSpan(
-                                  text: notificationNotifier
-                                      .notifications[index].product,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                const TextSpan(
-                                    text: " is around your present location.",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12,
-                                        color: AppColors.grey5))
-                              ],
-                            ),
+                            ],
                           ),
-                          leading: CircleAvatar(
-                            backgroundColor: AppColors.shade3,
-                            child: notificationNotifier
-                                    .notifications[index].image.isEmpty
-                                ? Text(notificationNotifier
-                                    .notifications[index].product
-                                    .initials())
-                                : null,
-                            backgroundImage: notificationNotifier
-                                    .notifications[index].image.isEmpty
-                                ? null
-                                : CachedNetworkImageProvider(
-                                    notificationNotifier
-                                        .notifications[index].image),
-                            radius: 26,
-                          ),
-                          trailing: Text(
-                            DateFormat.jm()
-                                .format(notificationNotifier
-                                    .notifications[index].dateTime)
-                                .toString(),
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ),
-                        const Spacing.smallHeight(),
-                      ],
-                    ),
+                    separatorBuilder: (__, _) => const Spacing.bigHeight()),
+              ),
             ),
     );
   }
@@ -233,7 +201,7 @@ class MessageScreen extends ConsumerWidget {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
+                      children: const <Widget>[
                           Spacing.largeHeight(),
                           Spacing.largeHeight(),
                           Spacing.largeHeight(),
