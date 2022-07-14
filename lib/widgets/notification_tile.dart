@@ -20,6 +20,10 @@ class NotificationTile extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     return ListTile(
       contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
+      onTap: () => ref.read(navigationServiceProvider).navigateToNamed(
+            Routes.storeDirection,
+            arguments: product.store,
+          ),
       title: RichText(
         //textAlign: TextAlign.,
         text: TextSpan(

@@ -36,9 +36,12 @@ class _NotificationState extends ConsumerState<NotificationView>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(length: 2, vsync: this);
-    _tabController.addListener(_handleTabChange);
+    // _tabController.addListener(_handleTabChange);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(notificationNotifierProvider).fetchNotifications();
+      ref
+          .read(messageListNotifierProvider)
+          .getChatList(sessionId: '${ref.read(userProvider).currentUser!.id}u');
     });
     super.initState();
   }
@@ -90,13 +93,13 @@ class _NotificationState extends ConsumerState<NotificationView>
                       Tab(text: "Product Alert"),
                       Tab(text: "Messages"),
                     ],
-                    onTap: (index) => index == 0
-                        ? ref
-                            .read(notificationNotifierProvider)
-                            .fetchNotifications()
-                        : ref.read(messageListNotifierProvider).getChatList(
-                            sessionId:
-                                '${ref.read(userProvider).currentUser!.id}u'),
+                    // onTap: (index) => index == 0
+                    //     ? ref
+                    //         .read(notificationNotifierProvider)
+                    //         .fetchNotifications()
+                    //     : ref.read(messageListNotifierProvider).getChatList(
+                    //         sessionId:
+                    //             '${ref.read(userProvider).currentUser!.id}u'),
                   )),
               Expanded(
                 child: TabBarView(
@@ -124,11 +127,13 @@ class ProductAlertScreen extends ConsumerWidget {
     return Scaffold(
       body: notificationNotifier.notificationsLoading
           ? const CircularProgress()
-          : SingleChildScrollView(
+          : RefreshIndicator(
+              onRefresh: () async =>
+                  await notificationNotifier.fetchNotifications(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: ListView.separated(
-                    physics: const NeverScrollableScrollPhysics(),
+                    // physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
                     itemCount: notificationNotifier.periods.isEmpty
@@ -184,49 +189,55 @@ class MessageScreen extends ConsumerWidget {
     return Scaffold(
       body: messageListNotifier.state.isLoading
           ? const CircularProgress()
-          : ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemCount: messageListNotifier.chats.isEmpty
-                  ? 1
-                  : messageListNotifier.chats.length,
-              itemBuilder: (context, index) => messageListNotifier.chats.isEmpty
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const <Widget>[
-                          Spacing.largeHeight(),
-                          Spacing.largeHeight(),
-                          Spacing.largeHeight(),
-                          Spacing.largeHeight(),
-                          AppEmptyStates(
-                              imageString: "assets/images/no_messages.png",
-                              message1String: "No messages yet",
-                              hasButton: false,
-                              buttonString: ""),
-                        ])
-                  : ChatTile(
-                      title: messageListNotifier.chats[index].name,
-                      subtitle: messageListNotifier.chats[index].msg,
-                      unreadCount: messageListNotifier.chats[index].unreadCount,
-                      time: messageListNotifier.chats[index].parsedTime,
-                      imageUrl: messageListNotifier.chats[index].image,
-                      onTap: () {
-                        ref.read(navigationServiceProvider).navigateToNamed(
-                              Routes.messageView,
-                              arguments: MessageModel(
-                                // This should be the id of this specific index in this listview
-                                id: '${messageListNotifier.chats[index].storeId}s',
-                                storeId: null,
-                                name: messageListNotifier.chats[index].name,
-                                imageUrl:
-                                    messageListNotifier.chats[index].image,
-                                from: 'notification',
-                              ),
-                            );
-                      },
-                    ),
-              //separatorBuilder: (__, _) => const Spacing.tinyHeight(),
+          : RefreshIndicator(
+              onRefresh: () async => await messageListNotifier.getChatList(
+                  sessionId: '${ref.read(userProvider).currentUser!.id}u'),
+              child: ListView.builder(
+                // physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemCount: messageListNotifier.chats.isEmpty
+                    ? 1
+                    : messageListNotifier.chats.length,
+                itemBuilder: (context, index) => messageListNotifier
+                        .chats.isEmpty
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const <Widget>[
+                            Spacing.largeHeight(),
+                            Spacing.largeHeight(),
+                            Spacing.largeHeight(),
+                            Spacing.largeHeight(),
+                            AppEmptyStates(
+                                imageString: "assets/images/no_messages.png",
+                                message1String: "No messages yet",
+                                hasButton: false,
+                                buttonString: ""),
+                          ])
+                    : ChatTile(
+                        title: messageListNotifier.chats[index].name,
+                        subtitle: messageListNotifier.chats[index].msg,
+                        unreadCount:
+                            messageListNotifier.chats[index].unreadCount,
+                        time: messageListNotifier.chats[index].parsedTime,
+                        imageUrl: messageListNotifier.chats[index].image,
+                        onTap: () {
+                          ref.read(navigationServiceProvider).navigateToNamed(
+                                Routes.messageView,
+                                arguments: MessageModel(
+                                  // This should be the id of this specific index in this listview
+                                  id: '${messageListNotifier.chats[index].storeId}s',
+                                  storeId: null,
+                                  name: messageListNotifier.chats[index].name,
+                                  imageUrl:
+                                      messageListNotifier.chats[index].image,
+                                  from: 'notification',
+                                ),
+                              );
+                        },
+                      ),
+                //separatorBuilder: (__, _) => const Spacing.tinyHeight(),
+              ),
             ),
     );
   }
