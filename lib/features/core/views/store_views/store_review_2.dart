@@ -79,7 +79,7 @@ class StoreReviewsView2 extends ConsumerWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '${storeReviewNotifier.average}',
+                                      '${storeReviewNotifier.average.isNaN ? 0 : storeReviewNotifier.average}',
                                       style: const TextStyle(
                                         fontSize: 44,
                                         color: AppColors.grey1,
