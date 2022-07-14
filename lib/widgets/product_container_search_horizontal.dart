@@ -207,20 +207,18 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
             bottom: 48,
             right: 8,
             child: GestureDetector(
-              onTap: () {
-                if (ref.watch(userProvider).currentUser == null) {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    barrierColor: AppColors.transparent,
-                    builder: (BuildContext context) {
-                      return const AuthDialog();
-                    },
-                  );
-                  return;
-                }
-                onFavoriteTapped;
-              },
+              onTap: ref.watch(userProvider).currentUser == null
+                  ? () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        barrierColor: AppColors.transparent,
+                        builder: (BuildContext context) {
+                          return const AuthDialog();
+                        },
+                      );
+                    }
+                  : onFavoriteTapped,
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(

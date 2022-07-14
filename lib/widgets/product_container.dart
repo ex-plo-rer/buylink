@@ -84,19 +84,18 @@ class ProductContainer extends ConsumerWidget {
                       bottom: 40,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () {
-                          if (ref.watch(userProvider).currentUser == null) {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return const AuthDialog();
-                              },
-                            );
-                            return;
-                          }
-                          onFlipTapped;
-                        },
+                        onTap: ref.watch(userProvider).currentUser == null
+                            ? () {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierColor: AppColors.transparent,
+                                  builder: (BuildContext context) {
+                                    return const AuthDialog();
+                                  },
+                                );
+                              }
+                            : onFlipTapped,
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
@@ -115,20 +114,18 @@ class ProductContainer extends ConsumerWidget {
                       bottom: 0,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () {
-                          if (ref.watch(userProvider).currentUser == null) {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              barrierColor: AppColors.transparent,
-                              builder: (BuildContext context) {
-                                return const AuthDialog();
-                              },
-                            );
-                            return;
-                          }
-                          onFavoriteTapped;
-                        },
+                        onTap: ref.watch(userProvider).currentUser == null
+                            ? () {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierColor: AppColors.transparent,
+                                  builder: (BuildContext context) {
+                                    return const AuthDialog();
+                                  },
+                                );
+                              }
+                            : onFavoriteTapped,
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
