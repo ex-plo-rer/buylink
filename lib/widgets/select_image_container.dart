@@ -43,7 +43,7 @@ class SelectImageContainer extends ConsumerWidget {
               : DottedBorder(
                   borderType: BorderType.RRect,
                   radius: const Radius.circular(5),
-                  dashPattern: const [5, 2],
+                  dashPattern: const [5, 5],
                   color: AppColors.primaryColor,
                   strokeWidth: 1,
                   child: Column(
