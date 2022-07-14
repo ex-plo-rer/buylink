@@ -89,8 +89,7 @@ class _ProductSearchViewState extends ConsumerState<ProductSearchView> {
               onConfirmPressed: () async {
                 Loader(context).showLoader(text: 'Loading');
                 await productSearchNotifier.fetchProductSearch(
-                  searchTerm: widget.searchTerm,
-                );
+                    searchTerm: widget.searchTerm);
                 if (productSearchNotifier.searchResult!.result.isEmpty) {
                   Alertify(
                           title:

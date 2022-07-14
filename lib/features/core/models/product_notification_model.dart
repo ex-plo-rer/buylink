@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:buy_link/features/core/models/product_model.dart';
+
 ProductNotificationModel productNotificationFromJson(String str) =>
     ProductNotificationModel.fromJson(json.decode(str));
 
@@ -14,6 +16,7 @@ class ProductNotificationModel {
     required this.lat,
     required this.lon,
     required this.dateTime,
+    required this.store,
   });
 
   int id;
@@ -22,6 +25,7 @@ class ProductNotificationModel {
   double lat;
   double lon;
   DateTime dateTime;
+  Store store;
 
   factory ProductNotificationModel.fromJson(Map<String, dynamic> json) =>
       ProductNotificationModel(
@@ -31,6 +35,7 @@ class ProductNotificationModel {
         lat: json["lat"].toDouble(),
         lon: json["lon"].toDouble(),
         dateTime: DateTime.parse(json["date-time"]),
+        store: Store.fromJson(json["store"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -39,6 +44,7 @@ class ProductNotificationModel {
         "image": image,
         "lat": lat,
         "lon": lon,
-        "date-time": dateTime.toIso8601String()
+        "date-time": dateTime.toIso8601String(),
+        "store": store.toJson(),
       };
 }

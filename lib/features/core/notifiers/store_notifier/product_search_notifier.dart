@@ -98,8 +98,11 @@ class ProductSearchNotifier extends BaseChangeNotifier {
       setState(state: ViewState.loading);
       _searchResult = await _reader(coreRepository).fetchProductSearch(
         searchTerm: searchTerm,
+        // searchTerm: 'a',
         lon: _filterLon,
+        // lon: -122.032,
         lat: _filterLat,
+        // lat: 37.33,
         distanceRange: isConfirmButton ? 10 : _sliderValue,
         minPrice: isConfirmButton ? 0 : _minPrice ?? 0,
         maxPrice: isConfirmButton ? 10000000000 : _maxPrice ?? 10000000000,

@@ -1,25 +1,29 @@
+import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/core/utilities/extensions/strings.dart';
+import 'package:buy_link/features/core/models/product_notification_model.dart';
+import 'package:buy_link/services/navigation_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../core/constants/colors.dart';
 
-class NotificationTile extends StatelessWidget {
+class NotificationTile extends ConsumerWidget {
   const NotificationTile({
     Key? key,
-    required this.productName,
-    required this.productImage,
-    required this.dateTime,
+    required this.product,
   }) : super(key: key);
-  final String productName;
-  final String productImage;
-  final DateTime dateTime;
+  final ProductNotificationModel product;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return ListTile(
       contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
+      onTap: () => ref.read(navigationServiceProvider).navigateToNamed(
+            Routes.storeDirection,
+            arguments: product.store,
+          ),
       title: RichText(
         //textAlign: TextAlign.,
         text: TextSpan(
@@ -36,12 +40,18 @@ class NotificationTile extends StatelessWidget {
                   color: AppColors.grey5),
             ),
             TextSpan(
-              text: productName,
+              text: product.product,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 12,
               ),
-              recognizer: TapGestureRecognizer()..onTap = () {},
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  ref.read(navigationServiceProvider).navigateToNamed(
+                        Routes.storeDirection,
+                        arguments: product.store,
+                      );
+                },
             ),
             const TextSpan(
                 text: " is around your present location.",
@@ -54,14 +64,14 @@ class NotificationTile extends StatelessWidget {
       ),
       leading: CircleAvatar(
         backgroundColor: AppColors.shade3,
-        child: productImage.isEmpty ? Text(productName.initials()) : null,
-        backgroundImage: productImage.isEmpty
+        child: product.image.isEmpty ? Text(product.product.initials()) : null,
+        backgroundImage: product.image.isEmpty
             ? null
-            : CachedNetworkImageProvider(productImage),
+            : CachedNetworkImageProvider(product.image),
         radius: 26,
       ),
       trailing: Text(
-        DateFormat.jm().format(dateTime).toString(),
+        DateFormat.jm().format(product.dateTime).toString(),
         style: const TextStyle(fontSize: 12),
       ),
     );

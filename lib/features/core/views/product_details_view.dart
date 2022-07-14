@@ -25,9 +25,11 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/utilities/loader.dart';
 import '../../../services/location_service.dart';
+import '../../../widgets/auth_dialog.dart';
 import '../notifiers/category_notifier.dart';
 import '../notifiers/flip_notifier.dart';
 import '../notifiers/product_details_notifier.dart';
+import '../notifiers/user_provider.dart';
 import '../notifiers/wishlist_notifier.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
@@ -301,6 +303,17 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                             radius: 10,
                             padding: 18,
                             onFavoriteTapped: () async {
+                              if (ref.watch(userProvider).currentUser == null) {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierColor: AppColors.transparent,
+                                  builder: (BuildContext context) {
+                                    return const AuthDialog();
+                                  },
+                                );
+                                return;
+                              }
                               await productDetailsNotifier.onFavTapped(
                                   productId: widget.product.id);
                               // TODO: Should pass category here...

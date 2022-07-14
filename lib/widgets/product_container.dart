@@ -5,6 +5,7 @@ import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
+import 'package:buy_link/widgets/auth_dialog.dart';
 import 'package:buy_link/widgets/distance_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,7 +16,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/utilities/loader.dart';
 import '../features/core/notifiers/category_notifier.dart';
+import '../features/core/notifiers/user_provider.dart';
 import '../services/location_service.dart';
+import 'app_dialog.dart';
 
 class ProductContainer extends ConsumerWidget {
   final ProductModel product;
@@ -67,13 +70,6 @@ class ProductContainer extends ConsumerWidget {
                       top: 0,
                       left: 0,
                       child: DistanceContainer(
-                        // distance: distance,
-                        // distance: Geolocator.distanceBetween(
-                        //   ref.watch(locationService).lat ?? 0,
-                        //   ref.watch(locationService).lon ?? 0,
-                        //   product.lat,
-                        //   product.lon,
-                        // ).toString(),
                         distance: ref.watch(locationService).getDist(
                             endLat: product.store.lat,
                             endLon: product.store.lon),
@@ -88,12 +84,18 @@ class ProductContainer extends ConsumerWidget {
                       bottom: 40,
                       right: 0,
                       child: GestureDetector(
-                        // onTap: () {
-                        //   ref
-                        //       .read(navigationServiceProvider)
-                        //       .navigateToNamed(Routes.compare);
-                        // },
-                        onTap: onFlipTapped,
+                        onTap: ref.watch(userProvider).currentUser == null
+                            ? () {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierColor: AppColors.transparent,
+                                  builder: (BuildContext context) {
+                                    return const AuthDialog();
+                                  },
+                                );
+                              }
+                            : onFlipTapped,
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
@@ -112,7 +114,18 @@ class ProductContainer extends ConsumerWidget {
                       bottom: 0,
                       right: 0,
                       child: GestureDetector(
-                        onTap: onFavoriteTapped,
+                        onTap: ref.watch(userProvider).currentUser == null
+                            ? () {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierColor: AppColors.transparent,
+                                  builder: (BuildContext context) {
+                                    return const AuthDialog();
+                                  },
+                                );
+                              }
+                            : onFavoriteTapped,
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(

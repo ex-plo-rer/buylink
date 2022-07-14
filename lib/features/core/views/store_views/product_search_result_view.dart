@@ -16,13 +16,17 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/svgs.dart';
+import '../../../../core/routes.dart';
 import '../../../../core/utilities/map/circle.dart';
 import '../../../../services/location_service.dart';
+import '../../../../services/navigation_service.dart';
 import '../../../../widgets/map_price_marker.dart';
 import '../../../../widgets/map_search_term_container.dart';
+import '../../../../widgets/product_container_search.dart';
 import '../../../../widgets/product_container_search_horizontal.dart';
 import '../../../../widgets/search_result_product_container.dart';
 import '../../models/search_result_arg_model.dart';
+import '../../notifiers/flip_notifier.dart';
 import '../../notifiers/store_notifier/product_search_notifier.dart';
 import '../../notifiers/store_notifier/product_search_result_notifier.dart';
 
@@ -55,6 +59,9 @@ class _ProductSearchResultViewState
     // ref.read(storeDirectionNotifierProvider).initLocation();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(productSearchNotifierProvider).initLocation();
+      ref
+          .read(productSearchResultNotifierProvider)
+          .setFav(widget.args.searchResult.result);
       _centerOnLocationUpdate = CenterOnLocationUpdate.always;
       _centerCurrentLocationStreamController = StreamController<double>();
       ref
@@ -75,6 +82,7 @@ class _ProductSearchResultViewState
   Widget build(BuildContext context) {
     final productSearchResultNotifier =
         ref.watch(productSearchResultNotifierProvider);
+    // final productSearchResultNotifier = ref.watch(productSearchResultNotifierProvider);
 
     return Scaffold(
       body: Stack(
@@ -88,8 +96,8 @@ class _ProductSearchResultViewState
                 child: FlutterMap(
                   options: MapOptions(
                     zoom: Dimensions.zoom,
-                    minZoom: Dimensions.minZoom,
-                    maxZoom: Dimensions.maxZoom,
+                    // minZoom: Dimensions.minZoom,
+                    // maxZoom: Dimensions.maxZoom,
                     interactiveFlags:
                         InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                     onPositionChanged: (MapPosition position, bool hasGesture) {
@@ -282,23 +290,58 @@ class _ProductSearchResultViewState
                                   final product =
                                       widget.args.searchResult.result[index];
                                   //TODO: Just return the product and fill the details inside ProductContainerSearch
-                                  return SearchResultContainer(
-                                    isFavorite: product.isFav!,
-                                    storeName: product.store.name,
-                                    url: product.image[index],
-                                    distance: ref
-                                        .watch(locationService)
-                                        .getDist(
-                                            endLat: product.store.lat,
-                                            endLon: product.store.lon),
-                                    productName: product.name,
-                                    productPrice: product.price,
-                                    oldPrice: product.oldPrice,
-                                    //onPageChanged: productSearchResultNotifier.nextPage(index,""),
-                                    index:
+                                  return ProductContainerSearch(
+                                    isFavorite:
+                                        productSearchResultNotifier.fav[index]!,
+                                    product: product,
+                                    activeIndex:
                                         productSearchResultNotifier.activeIndex,
-                                    imageCount: product.image.length,
+                                    onPageChanged:
+                                        productSearchResultNotifier.nextPage,
+                                    onFavoriteTapped: () =>
+                                        productSearchResultNotifier.toggleFav(
+                                            index: index,
+                                            id: widget.args.searchResult
+                                                .result[index].id),
+                                    onFlipTapped: () async {
+                                      Loader(context).showLoader(text: '');
+                                      await ref
+                                          .read(flipNotifierProvider)
+                                          .addItemToCompare(
+                                              productId: widget
+                                                  .args
+                                                  .searchResult
+                                                  .result[index]
+                                                  .id);
+                                      if (ref
+                                          .read(flipNotifierProvider)
+                                          .successfullyAdded) {
+                                        Loader(context).hideLoader();
+                                        ref
+                                            .read(navigationServiceProvider)
+                                            .navigateToNamed(Routes.compare);
+                                        return;
+                                      }
+                                      Loader(context).hideLoader();
+                                    },
                                   );
+                                  //   SearchResultContainer(
+                                  //   isFavorite: product.isFav!,
+                                  //   storeName: product.store.name,
+                                  //   url: product.image[index],
+                                  //   distance: ref
+                                  //       .watch(locationService)
+                                  //       .getDist(
+                                  //           endLat: product.store.lat,
+                                  //           endLon: product.store.lon),
+                                  //   productName: product.name,
+                                  //   productPrice: product.price,
+                                  //   oldPrice: product.oldPrice,
+                                  //   //onPageChanged: productSearchResultNotifier.nextPage(index,""),
+                                  //   index:
+                                  //       productSearchResultNotifier.activeIndex,
+                                  //   imageCount: product.image.length,
+                                  // );
                                 },
                                 separatorBuilder: (_, __) =>
                                     const Spacing.smallHeight(),
@@ -328,12 +371,26 @@ class _ProductSearchResultViewState
                     final product = widget.args.searchResult.result[index];
                     //TODO: Just return the product and fill the details inside ProductContainerSearch
                     return ProductContainerSearchHorizontal(
-                      url: product.image.first,
-                      storeName: product.store.name,
-                      productName: product.name,
-                      productPrice: product.price,
-                      distance: '4.3',
-                      isFavorite: product.isFav!,
+                      product: product,
+                      isFavorite: productSearchResultNotifier.fav[index]!,
+                      onFavoriteTapped: () =>
+                          productSearchResultNotifier.toggleFav(
+                              index: index,
+                              id: widget.args.searchResult.result[index].id),
+                      onFlipTapped: () async {
+                        Loader(context).showLoader(text: '');
+                        await ref.read(flipNotifierProvider).addItemToCompare(
+                            productId:
+                                widget.args.searchResult.result[index].id);
+                        if (ref.read(flipNotifierProvider).successfullyAdded) {
+                          Loader(context).hideLoader();
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateToNamed(Routes.compare);
+                          return;
+                        }
+                        Loader(context).hideLoader();
+                      },
                     );
                   },
                   separatorBuilder: (_, __) => const Spacing.smallWidth(),

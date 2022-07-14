@@ -1,19 +1,23 @@
 import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
+import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/widgets/distance_container.dart';
+import 'package:buy_link/widgets/spacing.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../core/routes.dart';
+import '../features/core/notifiers/user_provider.dart';
+import '../services/location_service.dart';
+import '../services/navigation_service.dart';
+import 'auth_dialog.dart';
+
 class ProductContainerSearchHorizontal extends ConsumerWidget {
-  final String url;
-  final String storeName;
-  final String productName;
-  final int productPrice;
-  final String distance;
+  final ProductModel product;
   final void Function()? onProductTapped;
   final void Function()? onDistanceTapped;
   final void Function()? onFlipTapped;
@@ -24,11 +28,7 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
 
   const ProductContainerSearchHorizontal({
     Key? key,
-    required this.url,
-    required this.storeName,
-    required this.productName,
-    required this.productPrice,
-    required this.distance,
+    required this.product,
     required this.isFavorite,
     this.onProductTapped,
     this.onDistanceTapped,
@@ -57,7 +57,8 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
                     borderRadius: const BorderRadius.horizontal(
                         left: Radius.circular(12)),
                     image: DecorationImage(
-                        image: CachedNetworkImageProvider(url))),
+                        image:
+                            CachedNetworkImageProvider(product.image.first))),
               ),
               Expanded(
                 child: Container(
@@ -72,7 +73,7 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        storeName,
+                        product.store.name,
                         overflow: isDetails ? null : TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: AppColors.grey3,
@@ -81,7 +82,7 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        productName,
+                        product.name,
                         overflow: isDetails ? null : TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: AppColors.grey1,
@@ -89,15 +90,68 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
-                        '#$productPrice',
-                        overflow: isDetails ? null : TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: AppColors.grey1,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                      Row(children: <Widget>[
+                        Visibility(
+                            visible: product.oldPrice > 0,
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                    // alignment: Alignment.topLeft,
+                                    style: const TextStyle(
+                                        color: AppColors.grey4,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        decoration: TextDecoration.lineThrough),
+                                    child: SvgPicture.asset(
+                                      AppSvgs.naira,
+                                      height: 13.5,
+                                      width: 13.5,
+                                      color: AppColors.grey4,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '${product.oldPrice}',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.grey4,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        const Spacing.tinyWidth(),
+                        RichText(
+                          // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
+                          text: TextSpan(
+                            children: [
+                              WidgetSpan(
+                                style: const TextStyle(
+                                  color: AppColors.grey1,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                child: SvgPicture.asset(
+                                  AppSvgs.naira,
+                                  height: 15,
+                                  width: 15,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '${product.price}',
+                                //overflow: isDetails ? null : TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  color: AppColors.grey1,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                      ]),
                     ],
                   ),
                 ),
@@ -108,15 +162,33 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
             top: 8,
             left: 8,
             child: DistanceContainer(
-              distance: distance,
-              onDistanceTapped: onDistanceTapped,
+              distance: ref.watch(locationService).getDist(
+                  endLat: product.store.lat, endLon: product.store.lon),
+              onDistanceTapped: () async {
+                ref.read(navigationServiceProvider).navigateToNamed(
+                    Routes.storeDirection,
+                    arguments: product.store);
+              },
             ),
           ),
           Positioned(
             bottom: 8,
             right: 8,
             child: GestureDetector(
-              onTap: onFlipTapped,
+              onTap: () {
+                if (ref.watch(userProvider).currentUser == null) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    barrierColor: AppColors.transparent,
+                    builder: (BuildContext context) {
+                      return const AuthDialog();
+                    },
+                  );
+                  return;
+                }
+                onFlipTapped;
+              },
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -135,7 +207,18 @@ class ProductContainerSearchHorizontal extends ConsumerWidget {
             bottom: 48,
             right: 8,
             child: GestureDetector(
-              onTap: onFavoriteTapped,
+              onTap: ref.watch(userProvider).currentUser == null
+                  ? () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        barrierColor: AppColors.transparent,
+                        builder: (BuildContext context) {
+                          return const AuthDialog();
+                        },
+                      );
+                    }
+                  : onFavoriteTapped,
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(

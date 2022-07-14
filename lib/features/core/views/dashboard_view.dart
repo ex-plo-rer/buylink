@@ -9,7 +9,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/svgs.dart';
+import '../../../widgets/auth_dialog.dart';
 import '../notifiers/dashboard_notifier.dart';
+import '../notifiers/user_provider.dart';
 
 class DashboardView extends ConsumerWidget {
   DashboardView({
@@ -34,13 +36,19 @@ class DashboardView extends ConsumerWidget {
       },
       child: Scaffold(
         body: [
-          HomeView(
-            fromLoginOrSignup: fromLoginOrSignup,
-          ),
-          const WishlistView(),
-          const StoreView(),
-          const NotificationView(),
-          const SettingView(),
+          HomeView(fromLoginOrSignup: fromLoginOrSignup),
+          ref.watch(userProvider).currentUser == null
+              ? const AuthDialog(onNav: true)
+              : const WishlistView(),
+          ref.watch(userProvider).currentUser == null
+              ? const AuthDialog(onNav: true)
+              : const StoreView(),
+          ref.watch(userProvider).currentUser == null
+              ? const AuthDialog(onNav: true)
+              : const NotificationView(),
+          ref.watch(userProvider).currentUser == null
+              ? const AuthDialog(onNav: true)
+              : const SettingView(),
         ][dashboardNotifier.selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: dashboardNotifier.selectedIndex,
