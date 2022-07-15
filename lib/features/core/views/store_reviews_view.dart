@@ -151,7 +151,7 @@ class StoreReviewsView extends ConsumerWidget {
                                     ),
                                     const Spacing.smallHeight(),
                                     SingleRating(
-                                      starNumber: '1',
+                                      starNumber: ' 1',
                                       noOfRatings: storeReviewNotifier
                                           .reviewStats!.the1Star,
                                       ratingValue: 0.2,
