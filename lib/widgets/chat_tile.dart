@@ -28,46 +28,66 @@ class ChatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+      contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
+      minVerticalPadding: 15,
+      visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+      minLeadingWidth: 5,
+      horizontalTitleGap: 5,
       title: Text(
         title,
         style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.bold,
+          color: AppColors.grey1,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
         ),
       ),
       leading: CircleAvatar(
         backgroundColor: AppColors.shade1,
         child: imageUrl == null ? Text(title.initials()) : null,
         backgroundImage:
-        imageUrl == null ? null : CachedNetworkImageProvider(imageUrl!),
-        radius: 24,
+            imageUrl == null ? null : CachedNetworkImageProvider(imageUrl!),
+        radius: 28,
       ),
-      subtitle: Text(
-        subtitle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
+      subtitle: subtitle.startsWith('https://')
+          ? const Align(
+              alignment: Alignment.centerLeft,
+              child: Icon(
+                Icons.image_outlined,
+                color: AppColors.grey1,
+                size: 12,
+              ),
+            )
+          : Text(
+              subtitle.characters
+                  .replaceAll(Characters(''), Characters('\u{200B}'))
+                  .toString(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: AppColors.grey4,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
       trailing: unreadCount < 1
           ? const Spacing.empty()
           : Column(
-        children: <Widget>[
-          const SizedBox(height: 6),
-          CircleAvatar(
-            backgroundColor: AppColors.primaryColor,
-            child: Text(
-              unreadCount.toString(),
-              style: const TextStyle(fontSize: 12),
+              children: <Widget>[
+                const SizedBox(height: 6),
+                CircleAvatar(
+                  backgroundColor: AppColors.primaryColor,
+                  child: Text(
+                    unreadCount.toString(),
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  radius: 10,
+                ),
+                Text(
+                  time,
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ],
             ),
-            radius: 10,
-          ),
-          Text(
-            time,
-            style: const TextStyle(fontSize: 12),
-          ),
-        ],
-      ),
       onTap: onTap,
     );
   }

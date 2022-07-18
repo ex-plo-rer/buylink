@@ -17,7 +17,7 @@ class StartupView extends ConsumerWidget {
       backgroundColor: AppColors.light,
       body: Center(
         child: Padding(
-          padding: EdgeInsets.only(bottom: 150.0),
+          padding: const EdgeInsets.only(bottom: 150.0),
           child: Image.asset(
             AppImages.splash,
             // width: MediaQuery.of(context).size.width - 110,
