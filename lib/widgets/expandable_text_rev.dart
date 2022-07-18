@@ -2,8 +2,8 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class ExpandableText extends StatefulWidget {
-  const ExpandableText({
+class ExpandableTextRev extends StatefulWidget {
+  const ExpandableTextRev({
     Key? key,
     required this.text,
     required this.trimLines,
@@ -16,7 +16,7 @@ class ExpandableText extends StatefulWidget {
   ExpandableTextState createState() => ExpandableTextState();
 }
 
-class ExpandableTextState extends State<ExpandableText> {
+class ExpandableTextState extends State<ExpandableTextRev> {
   bool _readMore = true;
 
   void _onTapLink() {
@@ -29,7 +29,7 @@ class ExpandableTextState extends State<ExpandableText> {
     const colorClickableText = AppColors.primaryColor;
     const widgetColor = AppColors.grey2;
     TextSpan link = TextSpan(
-        text: _readMore ? "...See more" : " see less",
+        text: _readMore ? "...See more" : " See less",
         style: const TextStyle(
           color: colorClickableText,
           fontSize: 12,
@@ -42,7 +42,13 @@ class ExpandableTextState extends State<ExpandableText> {
         final double maxWidth = constraints.maxWidth;
         // Create a TextSpan with data
         final text = TextSpan(
-            text: widget.text, style: const TextStyle(color: AppColors.grey1));
+          text: widget.text,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.grey5,
+            fontWeight: FontWeight.w500,
+          ),
+        );
         // Layout and measure link
         TextPainter textPainter = TextPainter(
           text: link,
@@ -69,7 +75,9 @@ class ExpandableTextState extends State<ExpandableText> {
           textSpan = TextSpan(
             text: _readMore ? widget.text.substring(0, endIndex) : widget.text,
             style: const TextStyle(
-              color: widgetColor,
+              fontSize: 12,
+              color: AppColors.grey5,
+              fontWeight: FontWeight.w500,
             ),
             children: <TextSpan>[link],
           );
@@ -77,9 +85,9 @@ class ExpandableTextState extends State<ExpandableText> {
           textSpan = TextSpan(
             text: widget.text,
             style: const TextStyle(
-              color: widgetColor,
               fontSize: 12,
-              fontWeight: FontWeight.w600,
+              color: AppColors.grey5,
+              fontWeight: FontWeight.w500,
             ),
           );
         }

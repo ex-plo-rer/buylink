@@ -165,7 +165,9 @@ class ProductContainer extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  product.name,
+                  product.name.characters
+                      .replaceAll(Characters(''), Characters('\u{200B}'))
+                      .toString(),
                   overflow: isDetails ? null : TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: AppColors.grey2,

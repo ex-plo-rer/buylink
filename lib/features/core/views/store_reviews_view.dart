@@ -5,6 +5,7 @@ import 'package:buy_link/features/core/models/store_review_arg_model.dart';
 import 'package:buy_link/features/core/views/single_rating.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/app_rating_bar.dart';
+import 'package:buy_link/widgets/expandable_text_rev.dart';
 import 'package:buy_link/widgets/iconNtext_container.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../core/constants/svgs.dart';
 import '../../../widgets/auth_dialog.dart';
 import '../../../widgets/circular_progress.dart';
+import '../../../widgets/expandable_text.dart';
 import '../notifiers/store_notifier/store_review_notifier.dart';
 import '../notifiers/user_provider.dart';
 
@@ -164,7 +166,7 @@ class StoreReviewsView extends ConsumerWidget {
               ),
               const Spacing.bigHeight(),
               const Divider(thickness: 2),
-              Spacing.tinyHeight(),
+              const Spacing.tinyHeight(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
@@ -194,10 +196,10 @@ class StoreReviewsView extends ConsumerWidget {
                         children: [
                           SvgPicture.asset(AppSvgs.addReviewIcon,
                               width: 16, height: 16),
-                          Spacing.tinyWidth(),
-                          Text(
+                          const Spacing.tinyWidth(),
+                          const Text(
                             ' Add Review',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: AppColors.grey1,
@@ -213,7 +215,7 @@ class StoreReviewsView extends ConsumerWidget {
                   ],
                 ),
               ),
-              Spacing.tinyHeight(),
+              const Spacing.tinyHeight(),
               const Divider(thickness: 2),
               const Spacing.mediumHeight(),
               Row(
@@ -341,7 +343,7 @@ class StoreReviewsView extends ConsumerWidget {
                                               radius: 16,
                                               child: Text(
                                                 'Ayodeji'.initials(),
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: AppColors.light,
                                                     fontSize: 10,
                                                     fontWeight:
@@ -349,7 +351,7 @@ class StoreReviewsView extends ConsumerWidget {
                                               ),
                                             ),
                                             const Spacing.tinyWidth(),
-                                            Spacing.tinyWidth(),
+                                            const Spacing.tinyWidth(),
                                             Text(
                                               storeReviewNotifier
                                                       .reviews[index].name ??
@@ -392,85 +394,89 @@ class StoreReviewsView extends ConsumerWidget {
                                       ),
                                     ],
                                   ),
-                                  // Text(
-                                  //   // storeReviewNotifier.reviews[index].body,
-                                  //   'Love this app. I lost my vision three years ago and was told that this app is very useful. I use it almost daily on the go in at home. Everything works pretty seamless except for the color reader whic',
-                                  //   overflow: TextOverflow.fade,
-                                  //   maxLines: 6,
-                                  //   style: TextStyle(
-                                  //     color: AppColors.grey5,
-                                  //     fontSize: 14,
-                                  //     fontWeight: FontWeight.w500,
-                                  //   ),
-                                  // ),
-                                  Spacing.tinyHeight(),
-
+                                  const Spacing.tinyHeight(),
                                   Visibility(
-                                      visible: storeReviewNotifier
-                                          .reviews[index].title.isNotEmpty,
-                                      child: Text(
-                                        storeReviewNotifier
-                                            .reviews[index].title,
-                                        style: TextStyle(
-                                            color: AppColors.grey2,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14),
-                                      )),
-                                  Spacing.tinyHeight(),
-                                  LayoutBuilder(
-                                    builder: (context, size) {
-                                      // Build the textspan
-                                      var span = TextSpan(
-                                        text: storeReviewNotifier
-                                            .reviews[index].body,
-                                        // text: 'Love this app. I lost my vision three years ago and was told that this app is very useful. I use it almost daily on the go in at home. Everything works pretty seamless except for the color reader whicLove this app. I lost my vision three years ago and was told that this app is very useful. I use it almost daily on the go in at home. Everything works pretty seamless except for the color reader whic',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.grey5,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      );
+                                    visible: storeReviewNotifier
+                                        .reviews[index].title.isNotEmpty,
+                                    child: Text(
+                                      storeReviewNotifier.reviews[index].title,
+                                      style: const TextStyle(
+                                          color: AppColors.grey2,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14),
+                                    ),
+                                  ),
+                                  const Spacing.tinyHeight(),
+                                  /*ExpandableText(
+                                    text:
+                                        storeReviewNotifier.reviews[index].body,
+                                    // text: 'A super-comfortable denim legging,built to contour curves, lengthen legs and celebrate your qwew ewewe dsfsfsd fwsfddwfwefd asfdsffsd wef',
+                                    trimLines: 4,
+                                  ),*/
 
-                                      // Use a textpainter to determine if it will exceed max lines
-                                      var tp = TextPainter(
+                                  /*StatefulBuilder(
+                            builder: (BuildContext context,
+                                StateSetter setState) {
+                              return LayoutBuilder(
+                                builder: (context, size) {
+                                  // Build the textspan
+                                  var span = TextSpan(
+                                    text: storeReviewNotifier
+                                        .reviews[index].body,
+                                    // text: 'Love this app. I lost my vision three years ago and was told that this app is very useful. I use it almost daily on the go in at home. Everything works pretty seamless except for the color reader whicLove this app. I lost my vision three years ago and was told that this app is very useful. I use it almost daily on the go in at home. Everything works pretty seamless except for the color reader whic',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: AppColors.grey5,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  );
+
+                                  // Use a textpainter to determine if it will exceed max lines
+                                  var tp = TextPainter(
+                                      maxLines: 4,
+                                      textDirection: TextDirection.ltr,
+                                      text: span,
+                                      ellipsis: '...');
+
+                                  // trigger it to layout
+                                  tp.layout(maxWidth: size.maxWidth);
+
+                                  // whether the text overflowed or not
+                                  var exceeded = tp.didExceedMaxLines;
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text.rich(
+                                        span,
+                                        overflow: TextOverflow.fade,
                                         maxLines: 4,
-                                        textDirection: TextDirection.ltr,
-                                        text: span,
-                                      );
-
-                                      // trigger it to layout
-                                      tp.layout(maxWidth: size.maxWidth);
-
-                                      // whether the text overflowed or not
-                                      var exceeded = tp.didExceedMaxLines;
-
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text.rich(
-                                            span,
-                                            overflow: TextOverflow.fade,
-                                            maxLines: 4,
-                                          ),
-                                          Visibility(
-                                            visible: exceeded,
-                                            child: GestureDetector(
-                                              onTap: () {},
-                                              child: const Text(
-                                                'See more',
-                                                style: TextStyle(
-                                                  color: AppColors.grey4,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
+                                      ),
+                                      if (exceeded)
+                                        GestureDetector(
+                                          onTap: () {
+                                            // setState(() => selectedRadio = value);
+                                          },
+                                          child: const Text(
+                                            'See more',
+                                            style: TextStyle(
+                                              color: AppColors.grey4,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  ),
+                                        ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                        ),*/
+                                  ExpandableTextRev(
+                                      text: storeReviewNotifier
+                                          .reviews[index].body,
+                                      trimLines: 4)
                                   // Text.rich(
                                   //   span,
                                   //   overflow: TextOverflow.ellipsis,

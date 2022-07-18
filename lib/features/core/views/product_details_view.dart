@@ -151,7 +151,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                           CachedNetworkImageProvider(widget.product.store.logo),
                     ),
                     title: Text(
-                      widget.product.store.name,
+                      widget.product.store.name.characters
+                          .replaceAll(Characters(''), Characters('\u{200B}'))
+                          .toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
@@ -182,7 +186,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     ),
                   ),
                   Text(
-                    widget.product.name,
+                    widget.product.name.characters
+                        .replaceAll(Characters(''), Characters('\u{200B}'))
+                        .toString(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
