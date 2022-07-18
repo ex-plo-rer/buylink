@@ -56,6 +56,7 @@ class StoreSetting extends ConsumerWidget {
                 ),
               ),
               leading: CircleAvatar(
+                radius: 20,
                 child: SvgPicture.asset(AppSvgs.shop2),
                 backgroundColor: AppColors.grey8,
               ),

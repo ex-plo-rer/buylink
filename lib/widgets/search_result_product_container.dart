@@ -205,22 +205,22 @@ class SearchResultContainer extends ConsumerWidget {
                     child: RichText(
                       text: TextSpan(
                         children: [
-                          WidgetSpan(
-                            // alignment: Alignment.topLeft,
-                            style: const TextStyle(
-                                color: AppColors.grey4,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                decoration: TextDecoration.lineThrough),
-                            child: SvgPicture.asset(
-                              AppSvgs.naira,
-                              height: 13.5,
-                              width: 13.5,
-                              color: AppColors.grey4,
-                            ),
-                          ),
+                          // WidgetSpan(
+                          //   // alignment: Alignment.topLeft,
+                          //   style: const TextStyle(
+                          //       color: AppColors.grey4,
+                          //       fontSize: 12,
+                          //       fontWeight: FontWeight.w500,
+                          //       decoration: TextDecoration.lineThrough),
+                          //   child: SvgPicture.asset(
+                          //     AppSvgs.naira,
+                          //     height: 13.5,
+                          //     width: 13.5,
+                          //     color: AppColors.grey4,
+                          //   ),
+                          // ),
                           TextSpan(
-                            text: '$oldPrice',
+                            text: '₦$oldPrice',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
@@ -236,20 +236,20 @@ class SearchResultContainer extends ConsumerWidget {
                   // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
                   text: TextSpan(
                     children: [
-                      WidgetSpan(
-                        style: TextStyle(
-                          color: AppColors.grey1,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        child: SvgPicture.asset(
-                          AppSvgs.naira,
-                          height: 15,
-                          width: 15,
-                        ),
-                      ),
+                      // WidgetSpan(
+                      //   style: TextStyle(
+                      //     color: AppColors.grey1,
+                      //     fontSize: 14,
+                      //     fontWeight: FontWeight.w600,
+                      //   ),
+                      //   child: SvgPicture.asset(
+                      //     AppSvgs.naira,
+                      //     height: 15,
+                      //     width: 15,
+                      //   ),
+                      // ),
                       TextSpan(
-                        text: '$productPrice',
+                        text: '₦$productPrice',
                         //overflow: isDetails ? null : TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: AppColors.grey1,

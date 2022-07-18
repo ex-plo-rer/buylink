@@ -196,20 +196,20 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                         // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
                         text: TextSpan(
                           children: [
-                            WidgetSpan(
-                              style: const TextStyle(
-                                color: AppColors.grey1,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              child: SvgPicture.asset(
-                                AppSvgs.naira,
-                                height: 15,
-                                width: 15,
-                              ),
-                            ),
+                            // WidgetSpan(
+                            //   style: const TextStyle(
+                            //     color: AppColors.grey1,
+                            //     fontSize: 14,
+                            //     fontWeight: FontWeight.w600,
+                            //   ),
+                            //   child: SvgPicture.asset(
+                            //     AppSvgs.naira,
+                            //     height: 15,
+                            //     width: 15,
+                            //   ),
+                            // ),
                             TextSpan(
-                              text: '${widget.product.price}',
+                              text: '₦${widget.product.price}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -225,22 +225,22 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                           child: RichText(
                             text: TextSpan(
                               children: [
-                                WidgetSpan(
-                                  // alignment: Alignment.topLeft,
-                                  style: const TextStyle(
-                                      color: AppColors.grey9,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      decoration: TextDecoration.lineThrough),
-                                  child: SvgPicture.asset(
-                                    AppSvgs.naira,
-                                    height: 13.5,
-                                    width: 13.5,
-                                    color: AppColors.grey4,
-                                  ),
-                                ),
+                                // WidgetSpan(
+                                //   // alignment: Alignment.topLeft,
+                                //   style: const TextStyle(
+                                //       color: AppColors.grey9,
+                                //       fontSize: 12,
+                                //       fontWeight: FontWeight.w500,
+                                //       decoration: TextDecoration.lineThrough),
+                                //   child: SvgPicture.asset(
+                                //     AppSvgs.naira,
+                                //     height: 13.5,
+                                //     width: 13.5,
+                                //     color: AppColors.grey4,
+                                //   ),
+                                // ),
                                 TextSpan(
-                                  text: '${widget.product.oldPrice}',
+                                  text: '₦${widget.product.oldPrice}',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,

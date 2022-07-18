@@ -92,20 +92,20 @@ class ProductContainerPList extends ConsumerWidget {
                 // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
                 text: TextSpan(
                   children: [
-                    WidgetSpan(
-                      style: TextStyle(
-                        color: AppColors.grey1,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      child: SvgPicture.asset(
-                        AppSvgs.naira,
-                        height: 15,
-                        width: 15,
-                      ),
-                    ),
+                    // WidgetSpan(
+                    //   style: TextStyle(
+                    //     color: AppColors.grey1,
+                    //     fontSize: 14,
+                    //     fontWeight: FontWeight.w600,
+                    //   ),
+                    //   child: SvgPicture.asset(
+                    //     AppSvgs.naira,
+                    //     height: 15,
+                    //     width: 15,
+                    //   ),
+                    // ),
                     TextSpan(
-                      text: '$productPrice',
+                      text: '₦$productPrice',
                       style: TextStyle(
                         color: AppColors.grey1,
                         fontSize: 14,
