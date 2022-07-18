@@ -128,35 +128,50 @@ class StoreReviewsView extends ConsumerWidget {
                                       starNumber: '5',
                                       noOfRatings: storeReviewNotifier
                                           .reviewStats!.the5Star,
-                                      ratingValue: 1,
+                                      ratingValue: (storeReviewNotifier
+                                              .reviewStats!.the5Star /
+                                          storeReviewNotifier
+                                              .reviewStats!.total),
                                     ),
                                     const Spacing.smallHeight(),
                                     SingleRating(
                                       starNumber: '4',
                                       noOfRatings: storeReviewNotifier
                                           .reviewStats!.the4Star,
-                                      ratingValue: 0.8,
+                                      ratingValue: (storeReviewNotifier
+                                              .reviewStats!.the4Star /
+                                          storeReviewNotifier
+                                              .reviewStats!.total),
                                     ),
                                     const Spacing.smallHeight(),
                                     SingleRating(
                                       starNumber: '3',
                                       noOfRatings: storeReviewNotifier
                                           .reviewStats!.the3Star,
-                                      ratingValue: 0.6,
+                                      ratingValue: (storeReviewNotifier
+                                              .reviewStats!.the3Star /
+                                          storeReviewNotifier
+                                              .reviewStats!.total),
                                     ),
                                     const Spacing.smallHeight(),
                                     SingleRating(
                                       starNumber: '2',
                                       noOfRatings: storeReviewNotifier
                                           .reviewStats!.the2Star,
-                                      ratingValue: 0.4,
+                                      ratingValue: (storeReviewNotifier
+                                              .reviewStats!.the2Star /
+                                          storeReviewNotifier
+                                              .reviewStats!.total),
                                     ),
                                     const Spacing.smallHeight(),
                                     SingleRating(
                                       starNumber: ' 1',
                                       noOfRatings: storeReviewNotifier
                                           .reviewStats!.the1Star,
-                                      ratingValue: 0.2,
+                                      ratingValue: (storeReviewNotifier
+                                              .reviewStats!.the1Star /
+                                          storeReviewNotifier
+                                              .reviewStats!.total),
                                     ),
                                   ],
                                 ),
