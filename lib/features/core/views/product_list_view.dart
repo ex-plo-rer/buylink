@@ -96,7 +96,7 @@ class _WishlistState extends ConsumerState<ProductListView>
             ref.read(navigationServiceProvider).navigateBack();
           },
           icon: const Icon(Icons.arrow_back_ios_outlined,
-              size: 15, color: AppColors.grey2),
+              size: 14, color: AppColors.grey2),
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,

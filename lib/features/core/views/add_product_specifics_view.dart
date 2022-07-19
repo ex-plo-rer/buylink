@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../core/constants/colors.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
+import '../../../widgets/special_text_field2.dart';
 
 class AddProductSpecificsView extends ConsumerWidget {
   const AddProductSpecificsView({Key? key}) : super(key: key);
@@ -84,7 +85,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    child: SpecialTextField(
+                    child: SpecialTextField2(
                       height: 56,
                       title: 'Age',
                       tit: 'Min',
@@ -95,7 +96,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                   ),
                   const Spacing.smallWidth(),
                   Expanded(
-                    child: SpecialTextField(
+                    child: SpecialTextField2(
                       height: 56,
                       tit: 'Max',
                       sub: 'Years ',
@@ -109,20 +110,22 @@ class AddProductSpecificsView extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    child: SpecialTextField(
+                    child: SpecialTextField2(
                       height: 56,
                       title: 'Weight',
                       tit: 'Min',
                       sub: 'Kg ',
+                      hintText: '0',
                       onChanged: addProductNotifier.onMinWeightChanged,
                     ),
                   ),
                   const Spacing.smallWidth(),
                   Expanded(
-                    child: SpecialTextField(
+                    child: SpecialTextField2(
                       height: 56,
                       tit: 'Max',
                       sub: 'Kg ',
+                      hintText: '0',
                       onChanged: addProductNotifier.onMaxWeightChanged,
                     ),
                   ),
