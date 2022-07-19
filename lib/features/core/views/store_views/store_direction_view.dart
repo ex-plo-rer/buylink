@@ -253,7 +253,7 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                               ),
                             ),
                             const Spacing.smallWidth(),
-                            SvgPicture.asset(AppSvgs.favoriteFilled),
+                            SvgPicture.asset(AppSvgs.starFilled),
                             const Spacing.tinyWidth(),
                             Text(
                               '$storeRating',
@@ -279,15 +279,12 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
+                        children: [
                           FavoriteContainer(
                             height: 32,
                             width: 32,
                             padding: 7,
-                            favIcon: Icon(
-                              Icons.add_ic_call_outlined,
-                              size: 16,
-                            ),
+                            favIcon: SvgPicture.asset(AppSvgs.telephone),
                             hasBorder: true,
                           ),
                           Spacing.smallWidth(),
@@ -295,10 +292,8 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                             height: 32,
                             width: 32,
                             padding: 7,
-                            favIcon: Icon(
-                              Icons.mail_outline_outlined,
-                              size: 16,
-                            ),
+                            favIcon: SvgPicture.asset(AppSvgs.envelope,
+                                color: AppColors.primaryColor),
                             hasBorder: true,
                           ),
                         ],
