@@ -158,7 +158,8 @@ class DeleteUser extends ConsumerWidget {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500),
                                 title: '',
-                                hintText: 'Steve Jobs',
+                                hintText:
+                                    'Kindly shed more light on the reason for termination(optional)',
                                 focusNode: _detailFN,
                                 controller: _detailController,
                                 onChanged: deleteUserNotifier.onDetailChanged,

@@ -129,6 +129,10 @@ class _AddStoreViewState extends ConsumerState<AddStoreView> {
                           AppTextField(
                             title: '',
                             hintText: 'Store name',
+                            style: TextStyle(
+                                color: AppColors.grey1,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
                             hasBorder: false,
                             focusNode: _nameFN,
                             controller: _nameController,

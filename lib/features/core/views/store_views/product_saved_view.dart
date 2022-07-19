@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../services/navigation_service.dart';
 import '../../../../widgets/circular_progress.dart';
 import '../../../../widgets/favorite_container.dart';
 import '../../../../widgets/weekly_widget.dart';
@@ -53,7 +54,9 @@ class _ProductSavedViewState extends ConsumerState<ProductSavedView> {
           color: AppColors.dark, //change your color here
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             size: 12,
