@@ -82,6 +82,9 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
           actions: [
             Row(
               children: <Widget>[
+                // storeDashboardNotifier.initLoading
+                //     ? const Spacing.empty()
+                //     :
                 Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
@@ -95,10 +98,24 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                       // borderRadius: BorderRadius.all(),
                     ),
                     child: GestureDetector(
-                      child: const Icon(
-                        Icons.mail_outline_outlined,
-                        color: AppColors.primaryColor,
-                        size: 20,
+                      child: Stack(
+                        children: [
+                          const Icon(
+                            Icons.mail_outline_outlined,
+                            color: AppColors.primaryColor,
+                            size: 20,
+                          ),
+                          if (storeDashboardNotifier
+                                  .mostSearchedNCount?.unread ??
+                              false)
+                            const Padding(
+                              padding: EdgeInsets.only(left: 12.0),
+                              child: CircleAvatar(
+                                backgroundColor: AppColors.red,
+                                radius: 4,
+                              ),
+                            )
+                        ],
                       ),
                       onTap: () {
                         ref.read(navigationServiceProvider).navigateToNamed(

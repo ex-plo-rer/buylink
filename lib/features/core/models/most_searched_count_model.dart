@@ -18,12 +18,14 @@ class MostSearchedModel {
     required this.storeProductCount,
     required this.storeProductsSaved,
     required this.storeGrade,
+    required this.unread,
   });
 
   List<MostSearchedProductModel> products;
   int storeProductCount;
   int storeProductsSaved;
   double storeGrade;
+  bool unread;
 
   factory MostSearchedModel.fromJson(Map<String, dynamic> json) =>
       MostSearchedModel(
@@ -32,6 +34,7 @@ class MostSearchedModel {
         storeProductCount: json["store_product_count"],
         storeProductsSaved: json["store_products_saved"],
         storeGrade: json["store_grade"].toDouble(),
+        unread: json["unread"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -39,5 +42,6 @@ class MostSearchedModel {
         "store_product_count": storeProductCount,
         "store_products_saved": storeProductsSaved,
         "store_grade": storeGrade,
+        "unread": unread,
       };
 }

@@ -3,6 +3,7 @@ import 'package:buy_link/features/core/views/notification_view/notification_view
 import 'package:buy_link/features/core/views/settings_view/setting_view.dart';
 import 'package:buy_link/features/core/views/store_views/store_view.dart';
 import 'package:buy_link/features/core/views/wishlist_view.dart';
+import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -91,10 +92,25 @@ class DashboardView extends ConsumerWidget {
               label: 'My Stores',
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                dashboardNotifier.selectedIndex == 3
-                    ? AppSvgs.bellFilled
-                    : AppSvgs.bell,
+              icon: Stack(
+                children: [
+                  SvgPicture.asset(
+                    dashboardNotifier.selectedIndex == 3
+                        ? AppSvgs.bellFilled
+                        : AppSvgs.bell,
+                  ),
+                  dashboardNotifier.checkMsg == null
+                      ? const Spacing.empty()
+                      : !dashboardNotifier.checkMsg!.unread
+                          ? const Spacing.empty()
+                          : const Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: CircleAvatar(
+                                backgroundColor: AppColors.red,
+                                radius: 4,
+                              ),
+                            )
+                ],
               ),
               label: 'Notifications',
             ),

@@ -2,6 +2,7 @@ import 'package:buy_link/core/routes.dart';
 import 'package:buy_link/features/core/models/analytics_model.dart';
 import 'package:buy_link/features/core/models/auto_complete_model.dart';
 import 'package:buy_link/features/core/models/category_model.dart';
+import 'package:buy_link/features/core/models/check_msg_model.dart';
 import 'package:buy_link/features/core/models/product_attribute_model.dart';
 import 'package:buy_link/features/core/models/product_model.dart';
 import 'package:buy_link/features/core/models/review_stats_model.dart';
@@ -777,6 +778,21 @@ class CoreRepository {
     );
     print('Add items to compare response $response');
     return response['success'];
+  }
+
+  Future<CheckMsgModel> checkMsg() async {
+    var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      'id': id,
+    };
+    print('Check msg params sent to server $body');
+    var response = await networkService.post(
+      'users/check-msgs',
+      body: body,
+      headers: headers,
+    );
+    print('Check msg response $response');
+    return CheckMsgModel.fromJson(response);
   }
 }
 

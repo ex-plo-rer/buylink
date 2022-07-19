@@ -18,6 +18,7 @@ import '../../../../services/navigation_service.dart';
 import '../../../../widgets/chat_tile.dart';
 import '../../../../widgets/spacing.dart';
 import '../../models/message_model.dart';
+import '../../notifiers/dashboard_notifier.dart';
 import '../../notifiers/message_notifier/message_list_notifier.dart';
 import '../../notifiers/notification_notifier/notification_notifier.dart';
 
@@ -57,6 +58,7 @@ class _NotificationState extends ConsumerState<NotificationView>
   @override
   Widget build(BuildContext context) {
     // final notificationNotifier = ref.watch(notificationNotifierProvider);
+    final dashboardNotifier = ref.watch(dashboardChangeNotifier);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -89,9 +91,23 @@ class _NotificationState extends ConsumerState<NotificationView>
                     indicatorColor: AppColors.primaryColor,
                     controller: _tabController,
                     //isScrollable: true,
-                    tabs: const [
-                      Tab(text: "Product Alert"),
-                      Tab(text: "Messages"),
+                    tabs: [
+                      const Tab(text: "Product Alert"),
+                      Row(mainAxisSize: MainAxisSize.min, children: [
+                        const Tab(text: "Messages"),
+                        const Spacing.tinyWidth(),
+                        dashboardNotifier.checkMsg == null
+                            ? const Spacing.empty()
+                            : !dashboardNotifier.checkMsg!.unread
+                                ? const Spacing.empty()
+                                : const Padding(
+                                    padding: EdgeInsets.only(bottom: 8.0),
+                                    child: CircleAvatar(
+                                      backgroundColor: AppColors.red,
+                                      radius: 4,
+                                    ),
+                                  )
+                      ]),
                     ],
                     // onTap: (index) => index == 0
                     //     ? ref
