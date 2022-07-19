@@ -221,14 +221,16 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                       ),
                     ),
                     const Spacing.tinyHeight(),
-                    Text(
+                    Center(
+                        child: Text(
                       '$distance km',
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: AppColors.grey1,
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
-                    ),
+                    )),
                     // const Spacing.smallHeight(),
                     ListTile(
                       horizontalTitleGap: 8,

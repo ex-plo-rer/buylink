@@ -54,10 +54,10 @@ class _CompareProductsViewState extends ConsumerState<CompareProductsView> {
           color: AppColors.dark, //change your color here
         ),
         leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-          ),
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
+          icon: const Icon(Icons.arrow_back_ios_outlined, size: 14),
         ),
         elevation: 0,
         backgroundColor: AppColors.transparent,

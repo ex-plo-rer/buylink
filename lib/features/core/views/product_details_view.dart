@@ -181,14 +181,18 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       iconColor: AppColors.light,
                     ),
                   ),
-                  Text(
+                  Spacing.tinyHeight(),
+                  Center(
+                      child: Text(
                     widget.product.name,
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppColors.grey1,
                     ),
-                  ),
+                  )),
+                  Spacing.tinyHeight(),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
