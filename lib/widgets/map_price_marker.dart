@@ -34,20 +34,20 @@ class MapPriceMarker extends StatelessWidget {
                 // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
                 text: TextSpan(
                   children: [
-                    WidgetSpan(
-                      style: const TextStyle(
-                        color: AppColors.grey1,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      child: SvgPicture.asset(
-                        AppSvgs.naira,
-                        height: 15,
-                        width: 15,
-                      ),
-                    ),
+                    // WidgetSpan(
+                    //   style: const TextStyle(
+                    //     color: AppColors.grey1,
+                    //     fontSize: 14,
+                    //     fontWeight: FontWeight.w600,
+                    //   ),
+                    //   child: SvgPicture.asset(
+                    //     AppSvgs.naira,
+                    //     height: 15,
+                    //     width: 15,
+                    //   ),
+                    // ),
                     TextSpan(
-                      text: '${price}',
+                      text: '₦$price',
                       style: const TextStyle(
                         color: AppColors.grey1,
                         fontSize: 14,
