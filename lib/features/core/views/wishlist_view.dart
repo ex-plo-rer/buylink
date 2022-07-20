@@ -32,16 +32,16 @@ class _WishlistState extends ConsumerState<WishlistView>
   void initState() {
     if (ref.read(userProvider).currentUser != null) {
       // TODO: implement initState
-      // WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // if (ref.read(categoryNotifierProvider).userCategories.isEmpty) {
-      //   await ref.read(categoryNotifierProvider).fetchUserCategories();
-      // }
-      // ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
-      _tabController = TabController(
-          length: ref.read(categoryNotifierProvider).userCategories.length,
-          vsync: this);
-      _tabController.addListener(_handleTabChange);
-      // });
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (ref.read(categoryNotifierProvider).userCategories.isEmpty) {
+          await ref.read(categoryNotifierProvider).fetchUserCategories();
+        }
+        // ref.watch(wishlistNotifierProvider).fetchWishlist(category: 'all');
+        _tabController = TabController(
+            length: ref.read(categoryNotifierProvider).userCategories.length,
+            vsync: this);
+        _tabController.addListener(_handleTabChange);
+      });
       // init();
     }
     super.initState();
