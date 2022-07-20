@@ -8,12 +8,14 @@ import '../../../core/utilities/view_state.dart';
 import '../../../repositories/core_repository.dart';
 import '../../../services/base/network_exception.dart';
 import '../../../services/navigation_service.dart';
+import 'category_notifier.dart';
 
 class DashboardNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   DashboardNotifier(this._reader) {
     checkMsgs();
+    _reader(categoryNotifierProvider).fetchUserCategories();
   }
 
   CheckMsgModel? _checkMsg;

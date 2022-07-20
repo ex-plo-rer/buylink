@@ -4,6 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:buy_link/features/startup/views/startup_view.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/services/snackbar_service.dart';
+import 'package:buy_link/widgets/error_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,8 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 Future<void> main() async {
+  ErrorWidget.builder = (FlutterErrorDetails details) =>
+      AppErrorWidget(message: details.exceptionAsString());
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
@@ -44,7 +47,7 @@ class MyApp extends ConsumerWidget {
       navigatorObservers: [BotToastNavigatorObserver()],
       title: AppStrings.appName,
       theme: AppTheme.lightTheme,
-      home: StartupView(),
+      home: const StartupView(),
       // home: AddProductView(),
       onGenerateRoute: Routes.generateRoute,
       navigatorKey: ref.read(navigationServiceProvider).navigatorKey,

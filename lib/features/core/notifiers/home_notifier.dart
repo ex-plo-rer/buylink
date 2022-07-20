@@ -39,6 +39,7 @@ class HomeNotifier extends BaseChangeNotifier {
   List<ProductModel> get products => _products;
 
   final List<bool?> _fav = [];
+
   List<bool?> get fav => _fav;
 
   ProductAttrModel? _productAttr;
@@ -135,7 +136,7 @@ class HomeNotifier extends BaseChangeNotifier {
         lon: _reader(locationService).lon!,
         category: category,
       );
-      _reader(categoryNotifierProvider).fetchUserCategories();
+      // _reader(categoryNotifierProvider).fetchUserCategories();
       changeText(category: category ?? 'all');
       setFav();
       _productLoading = false;
