@@ -124,6 +124,8 @@ class ProductSearchNotifier extends BaseChangeNotifier {
       _searchLoading = true;
       setState(state: ViewState.loading);
       _autoComplete = await _reader(coreRepository).autoComplete(query: query);
+      print(
+          'autoCompleteautoCompleteautoComplete ${autoComplete?.recentSearches.first}');
       // return _autoComplete;
       // setState(state: ViewState.idle);
     } on NetworkException catch (e) {
@@ -144,7 +146,7 @@ class ProductSearchNotifier extends BaseChangeNotifier {
   // TODO: Modify this code and separate the shared preference to the local storage service
   Future<void> getRecentSearches() async {
     final pref = await SharedPreferences.getInstance();
-    _recentSearches = pref.getStringList(AppStrings.recentSearchKey);
+    _recentSearches = pref.getStringList(AppStrings.recentSearchKey) ?? [];
   }
 
   Future<void> removeRecent(index) async {
