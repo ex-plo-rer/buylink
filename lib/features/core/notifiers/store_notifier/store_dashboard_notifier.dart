@@ -20,6 +20,10 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
 
   MostSearchedModel? get mostSearchedNCount => _mostSearchedNCount;
 
+  bool _hasUnread = false;
+
+  bool get hasUnread => _hasUnread;
+
   bool _initLoading = false;
 
   bool get initLoading => _initLoading;
@@ -40,10 +44,16 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
 
   AnalyticsModel? get visitAnalytics => _visitAnalytics;
 
+  // void toggleUnread() {
+  //   _hasUnread = false;
+  //   notifyListeners();
+  // }
+
   Future<void> initFetch({required int storeId}) async {
     try {
       _initLoading = true;
       setState(state: ViewState.loading);
+      await checkStoreUnread(storeId: storeId);
       await fetchMostSearchedProducts(storeId: storeId, category: 'all');
       await fetchSearchAnalytics(storeId: storeId, week: 'current');
       await fetchVisitAnalytics(storeId: storeId, week: 'current');
@@ -66,6 +76,24 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
     }
   }
 
+  Future<void> checkStoreUnread({required int storeId}) async {
+    try {
+      // _categoriesLoading = true;
+      setState(state: ViewState.loading);
+      _hasUnread =
+          await _reader(coreRepository).checkStoreUnread(storeId: storeId);
+      // _categoriesLoading = false;
+      setState(state: ViewState.idle);
+    } on NetworkException catch (e) {
+      // _categoriesLoading = false;
+      setState(state: ViewState.error);
+      _reader(navigationServiceProvider).navigateBack();
+      // Alertify(title: e.error).error();
+    } finally {
+      //setState(state: ViewState.idle);
+    }
+  }
+
   Future<void> fetchMostSearchedProducts({
     required int storeId,
     required String category,
@@ -75,6 +103,7 @@ class StoreDashboardNotifier extends BaseChangeNotifier {
       _mostSearchedNCount = await _reader(coreRepository).getMostSearchedNCount(
         storeId: storeId,
       );
+      // _hasUnread = _mostSearchedNCount!.unread;
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);

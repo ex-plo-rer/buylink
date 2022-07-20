@@ -678,7 +678,7 @@ class CoreRepository {
     }
 
     print('Get session response $response');
-    return _sessions;
+    return _sessions.reversed.toList();
   }
 
   Future<SearchResultModel> fetchProductSearch({
@@ -793,6 +793,22 @@ class CoreRepository {
     );
     print('Check msg response $response');
     return CheckMsgModel.fromJson(response);
+  }
+
+  Future<bool> checkStoreUnread({required int storeId}) async {
+    // var id = _reader(userProvider).currentUser?.id ?? 0;
+    final body = {
+      // 'id': id,
+      'store_id': storeId,
+    };
+    print('has_unread params sent to server $body');
+    var response = await networkService.post(
+      'users/has_unread',
+      body: body,
+      headers: headers,
+    );
+    print('has_unread response $response');
+    return response['unread'];
   }
 }
 

@@ -105,9 +105,8 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                             color: AppColors.primaryColor,
                             size: 20,
                           ),
-                          if (storeDashboardNotifier
-                                  .mostSearchedNCount?.unread ??
-                              false)
+                          // if (storeDashboardNotifier.mostSearchedNCount?.unread ?? false)
+                          if (storeDashboardNotifier.hasUnread)
                             const Padding(
                               padding: EdgeInsets.only(left: 12.0),
                               child: CircleAvatar(
@@ -191,7 +190,8 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                       .mostSearchedNCount!.products.isEmpty
                                   ? const Center(child: Text('No Product yet'))
                                   : ListView.separated(
-                                      itemCount: 5,
+                                      itemCount: storeDashboardNotifier
+                                          .mostSearchedNCount!.products.length,
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) =>
                                           MostSearchedProductContainer(

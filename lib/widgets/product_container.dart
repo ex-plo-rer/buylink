@@ -156,8 +156,11 @@ class ProductContainer extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  product.store.name,
-                  overflow: isDetails ? null : TextOverflow.ellipsis,
+                  product.store.name.characters
+                      .replaceAll(Characters(''), Characters('\u{200B}'))
+                      .toString(),
+                  // overflow: isDetails ? null : TextOverflow.ellipsis,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: AppColors.grey3,
                     fontSize: 14,
@@ -168,7 +171,9 @@ class ProductContainer extends ConsumerWidget {
                   product.name.characters
                       .replaceAll(Characters(''), Characters('\u{200B}'))
                       .toString(),
-                  overflow: isDetails ? null : TextOverflow.ellipsis,
+                  // overflow: isDetails ? null : TextOverflow.ellipsis,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: const TextStyle(
                     color: AppColors.grey2,
                     fontSize: 14,

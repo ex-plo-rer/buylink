@@ -1,7 +1,9 @@
 import 'package:buy_link/core/utilities/alertify.dart';
 import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/loader.dart';
+import 'package:buy_link/features/core/notifiers/dashboard_notifier.dart';
 import 'package:buy_link/features/core/notifiers/message_notifier/message_list_notifier.dart';
+import 'package:buy_link/features/core/notifiers/store_notifier/store_dashboard_notifier.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
 import 'package:buy_link/widgets/app_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -45,12 +47,18 @@ class MessageView extends ConsumerWidget {
           //     ? '${args.storeId}s'
           //     : '${ref.read(userProvider).currentUser!.id}u',
           if (args.from == 'storeMessages') {
+            await ref
+                .read(storeDashboardNotifierProvider)
+                .checkStoreUnread(storeId: args.storeId);
             ref
                 .read(messageListNotifierProvider)
                 .getChatList(sessionId: '${args.storeId}s');
           } else if (args.from == 'notification') {
+            await ref.read(dashboardChangeNotifier).checkMsgs();
             ref.read(messageListNotifierProvider).getChatList(
                 sessionId: '${ref.read(userProvider).currentUser!.id}u');
+          } else {
+            await ref.read(dashboardChangeNotifier).checkMsgs();
           }
           Loader(context).hideLoader();
         }

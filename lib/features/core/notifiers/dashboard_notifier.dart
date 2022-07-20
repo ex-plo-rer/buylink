@@ -7,6 +7,7 @@ import '../../../core/utilities/base_change_notifier.dart';
 import '../../../core/utilities/view_state.dart';
 import '../../../repositories/core_repository.dart';
 import '../../../services/base/network_exception.dart';
+import '../../../services/navigation_service.dart';
 
 class DashboardNotifier extends BaseChangeNotifier {
   final Reader _reader;
@@ -54,6 +55,7 @@ class DashboardNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       // _categoriesLoading = false;
       setState(state: ViewState.error);
+      _reader(navigationServiceProvider).navigateBack();
       // Alertify(title: e.error).error();
     } finally {
       //setState(state: ViewState.idle);
