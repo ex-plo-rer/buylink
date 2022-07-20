@@ -42,4 +42,5 @@ class AppSvgs {
   static const trash_2 = 'assets/svgs/trash_2.svg';
   static const key_2 = 'assets/svgs/key_2.svg';
   static const forward = 'assets/svgs/forward.svg';
+  static const telephone = 'assets/svgs/telephone.svg';
 }

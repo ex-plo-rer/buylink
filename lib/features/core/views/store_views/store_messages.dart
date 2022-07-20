@@ -51,7 +51,7 @@ class _StoreMessagesViewState extends ConsumerState<StoreMessagesView> {
           },
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
-            size: 12,
+            size: 14,
           ),
         ),
         elevation: 0,

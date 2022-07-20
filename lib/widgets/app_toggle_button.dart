@@ -22,6 +22,8 @@ class AppToggle extends StatelessWidget {
   Widget build(BuildContext context) {
     //final settingNotifier = ref.watch(settingNotificationNotifierProvider);
     return ListTile(
+      // contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+      visualDensity: VisualDensity(horizontal: 0, vertical: -1),
       title: Text(
         title,
         style: const TextStyle(

@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../core/constants/colors.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/spacing.dart';
+import '../../../widgets/special_text_field2.dart';
 
 class AddProductSpecificsView extends ConsumerWidget {
   const AddProductSpecificsView({Key? key}) : super(key: key);
@@ -51,13 +52,30 @@ class AddProductSpecificsView extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'This helps your costumers locate your products faster, all the fields are optional, so fill the field that applies to your product',
-                style: TextStyle(
-                    color: AppColors.getColorFromHex('3A4150'),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700),
-              ),
+              RichText(
+                  text: TextSpan(children: [
+                const TextSpan(
+                  text:
+                      "This helps your costumers locate your products faster,",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                      color: AppColors.grey5),
+                ),
+                TextSpan(
+                  text: " all the fields are optional",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      color: AppColors.grey2),
+                ),
+                const TextSpan(
+                    text: ", so fill the field that applies to your product.",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: AppColors.grey5))
+              ])),
               const Spacing.height(20),
               AppTextField(
                 style: const TextStyle(
@@ -69,6 +87,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                 hintText: 'Brand of the product',
                 onChanged: addProductNotifier.onBrandChanged,
               ),
+              Spacing.mediumHeight(),
               AppTextField(
                 style: const TextStyle(
                     color: AppColors.primaryColor,
@@ -84,7 +103,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    child: SpecialTextField(
+                    child: SpecialTextField2(
                       height: 56,
                       title: 'Age',
                       tit: 'Min',
@@ -95,7 +114,7 @@ class AddProductSpecificsView extends ConsumerWidget {
                   ),
                   const Spacing.smallWidth(),
                   Expanded(
-                    child: SpecialTextField(
+                    child: SpecialTextField2(
                       height: 56,
                       tit: 'Max',
                       sub: 'Years ',
@@ -105,24 +124,27 @@ class AddProductSpecificsView extends ConsumerWidget {
                   ),
                 ],
               ),
+              Spacing.mediumHeight(),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    child: SpecialTextField(
+                    child: SpecialTextField2(
                       height: 56,
                       title: 'Weight',
                       tit: 'Min',
                       sub: 'Kg ',
+                      hintText: '0',
                       onChanged: addProductNotifier.onMinWeightChanged,
                     ),
                   ),
                   const Spacing.smallWidth(),
                   Expanded(
-                    child: SpecialTextField(
+                    child: SpecialTextField2(
                       height: 56,
                       tit: 'Max',
                       sub: 'Kg ',
+                      hintText: '0',
                       onChanged: addProductNotifier.onMaxWeightChanged,
                     ),
                   ),

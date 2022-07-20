@@ -62,10 +62,12 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
             color: AppColors.dark, //change your color here
           ),
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              ref.read(navigationServiceProvider).navigateBack();
+            },
             icon: const Icon(
               Icons.arrow_back_ios_outlined,
-              size: 12,
+              size: 14,
             ),
           ),
           elevation: 0,
@@ -404,7 +406,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                       const SizedBox(
                                         width: 132,
                                         child: Divider(
-                                          thickness: 2,
+                                          thickness: 0.6,
                                           color: AppColors.grey8,
                                         ),
                                       ),
@@ -526,7 +528,7 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
                                       const SizedBox(
                                         width: 132,
                                         child: Divider(
-                                            thickness: 2,
+                                            thickness: 0.6,
                                             color: AppColors.grey8),
                                       ),
                                       Row(

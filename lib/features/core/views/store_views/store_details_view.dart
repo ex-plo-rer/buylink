@@ -28,6 +28,7 @@ import '../../../../core/constants/strings.dart';
 import '../../../../core/utilities/loader.dart';
 import '../../../../services/location_service.dart';
 import '../../../../widgets/auth_dialog.dart';
+import '../../../../widgets/back_arrow.dart';
 import '../../../../widgets/iconNtext_container.dart';
 import '../../models/compare_arg_model.dart';
 import '../../models/message_model.dart';
@@ -121,6 +122,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                             // color: AppColors.red,
                           ),
                         ),
+                        const BackArrow(),
                         SizedBox(
                           height: 284,
                           child: Align(

@@ -147,7 +147,7 @@ class ProductAlertScreen extends ConsumerWidget {
               onRefresh: () async =>
                   await notificationNotifier.fetchNotifications(),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
                 child: ListView.separated(
                     // physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,

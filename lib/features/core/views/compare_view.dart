@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/constants/strings.dart';
+import '../../../services/navigation_service.dart';
 import '../../../widgets/circular_progress.dart';
 import '../models/compare_search.dart';
 import '../notifiers/compare_notifier.dart';
@@ -63,10 +64,12 @@ class _CompareViewState extends ConsumerState<CompareView> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: AppColors.dark, //change your color here
-        ),
+            color: AppColors.dark, size: 15 //change your color here
+            ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            ref.read(navigationServiceProvider).navigateBack();
+          },
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             size: 14,

@@ -258,7 +258,7 @@ class SettingView extends ConsumerWidget {
               const Spacing.mediumHeight(),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                height: 220,
+                height: 164,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
                     20,
@@ -269,36 +269,36 @@ class SettingView extends ConsumerWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(4),
                   children: <Widget>[
-                    ListTile(
-                      onTap: () {
-                        // ref
-                        //     .read(navigationServiceProvider)
-                        //     .navigateToNamed(Routes.customerSupport);
-                      },
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                      title: Text(
-                        "Customer Support",
-                        style: TextStyle(
-                            color: AppColors.shade6,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      leading: SvgPicture.asset(
-                        AppSvgs.headset,
-                        width: 14,
-                        height: 14,
-                      ),
-                      trailing: Icon(
-                        Icons.keyboard_arrow_right,
-                        color: AppColors.shade5,
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                      child: const Divider(
-                        color: AppColors.shade4,
-                      ),
-                    ),
+                    // ListTile(
+                    //   onTap: () {
+                    //     // ref
+                    //     //     .read(navigationServiceProvider)
+                    //     //     .navigateToNamed(Routes.customerSupport);
+                    //   },
+                    //   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                    //   title: Text(
+                    //     "Customer Support",
+                    //     style: TextStyle(
+                    //         color: AppColors.shade6,
+                    //         fontSize: 14,
+                    //         fontWeight: FontWeight.w600),
+                    //   ),
+                    //   leading: SvgPicture.asset(
+                    //     AppSvgs.headset,
+                    //     width: 14,
+                    //     height: 14,
+                    //   ),
+                    //   trailing: Icon(
+                    //     Icons.keyboard_arrow_right,
+                    //     color: AppColors.shade5,
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    //   child: const Divider(
+                    //     color: AppColors.shade4,
+                    //   ),
+                    // ),
                     ListTile(
                       visualDensity:
                           const VisualDensity(horizontal: 0, vertical: -4),

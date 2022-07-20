@@ -185,18 +185,22 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       iconColor: AppColors.light,
                     ),
                   ),
-                  Text(
-                    widget.product.name.characters
-                        .replaceAll(Characters(''), Characters('\u{200B}'))
-                        .toString(),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  const Spacing.tinyHeight(),
+                  Center(
+                      child: Text(
+                        widget.product.name.characters
+                            .replaceAll(Characters(''), Characters('\u{200B}'))
+                            .toString(),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppColors.grey1,
                     ),
-                  ),
+                  )),
+                  const Spacing.tinyHeight(),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
