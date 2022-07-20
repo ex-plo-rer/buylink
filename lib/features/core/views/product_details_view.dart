@@ -188,11 +188,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   const Spacing.tinyHeight(),
                   Center(
                       child: Text(
-                        widget.product.name.characters
-                            .replaceAll(Characters(''), Characters('\u{200B}'))
-                            .toString(),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                    widget.product.name.characters
+                        .replaceAll(Characters(''), Characters('\u{200B}'))
+                        .toString(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 20,
