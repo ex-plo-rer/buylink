@@ -111,7 +111,7 @@ class ForgotPasswordView extends ConsumerWidget {
                             ),
                           ),
                           AppTextField(
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: AppColors.grey1,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500),
@@ -163,7 +163,7 @@ class ForgotPasswordView extends ConsumerWidget {
                               _otp = val;
                             },
                           ),
-                          Spacing.mediumHeight(),
+                          const Spacing.mediumHeight(),
                           Align(
                             alignment: Alignment.topCenter,
                             child: Text(
@@ -210,7 +210,7 @@ class ForgotPasswordView extends ConsumerWidget {
                           ),
                           const Spacing.height(12),
                           AppTextField(
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: AppColors.grey1,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500),
@@ -222,7 +222,7 @@ class ForgotPasswordView extends ConsumerWidget {
                             focusNode: _passwordFN,
                             onChanged: forgotPasswordNotifier.onPasswordChanged,
                             suffixIcon: _passwordController.text.isEmpty
-                                ? Icon(
+                                ? const Icon(
                                     Icons.visibility_off_outlined,
                                     color: AppColors.grey6,
                                   )
@@ -308,6 +308,7 @@ class ForgotPasswordView extends ConsumerWidget {
                                   duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeIn,
                                 );
+                                forgotPasswordNotifier.startTimer();
                               } else if (forgotPasswordNotifier.currentPage ==
                                   2) {
                                 // TODO: Delete the otp after the process is successful

@@ -49,6 +49,7 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
         _duration = Duration(seconds: sec);
         _canResendOTP = false;
       } else {
+        timer.cancel();
         _canResendOTP = true;
       }
       print(_duration.inSeconds);

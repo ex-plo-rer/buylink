@@ -197,7 +197,7 @@ class SignupView extends ConsumerWidget {
                                 _otp = val;
                               },
                             ),
-                            Spacing.mediumHeight(),
+                            const Spacing.mediumHeight(),
                             Align(
                                 alignment: Alignment.topCenter,
                                 child: Text(
@@ -208,7 +208,7 @@ class SignupView extends ConsumerWidget {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 )),
-                            Spacing.tinyHeight(),
+                            const Spacing.tinyHeight(),
                             Align(
                                 alignment: Alignment.topCenter,
                                 child: GestureDetector(
@@ -217,6 +217,8 @@ class SignupView extends ConsumerWidget {
                                       //Resend OTP;
                                       signupNotifier.resendOTP(
                                           email: _emailAddressController.text);
+                                      Alertify(title: 'OTP resent...')
+                                          .success();
                                     } else {
                                       Alertify(title: 'Please wait...').error();
                                     }
@@ -255,7 +257,7 @@ class SignupView extends ConsumerWidget {
                               focusNode: _passwordFN,
                               onChanged: signupNotifier.onPasswordChanged,
                               suffixIcon: _passwordController.text.isEmpty
-                                  ? Icon(
+                                  ? const Icon(
                                       Icons.visibility_off_outlined,
                                       color: AppColors.grey6,
                                     )
