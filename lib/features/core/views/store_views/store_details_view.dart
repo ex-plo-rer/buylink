@@ -2,6 +2,7 @@ import 'package:buy_link/core/constants/colors.dart';
 import 'package:buy_link/core/constants/images.dart';
 import 'package:buy_link/core/constants/svgs.dart';
 import 'package:buy_link/core/routes.dart';
+import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/features/core/models/store_review_arg_model.dart';
 import 'package:buy_link/features/core/notifiers/home_notifier.dart';
@@ -310,8 +311,10 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                     ),
                                     const SizedBox(width: 2),
                                     Text(
-                                      storeDetailsNotifier.storeDetails.star
-                                          .toStringAsFixed(1),
+                                      ''.extractDouble(storeDetailsNotifier
+                                          .storeDetails.star
+                                          .toDouble()),
+                                      // storeDetailsNotifier.storeDetails.star.toStringAsFixed(1),
                                       style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
@@ -363,34 +366,33 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               ],
                             )),
                         const Spacing.smallHeight(),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            //This is for background color
-                            color: Colors.white.withOpacity(0.0),
-
-                            //This is for bottom border that is needed
-                            border: const Border(
-                                bottom: BorderSide(
-                                    color: AppColors.grey8, width: 2)),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: DecoratedBox(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: AppColors.grey8, width: 2)),
+                            ),
+                            child: TabBar(
+                                // physics: const NeverScrollableScrollPhysics(),
+                                labelColor: AppColors.primaryColor,
+                                indicatorColor: AppColors.primaryColor,
+                                unselectedLabelColor: AppColors.grey5,
+                                //padding: const EdgeInsets.only(bottom: 0),
+                                controller: _tabController,
+                                isScrollable: true,
+                                onTap: (index) {
+                                  print('index $index');
+                                  storeDetailsNotifier.fetchStoreProducts(
+                                      storeId: widget.store.id,
+                                      category: categoryNotifier
+                                          .storeCategories[index]);
+                                },
+                                tabs: categoryNotifier.storeCategories
+                                    .map((category) => Tab(text: category))
+                                    .toList()),
                           ),
-                          child: TabBar(
-                              physics: const NeverScrollableScrollPhysics(),
-                              labelColor: AppColors.primaryColor,
-                              indicatorColor: AppColors.primaryColor,
-                              unselectedLabelColor: AppColors.grey5,
-                              //padding: const EdgeInsets.only(bottom: 0),
-                              controller: _tabController,
-                              isScrollable: true,
-                              onTap: (index) {
-                                print('index $index');
-                                storeDetailsNotifier.fetchStoreProducts(
-                                    storeId: widget.store.id,
-                                    category: categoryNotifier
-                                        .storeCategories[index]);
-                              },
-                              tabs: categoryNotifier.storeCategories
-                                  .map((category) => Tab(text: category))
-                                  .toList()),
                         ),
                         SizedBox(
                           height: 500,

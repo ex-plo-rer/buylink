@@ -177,8 +177,8 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     ),
                     trailing: DistanceContainer(
                       distance: ref.watch(locationService).getDist(
-                            endLat: widget.product.lat,
-                            endLon: widget.product.lon,
+                            endLat: widget.product.store.lat,
+                            endLon: widget.product.store.lon,
                           ),
                       // distance: widget.product.store.distance,
                       containerColor: AppColors.grey2,

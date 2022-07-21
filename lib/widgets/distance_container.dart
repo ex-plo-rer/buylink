@@ -1,3 +1,4 @@
+import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -37,7 +38,8 @@ class DistanceContainer extends StatelessWidget {
               color: iconColor,
             ),
             Text(
-              ' $distance km',
+              // ' $distance km',
+              ' ${''.extractDouble(double.parse(distance))} km',
               style: TextStyle(
                 color: textColor,
                 fontSize: 10,

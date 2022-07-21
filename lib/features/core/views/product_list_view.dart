@@ -118,36 +118,35 @@ class _WishlistState extends ConsumerState<ProductListView>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // const Spacing.mediumHeight(),
-                  DecoratedBox(
-                      decoration: BoxDecoration(
-                        //This is for background color
-                        color: Colors.white.withOpacity(0.0),
-
-                        //This is for bottom border that is needed
-                        border: const Border(
-                          bottom: BorderSide(
-                            color: AppColors.grey8,
-                            width: 2,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: DecoratedBox(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: AppColors.grey8,
+                              width: 2,
+                            ),
                           ),
                         ),
-                      ),
-                      child: TabBar(
-                          indicatorColor: AppColors.primaryColor,
-                          labelColor: AppColors.shade5,
-                          unselectedLabelColor: AppColors.grey5,
-                          // padding: const EdgeInsets.only(bottom: 0),
-                          controller: _tabController,
-                          isScrollable: true,
-                          onTap: (index) {
-                            print('index $index');
-                            productListNotifier.fetchStoreProducts(
-                                storeId: widget.store.id,
-                                category:
-                                    categoryNotifier.storeCategories[index]);
-                          },
-                          tabs: categoryNotifier.storeCategories
-                              .map((category) => Tab(text: category))
-                              .toList())),
+                        child: TabBar(
+                            indicatorColor: AppColors.primaryColor,
+                            labelColor: AppColors.shade5,
+                            unselectedLabelColor: AppColors.grey5,
+                            // padding: const EdgeInsets.only(bottom: 0),
+                            controller: _tabController,
+                            isScrollable: true,
+                            onTap: (index) {
+                              print('index $index');
+                              productListNotifier.fetchStoreProducts(
+                                  storeId: widget.store.id,
+                                  category:
+                                      categoryNotifier.storeCategories[index]);
+                            },
+                            tabs: categoryNotifier.storeCategories
+                                .map((category) => Tab(text: category))
+                                .toList())),
+                  ),
                   Expanded(
                     child: TabBarView(
                       controller: _tabController,

@@ -1,4 +1,5 @@
 import 'package:buy_link/core/constants/colors.dart';
+import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/compare_texts.dart';
@@ -12,7 +13,7 @@ import '../../../services/navigation_service.dart';
 import '../notifiers/product_details_2_notifier.dart';
 
 class ProductDetails2MoreView extends ConsumerWidget {
-  ProductDetails2MoreView({Key? key}) : super(key: key);
+  const ProductDetails2MoreView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
@@ -49,52 +50,74 @@ class ProductDetails2MoreView extends ConsumerWidget {
               horizontal: 20,
             ),
             child: productDetails2Notifier.state.isLoading
-                ? const CircularProgress()
+                ? Padding(
+                    padding: EdgeInsets.only(
+                        top: (MediaQuery.of(context).size.height / 2) - 150),
+                    child: const CircularProgress(),
+                  )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Spacing.smallHeight(),
-                      Spacing.smallHeight(),
+                      const Spacing.smallHeight(),
+                      const Spacing.smallHeight(),
                       CompareTexts(
                         title: 'Brand:',
-                        subTitle: productDetails2Notifier.productAttr.brand,
+                        subTitle: productDetails2Notifier.productAttr.brand
+                                .isNullOrEmpty()
+                            ? 'N/A'
+                            : productDetails2Notifier.productAttr.brand,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
+                        subTitleColor: AppColors.grey4,
+                        subTitleSize: 14,
                       ),
                       const Spacing.height(12),
                       CompareTexts(
                         title: 'Model:',
-                        subTitle: productDetails2Notifier.productAttr.model,
+                        subTitle: productDetails2Notifier.productAttr.model
+                                .isNullOrEmpty()
+                            ? 'N/A'
+                            : productDetails2Notifier.productAttr.model,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
+                        subTitleColor: AppColors.grey4,
+                        subTitleSize: 14,
                       ),
                       const Spacing.height(12),
                       CompareTexts(
                         title: 'Color:',
-                        subTitle: productDetails2Notifier.productAttr.color,
+                        subTitle: productDetails2Notifier.productAttr.color
+                                .isNullOrEmpty()
+                            ? 'N/A'
+                            : productDetails2Notifier.productAttr.color,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
-                      ),
-                      const Spacing.height(12),
-                      const CompareTexts(
-                        title: 'Styling:',
-                        subTitle: 'High stretch,5-pocket styling',
-                        titleColor: AppColors.grey1,
-                        titleSize: 14,
+                        subTitleColor: AppColors.grey4,
+                        subTitleSize: 14,
                       ),
                       const Spacing.height(12),
                       CompareTexts(
                         title: 'Material:',
-                        subTitle: productDetails2Notifier.productAttr.material,
+                        subTitle: productDetails2Notifier.productAttr.material
+                                .isNullOrEmpty()
+                            ? 'N/A'
+                            : productDetails2Notifier.productAttr.material,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
+                        subTitleColor: AppColors.grey4,
+                        subTitleSize: 14,
                       ),
                       const Spacing.height(12),
                       CompareTexts(
                         title: 'Care:',
-                        subTitle: productDetails2Notifier.productAttr.care,
+                        subTitle: productDetails2Notifier.productAttr.care
+                                .isNullOrEmpty()
+                            ? 'N/A'
+                            : productDetails2Notifier.productAttr.care,
                         titleColor: AppColors.grey1,
                         titleSize: 14,
+                        subTitleColor: AppColors.grey4,
+                        subTitleSize: 14,
                       ),
                       const Spacing.height(12),
                     ],

@@ -16,22 +16,11 @@ class StartupView extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.light,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 150.0),
-          child: Image.asset(
-            AppImages.splash,
-            // width: MediaQuery.of(context).size.width - 110,
-            width: 243,
-            height: 70,
-          ),
-          // child: Text(
-          //   'Buylink',
-          //   style: TextStyle(
-          //     color: AppColors.primaryColor,
-          //     fontSize: 60,
-          //     fontWeight: FontWeight.w700,
-          //   ),
-          // ),
+        child: Image.asset(
+          AppImages.splash,
+          // width: MediaQuery.of(context).size.width - 110,
+          width: 243,
+          height: 70,
         ),
       ),
     );

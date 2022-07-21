@@ -84,21 +84,32 @@ class _WishlistState extends ConsumerState<WishlistView>
                       ),
                     ),
                     const Spacing.mediumHeight(),
-                    TabBar(
-                        indicatorColor: AppColors.primaryColor,
-                        labelColor: AppColors.primaryColor,
-                        unselectedLabelColor: AppColors.grey5,
-                        //padding: const EdgeInsets.only(bottom: 4),
-                        controller: _tabController,
-                        isScrollable: true,
-                        onTap: (index) {
-                          print('index $index');
-                          wishlistNotifier.fetchWishlist(
-                              category: categoryNotifier.userCategories[index]);
-                        },
-                        tabs: categoryNotifier.userCategories
-                            .map((category) => Tab(text: category))
-                            .toList()),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: DecoratedBox(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(color: AppColors.grey8, width: 2)),
+                        ),
+                        child: TabBar(
+                            indicatorColor: AppColors.primaryColor,
+                            labelColor: AppColors.primaryColor,
+                            unselectedLabelColor: AppColors.grey5,
+                            //padding: const EdgeInsets.only(bottom: 4),
+                            controller: _tabController,
+                            isScrollable: true,
+                            onTap: (index) {
+                              print('index $index');
+                              wishlistNotifier.fetchWishlist(
+                                  category:
+                                      categoryNotifier.userCategories[index]);
+                            },
+                            tabs: categoryNotifier.userCategories
+                                .map((category) => Tab(text: category))
+                                .toList()),
+                      ),
+                    ),
                     const Spacing.mediumHeight(),
                     Expanded(
                       child: TabBarView(

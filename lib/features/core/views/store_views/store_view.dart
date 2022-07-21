@@ -21,89 +21,105 @@ class StoreView extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final storeNotifier = ref.watch(storeNotifierProvider);
     return Scaffold(
-        body: SafeArea(
-            child: Padding(
-      padding: const EdgeInsets.fromLTRB(18, 24, 18, 0),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-          Widget>[
-        const Text(
-          'My Stores',
-          style: TextStyle(
-            color: AppColors.grey1,
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: storeNotifier.state.isLoading
+                ? MainAxisAlignment.spaceBetween
+                : MainAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'My Stores',
+                style: TextStyle(
+                  color: AppColors.grey1,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              if (!storeNotifier.state.isLoading) const Spacing.largeHeight(),
+              storeNotifier.state.isLoading
+                  ? const CircularProgress()
+                  : storeNotifier.myStores.isEmpty
+                      ? AppEmptyStates(
+                          imageString: AppImages.emptyStore,
+                          message1String: 'No Store Added Yet',
+                          message2String:
+                              'Tap the button below to create your first store',
+                          onButtonPressed: () => ref
+                              .read(navigationServiceProvider)
+                              .navigateToNamed(Routes.addstoreView),
+                          hasButton: true,
+                          buttonString: 'Create Store',
+                        )
+                      : Expanded(
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              await storeNotifier.fetchMyStores();
+                            },
+                            child: MasonryGridView.count(
+                              itemCount: storeNotifier.myStores.isEmpty
+                                  ? 1
+                                  : storeNotifier.myStores.length + 1,
+                              crossAxisCount:
+                                  storeNotifier.myStores.isEmpty ? 1 : 2,
+                              mainAxisSpacing:
+                                  storeNotifier.myStores.isEmpty ? 0 : 20,
+                              crossAxisSpacing:
+                                  storeNotifier.myStores.isEmpty ? 0 : 12,
+                              itemBuilder: (context, index) {
+                                if (storeNotifier.state.isError) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                        top: (MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2) -
+                                            200),
+                                    child: const AppEmptyStates(
+                                      imageString: AppImages.emptyProduct,
+                                      message1String: 'Oops, An error occurred',
+                                      message2String: 'Pull down to refresh',
+                                      buttonString: '',
+                                      hasButton: false,
+                                      hasIcon: false,
+                                      // onButtonPressed: () => homeNotifier.fetchProducts(category: 'all'),
+                                    ),
+                                  );
+                                } else if (index ==
+                                    storeNotifier.myStores.length) {
+                                  return AddStoreContainer(
+                                    onTapped: () => ref
+                                        .read(navigationServiceProvider)
+                                        .navigateToNamed(Routes.addstoreView),
+                                  );
+                                } else {
+                                  return StoreContainer(
+                                    storeName:
+                                        storeNotifier.myStores[index].name,
+                                    starRate:
+                                        storeNotifier.myStores[index].star,
+                                    storeImage:
+                                        storeNotifier.myStores[index].logo,
+                                    onTap: () => ref
+                                        .read(navigationServiceProvider)
+                                        .navigateToNamed(
+                                          Routes.storeDashboard,
+                                          arguments:
+                                              storeNotifier.myStores[index],
+                                        ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+              const Spacing.empty(),
+            ],
           ),
         ),
-        const Spacing.largeHeight(),
-        storeNotifier.state.isLoading
-            ? const CircularProgress()
-            : storeNotifier.myStores.isEmpty
-                ? AppEmptyStates(
-                    imageString: AppImages.emptyStore,
-                    message1String: 'No Store Added Yet',
-                    message2String:
-                        'Tap the button below to create your first store',
-                    onButtonPressed: () => ref
-                        .read(navigationServiceProvider)
-                        .navigateToNamed(Routes.addstoreView),
-                    hasButton: true,
-                    buttonString: 'Create Store',
-                  )
-                : Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        await storeNotifier.fetchMyStores();
-                      },
-                      child: MasonryGridView.count(
-                        itemCount: storeNotifier.myStores.isEmpty
-                            ? 1
-                            : storeNotifier.myStores.length + 1,
-                        crossAxisCount: storeNotifier.myStores.isEmpty ? 1 : 2,
-                        mainAxisSpacing:
-                            storeNotifier.myStores.isEmpty ? 0 : 20,
-                        crossAxisSpacing:
-                            storeNotifier.myStores.isEmpty ? 0 : 12,
-                        itemBuilder: (context, index) {
-                          if (storeNotifier.state.isError) {
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                  top:
-                                      (MediaQuery.of(context).size.height / 2) -
-                                          200),
-                              child: const AppEmptyStates(
-                                imageString: AppImages.emptyProduct,
-                                message1String: 'Oops, An error occurred',
-                                message2String: 'Pull down to refresh',
-                                buttonString: '',
-                                hasButton: false,
-                                hasIcon: false,
-                                // onButtonPressed: () => homeNotifier.fetchProducts(category: 'all'),
-                              ),
-                            );
-                          } else if (index == storeNotifier.myStores.length) {
-                            return AddStoreContainer(
-                              onTapped: () => ref
-                                  .read(navigationServiceProvider)
-                                  .navigateToNamed(Routes.addstoreView),
-                            );
-                          } else {
-                            return StoreContainer(
-                              storeName: storeNotifier.myStores[index].name,
-                              starRate: storeNotifier.myStores[index].star,
-                              storeImage: storeNotifier.myStores[index].logo,
-                              onTap: () => ref
-                                  .read(navigationServiceProvider)
-                                  .navigateToNamed(
-                                    Routes.storeDashboard,
-                                    arguments: storeNotifier.myStores[index],
-                                  ),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-      ]),
-    )));
+      ),
+    );
   }
 }
