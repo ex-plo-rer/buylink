@@ -157,8 +157,7 @@ class ProductSearch extends SearchDelegate<String> {
         builder: (context, snapshot) {
           return productSearchNotifier.searchLoading
               ? const CircularProgress()
-              : productSearchNotifier.autoComplete == null ||
-                      productSearchNotifier.recentSearches == null
+              : productSearchNotifier.autoComplete == null
                   ? const Center(
                       child: AppEmptyStates(
                       imageString: AppImages.emptyProduct,
@@ -177,11 +176,11 @@ class ProductSearch extends SearchDelegate<String> {
                             children: [
                               if (productSearchNotifier.recentSearches != null)
                                 if (productSearchNotifier
-                                    .recentSearches!.isNotEmpty)
+                                    .recentSearches.isNotEmpty)
                                   ListView.separated(
                                     shrinkWrap: true,
                                     itemCount: productSearchNotifier
-                                            .recentSearches!.length +
+                                            .recentSearches.length +
                                         1,
                                     itemBuilder: (context, index) {
                                       return index == 0
@@ -201,7 +200,7 @@ class ProductSearch extends SearchDelegate<String> {
                                                         Routes.productSearch,
                                                         arguments:
                                                             productSearchNotifier
-                                                                    .recentSearches![
+                                                                    .recentSearches[
                                                                 index - 1]);
                                               },
                                               child: Row(
@@ -209,7 +208,7 @@ class ProductSearch extends SearchDelegate<String> {
                                                   Expanded(
                                                     child: Text(
                                                       productSearchNotifier
-                                                              .recentSearches![
+                                                              .recentSearches[
                                                           index - 1],
                                                       style: const TextStyle(
                                                         color: AppColors.grey1,
@@ -241,11 +240,11 @@ class ProductSearch extends SearchDelegate<String> {
                                   ),
                               if (productSearchNotifier.recentSearches != null)
                                 if (productSearchNotifier
-                                    .recentSearches!.isNotEmpty)
+                                    .recentSearches.isNotEmpty)
                                   const Spacing.smallHeight(),
                               if (productSearchNotifier.recentSearches != null)
                                 if (productSearchNotifier
-                                    .recentSearches!.isNotEmpty)
+                                    .recentSearches.isNotEmpty)
                                   Align(
                                     alignment: Alignment.topRight,
                                     child: GestureDetector(
@@ -276,7 +275,7 @@ class ProductSearch extends SearchDelegate<String> {
                                   ),
                               if (productSearchNotifier.recentSearches != null)
                                 if (productSearchNotifier
-                                    .recentSearches!.isNotEmpty)
+                                    .recentSearches.isNotEmpty)
                                   const Spacing.smallHeight(),
                               if (productSearchNotifier.autoComplete != null)
                                 if (productSearchNotifier

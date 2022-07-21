@@ -34,6 +34,7 @@ import '../features/authentication/views/signup_view.dart';
 import '../features/core/models/edit_product_arg_model.dart';
 import '../features/core/models/message_model.dart';
 import '../features/core/models/product_model.dart';
+import '../features/core/models/store_details_arg_model.dart';
 import '../features/core/models/store_review_arg_model.dart';
 import '../features/core/views/add_product_desc.dart';
 import '../features/core/views/add_product_specifics_view.dart';
@@ -181,11 +182,12 @@ class Routes {
       case productDetails2More:
         return MaterialPageRoute(builder: (_) => ProductDetails2MoreView());
       case storeDetails:
-        // Store store = settings.arguments as Store;
-        int storeId = settings.arguments as int;
+        // StoreDetailsArgModel args = settings.arguments as StoreDetailsArgModel;
+        Store store = settings.arguments as Store;
+        // int storeId = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => StoreDetailsView(
-            storeId: storeId,
+            store: store,
           ),
         );
       case storeReviews:

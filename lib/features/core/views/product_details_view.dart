@@ -53,6 +53,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      print(widget.product.name);
       ref
           .watch(productDetailsNotifierProvider)
           .setFavorite(widget.product.isFav!);
@@ -136,7 +137,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       // Loader(context).hideLoader();
                       ref.read(navigationServiceProvider).navigateToNamed(
                             Routes.storeDetails,
-                            arguments: widget.product.store.id,
+                            arguments: widget.product.store,
                           );
                       // } else {
                       //   ref.read(navigationServiceProvider).navigateToNamed(
@@ -186,20 +187,22 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     ),
                   ),
                   const Spacing.tinyHeight(),
-                  Center(
-                      child: Text(
-                    widget.product.name.characters
-                        .replaceAll(Characters(''), Characters('\u{200B}'))
-                        .toString(),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.grey1,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      widget.product.name.characters
+                          .replaceAll(Characters(''), Characters('\u{200B}'))
+                          .toString(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.grey1,
+                      ),
                     ),
-                  )),
+                  ),
                   const Spacing.tinyHeight(),
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -208,18 +211,6 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                         // overflow: TextOverflow.clip(isDetails ? null : TextOverflow.ellipsis,),
                         text: TextSpan(
                           children: [
-                            // WidgetSpan(
-                            //   style: const TextStyle(
-                            //     color: AppColors.grey1,
-                            //     fontSize: 14,
-                            //     fontWeight: FontWeight.w600,
-                            //   ),
-                            //   child: SvgPicture.asset(
-                            //     AppSvgs.naira,
-                            //     height: 15,
-                            //     width: 15,
-                            //   ),
-                            // ),
                             TextSpan(
                               text: '₦${widget.product.price}',
                               style: const TextStyle(
@@ -437,7 +428,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                                             .navigateToNamed(Routes.compare);
                                         return;
                                       }
-                                      Loader(context).hideLoader();
+                                      // Loader(context).hideLoader();
                                     },
                                     onFavoriteTapped: () async {
                                       productDetailsNotifier

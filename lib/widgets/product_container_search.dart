@@ -184,7 +184,7 @@ class ProductContainerSearch extends ConsumerWidget {
             onTap: () async {
               ref.read(navigationServiceProvider).navigateToNamed(
                   Routes.storeDetails,
-                  arguments: product.store.id);
+                  arguments: product.store);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

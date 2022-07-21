@@ -399,7 +399,11 @@ class SignupView extends ConsumerWidget {
                                                 );
                                             return;
                                           } else if (otp == _otp) {
-                                            Alertify(title: 'OTP verified');
+                                            ref
+                                                .read(snackbarService)
+                                                .showSuccessSnackBar(
+                                                  'OTP Verified...',
+                                                );
                                             await signupNotifier.delay(sec: 2);
                                             signupNotifier.moveForward();
                                             _pageController.animateToPage(
@@ -409,6 +413,13 @@ class SignupView extends ConsumerWidget {
                                                   milliseconds: 500),
                                               curve: Curves.easeIn,
                                             );
+                                          } else {
+                                            ref
+                                                .read(snackbarService)
+                                                .showErrorSnackBar(
+                                                  'OTP is wrong.',
+                                                );
+                                            return;
                                           }
                                         } else if (signupNotifier.currentPage ==
                                             4) {

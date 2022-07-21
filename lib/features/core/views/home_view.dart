@@ -241,7 +241,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                           .navigateToNamed(Routes.compare);
                                       return;
                                     }
-                                    Loader(context).hideLoader();
+                                    // Loader(context).hideLoader();
                                   },
                                   onFavoriteTapped: () =>
                                       homeNotifier.toggleFav(

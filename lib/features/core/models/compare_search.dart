@@ -160,8 +160,7 @@ class CompareSearch extends SearchDelegate<String> {
         builder: (context, snapshot) {
           return compareSearchNotifier.searchLoading
               ? const CircularProgress()
-              : productSearchNotifier.autoComplete == null ||
-                      productSearchNotifier.recentSearches == null
+              : productSearchNotifier.autoComplete == null
                   ? const Center(
                       child: AppEmptyStates(
                       imageString: AppImages.emptyProduct,
@@ -178,14 +177,12 @@ class CompareSearch extends SearchDelegate<String> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              if (productSearchNotifier.recentSearches !=
-                                      null &&
-                                  productSearchNotifier
-                                      .recentSearches!.isNotEmpty)
+                              if (productSearchNotifier
+                                  .recentSearches.isNotEmpty)
                                 ListView.separated(
                                   shrinkWrap: true,
                                   itemCount: productSearchNotifier
-                                          .recentSearches!.length +
+                                          .recentSearches.length +
                                       1,
                                   itemBuilder: (context, index) {
                                     return index == 0
@@ -205,7 +202,7 @@ class CompareSearch extends SearchDelegate<String> {
                                                       Routes.compareProducts,
                                                       arguments:
                                                           productSearchNotifier
-                                                                  .recentSearches![
+                                                                  .recentSearches[
                                                               index - 1]);
                                             },
                                             child: Row(
@@ -213,7 +210,7 @@ class CompareSearch extends SearchDelegate<String> {
                                                 Expanded(
                                                   child: Text(
                                                     productSearchNotifier
-                                                            .recentSearches![
+                                                            .recentSearches[
                                                         index - 1],
                                                     style: const TextStyle(
                                                       color: AppColors.grey1,
@@ -243,15 +240,11 @@ class CompareSearch extends SearchDelegate<String> {
                                   separatorBuilder: (context, index) =>
                                       const Spacing.smallHeight(),
                                 ),
-                              if (productSearchNotifier.recentSearches !=
-                                      null &&
-                                  productSearchNotifier
-                                      .recentSearches!.isNotEmpty)
+                              if (productSearchNotifier
+                                  .recentSearches.isNotEmpty)
                                 const Spacing.mediumHeight(),
-                              if (productSearchNotifier.recentSearches !=
-                                      null &&
-                                  productSearchNotifier
-                                      .recentSearches!.isNotEmpty)
+                              if (productSearchNotifier
+                                  .recentSearches.isNotEmpty)
                                 Align(
                                   alignment: Alignment.topRight,
                                   child: GestureDetector(
@@ -279,10 +272,8 @@ class CompareSearch extends SearchDelegate<String> {
                                     ),
                                   ),
                                 ),
-                              if (productSearchNotifier.recentSearches !=
-                                      null &&
-                                  productSearchNotifier
-                                      .recentSearches!.isNotEmpty)
+                              if (productSearchNotifier
+                                  .recentSearches.isNotEmpty)
                                 const Spacing.smallHeight(),
                               if (compareSearchNotifier
                                   .autoComplete!.result.isNotEmpty)

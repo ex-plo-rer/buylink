@@ -178,6 +178,7 @@ class _CompareViewState extends ConsumerState<CompareView> {
                                   ],
                                 ),
                                 const Spacing.bigHeight(),
+                                // ListView.separated(itemBuilder: (itemBuilder), separatorBuilder: separatorBuilder, itemCount: itemCount)
                                 CompareTexts2(
                                   title: 'Name',
                                   subTitle1: compareSearchNotifier
@@ -191,16 +192,25 @@ class _CompareViewState extends ConsumerState<CompareView> {
                                       .haveProductToCompare,
                                 ),
                                 CompareTexts2(
-                                  title: 'Price',
+                                  title: 'Store',
                                   subTitle1: compareSearchNotifier
-                                      .itemsToCompare[0].price
-                                      .toString(),
+                                      .itemsToCompare[0].store.name,
                                   subTitle2:
                                       compareSearchNotifier.haveProductToCompare
                                           ? compareSearchNotifier
-                                              .itemsToCompare[1].price
-                                              .toString()
+                                              .itemsToCompare[1].store.name
                                           : '',
+                                  haveProductToCompare: compareSearchNotifier
+                                      .haveProductToCompare,
+                                ),
+                                CompareTexts2(
+                                  title: 'Price',
+                                  subTitle1:
+                                      '₦${compareSearchNotifier.itemsToCompare[0].price.toString()}',
+                                  subTitle2: compareSearchNotifier
+                                          .haveProductToCompare
+                                      ? '₦${compareSearchNotifier.itemsToCompare[1].price.toString()}'
+                                      : '',
                                   haveProductToCompare: compareSearchNotifier
                                       .haveProductToCompare,
                                 ),
@@ -229,6 +239,45 @@ class _CompareViewState extends ConsumerState<CompareView> {
                                   haveProductToCompare: compareSearchNotifier
                                       .haveProductToCompare,
                                 ),
+                                CompareTexts2(
+                                  title: 'Color',
+                                  subTitle1: compareSearchNotifier
+                                          .itemsToCompare[0].color ??
+                                      'N/A',
+                                  subTitle2:
+                                      compareSearchNotifier.haveProductToCompare
+                                          ? compareSearchNotifier
+                                                  .itemsToCompare[1].color ??
+                                              'N/A'
+                                          : '',
+                                  haveProductToCompare: compareSearchNotifier
+                                      .haveProductToCompare,
+                                ),
+                                // CompareTexts2(
+                                //   title: 'Style',
+                                //   subTitle1: compareSearchNotifier
+                                //       .itemsToCompare[0].store.name,
+                                //   subTitle2:
+                                //       compareSearchNotifier.haveProductToCompare
+                                //           ? compareSearchNotifier
+                                //               .itemsToCompare[1].store.name
+                                //           : '',
+                                //   haveProductToCompare: compareSearchNotifier
+                                //       .haveProductToCompare,
+                                // ),
+                                CompareTexts2(
+                                  title: 'Material',
+                                  subTitle1: compareSearchNotifier
+                                      .itemsToCompare[0].material,
+                                  subTitle2:
+                                      compareSearchNotifier.haveProductToCompare
+                                          ? compareSearchNotifier
+                                              .itemsToCompare[1].material
+                                          : '',
+                                  haveProductToCompare: compareSearchNotifier
+                                      .haveProductToCompare,
+                                ),
+
                                 CompareTexts2(
                                   title: 'Care',
                                   subTitle1: compareSearchNotifier

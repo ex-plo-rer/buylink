@@ -30,7 +30,7 @@ class CompareTexts2 extends StatelessWidget {
               width: ((MediaQuery.of(context).size.width - 40) / 2) + 6,
               child: CompareTexts(
                 title: title,
-                subTitle: subTitle1,
+                subTitle: subTitle1 != 'null' ? subTitle1 : 'N/A',
               ),
             ),
             haveProductToCompare
@@ -38,7 +38,7 @@ class CompareTexts2 extends StatelessWidget {
                     width: ((MediaQuery.of(context).size.width - 40) / 2) - 6,
                     child: CompareTexts(
                       title: '',
-                      subTitle: subTitle2,
+                      subTitle: subTitle2 != 'null' ? subTitle2 : 'N/A',
                     ),
                   )
                 : Container(),

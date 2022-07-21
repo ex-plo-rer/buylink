@@ -11,13 +11,19 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/dimensions.dart';
 import '../../../../core/constants/svgs.dart';
+import '../../../../core/routes.dart';
+import '../../../../services/navigation_service.dart';
+import '../../../../widgets/auth_dialog.dart';
 import '../../../../widgets/distance_container.dart';
 import '../../../../widgets/favorite_container.dart';
 import '../../../../widgets/spacing.dart';
+import '../../models/message_model.dart';
 import '../../models/product_model.dart';
+import '../../notifiers/user_provider.dart';
 
 class StoreDirectionView extends ConsumerStatefulWidget {
   const StoreDirectionView({
@@ -89,21 +95,21 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
                       urlTemplate:
                           "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
                       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                      attributionBuilder: (_) {
-                        return Text(
-                          "Testing purpose... ${storeDirNotifier.userLat}, ${ref.read(locationService).getDist(
-                                // startLat: ref
-                                //     .watch(storeDirectionNotifierProvider)
-                                //     .userLat!,
-                                // startLon: ref
-                                //     .watch(storeDirectionNotifierProvider)
-                                //     .userLon!,
-                                endLat: widget.store.lat,
-                                endLon: widget.store.lon,
-                              )}",
-                          style: TextStyle(fontSize: 15),
-                        );
-                      },
+                      // attributionBuilder: (_) {
+                      //   return Text(
+                      //     "Testing purpose... ${storeDirNotifier.userLat}, ${ref.read(locationService).getDist(
+                      //           // startLat: ref
+                      //           //     .watch(storeDirectionNotifierProvider)
+                      //           //     .userLat!,
+                      //           // startLon: ref
+                      //           //     .watch(storeDirectionNotifierProvider)
+                      //           //     .userLon!,
+                      //           endLat: widget.store.lat,
+                      //           endLon: widget.store.lon,
+                      //         )}",
+                      //     style: TextStyle(fontSize: 15),
+                      //   );
+                      // },
                     ),
                     CircleRegion(
                             LatLng(storeDirNotifier.userLat ?? 8.17,
@@ -142,14 +148,13 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
               builder: (context, scrollController) {
                 return StoreDirectionBottomSheet(
                   scrollController: scrollController,
-                  distance: ref.read(locationService).getDist(
+                  store: widget.store,
+                  ref: ref,
+                  distance: ref.watch(locationService).getDist(
                         endLat: widget.store.lat,
                         endLon: widget.store.lon,
                       ),
-                  // storeRating: widget.store.star,
-                  storeRating: ''.extractDouble(widget.store.star),
-                  storeName: widget.store.name,
-                  storeImage: widget.store.logo,
+                  // storePhone: widget.store.logo,
                 );
               }),
           const BackArrow(),
@@ -162,19 +167,14 @@ class _StoreDirectionViewState extends ConsumerState<StoreDirectionView> {
 class StoreDirectionBottomSheet extends StatelessWidget {
   const StoreDirectionBottomSheet({
     Key? key,
+    required this.store,
+    required this.ref,
     required this.distance,
-    // required this.normalDistance,
-    required this.storeRating,
-    required this.storeName,
-    required this.storeImage,
     required this.scrollController,
   }) : super(key: key);
+  final Store store;
+  final WidgetRef ref;
   final String distance;
-
-  // final String normalDistance;
-  final String storeRating;
-  final String storeName;
-  final String storeImage;
   final ScrollController scrollController;
 
   @override
@@ -223,7 +223,8 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                     const Spacing.tinyHeight(),
                     Center(
                         child: Text(
-                      '$distance km',
+                      // '$distance km',
+                      '${''.extractDouble(double.parse(distance))} km',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: AppColors.grey1,
@@ -239,7 +240,7 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                           vertical: 16, horizontal: 20),
                       leading: CircleAvatar(
                         radius: 30,
-                        backgroundImage: CachedNetworkImageProvider(storeImage),
+                        backgroundImage: CachedNetworkImageProvider(store.logo),
                       ),
                       title: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
@@ -247,7 +248,7 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              storeName,
+                              store.name,
                               style: const TextStyle(
                                 color: AppColors.grey4,
                                 fontSize: 14,
@@ -258,7 +259,7 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                             SvgPicture.asset(AppSvgs.starFilled),
                             const Spacing.tinyWidth(),
                             Text(
-                              '$storeRating',
+                              ''.extractDouble(store.star),
                               style: const TextStyle(
                                 color: AppColors.grey4,
                                 fontSize: 14,
@@ -271,7 +272,8 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                       subtitle: Row(
                         children: [
                           DistanceContainer(
-                            distance: distance,
+                            // distance: distance,
+                            distance: ''.extractDouble(double.parse(distance)),
                             containerColor: AppColors.grey1,
                             textColor: AppColors.light,
                             iconColor: AppColors.light,
@@ -288,8 +290,14 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                             padding: 7,
                             favIcon: SvgPicture.asset(AppSvgs.telephone),
                             hasBorder: true,
+                            onFavoriteTapped: () async {
+                              const url = 'tel:${2348160146207}';
+                              if (await canLaunchUrl(Uri.parse(url))) {
+                                await launchUrl(Uri.parse(url));
+                              }
+                            },
                           ),
-                          Spacing.smallWidth(),
+                          const Spacing.smallWidth(),
                           FavoriteContainer(
                             height: 32,
                             width: 32,
@@ -297,6 +305,30 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                             favIcon: SvgPicture.asset(AppSvgs.envelope,
                                 color: AppColors.primaryColor),
                             hasBorder: true,
+                            onFavoriteTapped: () {
+                              if (ref.watch(userProvider).currentUser == null) {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  barrierColor: AppColors.transparent,
+                                  builder: (BuildContext context) {
+                                    return const AuthDialog();
+                                  },
+                                );
+                                return;
+                              }
+                              ref
+                                  .read(navigationServiceProvider)
+                                  .navigateToNamed(
+                                    Routes.messageView,
+                                    arguments: MessageModel(
+                                      id: store.id,
+                                      name: store.name,
+                                      imageUrl: store.logo,
+                                      from: 'storeDetails',
+                                    ),
+                                  );
+                            },
                           ),
                         ],
                       ),
@@ -387,7 +419,7 @@ class StoreDirectionBottomSheet extends StatelessWidget {
                                     ),
                                     const Spacing.smallHeight(),
                                     Text(
-                                      storeName,
+                                      store.name,
                                       style: const TextStyle(
                                         color: AppColors.grey2,
                                         fontSize: 14,

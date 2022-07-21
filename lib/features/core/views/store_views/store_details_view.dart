@@ -33,17 +33,18 @@ import '../../../../widgets/iconNtext_container.dart';
 import '../../models/compare_arg_model.dart';
 import '../../models/message_model.dart';
 import '../../models/product_model.dart';
+import '../../models/store_details_arg_model.dart';
 import '../../notifiers/category_notifier.dart';
 import '../../notifiers/flip_notifier.dart';
 import '../../notifiers/user_provider.dart';
 import '../../notifiers/wishlist_notifier.dart';
 
 class StoreDetailsView extends ConsumerStatefulWidget {
-  final int storeId;
+  final Store store;
 
   const StoreDetailsView({
     Key? key,
-    required this.storeId,
+    required this.store,
   }) : super(key: key);
 
   @override
@@ -61,12 +62,12 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
       // await init();
       await ref
           .read(categoryNotifierProvider)
-          .fetchStoreCategories(storeId: widget.storeId.toString());
+          .fetchStoreCategories(storeId: widget.store.id.toString());
       print('Left initttttttttttttttttttttttttt');
       ref
-          .watch(storeDetailsNotifierProvider(widget.storeId))
+          .watch(storeDetailsNotifierProvider(widget.store.id))
           .fetchStoreProducts(
-            storeId: widget.storeId,
+            storeId: widget.store.id,
             category: 'all',
           );
       _tabController = TabController(
@@ -85,8 +86,8 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
   }
 
   void _handleTabChange() {
-    ref.read(storeDetailsNotifierProvider(widget.storeId)).fetchStoreProducts(
-        storeId: widget.storeId,
+    ref.read(storeDetailsNotifierProvider(widget.store.id)).fetchStoreProducts(
+        storeId: widget.store.id,
         category: ref
             .watch(categoryNotifierProvider)
             .storeCategories[_tabController.index]);
@@ -95,7 +96,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
   @override
   Widget build(BuildContext context) {
     final storeDetailsNotifier =
-        ref.watch(storeDetailsNotifierProvider(widget.storeId));
+        ref.watch(storeDetailsNotifierProvider(widget.store.id));
     final categoryNotifier = ref.watch(categoryNotifierProvider);
     return Scaffold(
       body: SafeArea(
@@ -184,6 +185,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                   imageUrl: storeDetailsNotifier
                                                       .storeDetails.background,
                                                   from: 'storeDetails',
+                                                  // store:
                                                 ),
                                               );
                                         },
@@ -203,6 +205,13 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                         radius: 50,
                                         padding: 1,
                                         hasBorder: true,
+                                        onFavoriteTapped: () {
+                                          ref
+                                              .read(navigationServiceProvider)
+                                              .navigateToNamed(
+                                                  Routes.storeDirection,
+                                                  arguments: widget.store);
+                                        },
                                       ),
                                       const Spacing.smallWidth(),
                                       GestureDetector(
@@ -215,7 +224,8 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                                           storeDetailsNotifier
                                                               .storeDetails
                                                               .name,
-                                                      storeId: widget.storeId)),
+                                                      storeId:
+                                                          widget.store.id)),
                                           child: Container(
                                               padding: const EdgeInsets.all(10),
                                               decoration: BoxDecoration(
@@ -250,7 +260,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                                       //             storeName:
                                       //                 storeDetailsNotifier
                                       //                     .storeDetails.name,
-                                      //             storeId: widget.storeId),
+                                      //             storeId: widget.store.id),
                                       //       ),
                                       // ),
                                     ],
@@ -360,7 +370,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
 
                             //This is for bottom border that is needed
                             border: const Border(
-                                bottom: const BorderSide(
+                                bottom: BorderSide(
                                     color: AppColors.grey8, width: 2)),
                           ),
                           child: TabBar(
@@ -374,7 +384,7 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
                               onTap: (index) {
                                 print('index $index');
                                 storeDetailsNotifier.fetchStoreProducts(
-                                    storeId: widget.storeId,
+                                    storeId: widget.store.id,
                                     category: categoryNotifier
                                         .storeCategories[index]);
                               },

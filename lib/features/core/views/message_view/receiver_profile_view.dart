@@ -22,7 +22,7 @@ import '../../notifiers/category_notifier.dart';
 import '../../notifiers/message_notifier/receiver_profile_notifier.dart';
 
 class ReceiverProfileView extends ConsumerWidget {
-  ReceiverProfileView({Key? key, required this.args}) : super(key: key);
+  const ReceiverProfileView({Key? key, required this.args}) : super(key: key);
   final MessageModel args;
 
   @override
@@ -125,6 +125,7 @@ class ReceiverProfileView extends ConsumerWidget {
                       // Loader(context).hideLoader();
                       ref.read(navigationServiceProvider).navigateToNamed(
                             Routes.storeDetails,
+                            //TODO: Argument should be store object.
                             arguments: int.parse(args.id
                                 .toString()
                                 .substring(0, args.id.toString().length - 1)),

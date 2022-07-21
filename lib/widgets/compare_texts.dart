@@ -26,21 +26,25 @@ class CompareTexts extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: titleColor,
-            fontSize: titleSize,
-            fontWeight: FontWeight.w600,
+        RichText(
+          text: TextSpan(
+            text: title,
+            style: TextStyle(
+              color: titleColor,
+              fontSize: titleSize,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         const Spacing.tinyHeight(),
-        Text(
-          subTitle,
-          style: TextStyle(
-            color: subTitleColor,
-            fontSize: subTitleSize,
-            fontWeight: FontWeight.w500,
+        RichText(
+          text: TextSpan(
+            text: subTitle,
+            style: TextStyle(
+              color: subTitleColor,
+              fontSize: subTitleSize,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ],

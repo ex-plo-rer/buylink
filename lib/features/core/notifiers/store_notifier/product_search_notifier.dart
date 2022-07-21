@@ -55,9 +55,9 @@ class ProductSearchNotifier extends BaseChangeNotifier {
 
   bool get searchLoading => _searchLoading;
 
-  List<String>? _recentSearches = [];
+  List<String> _recentSearches = [];
 
-  List<String>? get recentSearches => _recentSearches;
+  List<String> get recentSearches => _recentSearches;
 
   void setFilterPosition({
     required double lat,

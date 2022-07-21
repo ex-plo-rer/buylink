@@ -157,17 +157,17 @@ class ProductAlertScreen extends ConsumerWidget {
                         : notificationNotifier.periods.length,
                     itemBuilder: (context, parentIndex) => notificationNotifier
                             .periods.isEmpty
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const <Widget>[
-                              AppEmptyStates(
-                                  imageString:
-                                      "assets/images/no_notifications.png",
-                                  message1String: "No notifications yet",
-                                  hasButton: false,
-                                  buttonString: ""),
-                            ],
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: (MediaQuery.of(context).size.height / 2) -
+                                    200),
+                            child: const AppEmptyStates(
+                              imageString: "assets/images/no_notifications.png",
+                              message1String: "No notifications yet",
+                              message2String: "Pull down to refresh.",
+                              hasButton: false,
+                              buttonString: "",
+                            ),
                           )
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,20 +216,18 @@ class MessageScreen extends ConsumerWidget {
                     : messageListNotifier.chats.length,
                 itemBuilder: (context, index) => messageListNotifier
                         .chats.isEmpty
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const <Widget>[
-                            Spacing.largeHeight(),
-                            Spacing.largeHeight(),
-                            Spacing.largeHeight(),
-                            Spacing.largeHeight(),
-                            AppEmptyStates(
-                                imageString: "assets/images/no_messages.png",
-                                message1String: "No messages yet",
-                                hasButton: false,
-                                buttonString: ""),
-                          ])
+                    ? Padding(
+                        padding: EdgeInsets.only(
+                            top:
+                                (MediaQuery.of(context).size.height / 2) - 200),
+                        child: const AppEmptyStates(
+                          imageString: "assets/images/no_messages.png",
+                          message1String: "No messages yet",
+                          message2String: "Pull down to refresh.",
+                          hasButton: false,
+                          buttonString: "",
+                        ),
+                      )
                     : ChatTile(
                         title: messageListNotifier.chats[index].name,
                         subtitle: messageListNotifier.chats[index].msg,
