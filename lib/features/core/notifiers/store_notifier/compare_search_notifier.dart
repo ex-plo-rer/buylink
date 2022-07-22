@@ -101,12 +101,15 @@ class CompareSearchNotifier extends BaseChangeNotifier {
   }
 
   void onMaxPriceChanged(String value) {
+    print('max price :$value');
     _maxPrice = double.parse(value);
+    print('_maxPrice :$_maxPrice');
     notifyListeners();
   }
 
   void onSliderChanged(double newValue) {
     _sliderValue = newValue;
+
     notifyListeners();
   }
 

@@ -42,16 +42,18 @@ class StoreView extends ConsumerWidget {
               storeNotifier.state.isLoading
                   ? const CircularProgress()
                   : storeNotifier.myStores.isEmpty
-                      ? AppEmptyStates(
-                          imageString: AppImages.emptyStore,
-                          message1String: 'No Store Added Yet',
-                          message2String:
-                              'Tap the button below to create your first store',
-                          onButtonPressed: () => ref
-                              .read(navigationServiceProvider)
-                              .navigateToNamed(Routes.addstoreView),
-                          hasButton: true,
-                          buttonString: 'Create Store',
+                      ? Expanded(
+                          child: AppEmptyStates(
+                            imageString: AppImages.emptyStore,
+                            message1String: 'No Store Added Yet',
+                            message2String:
+                                'Tap the button below to create your first store',
+                            onButtonPressed: () => ref
+                                .read(navigationServiceProvider)
+                                .navigateToNamed(Routes.addstoreView),
+                            hasButton: true,
+                            buttonString: 'Create Store',
+                          ),
                         )
                       : Expanded(
                           child: RefreshIndicator(
