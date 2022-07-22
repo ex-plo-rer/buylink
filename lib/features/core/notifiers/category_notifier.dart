@@ -69,7 +69,7 @@ class CategoryNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       _userCategoriesLoading = false;
       setState(state: ViewState.error);
-      Alertify(title: e.error).error();
+      // Alertify(title: e.error).error();
     } finally {
       //setState(state: ViewState.idle);
     }

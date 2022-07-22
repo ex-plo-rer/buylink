@@ -164,7 +164,6 @@ class ProductAlertScreen extends ConsumerWidget {
                             child: const AppEmptyStates(
                               imageString: "assets/images/no_notifications.png",
                               message1String: "No notifications yet",
-                              message2String: "Pull down to refresh.",
                               hasButton: false,
                               buttonString: "",
                             ),
@@ -223,7 +222,6 @@ class MessageScreen extends ConsumerWidget {
                         child: const AppEmptyStates(
                           imageString: "assets/images/no_messages.png",
                           message1String: "No messages yet",
-                          message2String: "Pull down to refresh.",
                           hasButton: false,
                           buttonString: "",
                         ),

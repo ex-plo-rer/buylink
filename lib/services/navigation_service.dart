@@ -63,7 +63,9 @@ class NavigationService {
   }
 
   void navigateBack<T extends Object?>([T? result]) {
-    navigatorKey.currentState?.pop(result);
+    if (navigatorKey.currentState?.canPop() == true) {
+      navigatorKey.currentState?.pop(result);
+    }
   }
 }
 

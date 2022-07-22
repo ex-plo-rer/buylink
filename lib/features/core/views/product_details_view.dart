@@ -184,6 +184,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                       containerColor: AppColors.grey2,
                       textColor: AppColors.light,
                       iconColor: AppColors.light,
+                      onDistanceTapped: () {
+                        ref.read(navigationServiceProvider).navigateToNamed(
+                            Routes.storeDirection,
+                            arguments: widget.product.store);
+                      },
                     ),
                   ),
                   const Spacing.tinyHeight(),

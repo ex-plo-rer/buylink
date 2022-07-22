@@ -104,7 +104,11 @@ class _WishlistState extends ConsumerState<StoreDetailsView>
         child: SingleChildScrollView(
           child: categoryNotifier.storeCategoriesLoading ||
                   storeDetailsNotifier.detailsLoading
-              ? const CircularProgress()
+              ? Padding(
+                  padding: EdgeInsets.only(
+                      top: (MediaQuery.of(context).size.height / 2) - 100),
+                  child: const CircularProgress(),
+                )
               : Column(
                   children: [
                     // storeDetailsNotifier.detailsLoading

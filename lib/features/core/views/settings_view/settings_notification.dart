@@ -50,7 +50,11 @@ class SettingNotificationClass extends ConsumerState<SettingNotification> {
       ),
       body: SingleChildScrollView(
         child: settingNotifier.state.isLoading
-            ? const CircularProgress()
+            ? Padding(
+                padding: EdgeInsets.only(
+                    top: (MediaQuery.of(context).size.height / 2) - 150),
+                child: const CircularProgress(),
+              )
             : Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Column(

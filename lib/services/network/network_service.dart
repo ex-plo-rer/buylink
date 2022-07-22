@@ -93,7 +93,8 @@ class NetworkService {
       throw NetworkException('Request timeout');
     } on SocketException {
       print('Socket Exception');
-      throw NetworkException('There is no internet');
+      throw NetworkException('There is no internet',
+          error: 'Kindly check your internet connection...');
     } on HttpException {
       print('HTTP Exception');
       throw NetworkException('There is an http exception');

@@ -129,6 +129,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       ? const CircularProgress()
                       : RefreshIndicator(
                           onRefresh: () async {
+                            homeNotifier.fetchRandomCategories();
                             await homeNotifier.fetchProducts(category: null);
                           },
                           child: MasonryGridView.count(

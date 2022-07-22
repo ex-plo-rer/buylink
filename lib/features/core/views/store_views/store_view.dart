@@ -82,7 +82,6 @@ class StoreView extends ConsumerWidget {
                                     child: const AppEmptyStates(
                                       imageString: AppImages.emptyProduct,
                                       message1String: 'Oops, An error occurred',
-                                      message2String: 'Pull down to refresh',
                                       buttonString: '',
                                       hasButton: false,
                                       hasIcon: false,

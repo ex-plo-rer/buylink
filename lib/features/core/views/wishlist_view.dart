@@ -155,8 +155,6 @@ class _WishlistState extends ConsumerState<WishlistView>
                                                     AppImages.emptyProduct,
                                                 message1String:
                                                     'No product in wishlist',
-                                                message2String:
-                                                    'Pull down to refresh',
                                                 buttonString: '',
                                                 hasButton: false,
                                                 hasIcon: false,

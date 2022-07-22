@@ -12,6 +12,7 @@ import '../../../core/constants/colors.dart';
 import '../../../core/constants/svgs.dart';
 import '../../../widgets/auth_dialog.dart';
 import '../notifiers/dashboard_notifier.dart';
+import '../notifiers/home_notifier.dart';
 import '../notifiers/user_provider.dart';
 
 class DashboardView extends ConsumerWidget {
@@ -31,6 +32,9 @@ class DashboardView extends ConsumerWidget {
       onWillPop: () async {
         // if (dashboardNotifier.selectedIndex == 0) return true;
         if (dashboardNotifier.navigationQueue.isEmpty) return true;
+        if (dashboardNotifier.selectedIndex == 0 &&
+            ref.read(homeNotifierProvider(null)).initialText !=
+                'Latest products around you') return true;
         // dashboardNotifier.selectedIndex = dashboardNotifier.navigationQueue.last;
         dashboardNotifier.willPopM();
         return false;
