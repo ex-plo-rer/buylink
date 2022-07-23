@@ -404,7 +404,7 @@ class SignupView extends ConsumerWidget {
                                                 .showSuccessSnackBar(
                                                   'OTP Verified...',
                                                 );
-                                            await signupNotifier.delay(sec: 2);
+                                            await signupNotifier.delay(sec: 1);
                                             signupNotifier.moveForward();
                                             _pageController.animateToPage(
                                               // array starts at 0 (lol)

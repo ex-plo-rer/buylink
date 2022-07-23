@@ -90,6 +90,13 @@ class CategoryNotifier extends BaseChangeNotifier {
       //setState(state: ViewState.idle);
     }
   }
+
+  void dump() {
+    _userCategories.clear();
+    _storeCategories.clear();
+    // _init = true;
+    notifyListeners();
+  }
 }
 
 final categoryNotifierProvider = ChangeNotifierProvider<CategoryNotifier>(

@@ -14,8 +14,9 @@ class DashboardNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   DashboardNotifier(this._reader) {
-    checkMsgs();
-    _reader(categoryNotifierProvider).fetchUserCategories();
+    // checkMsgs();
+    // _reader(categoryNotifierProvider).fetchUserCategories();
+    initCall();
   }
 
   CheckMsgModel? _checkMsg;
@@ -30,6 +31,18 @@ class DashboardNotifier extends BaseChangeNotifier {
 
   ListQueue<int> get navigationQueue => _navigationQueue;
 
+  bool _init = true;
+
+  bool get init => _init;
+
+  void initCall() {
+    // if (_init) {
+    checkMsgs();
+    _reader(categoryNotifierProvider).fetchUserCategories();
+    _init = false;
+    // }
+  }
+
   Future<void> onBottomNavTapped(int index) async {
     _navigationQueue.addLast(_selectedIndex);
     _selectedIndex = index;
@@ -42,8 +55,9 @@ class DashboardNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  void resetIndex() {
+  void dump() {
     _selectedIndex = 0;
+    _init = true;
     notifyListeners();
   }
 

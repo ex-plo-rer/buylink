@@ -15,7 +15,7 @@ import '../notifiers/dashboard_notifier.dart';
 import '../notifiers/home_notifier.dart';
 import '../notifiers/user_provider.dart';
 
-class DashboardView extends ConsumerWidget {
+class DashboardView extends ConsumerStatefulWidget {
   DashboardView({
     Key? key,
     this.index,
@@ -26,7 +26,22 @@ class DashboardView extends ConsumerWidget {
   final int? index;
 
   @override
-  Widget build(BuildContext context, ref) {
+  ConsumerState<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends ConsumerState<DashboardView> {
+  @override
+  void initState() {
+    final dCN = ref.read(dashboardChangeNotifier);
+    // TODO: implement initState
+    if (dCN.init) {
+      dCN.initCall();
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final dashboardNotifier = ref.watch(dashboardChangeNotifier);
     return WillPopScope(
       onWillPop: () async {
@@ -41,7 +56,7 @@ class DashboardView extends ConsumerWidget {
       },
       child: Scaffold(
         body: [
-          HomeView(fromLoginOrSignup: fromLoginOrSignup),
+          HomeView(fromLoginOrSignup: widget.fromLoginOrSignup),
           ref.watch(userProvider).currentUser == null
               ? const AuthDialog(onNav: true)
               : const WishlistView(),

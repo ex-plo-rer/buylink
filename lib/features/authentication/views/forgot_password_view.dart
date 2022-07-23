@@ -1,10 +1,8 @@
 import 'package:buy_link/core/utilities/loader.dart';
-import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/widgets/otp_input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/strings.dart';
@@ -14,12 +12,10 @@ import '../../../core/utilities/alertify.dart';
 import '../../../services/local_storage_service.dart';
 import '../../../services/navigation_service.dart';
 import '../../../services/snackbar_service.dart';
-import '../../../widgets/app_button.dart';
 import '../../../widgets/app_button_2.dart';
 import '../../../widgets/app_check_box.dart';
 import '../../../widgets/app_linear_progress.dart';
 import '../../../widgets/app_text_field.dart';
-import '../../../widgets/otp_form.dart';
 import '../../../widgets/spacing.dart';
 import '../../../widgets/text_with_rich.dart';
 import '../notifiers/forgot_password_notifier.dart';
@@ -42,29 +38,31 @@ class ForgotPasswordView extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        leading: forgotPasswordNotifier.currentPage == 1
-            ? null
-            : IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  size: 14,
-                  color: AppColors.dark,
-                ),
-                onPressed: () {
-                  forgotPasswordNotifier.moveBackward();
-                  print(forgotPasswordNotifier.currentPage);
-                  _pageController.animateToPage(
-                    // array starts at 0 (lol)
-                    forgotPasswordNotifier.currentPage - 1,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn,
-                  );
-                },
-              ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_outlined,
+            size: 14,
+            color: AppColors.dark,
+          ),
+          onPressed: () {
+            if (forgotPasswordNotifier.currentPage == 1) {
+              ref.read(navigationServiceProvider).navigateBack();
+              return;
+            }
+            forgotPasswordNotifier.moveBackward();
+            print(forgotPasswordNotifier.currentPage);
+            _pageController.animateToPage(
+              // array starts at 0 (lol)
+              forgotPasswordNotifier.currentPage - 1,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
+          },
+        ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
-          'Forgot Password',
+          'Forgotten your password?',
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,
@@ -124,7 +122,8 @@ class ForgotPasswordView extends ConsumerWidget {
                             suffixIcon: _emailAddressController.text.isEmpty
                                 ? null
                                 : GestureDetector(
-                                    onTap: () {},
+                                    onTap: () =>
+                                        _emailAddressController.clear(),
                                     child: const CircleAvatar(
                                       backgroundColor: AppColors.grey7,
                                       radius: 10,
@@ -150,7 +149,7 @@ class ForgotPasswordView extends ConsumerWidget {
                           ),
                           const Spacing.height(12),
                           const Text(
-                            'Please fill in the 4 digit code we sent to your email to verify your account',
+                            'Please fill in the 4 digit code we sent to your email to reset your password',
                             style: TextStyle(
                               fontSize: 12,
                               color: AppColors.grey2,
@@ -203,10 +202,10 @@ class ForgotPasswordView extends ConsumerWidget {
                       Column(
                         children: [
                           const TextWithRich(
-                            firstText: 'Create your',
-                            secondText: 'password',
+                            firstText: 'Create',
+                            secondText: 'your new password',
                             fontSize: 24,
-                            secondColor: AppColors.primaryColor,
+                            firstColor: AppColors.primaryColor,
                           ),
                           const Spacing.height(12),
                           AppTextField(
@@ -284,9 +283,18 @@ class ForgotPasswordView extends ConsumerWidget {
                   // isLoading: forgotPasswordNotifier.state.isLoading,
                   text: forgotPasswordNotifier.currentPage ==
                           forgotPasswordNotifier.totalPage
-                      ? 'Change Password'
+                      ? 'Create New Password'
                       : AppStrings.next,
-                  backgroundColor: AppColors.primaryColor,
+                  backgroundColor: forgotPasswordNotifier.currentPage == 1 &&
+                          _emailAddressController.text.isEmpty
+                      ? AppColors.grey6
+                      : forgotPasswordNotifier.currentPage == 3 &&
+                              (_passwordController.text.isEmpty ||
+                                  _passwordController.text.length < 8 ||
+                                  !_passwordController.text
+                                      .contains(RegExp(r'[0-9]')))
+                          ? AppColors.grey6
+                          : AppColors.primaryColor,
                   onPressed: forgotPasswordNotifier.currentPage == 1 &&
                           _emailAddressController.text.isEmpty
                       ? null
@@ -326,8 +334,33 @@ class ForgotPasswordView extends ConsumerWidget {
                                       );
                                   return;
                                 } else if (otp == _otp) {
-                                  Alertify(title: 'OTP verified');
-                                  await forgotPasswordNotifier.delay(sec: 2);
+                                  ref.read(snackbarService).showSuccessSnackBar(
+                                        'OTP Verified...',
+                                      );
+                                  await forgotPasswordNotifier.delay(sec: 1);
+                                  forgotPasswordNotifier.moveForward();
+                                  _pageController.animateToPage(
+                                    // array starts at 0 (lol)
+                                    forgotPasswordNotifier.currentPage - 1,
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.easeIn,
+                                  );
+                                } else {
+                                  ref.read(snackbarService).showErrorSnackBar(
+                                        'OTP is wrong.',
+                                      );
+                                  return;
+                                }
+                              } else if (forgotPasswordNotifier.currentPage ==
+                                  3) {
+                                Loader(context).showLoader(text: '');
+                                await forgotPasswordNotifier.changePassword(
+                                  email: _emailAddressController.text,
+                                  // email: '_emailAddressController.text',
+                                  password: _passwordController.text,
+                                );
+                                if (forgotPasswordNotifier.passwordChanged) {
+                                  Loader(context).hideLoader();
                                   forgotPasswordNotifier.moveForward();
                                   _pageController.animateToPage(
                                     // array starts at 0 (lol)
@@ -336,19 +369,6 @@ class ForgotPasswordView extends ConsumerWidget {
                                     curve: Curves.easeIn,
                                   );
                                 }
-                              } else if (forgotPasswordNotifier.currentPage ==
-                                  3) {
-                                await forgotPasswordNotifier.changePassword(
-                                  email: _emailAddressController.text,
-                                  password: _passwordController.text,
-                                );
-                                forgotPasswordNotifier.moveForward();
-                                _pageController.animateToPage(
-                                  // array starts at 0 (lol)
-                                  forgotPasswordNotifier.currentPage - 1,
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.easeIn,
-                                );
                               } else {
                                 forgotPasswordNotifier.moveForward();
                                 print(forgotPasswordNotifier.currentPage);

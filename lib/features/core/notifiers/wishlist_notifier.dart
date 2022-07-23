@@ -11,11 +11,21 @@ class WishlistNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   WishlistNotifier(this._reader) {
+    // fetchWishlist(category: 'all');
+    initCall();
+  }
+
+  bool _init = true;
+
+  bool get init => _init;
+
+  void initCall() {
     fetchWishlist(category: 'all');
+    _init = false;
   }
 
   List<ProductModel> _products = [];
-  List<ProductModel> _localProducts = [];
+  final List<ProductModel> _localProducts = [];
 
   List<ProductModel> get products => _localProducts;
 
@@ -43,7 +53,7 @@ class WishlistNotifier extends BaseChangeNotifier {
     required String category,
   }) async {
     try {
-      _localProducts = [];
+      _localProducts.clear();
       _favLoading = true;
       setState(state: ViewState.loading);
       _products = await _reader(coreRepository).fetchWishList(
@@ -95,6 +105,15 @@ class WishlistNotifier extends BaseChangeNotifier {
     } finally {
       // setState(state: ViewState.idle);
     }
+  }
+
+  void dump() {
+    _products.clear();
+    _localProducts.clear();
+    _fav.clear();
+    _init = true;
+    setState(state: ViewState.idle);
+    notifyListeners();
   }
 }
 

@@ -13,55 +13,20 @@ import '../../models/saved_session_model.dart';
 class MessageListNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
-  // final String id;
-
-  MessageListNotifier(
-    this._reader,
-    // {required this.id}
-  );
-
-  // {
-  //   // getUnreadCount();
-  //   // getChatList(
-  //   //   sessionId: id,
-  //   // );
-  //   // getCurrentUser();
-  //   // getMessages();
-  // }
+  MessageListNotifier(this._reader);
 
   final firestoreInstance = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
   late User loggedInUser;
   String? messageText;
 
-  String _chatId = '';
+  final String _chatId = '';
 
   String get chatId => _chatId;
 
   List<SavedSessionModel> _chats = [];
 
   List<SavedSessionModel> get chats => _chats;
-
-  List<int> unreadM = [];
-
-  // bool _fetchingList = false;
-  // bool get fetchingList => _fetchingList;
-
-/*  Future<void> getChatList({required dynamic id,}) async {
-    print('Get chat list called with id $id');
-    _fetchingList = true;
-    await FirebaseFirestore.instance.collection('chats').get().then((value) {
-      print('value Size: ${value.size}');
-      for (var element in value.docs) {
-        if (element.id.contains('31')) {
-          //Do something with the messages collection.
-        }
-      }
-    });
-    print('Get chat list finished');
-    _fetchingList = false;
-    notifyListeners();
-  }*/
 
   Future<int> getUnreadCount({
     required String ownerId,
@@ -74,15 +39,10 @@ class MessageListNotifier extends BaseChangeNotifier {
         .orderBy('timeStamp')
         .get()
         .then((value) {
-      print('Last message time : $lastMessageTime');
       for (var element in value.docs) {
-        // print('The data : ${element.data()}');
         Timestamp time = element.get('timeStamp');
         final senderId = element.get('senderId');
-        print('Time before : ${time.toDate()}');
-        print('Owner id : ${ownerId} Sender id : ${senderId}');
         if (ownerId != senderId && time.toDate().isAfter(lastMessageTime)) {
-          print('Time after : ${time.toDate()}');
           unreadMessages += 1;
         }
       }
@@ -101,23 +61,14 @@ class MessageListNotifier extends BaseChangeNotifier {
         suffix: sessionId.substring(sessionId.length - 1),
       );
       if (_chats.isNotEmpty) {
-        // for (var chat in _chats) {
         for (int i = 0; i < _chats.length; i++) {
-          print('_chats[i].unreadCount 1 : ${_chats[i].unreadCount}');
-          // print('_chats[i].unreadCount ${_chats[i].unreadCount}');
-          print('{_chats[i].time}: ${_chats[i].time}');
           _chats[i].unreadCount = await getUnreadCount(
             ownerId: sessionId,
             chatId: _chats[i].chatId,
             lastMessageTime: _chats[i].time,
           );
           print('_chats[i].unreadCount 2 : ${_chats[i].unreadCount}');
-          // unreadM.add(await getUnreadCount(
-          //   chatId: _chats[i].chatId,
-          //   lastMessageTime: DateTime(2022, 6, 13, 22, 08),
-          // ));
         }
-        // print('unreadM 2 : $unreadM');
       }
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
@@ -127,6 +78,12 @@ class MessageListNotifier extends BaseChangeNotifier {
     } finally {
       // setState(state: ViewState.idle);
     }
+  }
+
+  void dump() {
+    _chats.clear();
+    setState(state: ViewState.idle);
+    notifyListeners();
   }
 }
 

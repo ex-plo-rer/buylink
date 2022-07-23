@@ -41,6 +41,9 @@ class _WishlistState extends ConsumerState<WishlistView>
   }
 
   Future<void> init() async {
+    if (ref.read(wishlistNotifierProvider).init) {
+      ref.read(wishlistNotifierProvider).initCall();
+    }
     if (ref.read(categoryNotifierProvider).userCategories.isEmpty) {
       await ref.read(categoryNotifierProvider).fetchUserCategories();
     }

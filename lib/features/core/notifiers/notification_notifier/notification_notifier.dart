@@ -18,17 +18,9 @@ class NotificationNotifier extends BaseChangeNotifier {
 
   List<List<ProductNotificationModel>> get notifications => _notons;
 
-  List<MessageNotificationModel> _messages = [];
-
-  List<MessageNotificationModel> get messages => _messages;
-
   bool _notificationsLoading = false;
 
   bool get notificationsLoading => _notificationsLoading;
-
-  bool _messagesLoading = false;
-
-  bool get messagesLoading => _messagesLoading;
 
   List<String> _periods = [];
 
@@ -52,16 +44,16 @@ class NotificationNotifier extends BaseChangeNotifier {
     for (var period in _periods) {
       List<ProductNotificationModel> notz = [];
       final Set<ProductNotificationModel> _theNotes =
-      <ProductNotificationModel>{};
+          <ProductNotificationModel>{};
       for (var notification in _notifications) {
         String tP = DateFormat("dd/MM/yyyy").format(notification.dateTime) ==
-            DateFormat("dd/MM/yyyy").format(DateTime.now())
+                DateFormat("dd/MM/yyyy").format(DateTime.now())
             ? 'Today'
             : DateFormat("dd/MM/yyyy").format(notification.dateTime) ==
-            DateFormat("dd/MM/yyyy").format(
-                DateTime.now().subtract(const Duration(days: 1)))
-            ? 'Yesterday'
-            : DateFormat("dd/MM/yyyy").format(notification.dateTime);
+                    DateFormat("dd/MM/yyyy").format(
+                        DateTime.now().subtract(const Duration(days: 1)))
+                ? 'Yesterday'
+                : DateFormat("dd/MM/yyyy").format(notification.dateTime);
         if (tP == period) {
           _theNotes.add(notification);
         }
@@ -75,7 +67,7 @@ class NotificationNotifier extends BaseChangeNotifier {
       _notificationsLoading = true;
       setState(state: ViewState.loading);
       List<ProductNotificationModel> _notifications =
-      await _reader(notificationRepository).fetchNotifications();
+          await _reader(notificationRepository).fetchNotifications();
 
 /*
       _notifications.addAll([
@@ -129,24 +121,13 @@ class NotificationNotifier extends BaseChangeNotifier {
     }
   }
 
-  Future<void> fetchMessages() async {
-    try {
-      _messagesLoading = true;
-      setState(state: ViewState.loading);
-      _messages = await _reader(notificationRepository).fetchMessages();
-      _messagesLoading = false;
-      setState(state: ViewState.idle);
-    } on NetworkException catch (e) {
-      _messagesLoading = false;
-      setState(state: ViewState.error);
-      Alertify(title: e.error).error();
-    } finally {
-      // setState(state: ViewState.idle);
-      _notificationsLoading = false;
-    }
+  void dump() {
+    _notons.clear();
+    setState(state: ViewState.idle);
+    notifyListeners();
   }
 }
 
 final notificationNotifierProvider =
-ChangeNotifierProvider<NotificationNotifier>(
+    ChangeNotifierProvider<NotificationNotifier>(
         (ref) => NotificationNotifier(ref.read));

@@ -63,5 +63,7 @@ class Loader {
   }
 
   // hideLoader() => Navigator.of(context).pop();
-  hideLoader() => Navigator.of(context).pop();
+  hideLoader() {
+    if (Navigator.of(context).canPop()) Navigator.of(context).pop();
+  }
 }

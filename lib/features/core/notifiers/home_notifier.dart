@@ -23,8 +23,18 @@ class HomeNotifier extends BaseChangeNotifier {
     this._reader, {
     required this.category,
   }) {
+    print('From Const');
+    initCall();
+  }
+
+  bool _init = true;
+
+  bool get init => _init;
+
+  void initCall() {
     fetchProducts(category: category);
     fetchRandomCategories();
+    _init = false;
   }
 
   bool _productLoading = false;
@@ -68,6 +78,15 @@ class HomeNotifier extends BaseChangeNotifier {
     }
     return _initialText == 'Latest products around you';
   }
+
+  //
+  // @override
+  // void disposeStuffs() {
+  //   // TODO: implement disposeStuffs
+  //   super.disposeStuffs();
+  //   _fav.clear();
+  //   _products.clear();
+  // }
 
   void startTimer() async {
     await Future.delayed(const Duration(seconds: 2));
@@ -173,6 +192,16 @@ class HomeNotifier extends BaseChangeNotifier {
 
   void toggleFavorite() {
     _isFavorite = !_isFavorite;
+    notifyListeners();
+  }
+
+  void dump() {
+    _products.clear();
+    _fav.clear();
+    _initialText = 'Latest products around you';
+    _categories.clear();
+    _init = true;
+    setState(state: ViewState.idle);
     notifyListeners();
   }
 }

@@ -14,11 +14,25 @@ import '../../../../widgets/spacing.dart';
 import '../../../../widgets/store_container.dart';
 import '../../notifiers/store_notifier/store_notifier.dart';
 
-class StoreView extends ConsumerWidget {
+class StoreView extends ConsumerStatefulWidget {
   const StoreView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _StoreViewState();
+}
+
+class _StoreViewState extends ConsumerState<StoreView> {
+  @override
+  void initState() {
+    final sN = ref.read(storeNotifierProvider);
+    super.initState();
+    if (sN.init) {
+      sN.initCall();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final storeNotifier = ref.watch(storeNotifierProvider);
     return Scaffold(
       body: SafeArea(

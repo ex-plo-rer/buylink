@@ -40,6 +40,9 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
 
   bool get canResendOTP => _canResendOTP;
 
+  bool _passwordChanged = false;
+  bool get passwordChanged => _passwordChanged;
+
   void startTimer() async {
     _duration = const Duration(seconds: 30);
     await Future.delayed(const Duration(seconds: 2));
@@ -140,14 +143,10 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
     try {
       setState(state: ViewState.loading);
 
-      await _reader(authenticationRepository).changePassword(
+      _passwordChanged = await _reader(authenticationRepository).changePassword(
         email: email,
         password: password,
       );
-
-      // timer?.cancel();
-
-      Alertify(title: 'Password changed successfully').success();
       _reader(localStorageService).deleteSecureData(AppStrings.otpEmailKey);
       _reader(navigationServiceProvider).navigateOffAllNamed(
         Routes.login,
@@ -157,7 +156,8 @@ class ForgotPasswordNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
+      _reader(navigationServiceProvider).navigateBack();
     } finally {
       // setState(state: ViewState.idle);
     }

@@ -1,17 +1,12 @@
 import 'package:buy_link/core/constants/colors.dart';
-import 'package:buy_link/core/utilities/extensions/strings.dart';
 import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/features/core/models/product_notification_model.dart';
 import 'package:buy_link/features/core/notifiers/user_provider.dart';
-import 'package:buy_link/features/core/views/message_view/message_view.dart';
 import 'package:buy_link/widgets/app_empty_states.dart';
 import 'package:buy_link/widgets/circular_progress.dart';
 import 'package:buy_link/widgets/notification_tile.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/routes.dart';
 import '../../../../services/navigation_service.dart';
@@ -35,14 +30,18 @@ class _NotificationState extends ConsumerState<NotificationView>
 
   @override
   void initState() {
-    // TODO: implement initState
+    final nNP = ref.read(notificationNotifierProvider);
+    final mLNP = ref.read(messageListNotifierProvider);
     _tabController = TabController(length: 2, vsync: this);
     // _tabController.addListener(_handleTabChange);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(notificationNotifierProvider).fetchNotifications();
-      ref
-          .read(messageListNotifierProvider)
-          .getChatList(sessionId: '${ref.read(userProvider).currentUser!.id}u');
+      if (nNP.notifications.isEmpty) {
+        nNP.fetchNotifications();
+      }
+      if (mLNP.chats.isEmpty) {
+        mLNP.getChatList(
+            sessionId: '${ref.read(userProvider).currentUser!.id}u');
+      }
     });
     super.initState();
   }

@@ -40,9 +40,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     // TODO: implement initState
+    final hNP = ref.read(homeNotifierProvider(null));
     super.initState();
+    print('INNNNNNNNNNNNNITstate');
+    print('INNNNNNNNNNNNNIT ${hNP.init}');
+    // if (hNP.init) {
+    //   hNP.initCall();
+    // }
     if (widget.fromLoginOrSignup) {
-      ref.read(homeNotifierProvider(null)).startTimer();
+      if (hNP.init) {
+        print('From Init');
+        hNP.startTimer();
+        hNP.initCall();
+      }
     }
   }
 

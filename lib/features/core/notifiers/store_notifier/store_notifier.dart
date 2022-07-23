@@ -13,12 +13,22 @@ class StoreNotifier extends BaseChangeNotifier {
   final Reader _reader;
 
   StoreNotifier(this._reader) {
-    fetchMyStores();
+    // fetchMyStores();
+    initCall();
   }
+
+  bool _init = true;
+
+  bool get init => _init;
 
   List<Store> _myStores = [];
 
   List<Store> get myStores => _myStores;
+
+  void initCall() {
+    fetchMyStores();
+    _init = false;
+  }
 
   Future<void> fetchMyStores() async {
     try {
@@ -32,6 +42,13 @@ class StoreNotifier extends BaseChangeNotifier {
     } finally {
       // setState(state: ViewState.idle);
     }
+  }
+
+  void dump() {
+    _myStores.clear();
+    _init = true;
+    setState(state: ViewState.idle);
+    notifyListeners();
   }
 }
 
