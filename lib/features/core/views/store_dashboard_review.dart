@@ -282,7 +282,7 @@ class StoreDashReviews extends ConsumerWidget {
                                             Text(
                                               storeReviewNotifier
                                                       .reviews[index].name ??
-                                                  'Ayodeji',
+                                                  'User',
                                               style: const TextStyle(
                                                 color: AppColors.grey1,
                                                 fontSize: 12,

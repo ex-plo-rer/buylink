@@ -178,5 +178,6 @@ class DeleteUserNotifier extends BaseChangeNotifier {
   }
 }
 
-final deleteUserNotifierProvider = ChangeNotifierProvider<DeleteUserNotifier>(
-    (ref) => DeleteUserNotifier(ref.read));
+final deleteUserNotifierProvider =
+    ChangeNotifierProvider.autoDispose<DeleteUserNotifier>(
+        (ref) => DeleteUserNotifier(ref.read));

@@ -152,7 +152,7 @@ class AddProductNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      // Alertify(title: e.error!).error();
+      // Alertify(title: e.error).error();
       Alertify(title: 'There\'s a problem adding your product').error();
       _reader(navigationServiceProvider).navigateBack();
     } finally {

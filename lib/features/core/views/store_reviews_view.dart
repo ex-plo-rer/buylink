@@ -357,7 +357,7 @@ class StoreReviewsView extends ConsumerWidget {
                                               backgroundColor: AppColors.shade3,
                                               radius: 16,
                                               child: Text(
-                                                'Ayodeji'.initials(),
+                                                'Goodness'.initials(),
                                                 style: const TextStyle(
                                                     color: AppColors.light,
                                                     fontSize: 10,
@@ -370,7 +370,7 @@ class StoreReviewsView extends ConsumerWidget {
                                             Text(
                                               storeReviewNotifier
                                                       .reviews[index].name ??
-                                                  'Ayodeji',
+                                                  'Goodness',
                                               style: const TextStyle(
                                                 color: AppColors.grey1,
                                                 fontSize: 12,

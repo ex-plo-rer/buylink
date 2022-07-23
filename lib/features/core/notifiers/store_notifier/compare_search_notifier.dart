@@ -133,7 +133,7 @@ class CompareSearchNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       _productsLoading = false;
       setState(state: ViewState.error);
-      // Alertify(title: e.error!).error();
+      // Alertify(title: e.error).error();
     } finally {
       //Do something...
     }
@@ -150,7 +150,7 @@ class CompareSearchNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       _itemsToCompareLoading = false;
       setState(state: ViewState.error);
-      // Alertify(title: e.error!).error();
+      // Alertify(title: e.error).error();
     } finally {
       //Do something...
     }

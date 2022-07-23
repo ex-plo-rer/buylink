@@ -110,5 +110,7 @@ class AppStrings {
   static const deleteUserNote3 =
       'Enter your password, we just want to make sure its you';
   static const deleteUserNote4 = 'I want to delete my account';
+  static const deleteUserNote5 =
+      'You will permanently lose your reviews, messages, store data and profile info. After this there is no going back';
   static const deleteaccount = 'Delete account';
 }

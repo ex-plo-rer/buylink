@@ -12,9 +12,15 @@ import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
 
-class EditStoreName extends ConsumerWidget {
-  EditStoreName({Key? key, required this.store}) : super(key: key);
+class EditStoreName extends ConsumerStatefulWidget {
+  const EditStoreName({Key? key, required this.store}) : super(key: key);
   final Store store;
+
+  @override
+  ConsumerState<EditStoreName> createState() => _EditStoreNameState();
+}
+
+class _EditStoreNameState extends ConsumerState<EditStoreName> {
   final _formKey = GlobalKey<FormState>();
 
   final _nameFN = FocusNode();
@@ -22,7 +28,13 @@ class EditStoreName extends ConsumerWidget {
   final _nameController = TextEditingController();
 
   @override
-  Widget build(BuildContext context, ref) {
+  void initState() {
+    super.initState();
+    _nameController.text = widget.store.name;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final storeSettingsNotifier = ref.watch(storeSettingNotifierProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -64,12 +76,12 @@ class EditStoreName extends ConsumerWidget {
                 ),
                 const Spacing.smallHeight(),
                 AppTextField(
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.grey1,
                       fontSize: 20,
                       fontWeight: FontWeight.w500),
                   title: '',
-                  hintText: store.name,
+                  hintText: widget.store.name,
                   focusNode: _nameFN,
                   controller: _nameController,
                   onChanged: storeSettingsNotifier.onNameChanged,
@@ -99,16 +111,18 @@ class EditStoreName extends ConsumerWidget {
                 AppButton(
                   // isLoading: storeSettingsNotifier.state.isLoading,
                   text: "Save",
-                  backgroundColor: _nameController.text.isEmpty
+                  backgroundColor: _nameController.text.isEmpty ||
+                          _nameController.text == widget.store.desc
                       ? AppColors.grey6
                       : AppColors.primaryColor,
-                  onPressed: _nameController.text.isEmpty
+                  onPressed: _nameController.text.isEmpty ||
+                          _nameController.text == widget.store.desc
                       ? null
                       : () async {
                           if (_formKey.currentState!.validate()) {
                             Loader(context).showLoader(text: '');
                             await storeSettingsNotifier.editStore(
-                              storeId: store.id,
+                              storeId: widget.store.id,
                               attribute: 'name',
                               newValue: _nameController.text,
                             );
@@ -116,7 +130,7 @@ class EditStoreName extends ConsumerWidget {
 
                           ref.read(navigationServiceProvider).navigateToNamed(
                                 Routes.storeSettings,
-                                arguments: store,
+                                arguments: widget.store,
                               );
                         },
                 ),

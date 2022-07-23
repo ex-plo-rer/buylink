@@ -40,6 +40,7 @@ class AppSvgs {
   static const shop2 = 'assets/svgs/shop_2.svg';
   static const location = 'assets/svgs/location.svg';
   static const trash_2 = 'assets/svgs/trash_2.svg';
+  static const trash_3 = 'assets/svgs/trash_3.svg';
   static const key_2 = 'assets/svgs/key_2.svg';
   static const forward = 'assets/svgs/forward.svg';
   static const telephone = 'assets/svgs/telephone.svg';

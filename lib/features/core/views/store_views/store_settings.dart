@@ -14,7 +14,7 @@ import '../../notifiers/store_notifier/store_settings_notifier.dart';
 class StoreSetting extends ConsumerWidget {
   final Store store;
 
-  StoreSetting({
+  const StoreSetting({
     Key? key,
     required this.store,
   }) : super(key: key);

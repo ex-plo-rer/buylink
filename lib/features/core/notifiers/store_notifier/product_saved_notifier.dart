@@ -14,9 +14,11 @@ class ProductSavedNotifier extends BaseChangeNotifier {
   ProductSavedNotifier(this._reader);
 
   WeeklyDataModel? _weeklyData;
+
   WeeklyDataModel? get weeklyData => _weeklyData;
 
   String _dropdownValue = 'This Week';
+
   String get dropdownValue => _dropdownValue;
 
   void onDropDownChanged({required String newValue, required int storeId}) {
@@ -45,7 +47,7 @@ class ProductSavedNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
       // Alertify(title: 'There\'s a problem adding your product').error();
     } finally {
       // setState(state: ViewState.idle);

@@ -10,7 +10,6 @@ import '../../../../core/constants/svgs.dart';
 import '../../../../core/utilities/alertify.dart';
 import '../../../../services/local_storage_service.dart';
 import '../../../../services/snackbar_service.dart';
-import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_button_2.dart';
 import '../../../../widgets/app_linear_progress.dart';
 import '../../../../widgets/app_text_field.dart';
@@ -20,8 +19,14 @@ import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/settings_notifier/change_email_notifier.dart';
 import '../../notifiers/user_provider.dart';
 
-class ChangeEmail extends ConsumerWidget {
-  ChangeEmail({Key? key}) : super(key: key);
+class ChangeEmail extends ConsumerStatefulWidget {
+  const ChangeEmail({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ChangeEmail> createState() => _ChangeEmailState();
+}
+
+class _ChangeEmailState extends ConsumerState<ChangeEmail> {
   final PageController _pageController = PageController();
   final _newEmailController = TextEditingController();
   final _newEmailFN = FocusNode();
@@ -29,7 +34,14 @@ class ChangeEmail extends ConsumerWidget {
   String? _otp;
 
   @override
-  Widget build(BuildContext context, ref) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // _newEmailController.text = ref.read(userProvider).currentUser!.name;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final userProv = ref.watch(userProvider);
     final changeEmailNotifier = ref.watch(editUserEmailNotifierProvider);
     return Scaffold(
@@ -53,9 +65,9 @@ class ChangeEmail extends ConsumerWidget {
               ),
         elevation: 0,
         backgroundColor: AppColors.transparent,
-        title: Text(
+        title: const Text(
           "Change Email Address",
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.dark,
             fontSize: 14,
             fontWeight: FontWeight.w500,
@@ -95,7 +107,7 @@ class ChangeEmail extends ConsumerWidget {
                             ),
                             const Spacing.height(12),
                             AppTextField(
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: AppColors.grey1,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500),
@@ -164,12 +176,16 @@ class ChangeEmail extends ConsumerWidget {
                             ? AppStrings.changeEmail
                             : AppStrings.next,
                         backgroundColor: changeEmailNotifier.currentPage == 1 &&
-                                _newEmailController.text.isEmpty
+                                (_newEmailController.text.isEmpty ||
+                                    _newEmailController.text ==
+                                        userProv.currentUser!.email)
                             ? AppColors.grey6
                             : AppColors.primaryColor,
                         // onPressed: changeEmailNotifier.currentPage == 1 ?_nameController.text.isEmpty: changeEmailNotifier.currentPage == 2? _emailAddressController.text.isEmpty: changeEmailNotifier.currentPage == 4? _passwordController.text.isEmpty
                         onPressed: changeEmailNotifier.currentPage == 1 &&
-                                _newEmailController.text.isEmpty
+                                (_newEmailController.text.isEmpty ||
+                                    _newEmailController.text ==
+                                        userProv.currentUser!.email)
                             ? null
                             : () async {
                                 if (changeEmailNotifier.currentPage == 1) {
@@ -178,6 +194,9 @@ class ChangeEmail extends ConsumerWidget {
                                     reason: 'change email',
                                     email: _newEmailController.text,
                                   );
+                                  if (changeEmailNotifier.state.isError) {
+                                    return;
+                                  }
                                   Loader(context).hideLoader();
                                   changeEmailNotifier.moveForward();
                                   _pageController.animateToPage(
@@ -202,8 +221,9 @@ class ChangeEmail extends ConsumerWidget {
                                         );
                                     return;
                                   } else if (otp != _otp) {
-                                    Alertify(title: 'Incorrect OTP entered')
-                                        .error();
+                                    ref.read(snackbarService).showErrorSnackBar(
+                                          'OTP is wrong.',
+                                        );
                                     return;
                                   } else {
                                     Loader(context).showLoader(text: '');

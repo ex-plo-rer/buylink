@@ -23,11 +23,11 @@ class EditUserNameNotifier extends BaseChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> changeName() async {
+  Future<void> changeName({required String newName}) async {
     try {
       setState(state: ViewState.loading);
       await _reader(settingRepository).changeName(
-        name: name,
+        name: newName,
       );
       // await _reader(userProvider).setUser();
       _reader(navigationServiceProvider)

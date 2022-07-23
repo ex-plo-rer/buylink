@@ -55,7 +55,7 @@ class ChangePassword extends ConsumerWidget {
         backgroundColor: AppColors.transparent,
         title: const Text(
           "Change Email Address",
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.dark,
             fontSize: 14,
             fontWeight: FontWeight.w500,
@@ -91,10 +91,10 @@ class ChangePassword extends ConsumerWidget {
                             fontSize: 24,
                             firstColor: AppColors.primaryColor,
                           ),
-                          Spacing.smallHeight(),
+                          const Spacing.smallHeight(),
                           const Align(
                             alignment: Alignment.topLeft,
-                            child: const Text(
+                            child: Text(
                               'Enter your old password ',
                               textAlign: TextAlign.start,
                               style: TextStyle(
@@ -105,12 +105,12 @@ class ChangePassword extends ConsumerWidget {
                             ),
                           ),
                           AppTextField(
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: AppColors.grey1,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500),
                             title: '',
-                            hintText: 'Ayodeji123',
+                            hintText: 'Goodness123',
                             obscureText:
                                 !changePasswordNotifier.oldPasswordVisible,
                             controller: _oldPasswordController,
@@ -118,7 +118,7 @@ class ChangePassword extends ConsumerWidget {
                             onChanged:
                                 changePasswordNotifier.onOldPasswordChanged,
                             suffixIcon: _oldPasswordController.text.isEmpty
-                                ? Icon(
+                                ? const Icon(
                                     Icons.visibility_off_outlined,
                                     color: AppColors.grey6,
                                   )
@@ -167,7 +167,7 @@ class ChangePassword extends ConsumerWidget {
                           ),
                           const Spacing.height(12),
                           AppTextField(
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: AppColors.grey1,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500),

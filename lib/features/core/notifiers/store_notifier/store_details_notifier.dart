@@ -20,15 +20,19 @@ class StoreDetailsNotifier extends BaseChangeNotifier {
   }
 
   late StoreQuickModel _storeDetails;
+
   StoreQuickModel get storeDetails => _storeDetails;
 
   List<ProductModel> _products = [];
+
   List<ProductModel> get products => _products;
 
   bool _detailsLoading = false;
+
   bool get detailsLoading => _detailsLoading;
 
   final List<bool?> _fav = [];
+
   List<bool?> get fav => _fav;
 
   void setFav() {
@@ -63,7 +67,7 @@ class StoreDetailsNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       _detailsLoading = false;
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
     } finally {
       _detailsLoading = false;
       // setState(state: ViewState.idle);
@@ -86,7 +90,7 @@ class StoreDetailsNotifier extends BaseChangeNotifier {
       setState(state: ViewState.idle);
     } on NetworkException catch (e) {
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
     } finally {
       // setState(state: ViewState.idle);
     }

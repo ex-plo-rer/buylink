@@ -278,10 +278,10 @@ class StoreReviewNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       _reviewStatsLoading = false;
       setState(state: ViewState.error);
-      Alertify(title: e.error!).error();
+      Alertify(title: e.error).error();
     } finally {
       _reviewStatsLoading = false;
-     // setState(state: ViewState.idle);
+      // setState(state: ViewState.idle);
     }
   }
 
@@ -301,7 +301,7 @@ class StoreReviewNotifier extends BaseChangeNotifier {
     } on NetworkException catch (e) {
       _reviewsLoading = false;
       setState(state: ViewState.error);
-      // Alertify(title: e.error!).error();
+      // Alertify(title: e.error).error();
     } finally {
       // _reviewsLoading = false;
       // setState(state: ViewState.idle);

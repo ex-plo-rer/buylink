@@ -4,6 +4,7 @@ import 'package:buy_link/core/utilities/view_state.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
@@ -11,7 +12,6 @@ import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/svgs.dart';
 import '../../../../core/routes.dart';
 import '../../../../core/utilities/alertify.dart';
-import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_button_2.dart';
 import '../../../../widgets/app_check_box.dart';
 import '../../../../widgets/app_dialog.dart';
@@ -153,7 +153,7 @@ class DeleteUser extends ConsumerWidget {
                               ),
                               const Spacing.height(18),
                               AppTextField(
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: AppColors.grey5,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500),
@@ -169,56 +169,39 @@ class DeleteUser extends ConsumerWidget {
                                 fillColor: AppColors.grey8,
                                 suffixIcon: _detailController.text.isEmpty
                                     ? null
-                                    : Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () => deleteUserNotifier
-                                                .togglePassword(),
-                                            child: Icon(
-                                              deleteUserNotifier.passwordVisible
-                                                  ? Icons.visibility_outlined
-                                                  : Icons
-                                                      .visibility_off_outlined,
-                                              color: AppColors.dark,
-                                            ),
+                                    : GestureDetector(
+                                        onTap: () {
+                                          _detailController.clear();
+                                        },
+                                        child: const CircleAvatar(
+                                          backgroundColor: AppColors.grey7,
+                                          radius: 10,
+                                          child: Icon(
+                                            Icons.clear_rounded,
+                                            color: AppColors.light,
+                                            size: 15,
                                           ),
-                                          const Spacing.smallWidth(),
-                                          GestureDetector(
-                                            onTap: () {
-                                              _detailController.clear();
-                                            },
-                                            child: const CircleAvatar(
-                                              backgroundColor: AppColors.grey7,
-                                              radius: 10,
-                                              child: Icon(
-                                                Icons.clear_rounded,
-                                                color: AppColors.light,
-                                                size: 15,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                               ),
                             ],
                           ),
                           Column(
-                            children: const <Widget>[
-                              Spacing.largeHeight(),
+                            children: <Widget>[
+                              const Spacing.largeHeight(),
+                              const Spacing.largeHeight(),
+                              const Spacing.largeHeight(),
                               CircleAvatar(
-                                child: Icon(
-                                  Icons.delete_outline_rounded,
-                                  color: AppColors.red,
-                                  size: 30,
+                                child: SvgPicture.asset(
+                                  AppSvgs.trash_3,
+                                  height: 35,
+                                  width: 30,
                                 ),
                                 backgroundColor: AppColors.redshade1,
                                 radius: 30,
                               ),
-                              Spacing.largeHeight(),
-                              Text(
+                              const Spacing.largeHeight(),
+                              const Text(
                                 AppStrings.deleteUserNote2,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -248,18 +231,19 @@ class DeleteUser extends ConsumerWidget {
                                 ),
                               ),
                               AppTextField(
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: AppColors.grey1,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500),
                                 title: '',
                                 hintText: 'Password123',
-                                keyboardType: TextInputType.emailAddress,
+                                obscureText:
+                                    !deleteUserNotifier.passwordVisible,
                                 focusNode: _passwordFN,
                                 controller: _passwordController,
                                 onChanged: deleteUserNotifier.onPasswordChanged,
                                 suffixIcon: _passwordController.text.isEmpty
-                                    ? Icon(
+                                    ? const Icon(
                                         Icons.visibility_off_outlined,
                                         color: AppColors.grey6,
                                       )
@@ -318,11 +302,28 @@ class DeleteUser extends ConsumerWidget {
                                   !deleteUserNotifier.reason5 &&
                                   _detailController.text.isEmpty)
                           ? AppColors.grey6
-                          : deleteUserNotifier.currentPage ==
-                                      deleteUserNotifier.totalPage &&
-                                  _passwordController.text.isNotEmpty
-                              ? Color(0xffF8EEEE)
-                              : AppColors.primaryColor,
+                          : deleteUserNotifier.currentPage == 1
+                              ? AppColors.primaryColor
+                              : deleteUserNotifier.currentPage == 2
+                                  ? AppColors.primaryColor
+                                  : deleteUserNotifier.currentPage ==
+                                              deleteUserNotifier.totalPage &&
+                                          _passwordController.text.isNotEmpty
+                                      ? const Color(0xffF8EEEE)
+                                      : AppColors.grey6,
+                      // backgroundColor: deleteUserNotifier.currentPage == 1 &&
+                      //         (!deleteUserNotifier.reason1 &&
+                      //             !deleteUserNotifier.reason2 &&
+                      //             !deleteUserNotifier.reason3 &&
+                      //             !deleteUserNotifier.reason4 &&
+                      //             !deleteUserNotifier.reason5 &&
+                      //             _detailController.text.isEmpty)
+                      //     ? AppColors.grey6
+                      //     : deleteUserNotifier.currentPage ==
+                      //                 deleteUserNotifier.totalPage &&
+                      //             _passwordController.text.isNotEmpty
+                      //         ? const Color(0xffF8EEEE)
+                      //         : AppColors.primaryColor,
                       textColor: _passwordController.text.isNotEmpty
                           ? AppColors.red
                           : AppColors.light,
@@ -377,6 +378,9 @@ class DeleteUser extends ConsumerWidget {
                                             'Are you sure you want to delete your account?',
                                         text1: 'No',
                                         text2: 'Yes',
+                                        onText1Pressed: () => ref
+                                            .read(navigationServiceProvider)
+                                            .navigateBack(),
                                         onText2Pressed: () async {
                                           Loader(context)
                                               .showLoader(text: 'Please wait');
@@ -407,6 +411,18 @@ class DeleteUser extends ConsumerWidget {
                               }
                             },
                     ),
+                    const Spacing.height(12),
+                    if (deleteUserNotifier.currentPage ==
+                            deleteUserNotifier.totalPage &&
+                        _passwordController.text.isNotEmpty)
+                      const Text(
+                        AppStrings.deleteUserNote5,
+                        style: TextStyle(
+                          color: AppColors.grey5,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                   ],
                 ),
               ),

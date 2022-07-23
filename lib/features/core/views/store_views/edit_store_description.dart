@@ -1,6 +1,3 @@
-import 'package:buy_link/core/utilities/view_state.dart';
-import 'package:buy_link/features/core/models/store_quick_model.dart';
-import 'package:buy_link/features/core/notifiers/store_notifier/store_notifier.dart';
 import 'package:buy_link/services/navigation_service.dart';
 import 'package:buy_link/widgets/spacing.dart';
 import 'package:flutter/material.dart';
@@ -8,19 +5,22 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes.dart';
-import '../../../../core/utilities/alertify.dart';
 import '../../../../core/utilities/loader.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/text_with_rich.dart';
 import '../../models/product_model.dart';
-import '../../notifiers/store_notifier/edit_store_name_notifier.dart';
 import '../../notifiers/store_notifier/store_settings_notifier.dart';
 
-class EditStoreDesc extends ConsumerWidget {
-  EditStoreDesc({Key? key, required this.store}) : super(key: key);
+class EditStoreDesc extends ConsumerStatefulWidget {
+  const EditStoreDesc({Key? key, required this.store}) : super(key: key);
   final Store store;
 
+  @override
+  ConsumerState<EditStoreDesc> createState() => _EditStoreDescState();
+}
+
+class _EditStoreDescState extends ConsumerState<EditStoreDesc> {
   final _formKey = GlobalKey<FormState>();
 
   final _descriptionFN = FocusNode();
@@ -28,7 +28,14 @@ class EditStoreDesc extends ConsumerWidget {
   final _descriptionController = TextEditingController();
 
   @override
-  Widget build(BuildContext context, ref) {
+  void initState() {
+    super.initState();
+    print('widget.store.desc ${widget.store.desc}');
+    _descriptionController.text = widget.store.desc ?? '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final storeSettingsNotifier = ref.watch(storeSettingNotifierProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -43,7 +50,7 @@ class EditStoreDesc extends ConsumerWidget {
         elevation: 0,
         backgroundColor: AppColors.transparent,
         title: const Text(
-          "Change Name",
+          'Store Description',
           style: TextStyle(
             color: AppColors.dark,
             fontSize: 16,
@@ -67,13 +74,12 @@ class EditStoreDesc extends ConsumerWidget {
                 ),
                 const Spacing.smallHeight(),
                 AppTextField(
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.primaryColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w500),
                   title: '',
-                  hintText:
-                      'We sell all fashion wears, shoes, bags, slides all at affordable rates',
+                  hintText: widget.store.desc,
                   focusNode: _descriptionFN,
                   controller: _descriptionController,
                   maxLines: 5,
@@ -104,23 +110,25 @@ class EditStoreDesc extends ConsumerWidget {
                 AppButton(
                   // isLoading: storeSettingsNotifier.state.isLoading,
                   text: "Save",
-                  backgroundColor: _descriptionController.text.isEmpty
+                  backgroundColor: _descriptionController.text.isEmpty ||
+                          _descriptionController.text == widget.store.desc
                       ? AppColors.grey6
                       : AppColors.primaryColor,
-                  onPressed: _descriptionController.text.isEmpty
+                  onPressed: _descriptionController.text.isEmpty ||
+                          _descriptionController.text == widget.store.desc
                       ? null
                       : () async {
                           if (_formKey.currentState!.validate()) {
                             Loader(context).showLoader(text: '');
                             await storeSettingsNotifier.editStore(
-                              storeId: store.id,
+                              storeId: widget.store.id,
                               attribute: 'desc',
                               newValue: _descriptionController.text,
                             );
                           }
                           ref.read(navigationServiceProvider).navigateToNamed(
                                 Routes.storeSettings,
-                                arguments: store,
+                                arguments: widget.store,
                               );
                         },
                 ),

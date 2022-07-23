@@ -179,7 +179,11 @@ class _StoreDashboardViewState extends ConsumerState<StoreDashboardView> {
           child: storeDashboardNotifier.state.isError
               ? const Center(child: Text('An error occurred.'))
               : storeDashboardNotifier.initLoading
-                  ? const CircularProgress()
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                          top: (MediaQuery.of(context).size.height / 2) - 100),
+                      child: const CircularProgress(),
+                    )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

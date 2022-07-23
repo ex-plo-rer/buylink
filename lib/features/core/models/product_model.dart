@@ -103,6 +103,7 @@ class Store {
     required this.lat,
     required this.star,
     required this.logo,
+    this.desc,
   });
 
   int id;
@@ -112,6 +113,7 @@ class Store {
   double lat;
   double star;
   String logo;
+  String? desc;
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
         id: json["id"],
@@ -122,6 +124,7 @@ class Store {
         star: json["star"].toDouble(),
         // star: json["star"].parse(json["star"].toStringAsFixed(1)),
         logo: json["logo"],
+        desc: json["about"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -132,5 +135,6 @@ class Store {
         "lat": lat,
         "star": star,
         "logo": logo,
+        "about": desc,
       };
 }

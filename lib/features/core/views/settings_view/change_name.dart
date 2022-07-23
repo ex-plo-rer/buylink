@@ -13,8 +13,14 @@ import '../../../../widgets/text_with_rich.dart';
 import '../../notifiers/settings_notifier/change_name_notifier.dart';
 import '../../notifiers/user_provider.dart';
 
-class EditUserName extends ConsumerWidget {
-  EditUserName({Key? key}) : super(key: key);
+class EditUserName extends ConsumerStatefulWidget {
+  const EditUserName({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<EditUserName> createState() => _EditUserNameState();
+}
+
+class _EditUserNameState extends ConsumerState<EditUserName> {
   final _formKey = GlobalKey<FormState>();
 
   final _nameFN = FocusNode();
@@ -22,7 +28,14 @@ class EditUserName extends ConsumerWidget {
   final _nameController = TextEditingController();
 
   @override
-  Widget build(BuildContext context, ref) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _nameController.text = ref.read(userProvider).currentUser!.name;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final userProv = ref.watch(userProvider);
     final editUserNameNotifier = ref.watch(editUserNameNotifierProvider);
     return Scaffold(
@@ -62,7 +75,7 @@ class EditUserName extends ConsumerWidget {
                 ),
                 const Spacing.smallHeight(),
                 AppTextField(
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.grey1,
                       fontSize: 20,
                       fontWeight: FontWeight.w500),
@@ -104,10 +117,14 @@ class EditUserName extends ConsumerWidget {
                       ? null
                       : () async {
                           if (_formKey.currentState!.validate()) {
-                            Loader(context).showLoader(text: '');
-                            await editUserNameNotifier.changeName();
-                            Alertify(title: 'Name changed successfully')
-                                .success();
+                            if (_nameController.text !=
+                                userProv.currentUser!.name) {
+                              Loader(context).showLoader(text: '');
+                              await editUserNameNotifier.changeName(
+                                  newName: _nameController.text);
+                              Alertify(title: 'Name changed successfully')
+                                  .success();
+                            }
                           }
                         },
                 ),

@@ -326,8 +326,8 @@ class StoreReviewsView2 extends ConsumerWidget {
                                               backgroundColor: AppColors.shade3,
                                               radius: 16,
                                               child: Text(
-                                                'Ayodeji'.initials(),
-                                                style: TextStyle(
+                                                'Goodness'.initials(),
+                                                style: const TextStyle(
                                                     color: AppColors.light,
                                                     fontSize: 10,
                                                     fontWeight:
@@ -335,11 +335,11 @@ class StoreReviewsView2 extends ConsumerWidget {
                                               ),
                                             ),
                                             const Spacing.tinyWidth(),
-                                            Spacing.tinyWidth(),
+                                            const Spacing.tinyWidth(),
                                             Text(
                                               storeReviewNotifier
                                                       .reviews[index].name ??
-                                                  'Ayodeji',
+                                                  'Goodness',
                                               style: const TextStyle(
                                                 color: AppColors.grey1,
                                                 fontSize: 12,
@@ -389,7 +389,7 @@ class StoreReviewsView2 extends ConsumerWidget {
                                   //     fontWeight: FontWeight.w500,
                                   //   ),
                                   // ),
-                                  Spacing.tinyHeight(),
+                                  const Spacing.tinyHeight(),
 
                                   Visibility(
                                       visible: storeReviewNotifier
@@ -397,12 +397,12 @@ class StoreReviewsView2 extends ConsumerWidget {
                                       child: Text(
                                         storeReviewNotifier
                                             .reviews[index].title,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: AppColors.grey2,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 14),
                                       )),
-                                  Spacing.tinyHeight(),
+                                  const Spacing.tinyHeight(),
                                   LayoutBuilder(
                                     builder: (context, size) {
                                       // Build the textspan
