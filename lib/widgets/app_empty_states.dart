@@ -11,7 +11,7 @@ class AppEmptyStates extends StatelessWidget {
     required this.message1String,
     this.message2String,
     required this.buttonString,
-     this.onButtonPressed,
+    this.onButtonPressed,
     this.hasButton = false,
     this.hasIcon = true,
   }) : super(key: key);
@@ -36,7 +36,7 @@ class AppEmptyStates extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(imageString),
-              Spacing.smallHeight(),
+              const Spacing.mediumHeight(),
               Text(
                 message1String,
                 style: const TextStyle(

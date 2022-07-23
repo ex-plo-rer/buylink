@@ -132,7 +132,8 @@ class _EditStoreLocationViewState extends ConsumerState<EditStoreLocationView> {
               TileLayerOptions(
                 tileProvider: NetworkTileProvider(),
                 urlTemplate:
-                    "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+                    // "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+                    'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
               ),
               DragMarkerPluginOptions(
